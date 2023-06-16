@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'laravel/laravel',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => 'dca40c33faa25d0dfda6cb36bcd264d035c962a8',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '3a9aef6ba15eb312d7f8b960cadb1fbbb46a6053',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -83,9 +83,9 @@
             'dev_requirement' => false,
         ),
         'doctrine/inflector' => array(
-            'pretty_version' => '2.0.6',
-            'version' => '2.0.6.0',
-            'reference' => 'd9d313a36c872fd6ee06d9a6cbcf713eaa40f024',
+            'pretty_version' => '2.0.8',
+            'version' => '2.0.8.0',
+            'reference' => 'f9301a5b2fb1216b2b08f02ba04dc45423db6bff',
             'type' => 'library',
             'install_path' => __DIR__ . '/../doctrine/inflector',
             'aliases' => array(),
@@ -476,9 +476,9 @@
             'dev_requirement' => false,
         ),
         'laravel/laravel' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => 'dca40c33faa25d0dfda6cb36bcd264d035c962a8',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '3a9aef6ba15eb312d7f8b960cadb1fbbb46a6053',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -1037,7 +1037,7 @@
         'roave/security-advisories' => array(
             'pretty_version' => 'dev-latest',
             'version' => 'dev-latest',
-            'reference' => 'f928c4960ce91bfd266db27fa15679341cd3525d',
+            'reference' => 'e47f876d3b2df4a1354964c32820b4d7c10b8675',
             'type' => 'metapackage',
             'install_path' => NULL,
             'aliases' => array(

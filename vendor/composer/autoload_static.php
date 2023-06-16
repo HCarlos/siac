@@ -762,6 +762,7 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'App\\Filters\\Catalogo\\ServicioFilter' => __DIR__ . '/../..' . '/app/Filters/Catalogo/ServicioFilter.php',
         'App\\Filters\\Common\\QueryFilter' => __DIR__ . '/../..' . '/app/Filters/Common/QueryFilter.php',
         'App\\Filters\\Denuncia\\DenunciaFilter' => __DIR__ . '/../..' . '/app/Filters/Denuncia/DenunciaFilter.php',
+        'App\\Filters\\Denuncia\\DenunciamobileFilter' => __DIR__ . '/../..' . '/app/Filters/Denuncia/DenunciamobileFilter.php',
         'App\\Filters\\Denuncia\\GetDenunciasFilterCount' => __DIR__ . '/../..' . '/app/Filters/Denuncia/GetDenunciasFilterCount.php',
         'App\\Filters\\Denuncia\\GetDenunciasItemCustomFilter' => __DIR__ . '/../..' . '/app/Filters/Denuncia/GetDenunciasItemCustomFilter.php',
         'App\\Filters\\User\\CategoriaFilter' => __DIR__ . '/../..' . '/app/Filters/User/CategoriaFilter.php',

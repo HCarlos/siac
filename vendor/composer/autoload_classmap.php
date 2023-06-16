@@ -47,6 +47,7 @@ return array(
     'App\\Filters\\Catalogo\\ServicioFilter' => $baseDir . '/app/Filters/Catalogo/ServicioFilter.php',
     'App\\Filters\\Common\\QueryFilter' => $baseDir . '/app/Filters/Common/QueryFilter.php',
     'App\\Filters\\Denuncia\\DenunciaFilter' => $baseDir . '/app/Filters/Denuncia/DenunciaFilter.php',
+    'App\\Filters\\Denuncia\\DenunciamobileFilter' => $baseDir . '/app/Filters/Denuncia/DenunciamobileFilter.php',
     'App\\Filters\\Denuncia\\GetDenunciasFilterCount' => $baseDir . '/app/Filters/Denuncia/GetDenunciasFilterCount.php',
     'App\\Filters\\Denuncia\\GetDenunciasItemCustomFilter' => $baseDir . '/app/Filters/Denuncia/GetDenunciasItemCustomFilter.php',
     'App\\Filters\\User\\CategoriaFilter' => $baseDir . '/app/Filters/User/CategoriaFilter.php',
