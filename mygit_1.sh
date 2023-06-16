@@ -5,7 +5,7 @@ git remote set-url origin https://github.com/HCarlos/siac.git
 
 # git remote set-url origin git@github.com:HCarlos/siac.git
 
-# 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
+# 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
 
 # pwd : postg  =      R=D7,Z)$F%q,Kj?CP,DM{1CFNTtQ1B@4=V!d
 
@@ -40,7 +40,7 @@ git rm -r --cached composer.lock
 
 git add .
 
-git commit -m "SIAC - B02 | L7.30.6 Production"
+git commit -m "SIAC - B03 | L7.30.6 Production"
 
 git push -u origin main --force
 
