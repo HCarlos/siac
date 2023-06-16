@@ -93,6 +93,7 @@ class HomeController extends Controller
             $PorcNoResuelto = (($DenunciasNoResueltasMesActual/$DenunciasMesActual)*100);
         }
 
+
         return view('home-dashboard',
             [
                 'DenunciasHoy' => $DenunciasHoy,
