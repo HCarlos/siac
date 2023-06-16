@@ -1,0 +1,22 @@
+
+<div class="form-group row mb-3">
+    <label for = "prioridad" class="col-md-3 col-form-label">Prioridad</label>
+    <div class="col-md-9">
+        <input type="text" name="prioridad" id="prioridad" value="{{ old('prioridad',$items->prioridad) }}" class="form-control" />
+    </div>
+    <label for = "class_css" class="col-md-3 col-form-label">Clase CSS</label>
+    <div class="col-md-9">
+        <input type="text" name="class_css" id="class_css" value="{{ old('class_css',$items->class_css) }}" class="form-control" />
+    </div>
+    <label for = "predeterminado" class="col-md-3 col-form-label">Predeterminado</label>
+    <div class="col-md-9">
+{{--        {{ Form::select('predeterminado', array('0'=>'No','1'=>'Si'), $items->isDefault()==true ? 1 : 0 , ['id' => 'predeterminado','class' => 'form-control']) }}--}}
+        <select class=" form-control " name="predeterminado" id="predeterminado" size="1">
+            <option value="1" @if( $items->isDefault() ) selected @endif >SI</option>
+            <option value="0" @if( ! $items->isDefault() ) selected @endif >NO</option>
+        </select>
+    </div>
+</div>
+<input type="hidden" name="id" value="{{$items->id}}" >
+
+<hr>

@@ -1,0 +1,190 @@
+1,1,1,1,Construcción y/o rehabilitación de calles con pavimento hidráulico.
+1,1,1,2,Construcción y/o rehabilitación de calles con pavimento asfáltico.
+1,1,1,3,Construcción y/o rehabilitación de calles guarniciones y banquetas.
+1,1,1,4,Reconstrución de andadores.
+1,1,1,5,Construcción de canchas de usos múltiples.
+1,1,1,6,Construcción de techumbre metálica.
+1,1,1,7,Construcción de puestes peatonales en zona urbana.
+1,1,1,8,Construcción de puentes vehiculares.
+1,2,2,9,Rehabilitación de pavimento de concreto hidráulico.
+1,2,2,10,Rehabilitación de banquetas (Vía pública).
+1,2,2,11,Rehabilitación de guarniciones.
+1,2,2,12,Rehabilitación de contratrabes y bases de concretos para rejillas.
+1,2,2,13,Rehabilitación de rejillas de concreto hidráulico.
+1,2,2,14,Bacheo con mezcla asfáltica.
+1,2,2,15,Aplicación de sello tipo 3A.
+1,2,2,16,Bacheo con equipo de bacheadora (JETPATCHER).
+1,2,2,17,Bacheo revuelto con emulsión.
+1,2,2,18,Bacheo con mezcla asfáltica en caliente con aplicación en frío (BACHEMIX).
+1,2,2,19,Aplicación de pintura vinílica en muros de vialidades.
+1,2,2,20,Aplicación de pintura vinílica en puentes.
+1,2,2,21,Aplicación de pintura esmalte en herrerías  y barandales (Puentes vehiculares).
+1,2,2,22,Aplicación de pintura de tráfico en topes.
+1,2,2,23,Aplicación de pintura de tráfico en guarniciones.
+1,2,2,24,Aplicación de pintura de tráfico en pasos peatonales.
+1,2,2,25,Aplicación de pintura de tráfico en rayas de señalamientos.
+1,2,2,26,Aplicación de pintura de tráfico en flechas rectas.
+1,2,2,27,Aplicación de pintura de tráfico en flechas dobles.
+1,2,2,28,Aplicación de pintura de tráfico en vibradores o señalamientos viales.
+1,2,2,29,Rehabilitación de rejillas metálicas.
+1,3,3,30,Construcción y/o rehabilitación de aulas didácticas.
+1,3,3,31,Construcción de canchas de usos múltiples.
+1,3,3,32,Construcción de techumbres.
+1,3,3,33,Construcción y/o rehabilitación de bibliotecas municipales.
+1,3,4,34,Construcción y/o rehabilitación de banquetas.
+1,3,4,35,Construcción y/o rehabilitación de guarniciones.
+1,3,4,36,Construcción y/o rehabilitación de pavimento hidráulico.
+1,3,4,37,Construcción y/o rehabilitación de pavimento asfáltico.
+1,3,4,38,Rastreo de caminos principales de las rancherías.
+1,3,4,39,Rastreo de caminos cosecheros.
+1,3,4,40,Rastreo de los callejones vecinales.
+1,3,4,41,Gravado de callejones vecinales.
+1,3,4,42,Pavimentación con concreto asfáltico con callejones y calles.
+1,3,4,43,Pavimentación con concreto hidráulico de callejones y calles.
+1,3,5,44,"Rehabilitación de parques públicos, (Andadores, guarniciones y banquetas, registros hidráulicos y sanitarios)."
+1,3,6,45,Construcción y/o rehabilitación de casa de salud.
+1,3,6,46,Construcción y/o rehabilitación de delegaciones municipales.
+1,4,7,47,Permisos de construcción.
+1,4,7,48,Licencias de construcción.
+1,4,7,49,Licencia de anuncios.
+1,4,7,50,Permisos para rellenos.
+1,4,7,51,Permisos para ocupación de vía pública.
+1,4,7,52,Permisos para ruptura de pavimento.
+1,4,7,53,Permisos para construcción de rampas.
+1,4,7,54,Permisos de subdivisión de predios.
+1,4,7,55,Permiso de fusión de predios.
+1,4,7,56,Permiso de régimen de propiedad de condominio.
+1,4,7,57,Convenios de fraccionamiento y relotificaciones.
+1,4,7,58,Resoluciones para municipalización.
+1,4,7,59,Constancias de factibilidad de uso de suelo.
+1,4,7,60,Constancias de alineamiento.
+1,4,7,61,Constancia de número oficial.
+1,4,7,62,Constancia de terminación de obra.
+1,4,7,63,Constancia de regularización de obra terminada.
+1,5,8,64,"Brinda asesoría jurídica a la ciudadanía en relación con los trámites que se brindan en la ventanilla única de la Dirección de Obras, Ordenamiento territorial y Servicios Municipales."
+2,6,9,65,"Recolección de los residuos sólidos (Doméstico) urbanos y rurales, cuenta con 2 turnos, matutino y vespertino-nocturno."
+2,6,9,66,"Barrido fijo, despápele, despolve, raspado de guarniciones chapeo de las áreas verdes y vías públicas de la ciudad."
+2,6,9,67,"Permisos a terceros para el acceso al Sitio de Transferencia, los cuales brindan servicio de recolección a los grandes generadores."
+3,7,10,68,Registro de fierro para herrar ganado.
+3,7,10,69,Certificación de Fierro para herrar ganado.
+3,7,10,70,Revalidación de fierro.
+3,7,10,71,Cancelación de fierro.
+3,8,11,72,Constancia de concubinato.
+3,8,11,73,Constancia de  dependencia económica.
+3,8,11,74,Constancia de residencia certificadas nacionales.
+3,8,11,75,Constancia de residencia certificadas de menores de edad.
+3,8,11,76,Constancias de residencia certificadas de sociedad mercantiles.
+3,8,11,77,Constancia de aclaración de lugar de origen.
+3,8,11,78,Jornadas de trabajo a favor de la comunidad.
+3,9,12,79,Atención a los delegados municipales para agilizar las demandas que la ciudadanía del lugar de origen de su demarcación requiera ante los delegados como representantes de la autoridad municipal y así mismo canalizarlos ante la dependencia correspondiente. De la misma manera brindarles la asesoría correspondiente.
+3,10,13,80,Inscripción del trámite para la cartilla del servicio militar nacional a los jóvenes de 18 o remisos.
+3,10,13,81,Constancia de trámite de cartilla.
+3,10,13,82,Constancia de trámites de que nunca han tramitado su cartilla en la junta de reclutamiento del municipio del centro.
+3,11,14,83,Constancia de notorio arraigo.
+3,11,14,84,"Gestiona apoyo que solicitan las asociaciones religiosas para la regularización de sus cultos o campañas religiosas. (Solicitud de espacios públicos para sus cultos, toldos, sillas, tarimas, etc.)"
+3,12,15,85,Certificación de acta de nacimiento.
+3,12,15,86,Certificación de acta de matrimonio.
+3,12,15,87,Certificación de acta de divorcio.
+3,12,15,88,Certificación de acta de adopción.
+3,12,15,89,"Asentamiento o exposición, reconocimiento, designación y supervivencia (oficina o domicilio)."
+3,12,15,90,Acto de reconocimiento.
+3,12,15,91,Celebración de matrimonio (oficina o domicilio).
+3,12,15,92,Acto de divorcio administrativo.
+3,12,15,93,Registro extemporáneo de las personas.
+3,12,15,94,Reconocimiento del acto de adopción.
+3,12,15,95,Búsqueda de registros.
+3,12,15,96,Constancia de actos positivos y negativos.
+3,12,15,97,Inscripción de divorcio judicial.
+3,12,15,98,Inscripción de pensión alimenticia.
+3,12,15,99,Apostillamiento de actos.
+3,12,15,100,Certificación de supervivencia.
+3,12,15,101,Certificación de acta de inscripción de extranjería.
+3,12,15,102,Actos e inscripción en el registro civil.
+3,12,15,103,Inscripción de disolución de sociedades conyugales y viceversa.
+3,12,15,104,Registro extemporáneo de defunción.
+3,12,15,105,Actos de inscripción en el registro civil de extranjería.
+3,12,15,106,Copia fiel certificada del libro de actas.
+3,12,15,107,Constancia de extemporaneidad.
+3,12,15,108,Rectificación de actas de los distintos actos del registro civil por resolución judicial.
+4,13,16,109,Concesión del local en mercado.
+4,13,16,110,Permisos de ocupación de área de adyacentes.
+4,13,16,111,Autorización  de cambios  de giros.
+4,13,16,112,Autorización de traspasos de locales.
+4,13,16,113,Autorización de remodelación de local en mercado.
+4,13,16,114,Juego de formas valoradas.
+4,13,16,115,Búsqueda de archivos de mercados.
+4,13,16,116,Recuperación de locales y/o espacios de mercados (rezagos).
+4,13,16,117,Áreas adyacentes  a los mercados  (bimestral).
+4,13,16,118,Certificación de documentos.
+5,14,17,119,Venta de Lote 2 x 1.
+5,14,17,120,Cesión de derecho.
+5,14,17,121,Reposición de título.
+5,14,17,122,Expedición de título de terreno municipales.
+5,14,17,123,Permiso de inhumación.
+5,14,17,124,Permiso de exhumación.
+5,14,17,125,Permiso para reinhumación.
+5,14,17,126,Apertura y cierre de bóveda.
+5,14,17,127,Permiso de construcción de bóvedas por gavetas.
+5,14,17,128,Permiso para la demolición o remodelación de bóveda.
+5,14,17,129,Permiso para la construcción de capilla.
+5,14,17,130,Permiso para la construcción de guardaresto.
+5,14,17,131,Permiso para la construcción de monumento.
+5,14,17,132,Permiso para forrar de azulejo.
+5,14,17,133,Permiso para la remodelación de capilla.
+5,14,17,134,Venta de guardaresto.
+5,14,17,135,Otros.
+6,15,18,136,Constancia de notorio arraigo.
+6,15,18,137,Asesoría jurídica
+6,15,18,138,"Sillas, toldos y mamparas."
+6,15,18,139,Espacios publicos.
+6,15,18,140,Material de Construcción.
+6,15,18,141,Matrimonio Colectivos.
+6,15,18,142,Siembra de árboles frutales
+7,16,19,143,Constancia de no alteración al ambiente y su entorno ecológico (CNAMA).
+7,16,19,144,"Autorización de impacto ambiental, modalidad informe preventivo (IP)."
+7,16,19,145,"Autorización de impacto ambiental, modalidad; evaluación de impacto ambiental (MIA)."
+7,16,19,146,Permiso de emisión de ruido de fuente fija y móvil.
+7,16,19,147,Permiso de derribo y poda.
+7,16,19,148,Atención de denuncias ciudadanas.
+8,17,20,149,Apoyo con crías de tilapia a productores acuícolas.
+8,17,20,150,Liberación de crías a cuerpos lagunares.
+8,17,20,151,"Mecanización (chapero ganadero y agrícola, arado y paso de rastra)."
+8,17,20,152,"Mecanización Retroexcavadora (Hechura y desazolve de jagüeyes, terraplenes y bordos rústicos)"
+8,17,20,153,Asesoría de programas Ramo 33 y Ramo 15.
+9,18,21,154,Certificación de documentos catastrales.
+9,18,21,155,Constancia de datos del padrón catastral.
+9,18,21,156,Copia de documento de archivo.
+9,18,21,157,Manifestación de construcción para su registro en el padrón catastral.
+9,18,21,158,Cambio al padrón catastral por cesión de derechos de posesión.
+9,18,21,159,Levantamiento topográfico.
+9,18,21,160,Aviso de modificación catastral (recurso de inconformidad).
+9,18,21,161,Declaración de pago de impuestos sobre traslación de dominio de bienes inmuebles.
+9,18,21,162,Expedición y certificación del valor catastral.
+9,18,21,163,Revaluación de escritura pública
+9,18,21,164,Cédula catastral.
+9,18,21,165,Registro de escritura pública.
+9,18,21,166,Nueva inscripción de derecho de posesión.
+9,18,21,167,Búsqueda de registro catastral.
+9,18,21,168,Inspección de predio urbano y/o rústico.
+9,18,21,169,Avalúo catastral.
+9,19,22,170,Autorización para venta en vía pública.
+9,19,22,171,Anuencias de alcoholes.
+9,19,22,172,Elaboración de estudios de factibilidad.
+9,19,22,173,Multas federal y municipal no fiscales.
+9,19,22,174,Impuesto predial.
+9,19,22,175,Inscripciones de embargo de impuesto fiscal.
+9,19,22,176,Bloqueo de predios de impuesto predial.
+9,19,22,177,Cancelaciones de embargos de créditos fiscales.
+10,20,23,178,Divorcios necesarios.
+10,20,23,179,"Guarda y custodia,"
+10,20,23,180,Pensión alimenticia.
+10,20,23,181,Patria potestad.
+10,20,23,182,Reconocimiento de paternidad.
+10,20,23,183,Asesorías legales y Seguimiento.
+10,21,24,184,Atención psicologica de primera contacto de violencia.
+10,21,24,185,Acompañamiento emocional durante el seguimiento a mujeres que sufren violencia.
+10,22,25,186,Pláticas y/o talleres con perspectiva de género en centros escolares y población en general.
+10,22,25,187,"Pláticas y/o talleres sobre prevención de la violencia, derechos humanos y empoderamiento de las mujeres."
+11,23,26,188,Permisos para eventos en parques.
+11,23,26,189,Derribos de árboles previo dictamen de la Dirección de Protección y Desarrollo Sustentable
+11,23,26,190,Permisos adicionales en parques

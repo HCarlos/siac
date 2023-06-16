@@ -1,0 +1,13 @@
+@component('components.form.form-modal')
+    @slot('Method', $Method ?? 'GET')
+    @slot('Titulo', $Titulo ?? '')
+    @slot('Route', $Route ?? '#')
+    @slot('IsUpload', $IsUpload ?? false)
+    @slot('IsNew', $IsNew ?? false)
+    @slot('IsModal', $IsModal ?? false )
+    @slot('items_forms', $items_forms ?? '')
+    @slot('items', $items ?? null)
+    @slot('formData', 'formFullModal')
+    @slot('user',$user ?? null)
+    @slot('jefes',$jefes ?? null)
+@endcomponent

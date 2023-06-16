@@ -1,0 +1,50 @@
+<div class="form-row mb-1">
+    <label for = "fecha" class="col-md-2 col-form-label">Fecha </label>
+    <div class="col-md-4">
+{{--        {{ Form::date('fecha', \Carbon\Carbon::now(), ['id'=>'fecha','class'=>'form-control']) }}--}}
+        <input type="date" name="fecha" id="fecha" value="{{ \Carbon\Carbon::now()->format('d-m-Y') }}" class="form-control"  >
+        <span class="has-error has-fecha">
+            <strong class="text-danger"></strong>
+        </span>
+    </div>
+</div>
+<div class="form-row mb-1">
+    <label for = "respuesta" class="col-md-2 col-form-label">Respuesta </label>
+    <div class="col-md-10">
+        <textarea name="respuesta" id="respuesta" class="form-control">{{ old('respuesta') }}</textarea>
+        <span class="has-error has-respuesta">
+            <strong class="text-danger"></strong>
+        </span>
+    </div>
+</div>
+<div class="form-row mb-1">
+    <label for = "observaciones" class="col-md-2 col-form-label">Observaciones </label>
+    <div class="col-md-10">
+        <textarea name="observaciones" id="observaciones" class="form-control">{{ old('observaciones') }}</textarea>
+        <span class="has-error has-observaciones">
+            <strong class="text-danger"></strong>
+        </span>
+    </div>
+</div>
+
+@if(Auth::user()->isRole('Administrator|SysOp'))
+
+    <div class="form-group row mb-1">
+    <label for = "user__id" class="col-md-2 col-form-label">Ciudadano</label>
+    <div class="col-md-10">
+        <select id="user__id" name="user__id" class="form-control select2" data-toggle="select2" size="1">
+            @foreach($ciudadanos as $t)
+                <option value="{{$t->id}}" {{ $t->id == $user->id ? 'selected': '' }}  >{{$t->fullname}}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
+@else
+    <input type="hidden" id="user__id" name="user__id" value="{{ $user->id }}"/>
+@endif
+
+<input type="hidden" id="denuncia__id" name="denuncia__id" value="{{ $denuncia_id }}"/>
+<input type="hidden" id="id" name="id" value="0"/>
+
+
+

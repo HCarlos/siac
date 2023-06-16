@@ -1,0 +1,39 @@
+{
+    "authHost": "https://siac.villahermosa.gob.mx",
+    "authEndpoint": "/broadcasting/auth",
+    "clients": [
+        {
+            "appId": "0d8ca298fd5202ec",
+            "key": "b67e0d21fecef514a5822cc175e186aa"
+        }
+    ],
+    "database": "redis",
+    "databaseConfig": {
+        "redis": {},
+        "sqlite": {
+            "databasePath": "/database/laravel-echo-server.sqlite"
+        }
+    },
+    "devMode": false,
+    "host": null,
+    "port": "6001",
+    "protocol": "https",
+    "socketio": {},
+    "secureOptions": 67108864,
+    "sslCertPath": "/etc/letsencrypt/live/servimun.mx/cert.pem",
+    "sslKeyPath": "/etc/letsencrypt/live/servimun.mx/privkey.pem",
+    "sslCertChainPath": "/etc/letsencrypt/live/servimun.mx/chain.pem",
+    "sslPassphrase": "",
+    "subscribers": {
+        "http": true,
+        "https": true,
+        "redis": true
+    },
+    "apiOriginAllow": {
+        "allowCors": true,
+        "allowOrigin": "",
+        "allowMethods": "",
+        "allowHeaders": ""
+    }
+}
+
