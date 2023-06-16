@@ -62,7 +62,6 @@ class Denunciamobile extends Model{
         return (new GetDenunciasFilterCount())->applyTo($query, $filters);
     }
 
-
     public function Servicio(){
         return $this->hasOne(Serviciomobile::class,'id','serviciomobile_id');
     }

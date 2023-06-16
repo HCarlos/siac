@@ -9,6 +9,7 @@ use App\Models\Mobiles\Denunciamobile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
 
 class DenunciaMobileController extends Controller{
 
@@ -30,19 +31,23 @@ class DenunciaMobileController extends Controller{
     protected function index(Request $request){
         ini_set('max_execution_time', 300);
 
-//        if ( Auth::user()->can('consulta_500_items_general') ){
-//            $this->max_item_for_query = config("atemun.consulta_500_items_general");
-//        }
-
-        $search = $request->only(['search']);
-
         $filters['filterdata'] = $request->only(['search']);
-        //dd( $filter );
-        $items = Denunciamobile::query()
-            ->getDenunciasItemCustomFilter($filters)
-            ->orderByDesc('id')
-            ->paginate(1000);
+        $IsEnlace = Session::get('IsEnlace');
+        if($IsEnlace) {
+            $DependenciaIdArray = Session::get('DependenciaIdArray');
+            $items = Denunciamobile::query()
+                ->whereHas('Servicio', function ($q) use ($DependenciaIdArray){
+                    return $q->whereIn('dependencia_id',$DependenciaIdArray);
+                })
+                ->orderByDesc('id')
+                ->paginate(1000);
+        }else{
+            $items = Denunciamobile::query()
+                ->orderByDesc('id')
+                ->paginate(1000);
+        }
         $items->appends($filters)->fragment('table');
+        $search = $request->only(['search']);
 
         $request->session()->put('items', $items);
 
