@@ -196,4 +196,11 @@ return [
                        </style>",
     ],
 
+    'fcm' => [
+        'server_ios_key' => 'AAAAOxp8RQA:APA91bEQIojJa-3wWzgJRuLvm11c2qSJJG-oziCAYFWRyD7vkf7flyKBNZC0qEprPpIwpA-OuScGrjGQqBhp6zEDCkj0z6MhVLVEf9R9g8zSsKjowT6qghhm1fbPB9mcAxCmFiJQkcld',
+        'server_android_key' => 'AAAAiq0Ovmw:APA91bHxmEEWGp3neZdJpoda9i-sNJApmJIdYuLQjKxto-ltdZRyYmCqbGNPE3VvdVKJNJd-3fMdapWpqIt4XLkYANjrW9yN5EZqCPWf7aYJU956a6Tzxv3zR1l-ql9-QXkghLwkLPz2',
+        'server_android_alza' => 'AIzaSyD9jQdDKkXvAOgurJDSYtECzzCiaZSX1EM',
+    ],
+
+
 ];

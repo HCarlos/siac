@@ -13,6 +13,7 @@ use App\Models\Mobiles\Denunciamobile;
 use App\Models\Mobiles\Imagemobile;
 use App\Models\Mobiles\Respuestamobile;
 use App\Models\Mobiles\Serviciomobile;
+use App\Models\Users\UserMobile;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -29,6 +30,21 @@ class DenunciaAPIController extends Controller{
         if ( isset($den->id) ){
             $response["status"] = 1;
             $response["msg"] = "Solicitud de servicio enviada con éxito!";
+            if ( isset($data->deviceToken) && isset($data->device_name) ){
+                if ( ! UserMobile::query()
+                    ->where('user_id',$den->user_id)
+                    ->where('token',$data->deviceToken)
+                    ->where('mobile_type',$data->device_name)
+                    ->first() ) {
+
+                    UserMobile::create([
+                        'user_id' => $den->user_id,
+                        'token' => $data->deviceToken,
+                        'mobile_type' => $data->device_name
+                    ]);
+
+                }
+            }
             event(new APIDenunciaEvent($den->id, $den->user_id));
         }else{
             $response = $den;

@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '3a9aef6ba15eb312d7f8b960cadb1fbbb46a6053',
+        'reference' => 'f57a6089502681c6f3ea7962ce4c087dd9f89f52',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -478,7 +478,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '3a9aef6ba15eb312d7f8b960cadb1fbbb46a6053',
+            'reference' => 'f57a6089502681c6f3ea7962ce4c087dd9f89f52',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -1037,7 +1037,7 @@
         'roave/security-advisories' => array(
             'pretty_version' => 'dev-latest',
             'version' => 'dev-latest',
-            'reference' => 'e47f876d3b2df4a1354964c32820b4d7c10b8675',
+            'reference' => '4e267f401487bcc7edb65cd7b6af218018aa32b4',
             'type' => 'metapackage',
             'install_path' => NULL,
             'aliases' => array(
@@ -1198,6 +1198,17 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'sngrl/php-firebase-cloud-messaging' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'e1a344c20c6d7dc4f89dcc5a56b17129d007d2b2',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../sngrl/php-firebase-cloud-messaging',
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
+            'dev_requirement' => false,
+        ),
         'spatie/db-dumper' => array(
             'pretty_version' => '2.21.1',
             'version' => '2.21.1.0',
@@ -1235,9 +1246,9 @@
             'dev_requirement' => false,
         ),
         'spatie/ssh' => array(
-            'pretty_version' => '1.9.0',
-            'version' => '1.9.0.0',
-            'reference' => '7889f8f26263db0c4ea3ffabe68861038c221987',
+            'pretty_version' => '1.9.2',
+            'version' => '1.9.2.0',
+            'reference' => 'c28a187f961c1039e205f291417f74e3d4c83b71',
             'type' => 'library',
             'install_path' => __DIR__ . '/../spatie/ssh',
             'aliases' => array(),

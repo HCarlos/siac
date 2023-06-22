@@ -20,8 +20,6 @@
         "laravel/socialite": "^4.4.1",
         "laravel/tinker": "^2.8.1",
         "laravel/ui": "^2.5.0",
-        "spatie/ssh": "^1.0.0",
-        "spatie/laravel-html": "^2.30.0",
         "maatwebsite/excel": "^3.1.48",
         "opsway/doctrine-dbal-postgresql": "^0.8.1",
         "php-parallel-lint/php-console-color": "^0.3",
@@ -31,14 +29,18 @@
         "predis/predis": "^2.1.2",
         "rapidapi/rapidapi-connect": "^0.0.2",
         "setasign/fpdf": "^1.8.5",
+        "sngrl/php-firebase-cloud-messaging": "dev-master",
         "spatie/laravel-backup": "^6.16.5",
+        "spatie/laravel-html": "^2.30.0",
         "spatie/laravel-permission": "^3.18.0",
+        "spatie/ssh": "^1.0.0",
         "tecnickcom/tc-lib-pdf-font": "^1.11.6",
-        "yajra/laravel-datatables-oracle": "^9.21.2"
+        "yajra/laravel-datatables-oracle": "^9.21.2",
+        "ext-curl": "*",
+        "ext-json": "*"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-latest"
-        ,
+        "roave/security-advisories": "dev-latest",
         "nunomaduro/collision": "^4.3.0",
         "phpunit/phpunit": "^9.6.8"
     },

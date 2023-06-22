@@ -14,10 +14,10 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
+        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
         '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
-        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
         'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
@@ -49,6 +49,10 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'v' => 
         array (
             'voku\\' => 5,
+        ),
+        's' => 
+        array (
+            'sngrl\\PhpFirebaseCloudMessaging\\' => 32,
         ),
         'Z' => 
         array (
@@ -231,6 +235,10 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'voku\\' => 
         array (
             0 => __DIR__ . '/..' . '/voku/portable-ascii/src/voku',
+        ),
+        'sngrl\\PhpFirebaseCloudMessaging\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sngrl/php-firebase-cloud-messaging/src',
         ),
         'ZipStream\\' => 
         array (
@@ -730,6 +738,9 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'App\\Classes\\Items' => __DIR__ . '/../..' . '/app/Classes/Items.php',
         'App\\Classes\\MessageAlertClass' => __DIR__ . '/../..' . '/app/Classes/MessageAlertClass.php',
         'App\\Classes\\MyTCPDF' => __DIR__ . '/../..' . '/app/Classes/MyTCPDF.php',
+        'App\\Classes\\NotificationsMobile\\FirebaseCloudMessaging' => __DIR__ . '/../..' . '/app/Classes/NotificationsMobile/FirebaseCloudMessaging.php',
+        'App\\Classes\\NotificationsMobile\\PushNotification' => __DIR__ . '/../..' . '/app/Classes/NotificationsMobile/PushNotification.php',
+        'App\\Classes\\NotificationsMobile\\SendNotificationFCM' => __DIR__ . '/../..' . '/app/Classes/NotificationsMobile/SendNotificationFCM.php',
         'App\\Classes\\RemoveItemSafe' => __DIR__ . '/../..' . '/app/Classes/RemoveItemSafe.php',
         'App\\Classes\\ValidatorPassword' => __DIR__ . '/../..' . '/app/Classes/ValidatorPassword.php',
         'App\\Classes\\sector' => __DIR__ . '/../..' . '/app/Classes/sector.php',
@@ -915,6 +926,9 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'App\\Models\\Users\\Categoria' => __DIR__ . '/../..' . '/app/Models/Users/Categoria.php',
         'App\\Models\\Users\\UserAdress' => __DIR__ . '/../..' . '/app/Models/Users/UserAdress.php',
         'App\\Models\\Users\\UserDataExtend' => __DIR__ . '/../..' . '/app/Models/Users/UserDataExtend.php',
+        'App\\Models\\Users\\UserMobile' => __DIR__ . '/../..' . '/app/Models/Users/UserMobile.php',
+        'App\\Models\\Users\\UserMobileMessage' => __DIR__ . '/../..' . '/app/Models/Users/UserMobileMessage.php',
+        'App\\Models\\Users\\UserMobileMessageRequest' => __DIR__ . '/../..' . '/app/Models/Users/UserMobileMessageRequest.php',
         'App\\Notifications\\MyResetPassword' => __DIR__ . '/../..' . '/app/Notifications/MyResetPassword.php',
         'App\\Notifications\\SendEmailAPIVerificationNotification' => __DIR__ . '/../..' . '/app/Notifications/SendEmailAPIVerificationNotification.php',
         'App\\Observers\\Catalogos\\Estatu\\PostUpdating' => __DIR__ . '/../..' . '/app/Observers/Catalogos/Estatu/PostUpdating.php',
@@ -8256,6 +8270,13 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'ZipStream\\Option\\Version' => __DIR__ . '/..' . '/maennchen/zipstream-php/src/Option/Version.php',
         'ZipStream\\Stream' => __DIR__ . '/..' . '/maennchen/zipstream-php/src/Stream.php',
         'ZipStream\\ZipStream' => __DIR__ . '/..' . '/maennchen/zipstream-php/src/ZipStream.php',
+        'sngrl\\PhpFirebaseCloudMessaging\\Client' => __DIR__ . '/..' . '/sngrl/php-firebase-cloud-messaging/src/Client.php',
+        'sngrl\\PhpFirebaseCloudMessaging\\ClientInterface' => __DIR__ . '/..' . '/sngrl/php-firebase-cloud-messaging/src/ClientInterface.php',
+        'sngrl\\PhpFirebaseCloudMessaging\\Message' => __DIR__ . '/..' . '/sngrl/php-firebase-cloud-messaging/src/Message.php',
+        'sngrl\\PhpFirebaseCloudMessaging\\Notification' => __DIR__ . '/..' . '/sngrl/php-firebase-cloud-messaging/src/Notification.php',
+        'sngrl\\PhpFirebaseCloudMessaging\\Recipient\\Device' => __DIR__ . '/..' . '/sngrl/php-firebase-cloud-messaging/src/Recipient/Device.php',
+        'sngrl\\PhpFirebaseCloudMessaging\\Recipient\\Recipient' => __DIR__ . '/..' . '/sngrl/php-firebase-cloud-messaging/src/Recipient/Recipient.php',
+        'sngrl\\PhpFirebaseCloudMessaging\\Recipient\\Topic' => __DIR__ . '/..' . '/sngrl/php-firebase-cloud-messaging/src/Recipient/Topic.php',
         'voku\\helper\\ASCII' => __DIR__ . '/..' . '/voku/portable-ascii/src/voku/helper/ASCII.php',
     );
 

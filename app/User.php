@@ -12,6 +12,9 @@ use App\Models\Familias\Familia;
 use App\Models\Familias\Parentesco;
 use App\Models\Users\UserAdress;
 use App\Models\Users\UserDataExtend;
+use App\Models\Users\UserMobile;
+use App\Models\Users\UserMobileMessage;
+use App\Models\Users\UserMobileMessageRequest;
 use App\Notifications\MyResetPassword;
 use App\Notifications\SendEmailAPIVerificationNotification;
 use App\Traits\User\UserAttributes;
@@ -155,6 +158,18 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function scopeRole(){
         return $this->roles()->first();
+    }
+
+    public function MobileDevices(){
+        return $this->hasMany(UserMobile::class,'user_id','id');
+    }
+
+    public function MobileDeviceMessages(){
+        return $this->hasMany(UserMobileMessage::class,'user_id','id');
+    }
+
+    public function MobileDeviceMessageRequests(){
+        return $this->hasMany(UserMobileMessageRequest::class,'user_id','id');
     }
 
     public function sendPasswordResetNotification($token){

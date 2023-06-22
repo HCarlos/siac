@@ -20,6 +20,8 @@ class Ssh
 
     protected Closure $onOutput;
 
+    private int $timeout = 0;
+
     public function __construct(string $user, string $host, int $port = null)
     {
         $this->user = $user;
@@ -93,10 +95,10 @@ class Ssh
 
         return $this;
     }
-    
+
     public function setTimeout(int $timeout): self
     {
-        $this->extraOptions['timeout'] = $timeout;
+        $this->timeout = $timeout;
 
         return $this;
     }
@@ -239,7 +241,7 @@ class Ssh
         return implode(' ', array_values($extraOptions));
     }
 
-    private function getExtraOptions(): array
+    protected function getExtraOptions(): array
     {
         return array_values($this->extraOptions);
     }
@@ -253,7 +255,7 @@ class Ssh
     {
         $process = Process::fromShellCommandline($command);
 
-        $process->setTimeout($this->extraOptions['timeout'] ?? 0);
+        $process->setTimeout($this->timeout);
 
         ($this->processConfigurationClosure)($process);
 
@@ -273,7 +275,4 @@ class Ssh
     {
         return "{$this->user}@{$this->host}";
     }
-
-    
-
 }

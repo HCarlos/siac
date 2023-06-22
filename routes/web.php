@@ -11,9 +11,11 @@
 |
 */
 
+use App\Classes\NotificationsMobile\SendNotificationFCM;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+
 
 Route::get('/', function () {return view('welcome');});
 Route::get('/privacidad', function () {return view('privacidad');});
@@ -499,7 +501,9 @@ Route::get('/imprimir_denuncia/{uuid}', 'External\Denuncia\HojaDenunciaControlle
 Route::get('/imprimir_denuncia_respuesta/{uuid}', 'External\Denuncia\HojaDenunciaController@imprimirDenunciaConRespuestas')->name('imprimir_denuncia_respuesta/');
 Route::get('/imprimir_denuncia_archivo/{uuid}', 'External\Denuncia\HojaDenunciaArchivoController@imprimirDenuncia')->name('imprimir_denuncia_archivo/');
 
-Route::group(['middleware' => 'cors'], function(){
+//Route::group(['middleware' => 'cors'], function(){
+
+
     Route::get('fire', function () {
         // this fires the event
         event(new App\Events\APIDenunciaEvent(1,1));
@@ -511,4 +515,15 @@ Route::group(['middleware' => 'cors'], function(){
         return "event test";
     });
 
-});
+
+    Route::get('test_send_ios/',function (){
+        $fcm = new SendNotificationFCM();
+        $response = $fcm->sendNotification(1,1,'IPHONE','fgfGIjX4wkYvkY4m7HFHrb:APA91bE9RMFZLUSmGUTt4Glg50UDG5z3ywYqMzTC8KElviKObvIekasQihVm4ZpZvzfSSfeBRGwKE2sXvyu2le9xHJ4UQbJM0jjP1-1PAJNLXcYAsc6snyhaOxpsc_LvMDeuN5aPDnrZ','hola','carlos');
+    });
+
+    Route::get('test_send_android/',function (){
+        $fcm = new SendNotificationFCM();
+            $response = $fcm->sendNotification(1,1,'ANDROID','ezffbR76Sc6wlFKNm02ajT:APA91bH-vk23O3lmEFQCEqASli93-D4IVWkRccwRIUsmJvtxBrv_QGVNbHZ40aW-DzYOEu5zy6LpwKXx9NtPL02AVRsVJMXIAw0wdIHu3orkXaifx-H8YOZh313ObhbYjtnaS12TPEmZ','hola android','carlos android');
+    });
+
+//});

@@ -9,6 +9,7 @@ use App\Http\Requests\API\UserAPIChangeEmailRequest;
 use App\Http\Requests\API\UserAPIChangePasswordRequest;
 use App\Http\Requests\API\UserAPIImageRequest;
 use App\Http\Requests\API\UserAPIRegistryRequest;
+use App\Models\Users\UserMobile;
 use App\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -53,6 +54,25 @@ class UserAPIController extends Controller{
                 $response["token_type"] = 'Bearer';
                 $response["msg"] = $token->plainTextToken;
                 $response["user"] = $user;
+
+                if ( isset($data->deviceToken) && isset($data->device_name) ){
+                    if ( ! UserMobile::query()
+                        ->where('user_id',$user->id)
+                        ->where('token',$data->deviceToken)
+                        ->where('mobile_type',$data->device_name)
+                        ->first() ) {
+
+                        UserMobile::create([
+                            'user_id' => $user->id,
+                            'token' => $data->deviceToken,
+                            'mobile_type' => $data->device_name
+                        ]);
+
+                    }
+                }
+
+
+
             }else{
                 $response["msg"] = "Contraseña incorrecta";
             }

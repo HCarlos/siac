@@ -3,6 +3,7 @@
 namespace App\Http\Requests\API;
 
 use App\Http\Controllers\Funciones\FuncionesController;
+use App\Models\Users\UserMobile;
 use App\Role;
 use App\Rules\IsCURPRule;
 use App\User;
@@ -56,6 +57,22 @@ class UserAPIRegistryRequest extends FormRequest
             'nombre'     => strtoupper(trim( $this->nombre )),
             'genero'     => $this->genero ?? 0,
         ]);
+
+        if ( isset($this->deviceToken) && isset($this->device_name) ){
+            if ( ! UserMobile::query()
+                ->where('user_id',$user->id)
+                ->where('token',$this->deviceToken)
+                ->where('mobile_type',$this->device_name)
+                ->first() ) {
+
+                UserMobile::create([
+                    'user_id' => $user->id,
+                    'token' => $this->deviceToken,
+                    'mobile_type' => $this->device_name
+                ]);
+
+            }
+        }
 
         $role_invitado = Role::findByName('Invitado');
         $user->roles()->attach($role_invitado);

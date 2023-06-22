@@ -19,8 +19,4 @@ class UserDataExtend extends Model
     ];
     protected $hidden = ['deleted_at','created_at','updated_at'];
 
-//    public function users(){
-//        return $this->hasMany(Users::class);
-//    }
-
 }
