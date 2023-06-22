@@ -19,11 +19,19 @@ class UserMobile extends Model{
 
     protected $fillable = [
         'id','user_id',
-        'token','mobile_type',
+        'token','mobile_type','enabled'
     ];
+    protected $casts = ['enabled'=>'boolean',];
+    /**
+     * @var mixed
+     */
 
     public function users(){
         return $this->hasMany(User::class,'id','user_id');
+    }
+
+    public function IsEnabled() {
+        return $this->enabled;
     }
 
 

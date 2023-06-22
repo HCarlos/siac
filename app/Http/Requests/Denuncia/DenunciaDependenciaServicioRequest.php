@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Denuncia;
 
 use App\Classes\MessageAlertClass;
+use App\Classes\NotificationsMobile\SendNotificationFCM;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use Illuminate\Database\QueryException;
@@ -47,10 +48,11 @@ class DenunciaDependenciaServicioRequest extends FormRequest
                     'estatu_id'        => $this->estatus_id,
                     'fecha_movimiento' => now(),
                     'observaciones'    => $this->observaciones,
-                    'favorable'        => !(intval($this->favorable) == 0),
+                    'favorable'        => !( (int) $this->favorable == 0 ),
                 ];
                 $item = Denuncia_Dependencia_Servicio::findOrFail($this->id);
                 $item->update($Item);
+                //$item = Denuncia::find($this->denuncia_id);
             }
         }catch (QueryException $e){
             $Msg = new MessageAlertClass();
@@ -62,6 +64,11 @@ class DenunciaDependenciaServicioRequest extends FormRequest
 
     public function attaches($Item){
         //dd($Item);
+        $item =  (object) [
+            'denuncia_id' => $this->denuncia_id,
+            'respuesta'    => $this->observaciones,
+        ];
+
         $Item->dependencias()->attach(
             $this->dependencia_id,
             [
@@ -72,9 +79,16 @@ class DenunciaDependenciaServicioRequest extends FormRequest
                 'favorable'        => !(intval($this->favorable) == 0),
             ]
         );
-        $It = Denuncia_Dependencia_Servicio::orderBy('id', 'DESC')->first()->id;
-        $this->id = $It;
-        return $this->id;
+        $cfm = new SendNotificationFCM();
+        $cfm->sendNotificationMobile($item,3);
+
+//        $this->id = Denuncia_Dependencia_Servicio::orderBy('id', 'DESC')->first()->id;
+
+//        $this->id = $It;
+
+//        return $this->id;
+        return Denuncia_Dependencia_Servicio::orderBy('id', 'DESC')->first()->id;
+
     }
 
     protected function getRedirectUrl()

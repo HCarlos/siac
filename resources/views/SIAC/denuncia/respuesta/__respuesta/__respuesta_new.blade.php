@@ -8,7 +8,7 @@
     </div>
 </div>
 <div class="form-row mb-1">
-    <label for = "respuesta" class="col-md-2 col-form-label">Respuesta </label>
+    <label for = "respuesta" class="col-md-2 col-form-label has-respuesta">Respuesta </label>
     <div class="col-md-10">
         <textarea name="respuesta" id="respuesta" class="form-control">{{ old('respuesta') }}</textarea>
         <span class="has-error has-respuesta">

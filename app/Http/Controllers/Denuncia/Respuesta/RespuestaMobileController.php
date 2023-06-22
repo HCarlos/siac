@@ -110,6 +110,7 @@ class RespuestaMobileController extends Controller{
 
     protected function saveRespuestaMobileDen(RespuestaMobileRequest $request){
         $item = $request->manage();
+
         if (isset($item)){
             return Response::json(['mensaje' => 'Información guardada con éxito!', 'data' => 'OK', 'status' => '200'], 200);
         }else{

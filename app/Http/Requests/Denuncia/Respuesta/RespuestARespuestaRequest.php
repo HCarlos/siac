@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Denuncia\Respuesta;
 
 use App\Classes\MessageAlertClass;
+use App\Classes\NotificationsMobile\SendNotificationFCM;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Respuesta;
 use Carbon\Carbon;
@@ -59,6 +60,8 @@ class RespuestARespuestaRequest extends FormRequest
                 $item->update($Item);
             }
             $this->attaches($item);
+            $cfm = new SendNotificationFCM();
+            $cfm->sendNotificationMobile($item, 2);
         }catch (QueryException $e){
             $Msg = new MessageAlertClass();
             return $Msg->Message($e);

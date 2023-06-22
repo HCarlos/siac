@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Denuncia\Respuesta;
 
 use App\Classes\MessageAlertClass;
+use App\Classes\NotificationsMobile\SendNotificationFCM;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Respuesta;
 use Carbon\Carbon;
@@ -16,20 +17,41 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class RespuestaRequest extends FormRequest
 {
 
-
-
     protected $redirectRoute = '/showModalRespuestaEdit';
 
     public function authorize()
     {
         return true;
     }
+    public function validationData(){
+        $attributes = parent::all();
+        $attributes['respuesta'] = strtoupper(trim($attributes['respuesta']));
+        $this->replace($attributes);
+        return parent::all();
+    }
+
 
     public function rules()
     {
         return [
             'fecha'         => ['required','date'],
             'respuesta'     => ['required','string'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'respuesta.required' => 'La RESPUESTA es obligatoria.',
+            'fecha.required' => 'La FECHA es obligatoria.',
+            'fecha.date' => 'La FECHA se requiere en formato dd/mm/aaaa.',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'respuesta' => 'Respuesta',
         ];
     }
 
@@ -48,7 +70,7 @@ class RespuestaRequest extends FormRequest
                 'denuncia__id'  => $this->denuncia__id,
             ];
 
-            if ((int)$this->id == 0) {
+            if ( (int) $this->id === 0) {
                 $item = Respuesta::create($Item);
             } else {
                 $item = Respuesta::find($this->id);
@@ -56,9 +78,11 @@ class RespuestaRequest extends FormRequest
                 $item->update($Item);
             }
             $this->attaches($item);
+            $cfm = new SendNotificationFCM();
+            $cfm->sendNotificationMobile($item,1);
         }catch (QueryException $e){
             $Msg = new MessageAlertClass();
-            return $Msg->Message($e);
+            throw new HttpResponseException(response()->json( $Msg->Message($e), 422));
         }
         return $item;
 
@@ -80,15 +104,6 @@ class RespuestaRequest extends FormRequest
         return $Item;
     }
 
-    public function messages()
-    {
-        return [
-            'respuesta.required' => 'La RESPUESTA es obligatoria.',
-            'fecha.required' => 'La FECHA es obligatoria.',
-            'fecha.date' => 'La FECHA se requiere en formato dd/mm/aaaa.',
-        ];
-
-    }
     protected function getRedirectUrl()
     {
         $url = $this->redirector->getUrlGenerator();
@@ -98,6 +113,9 @@ class RespuestaRequest extends FormRequest
             return $url->route('/showModalRespuestaNew',['denuncia_id'=>$this->denuncia__id]);
         }
     }
+
+
+
 
     protected function failedValidation(Validator $validator)
     {
@@ -109,7 +127,6 @@ class RespuestaRequest extends FormRequest
     {
         return $validator->errors()->getMessages();
     }
-
     public function response(array $errors)
     {
         if ($this->ajax() || $this->wantsJson()) {
@@ -121,6 +138,7 @@ class RespuestaRequest extends FormRequest
             ->withErrors($errors, $this->errorBag);
 
     }
+
 
 
 

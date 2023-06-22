@@ -19,7 +19,12 @@
                     location.reload();
                 }
             }).fail(function(response) {
-                sayErrors(response.responseJSON, $form);
+                var err = JSON.stringify(response.responseJSON);
+                if ( response.responseJSON.errors === undefined ) {
+                    fillArray(response.responseJSON, $form)
+                }else{
+                    sayErrors(response.responseJSON.errors, $form);
+                }
             });
         });
     }
@@ -34,11 +39,14 @@
             $(this).removeClass('has-error form-error');
         });
         $('.text-danger').empty();
-        $.each( errors.errors, function( key, val ) {
+        fillArray(errors, $form)
+    }
+
+    function fillArray(errors, $form){
+        $.each( errors, function( key, val ) {
             $form.find('#' + key ).addClass('has-error form-error');
             $form.find('.has-' + key ).find('.text-danger').text(val);
             $form.find('.has-' + key ).addClass('text-danger');
-
         });
     }
 

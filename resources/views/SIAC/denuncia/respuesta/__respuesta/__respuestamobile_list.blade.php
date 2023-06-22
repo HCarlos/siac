@@ -28,13 +28,24 @@
         </div>
     </div>
 
-    <input type="text" name="respuesta" class="form-control mt-3 " placeholder="Escribe un comentario...">
+{{--    <input type="text" name="respuesta" class="form-control mt-3 " placeholder="Escribe un comentario...">--}}
+
+    <div class="form-group col-lg-12 mt-3">
+        <label for = "respuesta" class="col-md-3 col-form-label has-respuesta">Respuesta</label>
+        <div class="col-md-12">
+            <input type="text" name="respuesta" id="respuesta" value="{{ old('respuesta') }}" class="form-control" placeholder="Escribe un comentario..."/>
+            <span class="has-respuesta">
+                <strong class="text-danger"></strong>
+            </span>
+        </div>
+    </div>
+
+
+
     <input type="hidden" name="user_id" id="user_id" value="{{ $item->user_id }}">
     <input type="hidden" name="denunciamobile_id" id="denunciamobile_id" value="{{ $item->id }}">
 
 
 </div>
 
-@section('scripts')
-<script src="{{asset('js/component.chat.js')}}"></script>
-@endsection
+{{--@include('shared.code.__ajax_form_full_modal_with_errors')--}}
