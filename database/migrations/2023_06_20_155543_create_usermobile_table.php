@@ -20,7 +20,6 @@ class CreateUsermobileTable extends Migration
             $table->string('mobile_type')->default('');
             $table->timestamps();
             $table->softDeletes();
-            $table->unique('user_id','token','mobile_type');
 
             $table->foreign('user_id')
                 ->references('id')

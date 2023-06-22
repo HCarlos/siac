@@ -178,6 +178,9 @@ return [
             'denunciamobile_respuestamobile' => 'denunciamobile_respuestamobile',
             'parent_respuestamobile'         => 'parent_respuestamobile',
             'respuestamobile_user'           => 'respuestamobile_user',
+            'usermobile'                     => 'usermobile',
+            'usermobile_message'             => 'usermobile_message',
+            'usermobile_messagerequest'      => 'usermobile_messagerequest',
 
         ]
 

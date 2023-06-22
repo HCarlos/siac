@@ -71,8 +71,6 @@ class UserAPIController extends Controller{
                     }
                 }
 
-
-
             }else{
                 $response["msg"] = "Contraseña incorrecta";
             }
