@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\DenunciaAPIController;
+use App\Http\Controllers\API\NoticiasAPIController;
 use App\Http\Controllers\API\UserAPIController;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -59,6 +60,11 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/denuncia/add/respuesta', [DenunciaAPIController::class, 'addRespuestaDenunciaMobile']);
         Route::post('/denuncia/list/imagenes', [DenunciaAPIController::class, 'getImagenesFromDenunciaMobile']);
         Route::post('/denuncia/list/respuestas', [DenunciaAPIController::class, 'getRespuestasFromDenunciaMobile']);
+
+        Route::post('/noticias/list', [NoticiasAPIController::class, 'getNoticiasFromUser']);
+
+
+
 
 
         Route::get('fire', function () {

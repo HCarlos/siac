@@ -38,7 +38,7 @@ class SendNotificationFCM{
         ;
         $response = $client->send($message);
         $r = (object)json_decode($response->getBody()->getContents());
-        if ($r->failure === 1) {
+        if ($r->failure === 0) {
             if ($response->getStatusCode() === 200) {
 
 //                if (!UserMobileMessage::query()
@@ -70,6 +70,7 @@ class SendNotificationFCM{
 //                        ->where('user_id', $user_id)
 //                        ->first()) {
 
+                        $resp = $r->results[0]->message_id ?? '';
                         $ummr = UserMobileMessageRequest::create([
                             'usermobilemessage_id' => $umm->id,
                             'usermobile_id' => $usermobile_id,
@@ -78,7 +79,7 @@ class SendNotificationFCM{
                             'success' => $r->success,
                             'failure' => $r->failure,
                             'canonical_ids' => $r->canonical_ids,
-                            'message_id' => $r->results[0]->message_id ?? '',
+                            'message_id' => $resp,
                         ]);
 //                    }
                 }

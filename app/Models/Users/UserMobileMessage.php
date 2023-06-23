@@ -19,7 +19,7 @@ class UserMobileMessage extends Model{
     protected $table = 'usermobile_message';
 
     protected $fillable = [
-        'id','user_id','usermobile_id','campania','title', 'message','fecha','tags',
+        'id','user_id','usermobile_id','campania','title', 'message','fecha','tags','is_read',
     ];
     protected $hidden = ['deleted_at','created_at','updated_at'];
     protected $casts = ['is_read'=>'boolean',];
