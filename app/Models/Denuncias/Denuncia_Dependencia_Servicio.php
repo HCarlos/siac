@@ -6,6 +6,7 @@ use App\Filters\Denuncia\DenunciaFilter;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Estatu;
 use App\Models\Catalogos\Servicio;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -18,7 +19,8 @@ class Denuncia_Dependencia_Servicio extends Model{
 
     protected $fillable = [
         'id',
-        'denuncia_id','dependencia_id','servicio_id','estatu_id','fecha_movimiento','observaciones','favorable','fue_leida',
+        'denuncia_id','dependencia_id','servicio_id','estatu_id','fecha_movimiento',
+        'observaciones','favorable','fue_leida','creadopor_id',
     ];
     protected $hidden = ['deleted_at','created_at','updated_at'];
     protected $dates = ['fecha_movimiento'];
@@ -44,5 +46,8 @@ class Denuncia_Dependencia_Servicio extends Model{
         return $this->hasOne(Servicio::class,'id','servicio_id');
     }
 
+    public function creadopor(){
+        return $this->hasOne(User::class,'id','creadopor_id');
+    }
 
 }

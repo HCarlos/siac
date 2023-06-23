@@ -39,17 +39,17 @@ class Estatu extends Model
 
     public function denuncias(){
         return $this->belongsToMany(Denuncia::class,'denuncia_dependencia_servicio_estatus','estatu_id','denuncia_id')
-        ->withPivot('fecha_movimiento','observaciones','favorable','fue_leida');
+        ->withPivot('fecha_movimiento','observaciones','favorable','fue_leida','creadopor_id');
     }
 
     public function denuncia_dependencias(){
         return $this->belongsToMany(Dependencia::class,'denuncia_dependencia_servicio_estatus','estatu_id','dependencia_id')
-        ->withPivot('fecha_movimiento','observaciones','favorable','fue_leida');
+        ->withPivot('fecha_movimiento','observaciones','favorable','fue_leida','creadopor_id');
     }
 
     public function servicios(){
         return $this->belongsToMany(Servicio::class,'denuncia_dependencia_servicio_estatus','estatu_id','servicio_id')
-        ->withPivot('fecha_movimiento','observaciones','favorable','fue_leida');
+        ->withPivot('fecha_movimiento','observaciones','favorable','fue_leida','creadopor_id');
     }
 
 
