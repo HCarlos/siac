@@ -8,6 +8,7 @@ use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class DenunciaDependenciaServicioRequest extends FormRequest
 {
@@ -50,6 +51,7 @@ class DenunciaDependenciaServicioRequest extends FormRequest
                     'observaciones'    => $this->observaciones,
                     'favorable'        => !( (int) $this->favorable == 0 ),
                     'fue_leida'        => false,
+                    'creadopor_id'     => Auth::user()->id,
                 ];
                 $item = Denuncia_Dependencia_Servicio::findOrFail($this->id);
                 $item->update($Item);
@@ -78,6 +80,8 @@ class DenunciaDependenciaServicioRequest extends FormRequest
                 'fecha_movimiento' => now(),
                 'observaciones'    => $this->observaciones,
                 'favorable'        => !( (int)$this->favorable == 0 ),
+                'fue_leida'        => false,
+                'creadopor_id'     => Auth::user()->id,
             ]
         );
         $cfm = new SendNotificationFCM();
