@@ -56,6 +56,7 @@ return array(
     'App\\Filters\\User\\CategoriaFilter' => $baseDir . '/app/Filters/User/CategoriaFilter.php',
     'App\\Filters\\User\\UserFilter' => $baseDir . '/app/Filters/User/UserFilter.php',
     'App\\Http\\Controllers\\API\\DenunciaAPIController' => $baseDir . '/app/Http/Controllers/API/DenunciaAPIController.php',
+    'App\\Http\\Controllers\\API\\NoticiasAPIController' => $baseDir . '/app/Http/Controllers/API/NoticiasAPIController.php',
     'App\\Http\\Controllers\\API\\UserAPIController' => $baseDir . '/app/Http/Controllers/API/UserAPIController.php',
     'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
     'App\\Http\\Controllers\\Auth\\LoginController' => $baseDir . '/app/Http/Controllers/Auth/LoginController.php',

@@ -101,22 +101,22 @@ class Denuncia extends Model
 
     public function dependencias(){
         return $this->belongsToMany(Dependencia::class,'denuncia_dependencia_servicio_estatus','denuncia_id','dependencia_id')
-            ->withPivot('fecha_movimiento','observaciones','favorable');
+            ->withPivot('fecha_movimiento','observaciones','favorable','fue_leida');
     }
 
     public function denuncia_dependencias(){
         return $this->belongsToMany(Dependencia::class,'denuncia_dependencia_servicio_estatus','denuncia_id','dependencia_id')
-            ->withPivot('fecha_movimiento','observaciones','favorable');
+            ->withPivot('fecha_movimiento','observaciones','favorable','fue_leida');
     }
 
     public function denuncia_servicios(){
         return $this->belongsToMany(Servicio::class,'denuncia_dependencia_servicio_estatus','denuncia_id','servicio_id')
-        ->withPivot('fecha_movimiento','observaciones','favorable');
+        ->withPivot('fecha_movimiento','observaciones','favorable','fue_leida');
     }
 
     public function denuncia_estatus(){
         return $this->belongsToMany(Estatu::class,'denuncia_dependencia_servicio_estatus','denuncia_id','estatu_id')
-            ->withPivot('fecha_movimiento','observaciones','favorable');
+            ->withPivot('fecha_movimiento','observaciones','favorable','fue_leida');
     }
 
     public function ubicacion(){

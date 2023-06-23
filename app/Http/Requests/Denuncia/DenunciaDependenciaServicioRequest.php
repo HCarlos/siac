@@ -49,6 +49,7 @@ class DenunciaDependenciaServicioRequest extends FormRequest
                     'fecha_movimiento' => now(),
                     'observaciones'    => $this->observaciones,
                     'favorable'        => !( (int) $this->favorable == 0 ),
+                    'fue_leida'        => false,
                 ];
                 $item = Denuncia_Dependencia_Servicio::findOrFail($this->id);
                 $item->update($Item);
@@ -76,7 +77,7 @@ class DenunciaDependenciaServicioRequest extends FormRequest
                 'estatu_id'        => $this->estatus_id,
                 'fecha_movimiento' => now(),
                 'observaciones'    => $this->observaciones,
-                'favorable'        => !(intval($this->favorable) == 0),
+                'favorable'        => !( (int)$this->favorable == 0 ),
             ]
         );
         $cfm = new SendNotificationFCM();

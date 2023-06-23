@@ -49,17 +49,17 @@ class Dependencia extends Model
 
     public function denuncias(){
         return $this->belongsToMany(Denuncia::class,'denuncia_dependencia_servicio_estatus','dependencia_id','denuncia_id')
-        ->withPivot('fecha_movimiento','observaciones','favorable');
+        ->withPivot('fecha_movimiento','observaciones','favorable','fue_leida');
     }
 
     public function servicios(){
         return $this->belongsToMany(Servicio::class,'denuncia_dependencia_servicio_estatus','dependencia_id','servicio_id')
-        ->withPivot('fecha_movimiento','observaciones','favorable');
+        ->withPivot('fecha_movimiento','observaciones','favorable','fue_leida');
     }
 
     public function dependencia_estatus(){
         return $this->belongsToMany(Estatu::class,'denuncia_dependencia_servicio_estatus','dependencia_id','estatu_id')
-        ->withPivot('fecha_movimiento','observaciones','favorable');
+        ->withPivot('fecha_movimiento','observaciones','favorable','fue_leida');
     }
 
     public function isVisibleInternet(){

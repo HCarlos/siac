@@ -74,17 +74,17 @@ class Servicio extends Model
 
     public function dependencias(){
         return $this->belongsToMany(Dependencia::class,'denuncia_dependencia_servicio_estatus','servicio_id','dependencia_id')
-        ->withPivot('fecha_movimiento','observaciones','favorable');
+        ->withPivot('fecha_movimiento','observaciones','favorable','fue_leida');
     }
 
     public function denuncias(){
         return $this->belongsToMany(Denuncia::class,'denuncia_dependencia_servicio_estatus','servicio_id','denuncia_id')
-        ->withPivot('fecha_movimiento','observaciones','favorable');
+        ->withPivot('fecha_movimiento','observaciones','favorable','fue_leida');
     }
 
     public function estatus(){
         return $this->belongsToMany(Estatu::class,'denuncia_dependencia_servicio_estatus','servicio_id','estatu_id')
-        ->withPivot('fecha_movimiento','observaciones','favorable');
+        ->withPivot('fecha_movimiento','observaciones','favorable','fue_leida');
     }
 
     static function getQueryServiciosFromDependencias($id=0){

@@ -18,11 +18,11 @@ class Denuncia_Dependencia_Servicio extends Model{
 
     protected $fillable = [
         'id',
-        'denuncia_id','dependencia_id','servicio_id','estatu_id','fecha_movimiento','observaciones','favorable',
+        'denuncia_id','dependencia_id','servicio_id','estatu_id','fecha_movimiento','observaciones','favorable','fue_leida',
     ];
     protected $hidden = ['deleted_at','created_at','updated_at'];
     protected $dates = ['fecha_movimiento'];
-    protected $casts = ['favorable' => 'boolean'];
+    protected $casts = ['favorable' => 'boolean', 'fue_leida' => 'boolean'];
 
 //    public function scopeFilterBy($query, $filters){
 //        return (new DenunciaFilter())->applyTo($query, $filters);

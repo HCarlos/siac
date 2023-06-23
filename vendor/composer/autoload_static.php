@@ -779,6 +779,7 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'App\\Filters\\User\\CategoriaFilter' => __DIR__ . '/../..' . '/app/Filters/User/CategoriaFilter.php',
         'App\\Filters\\User\\UserFilter' => __DIR__ . '/../..' . '/app/Filters/User/UserFilter.php',
         'App\\Http\\Controllers\\API\\DenunciaAPIController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/DenunciaAPIController.php',
+        'App\\Http\\Controllers\\API\\NoticiasAPIController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/NoticiasAPIController.php',
         'App\\Http\\Controllers\\API\\UserAPIController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/UserAPIController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
         'App\\Http\\Controllers\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/LoginController.php',
