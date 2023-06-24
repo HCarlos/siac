@@ -181,6 +181,8 @@ class DenunciaRequest extends FormRequest
 
     public function attaches($Item){
         try {
+            $user_id = Auth::user()->id;
+
             $Obj = DB::table('denuncia_prioridad')
                 ->where('denuncia_id','=',$Item->id)
                 ->where('prioridad_id','=',$this->prioridad_id)
@@ -202,7 +204,7 @@ class DenunciaRequest extends FormRequest
                 ->where('estatu_id','=',$this->estatus_id)
                 ->get();
             if ($Obj->count() <= 0 )
-                $Obj = $Item->dependencias()->attach($this->dependencia_id,['servicio_id'=>$this->servicio_id,'estatu_id'=>$this->estatus_id,'fecha_movimiento' => now() ]);
+                $Obj = $Item->dependencias()->attach($this->dependencia_id,['servicio_id'=>$this->servicio_id,'estatu_id'=>$this->estatus_id,'favorable' => false,'fecha_movimiento' => now(),'creadopor_id' => $user_id ]);
 
             $Obj = DB::table('denuncia_ubicacion')
                 ->where('denuncia_id','=',$Item->id)

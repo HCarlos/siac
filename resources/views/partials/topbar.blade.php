@@ -12,6 +12,8 @@
 
     <ul class="list-unstyled topbar-right-menu float-right mb-0">
 
+        @include('partials.topbar_notifications')
+
         <li class="dropdown notification-list">
             <a class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown" href="#" role="button" aria-haspopup="false"
                aria-expanded="false">
@@ -65,6 +67,8 @@
 
             </div>
         </li>
+
+
     </ul>
 
     <button class="button-menu-mobile open-left disable-btn">
@@ -83,8 +87,9 @@
 
     @endif
 
-{{--    @include('shared.search.__search_alumno_baca_list')--}}
     @include('shared.search.__search_empty_tool_list')
+
+
 </div>
 
 @endguest
