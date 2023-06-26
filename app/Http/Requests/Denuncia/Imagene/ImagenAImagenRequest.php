@@ -1,4 +1,7 @@
 <?php
+/*
+ * Copyright (c) 2023. Realizado por Carlos Hidalgo
+ */
 
 namespace App\Http\Requests\Denuncia\Imagene;
 
@@ -6,7 +9,6 @@ use App\Classes\MessageAlertClass;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Imagene;
-use App\Models\Denuncias\Respuesta;
 use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\QueryException;

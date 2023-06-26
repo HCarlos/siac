@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Denuncia;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Denuncia\StatuRequest;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Estatu;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 
 class EstatuController extends Controller
 {

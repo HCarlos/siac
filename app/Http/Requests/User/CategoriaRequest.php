@@ -1,13 +1,14 @@
 <?php
+/*
+ * Copyright (c) 2023. Realizado por Carlos Hidalgo
+ */
 
 namespace App\Http\Requests\User;
 
-use App\Models\Users\Categoria;
-use Illuminate\Foundation\Http\FormRequest;
 use App\Classes\MessageAlertClass;
-use App\Http\Controllers\Funciones\FuncionesController;
-use App\User;
+use App\Models\Users\Categoria;
 use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Http\FormRequest;
 
 class CategoriaRequest extends FormRequest
 {

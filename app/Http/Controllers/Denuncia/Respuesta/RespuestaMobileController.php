@@ -4,12 +4,9 @@ namespace App\Http\Controllers\Denuncia\Respuesta;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Denuncia\Respuesta\RespuestaMobileRequest;
-use App\Http\Requests\Denuncia\Respuesta\RespuestaRequest;
 use App\Http\Requests\Denuncia\Respuesta\RespuestARespuestaRequest;
 use App\Models\Denuncias\Respuesta;
 use App\Models\Mobiles\Denunciamobile;
-use App\Models\Mobiles\Respuestamobile;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 

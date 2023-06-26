@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers\Denuncia;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Denuncia\DenunciaDependenciaServicioRequest;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Estatu;
 use App\Models\Catalogos\Servicio;
 use App\Models\Denuncias\Denuncia;
-use App\Http\Controllers\Controller;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Session;
 
 class DenunciaDependenciaServicioController extends Controller
 {
@@ -28,8 +27,7 @@ class DenunciaDependenciaServicioController extends Controller
     /**
      * @param string $tableName
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('auth');
     }
 
@@ -46,9 +44,10 @@ class DenunciaDependenciaServicioController extends Controller
 
         session(['msg' => '']);
 
-
         $user = Auth::User();
         $this->Id = $Id;
+
+        Denuncia_Dependencia_Servicio::where('denuncia_id', $Id)->update(['fue_leida' => true]);
 
         return view('SIAC.denuncia.denuncia_dependencia_servicio.denuncia_dependencia_servicio_list',
             [
@@ -202,43 +201,5 @@ class DenunciaDependenciaServicioController extends Controller
                 return Response::json(['mensaje' => 'Se ha producido un error.', 'data' => 'Error', 'status' => '200'], 200);
             }
         }
-
-    protected function getNotificationDependencias($dependencia_id = 0)
-    {
-        $items = Denuncia_Dependencia_Servicio::query()
-            ->where('dependencia_id', $dependencia_id)
-            ->where('fue_leida', false)
-            ->get();
-        $deps = array();
-        foreach ($items as $item) {
-            $Den    = Denuncia::find($item->denuncia_id);
-            $Dep    = Dependencia::find($item->dependencia_id);
-            $Srv    = Servicio::find($item->servicio_id);
-            $UC     = User::find($item->creadopor_id);
-            $Estatu = Estatu::find($item->estatu_id);
-
-            $deps[] = [
-                'denuncia_id'      => $item->denuncia_id,
-                'denuncia'         => $Den->Denuncia,
-                'dependencia_id'   => $item->dependencia_id,
-                'dependencia'      => $Dep->dependencia,
-                'servicio_id'      => $item->servicio_id,
-                'servicio'         => $Srv->servicio,
-                'estatu_id'        => $item->estatu_id,
-                'estatu'           => $Estatu->servicio,
-                'creadopor_id'     => $item->creadopor_id,
-                'creadopor'        => $UC->Fullname,
-                'fecha_movimiento' => $item->fecha_movimiento,
-                'observaciones'    => $item->observaciones,
-                'favorable'        => $item->favorable,
-                'fue_leida'        => $item->fue_leida,
-            ];
-        }
-        if ($deps->length > 0) {
-            return Response::json(['mensaje' => 'OK', 'data' => $deps, 'status' => '200'], 200);
-        } else {
-            return Response::json(['mensaje' => 'Error', 'data' => null, 'status' => '200'], 200);
-        }
-    }
 
 }

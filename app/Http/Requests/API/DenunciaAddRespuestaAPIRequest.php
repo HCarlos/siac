@@ -1,19 +1,18 @@
 <?php
+/*
+ * Copyright (c) 2023. Realizado por Carlos Hidalgo
+ */
 
 namespace App\Http\Requests\API;
 
 use App\Events\APIDenunciaEvent;
-use App\Http\Controllers\Funciones\FuncionesController;
 use App\Models\Mobiles\Denunciamobile;
-use App\Models\Mobiles\Imagemobile;
 use App\Models\Mobiles\Respuestamobile;
 use Carbon\Carbon;
-use http\Exception;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Facades\Storage;
 
 class DenunciaAddRespuestaAPIRequest extends FormRequest{
 

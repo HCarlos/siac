@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Catalogos\Domicilio;
 
-use App\Models\Catalogos\Domicilios\Colonia;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Domicilio\CodigopostalRequest;
 use App\Models\Catalogos\Domicilios\Codigopostal;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Auth;
 
 class CodigopostalController extends Controller
 {

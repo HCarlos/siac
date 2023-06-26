@@ -2,18 +2,14 @@
 
 namespace App\Http\Controllers\Catalogos\Domicilio;
 
-use App\Models\Catalogos\Domicilios\Calle;
-use App\Models\Catalogos\Domicilios\Ciudad;
-use App\Models\Catalogos\Domicilios\Colonia;
-use App\Models\Catalogos\Domicilios\Estado;
-use App\Models\Catalogos\Domicilios\Localidad;
-use App\Models\Catalogos\Domicilios\Municipio;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Catalogos\Domicilios\Codigopostal;
 use App\Http\Requests\Domicilio\UbicacionRequest;
-use App\Models\Catalogos\Domicilios\Ubicacion;
+use App\Models\Catalogos\Domicilios\Calle;
+use App\Models\Catalogos\Domicilios\Codigopostal;
+use App\Models\Catalogos\Domicilios\Colonia;
 use App\Models\Catalogos\Domicilios\Comunidad;
+use App\Models\Catalogos\Domicilios\Ubicacion;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;

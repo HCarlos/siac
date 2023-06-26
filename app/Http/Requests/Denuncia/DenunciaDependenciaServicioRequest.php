@@ -1,4 +1,7 @@
 <?php
+/*
+ * Copyright (c) 2023. Realizado por Carlos Hidalgo
+ */
 
 namespace App\Http\Requests\Denuncia;
 

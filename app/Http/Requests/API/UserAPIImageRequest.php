@@ -1,18 +1,16 @@
 <?php
+/*
+ * Copyright (c) 2023. Realizado por Carlos Hidalgo
+ */
 
 namespace App\Http\Requests\API;
 
 use App\Http\Controllers\Funciones\FuncionesController;
-use App\Rules\IsCURPRule;
 use App\User;
 use http\Exception;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image;
 
 class UserAPIImageRequest extends FormRequest{
 

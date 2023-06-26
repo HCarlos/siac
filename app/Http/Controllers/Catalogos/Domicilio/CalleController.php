@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers\Catalogos\Domicilio;
 
-use App\Http\Controllers\Funciones\FuncionesController;
-use App\Models\Catalogos\Domicilios\Ubicacion;
-use App\User;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Domicilio\CalleRequest;
 use App\Models\Catalogos\Domicilios\Calle;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Auth;
 
 class CalleController extends Controller
 {

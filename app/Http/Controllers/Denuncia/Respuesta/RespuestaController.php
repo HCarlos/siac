@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Denuncia\Respuesta;
 
-use App\Http\Requests\Denuncia\Respuesta\RespuestaRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Denuncia\Respuesta\RespuestaRequest;
 use App\Http\Requests\Denuncia\Respuesta\RespuestARespuestaRequest;
 use App\Models\Denuncias\Respuesta;
-use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 

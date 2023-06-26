@@ -1,23 +1,23 @@
 <?php
+/*
+ * Copyright (c) 2023. Realizado por Carlos Hidalgo
+ */
 
 namespace App\Http\Requests\Denuncia;
 
+use App\Classes\MessageAlertClass;
 use App\Events\IUQDenunciaEvent;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Http\Controllers\Storage\StorageDenunciaController;
 use App\Models\Catalogos\Domicilios\Ubicacion;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\DenunciaEstatu;
-use App\User;
-use Carbon\Carbon;
 use Doctrine\DBAL\Driver\Exception;
-use Illuminate\Foundation\Http\FormRequest;
-use App\Classes\MessageAlertClass;
 use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class DenunciaRequest extends FormRequest
 {

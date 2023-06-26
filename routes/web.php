@@ -427,7 +427,6 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|DELEGADO|CIUDADANO|
     Route::get('editDenunciaDependenciaServicio/{Id}', 'Denuncia\DenunciaDependenciaServicioController@editItem')->name('editDenunciaDependenciaServicio');
     Route::post('putAddDenunciaDependenciaServicio', 'Denuncia\DenunciaDependenciaServicioController@putEdit')->name('putAddDenunciaDependenciaServicio');
     Route::get('removeDenunciaDependenciaServicio/{id}', 'Denuncia\DenunciaDependenciaServicioController@removeItem')->name('removeDenunciaDependenciaServicio');
-    Route::get('getNotificationDependencias/{dependencia_id}', 'Denuncia\DenunciaDependenciaServicioController@getNotificationDependencias')->name('getNotificationDependencias');
 
     // Catálogo de DENUNCIAS CIUDADANAS
     Route::get('listDenunciasCiudadanas/', 'Denuncia\DenunciaCiudadanaController@index')->name('listDenunciasCiudadanas');
@@ -485,6 +484,7 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|DELEGADO|CIUDADANO|
 
 });
 
+Route::get('getNotificationDependencias/{dependencia_id_str}', 'External\Denuncia\AjaxController@getNotificationDependencias')->name('getNotificationDependencias');
 
 Route::get('getServiciosFromDependencias/{id}', 'Denuncia\DenunciaController@getServiciosFromDependencias')->name('getServiciosFromDependencias');
 

@@ -1,4 +1,7 @@
 <?php
+/*
+ * Copyright (c) 2023. Realizado por Carlos Hidalgo
+ */
 
 namespace App\Http\Requests\API;
 
@@ -7,9 +10,9 @@ use App\Models\Users\UserMobile;
 use App\Role;
 use App\Rules\IsCURPRule;
 use App\User;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\Facades\Hash;
 
 class UserAPIRegistryRequest extends FormRequest

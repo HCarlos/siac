@@ -1,15 +1,15 @@
 <?php
+/*
+ * Copyright (c) 2023. Realizado por Carlos Hidalgo
+ */
 
 namespace App\Http\Requests\User;
 
 use App\Classes\MessageAlertClass;
 use App\Rules\CurrentPassword;
-use App\Rules\Uppercase;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
-use App\Classes\ValidatorPassword;
-use Illuminate\Support\Facades\Hash;
 
 class UserUpdatePasswordRequest extends FormRequest
 {

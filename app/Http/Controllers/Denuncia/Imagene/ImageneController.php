@@ -4,17 +4,14 @@ namespace App\Http\Controllers\Denuncia\Imagene;
 
 use App\Classes\MessageAlertClass;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Funciones\FuncionesController;
 use App\Http\Requests\Denuncia\Imagene\ImagenAImagenRequest;
 use App\Http\Requests\Denuncia\Imagene\ImageneRequest;
-use App\Http\Requests\Denuncia\Respuesta\RespuestARespuestaRequest;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Imagene;
-use App\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
-use App\Http\Controllers\Funciones\FuncionesController;
-use Symfony\Component\Console\Input\Input;
 
 class ImageneController extends Controller{
 

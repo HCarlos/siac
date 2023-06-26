@@ -1,14 +1,14 @@
 <?php
+/*
+ * Copyright (c) 2023. Realizado por Carlos Hidalgo
+ */
 
 namespace App\Http\Requests\Denuncia\Respuesta;
 
 use App\Classes\MessageAlertClass;
 use App\Classes\NotificationsMobile\SendNotificationFCM;
-use App\Models\Denuncias\Denuncia;
-use App\Models\Denuncias\Respuesta;
 use App\Models\Mobiles\Denunciamobile;
 use App\Models\Mobiles\Respuestamobile;
-use App\Models\Users\UserMobile;
 use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\QueryException;

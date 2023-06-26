@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Catalogos\Domicilio;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Domicilio\TipoasentamientoRequest;
 use App\Models\Catalogos\Domicilios\Tipoasentamiento;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Auth;
 
 class TipoasentamientoController extends Controller
 {

@@ -1,15 +1,18 @@
 <?php
+/*
+ * Copyright (c) 2023. Realizado por Carlos Hidalgo
+ */
 
 namespace App\Http\Requests\Domicilio;
 
+use App\Classes\MessageAlertClass;
 use App\Models\Catalogos\Domicilios\Codigopostal;
+use App\Models\Catalogos\Domicilios\Colonia;
 use App\Models\Catalogos\Domicilios\Comunidad;
 use App\Models\Catalogos\Domicilios\Ubicacion;
-use Illuminate\Foundation\Http\FormRequest;
-use App\Models\Catalogos\Domicilios\Colonia;
 use App\Rules\Uppercase;
-use App\Classes\MessageAlertClass;
 use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ColoniaRequest extends FormRequest

@@ -1,22 +1,19 @@
 <?php
+/*
+ * Copyright (c) 2023. Realizado por Carlos Hidalgo
+ */
 
 namespace App\Http\Requests\Domicilio;
 
+use App\Classes\MessageAlertClass;
 use App\Models\Catalogos\Domicilios\Calle;
-use App\Models\Catalogos\Domicilios\Ciudad;
+use App\Models\Catalogos\Domicilios\Codigopostal;
 use App\Models\Catalogos\Domicilios\Colonia;
 use App\Models\Catalogos\Domicilios\Comunidad;
-use App\Models\Catalogos\Domicilios\Estado;
-use App\Models\Catalogos\Domicilios\Localidad;
-use App\Models\Catalogos\Domicilios\Municipio;
-use App\Rules\UbicacionUnica;
-use Illuminate\Foundation\Http\FormRequest;
-use App\Models\Catalogos\Domicilios\Codigopostal;
 use App\Models\Catalogos\Domicilios\Ubicacion;
-use App\Classes\MessageAlertClass;
 use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Validation\Rule;
 
 class UbicacionRequest extends FormRequest
 {

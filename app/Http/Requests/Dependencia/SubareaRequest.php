@@ -1,11 +1,14 @@
 <?php
+/*
+ * Copyright (c) 2023. Realizado por Carlos Hidalgo
+ */
 
 namespace App\Http\Requests\Dependencia;
 
-use App\Models\Catalogos\Subarea;
-use Illuminate\Foundation\Http\FormRequest;
 use App\Classes\MessageAlertClass;
+use App\Models\Catalogos\Subarea;
 use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class SubareaRequest extends FormRequest

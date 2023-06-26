@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers\Catalogos\User;
 
-use App\Classes\FiltersRules;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Http\Requests\User\UserAlumnoBecasRequest;
 use App\Http\Requests\User\UserRequest;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserUpdatePasswordRequest;
-use App\Models\Catalogos\Domicilios\Ubicacion;
 use App\Notifications\SendEmailAPIVerificationNotification;
 use App\Role;
 use App\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
 class UserDataController extends Controller

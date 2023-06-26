@@ -3,19 +3,16 @@
 namespace App\Http\Controllers\Denuncia;
 
 use App\Classes\RemoveItemSafe;
-use App\Http\Controllers\Funciones\FuncionesController;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Denuncia\ServicioRequest;
 use App\Models\Catalogos\Medida;
 use App\Models\Catalogos\Servicio;
 use App\Models\Catalogos\Subarea;
 use App\Models\Denuncias\_Servicios;
-use App\Models\Denuncias\Denuncia;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Auth;
 
 class ServicioController extends Controller
 {

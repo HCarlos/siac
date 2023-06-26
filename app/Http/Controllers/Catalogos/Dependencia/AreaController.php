@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Catalogos\Dependencia;
 
 use App\Classes\RemoveItemSafe;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Dependencia\AreaRequest;
 use App\Models\Catalogos\Area;
 use App\Models\Catalogos\Dependencia;
 use App\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;

@@ -1,20 +1,18 @@
 <?php
+/*
+ * Copyright (c) 2023. Realizado por Carlos Hidalgo
+ */
 
 namespace App\Http\Requests\API;
 
-use App\Classes\MessageAlertClass;
 use App\Events\APIDenunciaEvent;
-use App\Events\IUQDenunciaEvent;
 use App\Http\Controllers\Funciones\FuncionesController;
-use App\Http\Controllers\Storage\StorageDenunciaController;
 use App\Models\Catalogos\Domicilios\Ubicacion;
-use App\Models\Denuncias\_Servicios;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Imagene;
 use App\Models\Mobiles\Denunciamobile;
 use App\Models\Mobiles\Imagemobile;
 use App\Models\Mobiles\Serviciomobile;
-use App\Rules\CurrentPassword;
 use App\User;
 use Carbon\Carbon;
 use http\Exception;
@@ -22,8 +20,6 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 

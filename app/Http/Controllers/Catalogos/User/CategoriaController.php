@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Catalogos\User;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CategoriaRequest;
 use App\Models\Users\Categoria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 
 class CategoriaController extends Controller
 {

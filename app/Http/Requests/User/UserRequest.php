@@ -1,4 +1,7 @@
 <?php
+/*
+ * Copyright (c) 2023. Realizado por Carlos Hidalgo
+ */
 
 namespace App\Http\Requests\User;
 
@@ -8,13 +11,10 @@ use App\Models\Catalogos\Domicilios\Ubicacion;
 use App\Permission;
 use App\Role;
 use App\Rules\IsCURPRule;
-use App\Rules\Uppercase;
 use App\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserRequest extends FormRequest

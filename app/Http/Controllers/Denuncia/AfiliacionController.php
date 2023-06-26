@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Denuncia;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Catalogos\Afiliacion;
 use App\Http\Requests\Denuncia\AfiliacionRequest;
+use App\Models\Catalogos\Afiliacion;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Auth;
 
 class AfiliacionController extends Controller
 {

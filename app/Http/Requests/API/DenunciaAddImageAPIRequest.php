@@ -1,13 +1,14 @@
 <?php
+/*
+ * Copyright (c) 2023. Realizado por Carlos Hidalgo
+ */
 
 namespace App\Http\Requests\API;
 
 use App\Events\APIDenunciaEvent;
 use App\Http\Controllers\Funciones\FuncionesController;
-use App\Models\Catalogos\Domicilios\Ubicacion;
 use App\Models\Mobiles\Denunciamobile;
 use App\Models\Mobiles\Imagemobile;
-use App\Models\Mobiles\Serviciomobile;
 use Carbon\Carbon;
 use http\Exception;
 use Illuminate\Contracts\Validation\Validator;

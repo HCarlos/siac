@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Denuncia;
 
-use App\Models\Catalogos\Medida;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Denuncia\MedidaRequest;
+use App\Models\Catalogos\Medida;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Auth;
 
 class MedidaController extends Controller
 {

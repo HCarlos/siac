@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers\Catalogos\Domicilio;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Domicilio\ComunidadRequest;
 use App\Models\Catalogos\Domicilios\Ciudad;
-use App\Models\Catalogos\Domicilios\Codigopostal;
 use App\Models\Catalogos\Domicilios\Comunidad;
 use App\Models\Catalogos\Domicilios\Estado;
 use App\Models\Catalogos\Domicilios\Municipio;
 use App\Models\Catalogos\Domicilios\Tipocomunidad;
 use App\Traits\Catalogos\Domicilio\Comunidad\ComunidadTrait;
 use App\Traits\Common\CommonTrait;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;

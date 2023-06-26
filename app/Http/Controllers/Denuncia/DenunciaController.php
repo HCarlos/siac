@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Denuncia;
 
 use App\Classes\FiltersRules;
-use App\Classes\Items;
 use App\Events\IUQDenunciaEvent;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\Funciones\FuncionesController;
+use App\Http\Requests\Denuncia\DenunciaRequest;
 use App\Http\Requests\Denuncia\SearchIdenticalRequest;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Domicilios\Ubicacion;
@@ -14,18 +15,13 @@ use App\Models\Catalogos\Origen;
 use App\Models\Catalogos\Prioridad;
 use App\Models\Catalogos\Servicio;
 use App\Models\Denuncias\Denuncia;
-use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use App\Models\Denuncias\Firma;
 use App\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Denuncia\DenunciaRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
-use function React\Promise\all;
 
 
 class DenunciaController extends Controller{

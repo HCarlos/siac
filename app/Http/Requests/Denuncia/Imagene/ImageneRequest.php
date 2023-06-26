@@ -1,19 +1,22 @@
 <?php
+/*
+ * Copyright (c) 2023. Realizado por Carlos Hidalgo
+ */
 
 namespace App\Http\Requests\Denuncia\Imagene;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Classes\MessageAlertClass;
+use App\Http\Controllers\Funciones\FuncionesController;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Imagene;
 use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use App\Http\Controllers\Funciones\FuncionesController;
 
 class ImageneRequest extends FormRequest
 {

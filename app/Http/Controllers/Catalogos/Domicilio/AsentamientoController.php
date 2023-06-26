@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Catalogos\Domicilio;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Domicilio\AsentamientoRequest;
 use App\Models\Catalogos\Domicilios\Asentamiento;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Auth;
 
 class AsentamientoController extends Controller
 {

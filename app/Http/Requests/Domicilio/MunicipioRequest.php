@@ -1,12 +1,15 @@
 <?php
+/*
+ * Copyright (c) 2023. Realizado por Carlos Hidalgo
+ */
 
 namespace App\Http\Requests\Domicilio;
 
+use App\Classes\MessageAlertClass;
 use App\Models\Catalogos\Domicilios\Municipio;
 use App\Rules\Uppercase;
-use Illuminate\Foundation\Http\FormRequest;
-use App\Classes\MessageAlertClass;
 use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Http\FormRequest;
 
 class MunicipioRequest extends FormRequest
 {

@@ -1,8 +1,10 @@
 <?php
+/*
+ * Copyright (c) 2023. Realizado por Carlos Hidalgo
+ */
 
 namespace App\Http\Requests\API;
 
-use App\Classes\MessageAlertClass;
 use App\Rules\CurrentPassword;
 use App\User;
 use Illuminate\Contracts\Validation\Validator;

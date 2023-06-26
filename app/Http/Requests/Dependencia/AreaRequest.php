@@ -1,12 +1,15 @@
 <?php
+/*
+ * Copyright (c) 2023. Realizado por Carlos Hidalgo
+ */
 
 namespace App\Http\Requests\Dependencia;
 
-use App\Rules\Uppercase;
-use Illuminate\Foundation\Http\FormRequest;
-use App\Models\Catalogos\Area;
 use App\Classes\MessageAlertClass;
+use App\Models\Catalogos\Area;
+use App\Rules\Uppercase;
 use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class AreaRequest extends FormRequest

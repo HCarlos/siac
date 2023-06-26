@@ -9,55 +9,55 @@ jQuery(function($) {
         });
 
         // var Tabla;
-        function evalNotificationBadge(dependencia_id) {
+        // function evalNotificationBadge(dependencia_id) {
 
-            if ( $("#drop-notification-list").length > 0  ){
+            if ( $(".drop-notification-list")  ){
+                //$(".drop-notification-list").addClass('collapse');
+                // alert( $(".drop-notification-list").attr('id') );
+                var dat = $(".drop-notification-list").attr('id').split('*');
+//                alert(dat[1]);
                 $.ajax({
                     method: "GET",
-                    data: formData,
-                    url: '/get-notification-dependencias/' + dependencyencia_id
+                    url: '/'+dat[0]+'/' + dat[1]
                 })
                     .done(function( response ) {
                         var html = "";
-                        if (response.result_msg == 'OK'){
+                        //alert( response.mensaje);
+                        if (response.mensaje === 'OK'){
 
-                            $("#drop-notification-list").empty();
-
-                            html = '<a className="nav-link dropdown-toggle nav-user arrow-none mr-0 bgc-success" ';
-                            html += 'data-toggle="dropdown" href="#" role="button" aria-haspopup="false" ';
-                            html += 'aria-expanded="false" style="background-color: darkseagreen"> ';
-                            html += '<i className="fa fa-bell text-lg text-white icon-animated-bell mr-lg-2" ';
-                            html += 'style="font-size: 24px"></i>';
-                            html += '<span id="id-navbar-badge1" className="badge badge-lg bgc-warning text-white radius-round border-1 brc-success-tp5" style="background-color: palevioletred; font-size: 16px">3</span> </a>';
-                            html += '<div className="dropdown-menu dropdown-menu-right dropdown-lg dropdown-menu-animated brc-primary-m3 ">';
-
+                            $("#id-navbar-badge1").html( response.data.length );
 
                             $.each(response.data, function( index, value ) {
-                                html += '<a href="#" className="d-flex mb-0 border-0 list-group-item list-group-item-action btn-h-lighter-secondary" ';
+                                html = '<a href="/listDenunciaDependenciaServicio/'+value.denuncia_id+'" id="aUno-'+index+'" ';
                                 html += 'style="background-color: thistle"> ';
                                 html += '<div> ';
-                                html += '<span className="text-primary-m1 font-bolder">Alex:</span> ';
-                                html += '<span className="text-grey text-90">Ciao sociis natoque penatibus et auctor ...</span> ';
+                                html += '<span id="sp1'+index+'">('+value.abreviatura+')</span> ';
+                                html += '<strong id="sp0'+index+'">'+value.denuncia_id+':</strong> ';
+                                html += '<span id="sp2'+index+'">'+value.denuncia+'</span> ';
                                 html += '<br/> ';
-                                html += '<span className="text-grey-m1 text-85"> ';
-                                html += '<i className="far fa-clock"></i> ';
-                                html += 'a moment ago ';
+                                html += '<span id="sp3'+index+'"> ';
+                                html += '<i class="far fa-clock"></i> ';
+                                html += value.fecha_movimiento ;
                                 html += '</span> ';
                                 html += '</div> ';
                                 html += '</a> ';
-
+                                $("#dropMenu").append(html);
+                                $("#aUno-"+index).addClass('d-flex mb-0 border-0 list-group-item list-group-item-action btn-h-lighter-secondary');
+                                $("#sp1-"+index).addClass('text-primary-m1 font-bolder');
+                                $("#sp2-"+index).addClass('text-grey text-90');
+                                $("#sp3-"+index).addClass('text-grey-m1 text-85');
                             });
-                            html += '</div> ';
-
-                            $("#drop-notification-list").append(html);
+                            // $("#dropMenu").append(html);
+                            // $("#dropMenu").refresh();
+                            $(".drop-notification-list").removeClass('collapse');
 
                         }else{
-                            $("#drop-notification-list").empty();
+                            //$("#dropMenu").empty();
                         }
                     });
 
             }
 
-        }
+        // }
     });
 });

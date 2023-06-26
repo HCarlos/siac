@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Catalogos\Domicilio;
 
-use App\Models\Catalogos\Domicilios\Calle;
-use App\Models\Catalogos\Domicilios\Codigopostal;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Domicilio\ColoniaRequest;
+use App\Models\Catalogos\Domicilios\Codigopostal;
 use App\Models\Catalogos\Domicilios\Colonia;
 use App\Models\Catalogos\Domicilios\Comunidad;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;

@@ -2,16 +2,10 @@
 
 namespace App\Http\Controllers\Denuncia;
 
-use App\Http\Requests\Denuncia\DenunciaRequest;
-use App\Http\Requests\DenunciaCiudadana\DenunciaCiudadanaRequest;
-use App\Models\Catalogos\Dependencia;
-use App\Models\Catalogos\Estatu;
-use App\Models\Catalogos\Origen;
-use App\Models\Catalogos\Prioridad;
-use App\Models\Denuncias\Denuncia;
-use App\User;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DenunciaCiudadana\DenunciaCiudadanaRequest;
+use App\Models\Denuncias\Denuncia;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;

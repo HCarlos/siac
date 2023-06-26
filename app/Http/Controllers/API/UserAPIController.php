@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Events\APIDenunciaEvent;
-use App\Events\InserUpdateDeleteEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\UserAPIChangeEmailRequest;
 use App\Http\Requests\API\UserAPIChangePasswordRequest;

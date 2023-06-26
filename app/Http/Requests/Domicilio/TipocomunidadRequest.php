@@ -1,12 +1,15 @@
 <?php
+/*
+ * Copyright (c) 2023. Realizado por Carlos Hidalgo
+ */
 
 namespace App\Http\Requests\Domicilio;
 
-use App\Models\Catalogos\Domicilios\Tipocomunidad;
-use Illuminate\Foundation\Http\FormRequest;
-use App\Rules\Uppercase;
 use App\Classes\MessageAlertClass;
+use App\Models\Catalogos\Domicilios\Tipocomunidad;
+use App\Rules\Uppercase;
 use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class TipocomunidadRequest extends FormRequest

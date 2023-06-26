@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Events\APIDenunciaEvent;
-use App\Events\InserUpdateDeleteEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\DenunciaAddImageAPIRequest;
 use App\Http\Requests\API\DenunciaAddRespuestaAPIRequest;
 use App\Http\Requests\API\DenunciaAPIRequest;
-use App\Http\Requests\API\UserAPIChangePasswordRequest;
 use App\Models\Mobiles\Denunciamobile;
 use App\Models\Mobiles\Imagemobile;
 use App\Models\Mobiles\Respuestamobile;
@@ -18,9 +16,6 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-use Ramsey\Uuid\Type\Integer;
 
 class DenunciaAPIController extends Controller{
 
