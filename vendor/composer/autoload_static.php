@@ -825,6 +825,7 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'App\\Http\\Controllers\\Denuncia\\Respuesta\\RespuestaController' => __DIR__ . '/../..' . '/app/Http/Controllers/Denuncia/Respuesta/RespuestaController.php',
         'App\\Http\\Controllers\\Denuncia\\Respuesta\\RespuestaMobileController' => __DIR__ . '/../..' . '/app/Http/Controllers/Denuncia/Respuesta/RespuestaMobileController.php',
         'App\\Http\\Controllers\\Denuncia\\ServicioController' => __DIR__ . '/../..' . '/app/Http/Controllers/Denuncia/ServicioController.php',
+        'App\\Http\\Controllers\\External\\Denuncia\\AjaxController' => __DIR__ . '/../..' . '/app/Http/Controllers/External/Denuncia/AjaxController.php',
         'App\\Http\\Controllers\\External\\Denuncia\\HojaDenunciaArchivoController' => __DIR__ . '/../..' . '/app/Http/Controllers/External/Denuncia/HojaDenunciaArchivoController.php',
         'App\\Http\\Controllers\\External\\Denuncia\\HojaDenunciaController' => __DIR__ . '/../..' . '/app/Http/Controllers/External/Denuncia/HojaDenunciaController.php',
         'App\\Http\\Controllers\\External\\Denuncia\\ListDenunciaXLSXController' => __DIR__ . '/../..' . '/app/Http/Controllers/External/Denuncia/ListDenunciaXLSXController.php',

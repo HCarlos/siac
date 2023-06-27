@@ -102,6 +102,7 @@ return array(
     'App\\Http\\Controllers\\Denuncia\\Respuesta\\RespuestaController' => $baseDir . '/app/Http/Controllers/Denuncia/Respuesta/RespuestaController.php',
     'App\\Http\\Controllers\\Denuncia\\Respuesta\\RespuestaMobileController' => $baseDir . '/app/Http/Controllers/Denuncia/Respuesta/RespuestaMobileController.php',
     'App\\Http\\Controllers\\Denuncia\\ServicioController' => $baseDir . '/app/Http/Controllers/Denuncia/ServicioController.php',
+    'App\\Http\\Controllers\\External\\Denuncia\\AjaxController' => $baseDir . '/app/Http/Controllers/External/Denuncia/AjaxController.php',
     'App\\Http\\Controllers\\External\\Denuncia\\HojaDenunciaArchivoController' => $baseDir . '/app/Http/Controllers/External/Denuncia/HojaDenunciaArchivoController.php',
     'App\\Http\\Controllers\\External\\Denuncia\\HojaDenunciaController' => $baseDir . '/app/Http/Controllers/External/Denuncia/HojaDenunciaController.php',
     'App\\Http\\Controllers\\External\\Denuncia\\ListDenunciaXLSXController' => $baseDir . '/app/Http/Controllers/External/Denuncia/ListDenunciaXLSXController.php',
