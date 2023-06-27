@@ -44,6 +44,7 @@ jQuery(function($) {
                         localStorage.last_denuncia_id = data.denuncia_id
                         localStorage.last_user_id = data.user_id
                         window.location.reload();
+                        evalNotificationBadge();
                     }
                 }
 

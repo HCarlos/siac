@@ -9,7 +9,7 @@ jQuery(function($) {
         });
 
         // var Tabla;
-        // function evalNotificationBadge(dependencia_id) {
+        function evalNotificationBadge() {
 
             if ( $(".drop-notification-list")  ){
                 //$(".drop-notification-list").addClass('collapse');
@@ -58,6 +58,9 @@ jQuery(function($) {
 
             }
 
-        // }
+        }
+
+        evalNotificationBadge();
+
     });
 });
