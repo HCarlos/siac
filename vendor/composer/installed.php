@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'c7c84e86ba918c47114e0f0a43b8bcf37f5472db',
+        'reference' => '6a9814db4f8c678199ac200c43adc926df0cf3c8',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -478,7 +478,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'c7c84e86ba918c47114e0f0a43b8bcf37f5472db',
+            'reference' => '6a9814db4f8c678199ac200c43adc926df0cf3c8',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -629,9 +629,9 @@
             'dev_requirement' => false,
         ),
         'nesbot/carbon' => array(
-            'pretty_version' => '2.67.0',
-            'version' => '2.67.0.0',
-            'reference' => 'c1001b3bc75039b07f38a79db5237c4c529e04c8',
+            'pretty_version' => '2.68.1',
+            'version' => '2.68.1.0',
+            'reference' => '4f991ed2a403c85efbc4f23eb4030063fdbe01da',
             'type' => 'library',
             'install_path' => __DIR__ . '/../nesbot/carbon',
             'aliases' => array(),
@@ -1037,7 +1037,7 @@
         'roave/security-advisories' => array(
             'pretty_version' => 'dev-latest',
             'version' => 'dev-latest',
-            'reference' => '237f1821ece806de66072813d8cbe5bdbc8f3117',
+            'reference' => '885786b30f50e83a88941df2062d68de623599fd',
             'type' => 'metapackage',
             'install_path' => NULL,
             'aliases' => array(
