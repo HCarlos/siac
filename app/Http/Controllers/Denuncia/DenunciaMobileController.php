@@ -34,9 +34,7 @@ class DenunciaMobileController extends Controller{
         $filters['filterdata'] = $request->only(['search']);
         $IsEnlace = Session::get('IsEnlace');
         if($IsEnlace) {
-            //$DependenciaIdArray = Session::get('DependenciaIdArray');
             $DependenciaIdArray = Auth::user()->DependenciaIdArray;
-//            dd($DependenciaIdArray);
             $items = Denunciamobile::query()
                 ->whereHas('Servicio', function ($q) use ($DependenciaIdArray){
                     return $q->whereIn('dependencia_id',$DependenciaIdArray);
@@ -56,6 +54,8 @@ class DenunciaMobileController extends Controller{
         session(['msg' => '']);
 
         $user = Auth::User();
+
+        // dd($items);
 
         return view('SIAC.denuncia.denuncia.denuncia_mobile_list',
             [

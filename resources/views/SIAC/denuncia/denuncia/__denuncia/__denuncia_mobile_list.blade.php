@@ -23,7 +23,7 @@
                                 </p>
                                 <div class="row">
                                     @php $i = 0; $j = count($item->Imagemobiles)-1; @endphp
-                                    @foreach($item->Imagemobiles as $image)
+                                    @foreach($item->Imagemobiles->sortDesc() as $image)
                                         @if($i==0)
                                         <div class="col-sm-12">
                                             <a
@@ -51,7 +51,7 @@
 
                                 </div>
                                 <div class="w-100 mt-3">
-                                    <p>{{$item->ubicacion}}</p>
+{{--                                    <p>{{$item->ubicacion}}</p>--}}
                                 </div>
                             </div>
 
