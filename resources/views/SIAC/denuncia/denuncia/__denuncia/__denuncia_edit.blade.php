@@ -309,10 +309,10 @@
         <address>
             <strong class="orange">POR:</strong>  {{ $items->dependencias->sortDesc()->last()->dependencia }}<br>
             <strong class="info">SERVICIO:</strong>  {{ $items->denuncia_servicios->sort()->last()->servicio }}<br>
-            <strong class="seagreen">ESTATUS:</strong>  {{ $items->denuncia_estatus->sort()->last()->estatus }}<br>
-            <strong class="red">FAVORABLE:</strong>  {{ $items->denuncia_estatus->sort()->last()->pivot->favorable == true ? 'SI' : 'NO' }}<br>
-            <strong class="purple">FECHA:</strong>  {{ date('d-m-Y H:i:s', strtotime($items->denuncia_estatus->sort()->last()->pivot->fecha_movimiento)) }}<br>
-            <strong class="coral">RESPUESTA:</strong> <small> {{ $items->denuncia_estatus->sort()->last()->pivot->observaciones }} </small><br>
+            <strong class="seagreen">ESTATUS:</strong>  {{ $items->denuncia_estatus->sortDesc()->first()->estatus }}<br>
+            <strong class="red">FAVORABLE:</strong>  {{ $items->denuncia_estatus->sortDesc()->first()->pivot->favorable == true ? 'SI' : 'NO' }}<br>
+            <strong class="purple">FECHA:</strong>  {{ date('d-m-Y H:i:s', strtotime($items->denuncia_estatus->sortDesc()->first()->pivot->fecha_movimiento)) }}<br>
+            <strong class="coral">RESPUESTA:</strong> <small> {{ $items->denuncia_estatus->sortDesc()->first()->pivot->observaciones }} </small><br>
         </address>
     </div> <!-- end col-->
 </div>
