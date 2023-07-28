@@ -19,6 +19,17 @@ jQuery(function($) {
 
         $(".buscarColonias").on('click', function(event){
             event.preventDefault();
+            buscarColonias();
+        })
+
+        $("#colonias").keypress( function(event){
+            if (event.key === "Enter"){
+                buscarColonias();
+            }
+        })
+
+
+        function buscarColonias() {
             $.ajax({
                 url: "/buscarColonia",
                 dataType: "json",
@@ -35,10 +46,20 @@ jQuery(function($) {
 
                 },
             });
-        })
+        }
 
         $(".buscarComunidades").on('click', function(event){
             event.preventDefault();
+            buscarComunidades();
+        })
+
+        $("#comunidades").keypress( function(event){
+            if (event.key === "Enter"){
+                buscarComunidades();
+            }
+        })
+
+        function buscarComunidades(){
             $.ajax({
                 url: "/buscarComunidad",
                 dataType: "json",
@@ -55,13 +76,8 @@ jQuery(function($) {
 
                 },
             });
-        })
-        function clearObjAll(){
-            if ( $("#colonias") )    $("#colonias").val("");
-            if ( $("#comunidades") ) $("#comunidades").val("");
-            $('#listEle').empty();
-            $('#lstAsigns').empty();
         }
+
         var btnUnifica = $(".btnUnifica");
         if ( btnUnifica ){
             btnUnifica.on('click',function (event){
@@ -69,7 +85,6 @@ jQuery(function($) {
 
                 var listEle = $('#listEle option:selected').val();
                 var lstAsigns = $('#lstAsigns option:selected').val();
-
 
                 var IdArr  = this.id.split('-');
                 var urlAsigna = IdArr[0];
@@ -121,8 +136,6 @@ jQuery(function($) {
 
             });
         }
-
-        // alert("Hola");
 
     });
 });

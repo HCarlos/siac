@@ -278,7 +278,7 @@
                         <a href="{{route('unicolcom')}}">
                             <i class="fas fa-money-check-alt"></i>
                             <span class="badge badge-light float-right"></span>
-                            <span>Col -> Comun </span>
+                            <span>Colonias a Comunidad </span>
                         </a>
                     </li>
                     {{--                    @endif--}}

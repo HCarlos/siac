@@ -35,12 +35,12 @@ class ColoniaComunidadUnificarController extends Controller{
         $user = Auth::User();
         return view ('SIAC.unificar.colonia_a_comunidad.colonias_a_comunidad_unificar',
             [
-                'catalogo_titulo' => 'Asignar colonias',
+                'catalogo_titulo' => 'Asignar Colonias a Comunidad',
                 'titulo_catalogo' => "",
                 'titulo_header'   => '',
                 'user'            => $user,
-                'titleLeft0'      => 'Colonia',
-                'titleAsign0'     => 'Colonia asignada',
+                'titleLeft0'      => 'Colonias',
+                'titleAsign0'     => 'Agregar a la siguiente Comunidad:',
                 'urlUnifica'      => 'unificacoloniaacomunidad',
                 'catalogo_id'     => 2,
             ]
@@ -69,22 +69,18 @@ class ColoniaComunidadUnificarController extends Controller{
                 $colonia_origin_id = (int)$valor; //intval($items_arrays[$i]);
                 if ($colonia_origin_id > 0) {
 
-                        $Colonia = Colonia::where('id', $colonia_origin_id )
-                            ->update(['comunidad_id' => $ComDes->id]);
+                    $Colonia = Colonia::where('id', $colonia_origin_id )
+                        ->update(['comunidad_id' => $ComDes->id]);
 
-
-                        $Ubicaciones = Ubicacion::where('colonia_id', $colonia_origin_id)
-                            ->update(['comunidad_id' => $ComDes->id,'comunidad' => $ComDes->comunidad]);
+                    $Ubicaciones = Ubicacion::where('colonia_id', $colonia_origin_id)
+                        ->update(['comunidad_id' => $ComDes->id,'comunidad' => $ComDes->comunidad]);
 
                     $Ubis = Ubicacion::query()->where('colonia_id', $colonia_origin_id)->get();
-
-                    //                    dd ( $Ubi ) ;
 
                     foreach ($Ubis as $Ubi){
                         $Denuncias = Denuncia::where('ubicacion_id', $Ubi->id)
                             ->update(['comunidad' => $ComDes->comunidad]);
                     }
-
                     $registros_eliminados++;
                 }
             }
