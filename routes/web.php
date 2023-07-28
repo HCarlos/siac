@@ -338,6 +338,10 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
     Route::get('unicolonia/', 'Catalogos\Domicilio\ColoniaUnificarController@indexV2')->name('unicolonia');
     Route::post('unificacolonia/', 'Catalogos\Domicilio\ColoniaUnificarController@unificacolonia')->name('unificacolonia');
 
+    Route::get('unicolcom/', 'Catalogos\Domicilio\ColoniaComunidadUnificarController@unicolcom')->name('unicolcom');
+    Route::post('unificacoloniaacomunidad/', 'Catalogos\Domicilio\ColoniaComunidadUnificarController@unificacoloniaacomunidad')->name('unificacoloniaacomunidad');
+
+
     // Catálogo de Ubicaciones
     Route::get('listUbicaciones/', 'Catalogos\Domicilio\UbicacionController@index')->name('listUbicaciones');
     Route::get('editUbicacion/{Id}', 'Catalogos\Domicilio\UbicacionController@editItem')->name('editUbicacion');

@@ -62,7 +62,7 @@ jQuery(function($) {
                 case 0:
                     $("#ubicacion_id").val(d.id);
                     $("#ubicacion_id_span").html(d.id);
-                    $("#ubicacion").val(d.calle+' '+d.colonia+' '+d.comunidad+' '+d.ciudad+' '+d.municipio+' '+d.estado+' '+d.cp);
+                    $("#ubicacion").val(d.id+' '+d.calle+' '+d.colonia+' '+d.comunidad+' '+d.ciudad+' '+d.municipio+' '+d.estado+' '+d.cp);
                     $("#ubicacion_nueva_id").val(d.id);
                     break;
                 case 1:
@@ -72,7 +72,7 @@ jQuery(function($) {
                     if ( $("#usuario_id") )         $("#usuario_id").val(d.id);
                     if ( $("#ubicacion_id") )       $("#ubicacion_id").val(d.ubicacion_id);
                     if ( $("#ubicacion_id_span") )  $("#ubicacion_id_span").html(d.ubicacion_id);
-                    if ( $("#ubicacion") )          $("#ubicacion").val(d.domicilio);
+                    if ( $("#ubicacion") )          $("#ubicacion").val(d.id+' '+d.domicilio);
                     if ( $("#ubicacion_nueva_id") ) $("#ubicacion_nueva_id").val(d.ubicacion_id);
                     if ( $("#editUser") ) $("#editUser").prop('readonly',false);
                     if ( $("#editUser") ) $("#editUser").attr('href','/editUser/'+d.id);
@@ -97,7 +97,7 @@ jQuery(function($) {
                     break;
                 case 6:
                     $("#comunidad_id").val(d.id);
-                    $("#search_autocomplete_comunidad").val(d.comunidad);
+                    $("#search_autocomplete_comunidad").val(d.id +' - '+d.comunidad);
                     break;
             }
         }

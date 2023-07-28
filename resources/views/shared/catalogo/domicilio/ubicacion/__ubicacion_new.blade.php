@@ -31,7 +31,6 @@
     <label for = "search_autocomplete_colonia" class="col-md-3 col-form-label">Colonia</label>
     <div class="col-md-7">
         <div class="input-group">
-{{--            {!! Form::text('search_autocomplete_colonia', null, array('placeholder' => 'Buscar colonia...','class' => 'form-control','id'=>'search_autocomplete_colonia')) !!}--}}
             <input type="text" name="search_autocomplete_colonia" id="search_autocomplete_colonia" value="{{ old('search_autocomplete_colonia') }}" placeholder="'Buscar colonia..." class="form-control">
         </div>
     </div>

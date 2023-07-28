@@ -21,7 +21,7 @@
     <div class="col-md-7">
         <div class="input-group">
 {{--            {!! Form::text('search_autocomplete_colonia', $items->colonia, array('placeholder' => 'Buscar colonia...','class' => 'form-control','id'=>'search_autocomplete_colonia')) !!}--}}
-            <input type="text" name="search_autocomplete_colonia" id="search_autocomplete_colonia" value="{{ old('search_autocomplete_colonia',$items->colonia) }}" placeholder="'Buscar colonia..." class="form-control">
+            <input type="text" name="search_autocomplete_colonia" id="search_autocomplete_colonia" value="{{ old('search_autocomplete_colonia',$items->colonia) }}" placeholder="Buscar colonia..." class="form-control">
         </div>
     </div>
     <div class="col-md-2">
@@ -32,12 +32,12 @@
     <label for = "comunidad_id" class="col-md-3 col-form-label">Comunidad</label>
     <div class="col-md-7">
 {{--        {{ Form::select('comunidad_id', $comunidades, $items->comunidad_id, ['id' => 'comunidad_id','class'=>'comunidad_id form-control ','disabled'=>'disabled','size'=>1 ]) }}--}}
-        <select class="comunidad_id form-control " name="comunidad_id" id="comunidad_id" size="1" disabled>
-            @foreach($comunidades as $lE)
-                <option value="{{ $lE->id }}" @if($lE->id == $items->comunidad_id) selected @endif >{{ $lE->data }}</option>
-            @endforeach
-        </select>
-        <input type="text" name="comunidad_id" id="comunidad_id" value="{{ old('search_autocomplete_colonia',$items->colonia }}" placeholder="'Buscar colonia..." class="form-control">
+{{--        <select class="comunidad_id form-control " name="comunidad_id" id="comunidad_id" size="1" disabled>--}}
+{{--            @foreach($comunidades as $key=>$value)--}}
+{{--                <option value="{{ $key }}" @if($key === $items->comunidad_id) selected @endif >{{ $value }}</option>--}}
+{{--            @endforeach--}}
+{{--        </select>--}}
+        <input type="text" name="search_autocomplete_comunidad" id="search_autocomplete_comunidad" value="{{ old('search_autocomplete_comunidad',$items->comunidad) }}" placeholder="Buscar comunidad..." class="form-control" disabled>
     </div>
 
     <label for = "ciudad" class="col-md-3 col-form-label">Ciudad</label>
@@ -56,8 +56,8 @@
     <div class="col-md-7">
 {{--        {{ Form::select('codigopostal_id', $codigospostales, $items->codigopostal_id, ['id' => 'codigopostal_id','class'=>'codigopostal_id form-control ','disabled'=>'disabled','size'=>1 ]) }}--}}
         <select class="codigopostal_id form-control " name="codigopostal_id" id="codigopostal_id" size="1" disabled>
-            @foreach($codigospostales as $lE)
-                <option value="{{ $lE->id }}" @if($lE->id == $items->codigopostal_id) selected @endif >{{ $lE->data }}</option>
+            @foreach($codigospostales as $key=>$value)
+                <option value="{{ $key }}" @if($key === $items->codigopostal_id) selected @endif >{{ $value }}</option>
             @endforeach
         </select>
     </div>

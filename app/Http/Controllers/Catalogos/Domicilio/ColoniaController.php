@@ -128,7 +128,12 @@ class ColoniaController extends Controller
         $data=array();
 
         foreach ($items as $item) {
-            $data[]=array('value'=>$item->colonia,'id'=>$item->id, 'is_unificadora' => $item->is_unificadora);
+            $data[]=array(
+                'value'=>$item->colonia,
+                'id'=>$item->id,
+                'is_unificadora' => $item->is_unificadora,
+                'comunidad'=>$item->comunidad->comunidad,
+            );
         }
         if(count($data))
             return $data;

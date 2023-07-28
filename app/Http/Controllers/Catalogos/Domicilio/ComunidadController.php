@@ -261,8 +261,6 @@ class ComunidadController extends Controller
             ->orderBy('id')
             ->get();
 
-//        ->filterBy($filters)
-
         $data=array();
 
         foreach ($items as $item) {
@@ -271,7 +269,7 @@ class ComunidadController extends Controller
         if(count($data))
             return $data;
         else
-            return ['value'=>'No se encontraron calles','id'=>0];
+            return ['value'=>'No se encontraron datos','id'=>0];
 
     }
 

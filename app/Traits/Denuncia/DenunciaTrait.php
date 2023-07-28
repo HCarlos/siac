@@ -76,7 +76,18 @@ trait DenunciaTrait
         return $r == 1 ? '' : $r-1;
     }
 
-
+    public function Ambito(){
+        $r = "No Aplica";
+        switch ($this->ambito){
+            case 1:
+                $r = "Urbana";
+                break;
+            case 2:
+                $r = "Rural";
+                break;
+        }
+        return $r;
+    }
 
 
 }

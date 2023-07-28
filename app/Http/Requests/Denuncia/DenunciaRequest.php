@@ -130,6 +130,7 @@ class DenunciaRequest extends FormRequest
                 'observaciones'                => strtoupper(trim($this->observaciones)),
                 'ip'                           => FuncionesController::getIp(),
                 'host'                         => config('atemun.public_url'),
+                'ambito'                       => $this->ambito,
             ];
 
 //            dd($Item);

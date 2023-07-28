@@ -3,10 +3,10 @@
     <div class="col-lg-6 ">
         <div class="grid-container">
             <div class="form-row mb-1">
-                <label for = "search_autocomplete_user" class="col-lg-3 col-form-label labelDenuncia">Buscar Usuario</label>
+                <label for = "search_autocomplete_user" class="col-lg-12 col-form-label labelDenuncia">Busca el usuario que solicita el servicio</label>
                 <div class="col-lg-12">
                     <div class="input-group">
-                        <input type="text" name="search_autocomplete_user" id="search_autocomplete_user", value="{{ $items->Ciudadano->FullName }}" placeholder="Buscar usuario..." class="form-control">
+                        <input type="text" name="search_autocomplete_user" id="search_autocomplete_user" value="{{ $items->Ciudadano->FullName }}" placeholder="Buscar usuario..." class="form-control">
                         <span class="input-group-append">
                             <a href="{{route("newUser")}}" target="_blank" class="btn btn-icon btn-info"> <i class="mdi mdi-plus"></i></a>
                         </span>
@@ -22,11 +22,11 @@
         </div>
 
             <div class="form-row mb-1 " >
-                <label class="col-lg-12 col-form-label labelDenuncia">Ubicación del Problema? </label>
+                <label class="col-lg-12 col-form-label labelDenuncia">Ubica la dirección del problema </label>
                 <div class="col-lg-12 mb-2">
                     <select id="pregunta1" name="pregunta1" class="form-control pregunta1" size="1">
-                        <option value="0" {{$pregunta1 == 0 ? 'selected': '' }} >La misma ubicación del usuario demandante </option>
-                        <option value="1" {{$pregunta1 == 1 ? 'selected': '' }} >Otra Ubicación </option>
+                        <option value="0" {{$pregunta1 === 0 ? 'selected': '' }} >La misma dirección del usuario demandante </option>
+                        <option value="1" {{$pregunta1 === 1 ? 'selected': '' }} >Otra dirección </option>
                     </select>
 
                 </div>
@@ -45,25 +45,25 @@
             </div>
 
             <div class="form-row pb-2">
-                <input type="text" name="ubicacion" id="ubicacion" value="{{ old('ubicacion', $items->Ubicacion->Ubicacion) }}" class="form-control" disabled/>
+                <input type="text" name="ubicacion" id="ubicacion" value="{{ old('ubicacion', $items->Ubicacion->id.' '.$items->Ubicacion->Ubicacion) }}" class="form-control" disabled/>
             </div>
             <hr>
             <div class="form-row mb-1 ">
-                <label for = "fecha_ingreso" class="col-lg-2 col-form-label">Fecha </label>
+                <label for = "fecha_ingreso" class="col-lg-2 col-form-label text-right">Fecha </label>
                 <div class="col-lg-4">
                     <input type="date" name="fecha_ingreso" id="fecha_ingreso" value="{{ old('fecha_ingreso',date('Y-m-d',strtotime($items->fecha_ingreso))) }}" class="form-control fecha_ingreso" readonly >
                 </div>
-                <label for = "fecha_oficio_dependencia" class="col-lg-2 col-form-label">F. Docto. </label>
+                <label for = "fecha_oficio_dependencia" class="col-lg-2 col-form-label text-right">F. Docto. </label>
                 <div class="col-lg-4">
                     <input type="date" name="fecha_oficio_dependencia" id="fecha_oficio_dependencia" value="{{ old('fecha_oficio_dependencia',$items->fecha_oficio_dependencia) }}" class="form-control" >
                 </div>
             </div>
             <div class="form-row mb-1">
-                <label for = "fecha_ejecucion" class="col-lg-2 col-form-label">F. Ejec. </label>
+                <label for = "fecha_ejecucion" class="col-lg-2 col-form-label text-right">F. Ejec. </label>
                 <div class="col-lg-4">
                     <input type="date" name="fecha_ejecucion" id="fecha_ejecucion" value="{{ old('fecha_ejecucion',$items->fecha_ejecucion) }}" class="form-control" >
                 </div>
-                <label for = "fecha_limite" class="col-lg-2 col-form-label">F. Límite </label>
+                <label for = "fecha_limite" class="col-lg-2 col-form-label text-right">F. Límite </label>
                 <div class="col-lg-4">
                     <input type="date" name="fecha_limite" id="fecha_limite" value="{{ old('fecha_limite',$items->fecha_limite) }}" class="form-control" >
                 </div>
@@ -71,11 +71,11 @@
             <hr>
 
             <div class="form-row mb-1 ">
-                <label for = "latitud" class="col-lg-2 col-form-label">Latitud: </label>
+                <label for = "latitud" class="col-lg-2 col-form-label text-right">Latitud: </label>
                 <div class="col-lg-4">
                     <input type="text" name="latitud" id="latitud" value="{{ old('latitud',$items->latitud) }}" class="form-control latitud" placeholder="17.9983821">
                 </div>
-                <label for = "longitud" class="col-lg-2 col-form-label">Longitud: </label>
+                <label for = "longitud" class="col-lg-2 col-form-label text-right">Longitud: </label>
                 <div class="col-lg-4">
                     <input type="text" name="longitud" id="longitud" value="{{ old('longitud',$items->longitud) }}" class="form-control longitud" placeholder="-92.944787">
                 </div>
@@ -90,17 +90,7 @@
         <div class="grid-container">
 
             <div class="form-group row mb-1">
-                <label for = "oficio_envio" class="col-lg-3 col-form-label">Oficio E. </label>
-                <div class="col-lg-3">
-                    <input type="text" name="oficio_envio" id="oficio_envio" value="{{ old('oficio_envio',$items->oficio_envio) }}" class="form-control" />
-                </div>
-                <label for = "folio_sas" class="col-lg-2 col-form-label">Folio SAS</label>
-                <div class="col-lg-4">
-                    <input type="text" name="folio_sas" id="folio_sas" value="{{ old('folio_sas',$items->folio_sas) }}" class="form-control" />
-                </div>
-            </div>
-            <div class="form-group row mb-1">
-                <label for = "descripcion" class="col-lg-3 col-form-label has-descripcion labelDenuncia">Solicita </label>
+                <label for = "descripcion" class="col-lg-3 col-form-label has-descripcion labelDenuncia text-right">Solicitud </label>
                 <div class="col-lg-9">
                     <textarea name="descripcion" id="descripcion" class="form-control">{{ old('descripcion',$items->descripcion) }}</textarea>
                     <span class="has-descripcion">
@@ -110,20 +100,20 @@
             </div>
 
             <div class="form-group row mb-1">
-                <label for = "referencia" class="col-lg-3 col-form-label labelDenuncia">Referencia </label>
+                <label for = "referencia" class="col-lg-3 col-form-label labelDenuncia text-right">Referencia </label>
                 <div class="col-lg-9">
                     <textarea name="referencia" id="referencia" class="form-control">{{ old('referencia',$items->referencia) }}</textarea>
                 </div>
             </div>
 
             <div class="form-group row mb-1">
-                <label for = "clave_identificadora" class="col-lg-3 col-form-label labelDenuncia">Cve Identific</label>
+                <label for = "clave_identificadora" class="col-lg-3 col-form-label labelDenuncia text-right">Cve Identificadora</label>
                 <div class="col-lg-9">
                     @if ( Auth::user()->hasAnyPermission(['seleccionar_hashtag']) )
                         <select id="clave_identificadora" name="clave_identificadora" class="form-control" size="1">
                             <option value="" selected >Seleccione una Clave</option>
                             @foreach($hashtag as $id => $valor)
-                                <option value="{{ $id }}" @if($items->clave_identificadora == $valor) selected @endif >{{ $valor }}</option>
+                                <option value="{{ $id }}" @if($items->clave_identificadora === $valor) selected @endif >{{ $valor }}</option>
                             @endforeach
                         </select>
                     @else
@@ -133,66 +123,93 @@
             </div>
 
             <div class="form-group row mb-1">
-                <label for = "prioridad_id" class="col-lg-3 col-form-label labelDenuncia">Prioridad</label>
-                <div class="col-lg-2">
+                <label for = "prioridad_id" class="col-lg-3 col-form-label labelDenuncia text-right">Prioridad</label>
+                <div class="col-lg-3">
                     <select id="prioridad_id" name="prioridad_id" class="form-control" size="1">
                         @foreach($prioridades as $t)
-                            <option value="{{$t->id}}" {{ $t->id == $items->prioridad_id ? 'selected': '' }} >{{ $t->prioridad }} </option>
+                            <option value="{{$t->id}}" {{ $t->id === $items->prioridad_id ? 'selected': '' }} >{{ $t->prioridad }} </option>
                         @endforeach
                     </select>
                 </div>
-                <label for = "origen_id" class="col-lg-2 col-form-label labelDenuncia">Origen</label>
-                <div class="col-lg-5">
-                    <select id="origen_id" name="origen_id" class="form-control"size="1">
+                <label for = "origen_id" class="col-lg-2 col-form-label labelDenuncia text-right">Origen</label>
+                <div class="col-lg-4">
+                    <select id="origen_id" name="origen_id" class="form-control" size="1">
                         @foreach($origenes as $t)
-                            <option value="{{$t->id}}" {{ $t->id == $items->origen_id ? 'selected': '' }} >{{ $t->origen }} </option>
+                            <option value="{{$t->id}}" {{ $t->id === $items->origen_id ? 'selected': '' }} >{{ $t->origen }} </option>
                         @endforeach
                     </select>
                 </div>
             </div>
 
             <div class="form-group row mb-1">
-                <label for = "dependencia_id" class="col-lg-3 col-form-label labelDenuncia">Dependencia</label>
+                <label for = "dependencia_id" class="col-lg-3 col-form-label labelDenuncia text-right">Dependencia</label>
                 <div class="col-lg-9">
                     <select id="dependencia_id" name="dependencia_id" class="form-control" size="1">
                         <option value="0" selected>Seleccione una Dependencia</option>
                         @foreach($dependencias as $t)
-                            <option value="{{$t->id}}" {{ $t->id == $items->dependencia_id ? 'selected': '' }} >{{ $t->dependencia }} </option>
+                            <option value="{{$t->id}}" {{ $t->id === $items->dependencia_id ? 'selected': '' }} >{{ $t->dependencia }} </option>
                         @endforeach
                     </select>
                 </div>
             </div>
 
             <div class="form-group row mb-1">
-                <label for = "servicio_id" class="col-lg-3 col-form-label labelDenuncia">Servicio</label>
+                <label for = "servicio_id" class="col-lg-3 col-form-label labelDenuncia text-right">Servicio</label>
                 <div class="col-lg-9">
                     <select id="servicio_id" name="servicio_id" class="form-control" size="1">
                         <option value="0" selected>Seleccione un Servicio</option>
                         @foreach($servicios as $t)
-                            <option value="{{$t->id}}" {{ $t->id == $items->servicio_id ? 'selected': '' }} >{{ $t->id }} - {{ $t->servicio }}</option>
+                            <option value="{{$t->id}}" {{ $t->id === $items->servicio_id ? 'selected': '' }} >{{ $t->id }} - {{ $t->servicio }}</option>
                         @endforeach
                     </select>
                 </div>
             </div>
 
             <div class="form-group row mb-1">
-                <label for = "estatus_id" class="col-lg-3 col-form-label labelDenuncia">Estatus</label>
+                <label for = "estatus_id" class="col-lg-3 col-form-label labelDenuncia text-right">Estatus</label>
                 <div class="col-lg-9">
                     <select id="estatus_id" name="estatus_id" class="form-control" size="1">
                         @foreach($estatus as $t)
-                            <option value="{{$t->id}}" {{ $t->id == $items->estatus_id ? 'selected': '' }} >{{ $t->estatus }} </option>
+                            <option value="{{$t->id}}" {{ $t->id === $items->estatus_id ? 'selected': '' }} >{{ $t->estatus }} </option>
                         @endforeach
                     </select>
                 </div>
             </div>
 
-            <div class="form-row mb-1">
-                <label for = "observaciones" class="col-lg-3 col-form-label">Observaciones </label>
+            <div class="form-group row mb-1">
+                <label for = "observaciones" class="col-lg-3 col-form-label text-right">Observaciones </label>
                 <div class="col-lg-9">
                     <textarea name="observaciones" id="observaciones" class="form-control">{{ old('observaciones',$items->observaciones) }}</textarea>
                 </div>
             </div>
         </div>
+        <div class="grid-container cards-container">
+
+            <div class="card border-2 shadow-sm " >
+                <div class="card-header bg-dark-lighten pt-0 pb-0">
+                    <h5 class="text-110 text-white">
+                        Aplica solo para SAS
+                    </h5>
+                </div>
+                <div class="card-body border-2 border-t-0 brg-default-light p-2" >
+                    <div class="form-group row mb-1">
+                        <label for = "folio_sas" class="col-lg-2 col-form-label text-right">Folio SAS</label>
+                        <div class="col-lg-4">
+                            <input type="text" name="folio_sas" id="folio_sas" value="{{ old('folio_sas',$items->folio_sas) }}" class="form-control" />
+                        </div>
+                        <label for = "folio_sas" class="col-lg-2 col-form-label text-right">Ámbito</label>
+                        <div class="col-lg-4">
+                            <select class="form-control" size="1" id="ambito" name="ambito">
+                                <option value="0" @if($items->ambito===0) selected @endif>No Aplica</option>
+                                <option value="1" @if($items->ambito===1) selected @endif>Urbano</option>
+                                <option value="2" @if($items->ambito===2) selected @endif>Rural</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </div>
@@ -216,17 +233,17 @@
                             <tbody>
                             @foreach($items->imagenes as $item)
                             <tr>
-                                @if( $item->descripcion == "mobile" )
+                                @if( $item->descripcion === "mobile" )
                                 <td>
                                     <a class="pull-left pl-2"  href="{{asset($item->PathImageMobile)}}" target="_blank" >
-                                        <img class="media-object" src="{{asset($item->PathImageMobileThumb)}}" width="64" height="64" >
+                                        <img class="media-object" src="{{asset($item->PathImageMobileThumb)}}" width="64" height="64" alt="" >
                                     </a>
                                 </td>
                                 <td>{{ asset("/storage/mobile/denuncia/".$item->image) }}</td>
                                 @else
                                     <td>
                                         <a class="pull-left pl-2"  href="{{asset($item->PathImage)}}" target="_blank" >
-                                            <img class="media-object" src="{{asset($item->PathImageThumb)}}" width="64" height="64" >
+                                            <img class="media-object" src="{{asset($item->PathImageThumb)}}" width="64" height="64" alt="" >
                                         </a>
                                     </td>
                                     <td>{{ asset("/storage/denuncia/".$item->image) }}</td>
@@ -239,7 +256,7 @@
                             @for($it=$items->imagenes->count()+1;$it<=3;$it++)
                                 <tr>
                                     <td colspan="3">
-                                        <div class="form-group mb-1">
+                                        <div class="form-group mb-1 col-lg-3">
                                             <label for="file{{$it}}"><strong>Archivo {{$it}}</strong>: Subir archivo</label>
                                             <input type="file" id="file{{$it}}" name="file{{$it}}" class="form-control-file">
                                         </div>

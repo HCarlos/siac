@@ -45,7 +45,6 @@
                         @if((int) $items->comunidad_id == (int) $t->id) selected @endif>{{ $t->id.' '.$items->comunidad_id.' '.$t->comunidad }}</option>
             @endforeach
         </select>
-        {{--        {{ Form::select('comunidad_id', $comunidades, $items->comunidad_id, ['id' => 'comunidad_id','class'=>'comunidad_id form-control ','disabled'=>'disabled','size'=>1 ]) }}--}}
     </div>
 
     <label for="ciudad" class="col-md-3 col-form-label">Ciudad</label>

@@ -153,7 +153,7 @@ return [
             'ubicaciones'            => 'ubicaciones',
             'ubicacion_user'         => 'ubicacion_user',
 
-            'colonia_comunidad'      => 'colonia_comunidad',
+            'colonia_a_comunidad'      => 'colonia_a_comunidad',
             'codigopostal_colonia'   => 'codigopostal_colonia',
             'colonia_tipocomunidad'  => 'colonia_tipocomunidad',
 

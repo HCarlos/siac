@@ -48,7 +48,7 @@ class Colonia extends Model
         return $this->hasOne(Comunidad::class,'id','comunidad_id');
     }
     public function comunidades(){
-        return $this->belongsToMany(Comunidad::class,'colonia_comunidad','colonia_id','comunidad_id');
+        return $this->belongsToMany(Comunidad::class,'colonia_a_comunidad','colonia_id','comunidad_id');
     }
 
     public function tipoComunidad() {

@@ -555,7 +555,7 @@ class CreateDenunciaUbicacionTable extends Migration
 
 
 
-        Schema::create($tableNamesDomicilios['colonia_comunidad'], function (Blueprint $table) use ($tableNamesCatalogos, $tableNamesDomicilios){
+        Schema::create($tableNamesDomicilios['colonia_a_comunidad'], function (Blueprint $table) use ($tableNamesCatalogos, $tableNamesDomicilios){
             $table->increments('id');
             $table->unsignedInteger('colonia_id')->default(0)->index();
             $table->unsignedInteger('comunidad_id')->default(0)->index();
@@ -661,7 +661,7 @@ class CreateDenunciaUbicacionTable extends Migration
         Schema::dropIfExists($tableNamesDomicilios['estado_ubicacion']);
         Schema::dropIfExists($tableNamesDomicilios['codigopostal_ubicacion']);
 
-        Schema::dropIfExists($tableNamesDomicilios['colonia_comunidad']);
+        Schema::dropIfExists($tableNamesDomicilios['colonia_a_comunidad']);
         Schema::dropIfExists($tableNamesDomicilios['codigopostal_colonia']);
         Schema::dropIfExists($tableNamesDomicilios['colonia_tipocomunidad']);
 

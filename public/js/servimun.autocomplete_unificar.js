@@ -66,19 +66,6 @@ jQuery(function($) {
 
             });
 
-            // $( Obj ).on( "autocompleteselect", function( event, ui ) {
-            //     var ox = ID.split('/');
-            //     var Id;
-            //     if ( ox.length ==1 ) Id = ui.item[ID];
-            //     if ( ox.length == 2 ) Id = ui.item[ox[0]]+"/"+ui.item[ox[1]];
-            //     $.get( Get+Id, function( data ) {
-            //         asignObjects(Obj,Item, data);
-            //     }, "json" );
-            // });
-            //
-            // $( Obj ).on( "keyup", function( event ) {
-            //     clearObjects(Item);
-            // });
 
         }
 

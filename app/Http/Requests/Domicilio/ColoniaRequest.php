@@ -10,6 +10,7 @@ use App\Models\Catalogos\Domicilios\Codigopostal;
 use App\Models\Catalogos\Domicilios\Colonia;
 use App\Models\Catalogos\Domicilios\Comunidad;
 use App\Models\Catalogos\Domicilios\Ubicacion;
+use App\Models\Denuncias\Denuncia;
 use App\Rules\Uppercase;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Http\FormRequest;
@@ -47,6 +48,8 @@ class ColoniaRequest extends FormRequest
 
         try {
 
+//            dd( $this->all() );
+
             $CPs       = Codigopostal::findOrFail($this->codigopostal_id);
             $Comunidad = Comunidad::findOrFail($this->comunidad_id);
             $Item = [
@@ -68,9 +71,27 @@ class ColoniaRequest extends FormRequest
                 $item = Colonia::create($Item);
             } else {
                 $item = Colonia::find($this->id);
+
+                $colonia_id_actual = $this->id;
+                $comunidad_id_anterior = $item->comunidad_id;
+                $comunidad_id_actual = $Comunidad->id;
+                $comunidad_actual = $Comunidad->comunidad;
+
                 $item->update($Item);
                 Ubicacion::detachesColonia($this->id);
                 $this->detaches($item);
+
+
+                if ($comunidad_id_actual !== $comunidad_id_anterior) {
+                    Ubicacion::where('colonia_id',$colonia_id_actual)
+                        ->where('comunidad_id',$comunidad_id_anterior)
+                        ->update(['comunidad_id' => $comunidad_id_actual]);
+
+                    Denuncia::where('colonia_id',$colonia_id_actual)
+                        ->where('comunidad_id',$comunidad_id_anterior)
+                        ->update(['comunidad' => $comunidad_actual]);
+                }
+
             }
             $this->attaches($item);
             Ubicacion::attachesColonia($this->id);

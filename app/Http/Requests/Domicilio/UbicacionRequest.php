@@ -57,11 +57,10 @@ class UbicacionRequest extends FormRequest
     }
 
 
-    public function manage()
-    {
+    public function manage(){
 
         try {
-            //dd( $this->all() );
+//            dd( $this->all() );
             $Calle   = Calle::find($this->calle_id);
             $Colonia = Colonia::find($this->colonia_id);
             $Comunidad = Comunidad::find($Colonia->comunidad_id);
@@ -93,8 +92,17 @@ class UbicacionRequest extends FormRequest
                 $item = Ubicacion::create($Item);
             } else {
                 $item = Ubicacion::find($this->id);
+//                $colonia_id_actual = $this->id;
+//                $comunidad_id_anterior = $item->comunidad_id;
+//                $comunidad_id_actual = $Comunidad->id;
+
                 $this->detaches($item);
                 $item->update($Item);
+//                if ($colonia_id_actual === $colonia_id_anterior && $comunidad_id_actual !== $comunidad_id_anterior) {
+//                    Ubicacion::where('colonia_id',$comunidad_id_anterior)
+//                        ->where('comunidad_id',$comunidad_id_anterior)
+//                        ->update(['comunidad_id' => $comunidad_id_actual]);
+//                }
             }
             $this->attaches($item);
         }catch (QueryException $e){

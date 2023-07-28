@@ -39,7 +39,7 @@ class Denuncia extends Model
         'searchtextdenuncia', 'denunciamobile_id',
         'folio_sas','favorable',
         'cerrado','fecha_cerrado','cerradopor_id','firmado','uuid',
-        'ip', 'host',
+        'ip', 'host','ambito',
 
 
     ];
