@@ -8,7 +8,7 @@
         <link href="{{ asset('css/ace-themes.css') }}" rel="stylesheet">
     @endsection
 
-    <body >
+    <body>
         <div class="wrapper">
             @include('partials/left-sidebar')
             <div class="content-page">
