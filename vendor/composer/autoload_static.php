@@ -129,6 +129,7 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
             'Psr\\Http\\Client\\' => 16,
             'Psr\\EventDispatcher\\' => 20,
             'Psr\\Container\\' => 14,
+            'Psr\\Clock\\' => 10,
             'Psr\\Cache\\' => 10,
             'Predis\\' => 7,
             'Picqer\\Barcode\\' => 15,
@@ -460,6 +461,10 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'Psr\\Clock\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/clock/src',
         ),
         'Psr\\Cache\\' => 
         array (
@@ -4461,6 +4466,7 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'League\\Flysystem\\Util\\MimeType' => __DIR__ . '/..' . '/league/flysystem/src/Util/MimeType.php',
         'League\\Flysystem\\Util\\StreamHasher' => __DIR__ . '/..' . '/league/flysystem/src/Util/StreamHasher.php',
         'League\\MimeTypeDetection\\EmptyExtensionToMimeTypeMap' => __DIR__ . '/..' . '/league/mime-type-detection/src/EmptyExtensionToMimeTypeMap.php',
+        'League\\MimeTypeDetection\\ExtensionLookup' => __DIR__ . '/..' . '/league/mime-type-detection/src/ExtensionLookup.php',
         'League\\MimeTypeDetection\\ExtensionMimeTypeDetector' => __DIR__ . '/..' . '/league/mime-type-detection/src/ExtensionMimeTypeDetector.php',
         'League\\MimeTypeDetection\\ExtensionToMimeTypeMap' => __DIR__ . '/..' . '/league/mime-type-detection/src/ExtensionToMimeTypeMap.php',
         'League\\MimeTypeDetection\\FinfoMimeTypeDetector' => __DIR__ . '/..' . '/league/mime-type-detection/src/FinfoMimeTypeDetector.php',
@@ -4902,6 +4908,7 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'PHPUnit\\Framework\\Constraint\\LogicalXor' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Operator/LogicalXor.php',
         'PHPUnit\\Framework\\Constraint\\ObjectEquals' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Object/ObjectEquals.php',
         'PHPUnit\\Framework\\Constraint\\ObjectHasAttribute' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Object/ObjectHasAttribute.php',
+        'PHPUnit\\Framework\\Constraint\\ObjectHasProperty' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Object/ObjectHasProperty.php',
         'PHPUnit\\Framework\\Constraint\\Operator' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Operator/Operator.php',
         'PHPUnit\\Framework\\Constraint\\RegularExpression' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/String/RegularExpression.php',
         'PHPUnit\\Framework\\Constraint\\SameSize' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Constraint/Cardinality/SameSize.php',
@@ -6441,6 +6448,7 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'Predis\\Command\\Redis\\TopK\\TOPKRESERVE' => __DIR__ . '/..' . '/predis/predis/src/Command/Redis/TopK/TOPKRESERVE.php',
         'Predis\\Command\\Redis\\UNSUBSCRIBE' => __DIR__ . '/..' . '/predis/predis/src/Command/Redis/UNSUBSCRIBE.php',
         'Predis\\Command\\Redis\\UNWATCH' => __DIR__ . '/..' . '/predis/predis/src/Command/Redis/UNWATCH.php',
+        'Predis\\Command\\Redis\\WAITAOF' => __DIR__ . '/..' . '/predis/predis/src/Command/Redis/WAITAOF.php',
         'Predis\\Command\\Redis\\WATCH' => __DIR__ . '/..' . '/predis/predis/src/Command/Redis/WATCH.php',
         'Predis\\Command\\Redis\\XADD' => __DIR__ . '/..' . '/predis/predis/src/Command/Redis/XADD.php',
         'Predis\\Command\\Redis\\XDEL' => __DIR__ . '/..' . '/predis/predis/src/Command/Redis/XDEL.php',
@@ -6482,7 +6490,13 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'Predis\\Command\\Redis\\ZUNIONSTORE' => __DIR__ . '/..' . '/predis/predis/src/Command/Redis/ZUNIONSTORE.php',
         'Predis\\Command\\ScriptCommand' => __DIR__ . '/..' . '/predis/predis/src/Command/ScriptCommand.php',
         'Predis\\Command\\Strategy\\ContainerCommands\\Functions\\DeleteStrategy' => __DIR__ . '/..' . '/predis/predis/src/Command/Strategy/ContainerCommands/Functions/DeleteStrategy.php',
+        'Predis\\Command\\Strategy\\ContainerCommands\\Functions\\DumpStrategy' => __DIR__ . '/..' . '/predis/predis/src/Command/Strategy/ContainerCommands/Functions/DumpStrategy.php',
+        'Predis\\Command\\Strategy\\ContainerCommands\\Functions\\FlushStrategy' => __DIR__ . '/..' . '/predis/predis/src/Command/Strategy/ContainerCommands/Functions/FlushStrategy.php',
+        'Predis\\Command\\Strategy\\ContainerCommands\\Functions\\KillStrategy' => __DIR__ . '/..' . '/predis/predis/src/Command/Strategy/ContainerCommands/Functions/KillStrategy.php',
+        'Predis\\Command\\Strategy\\ContainerCommands\\Functions\\ListStrategy' => __DIR__ . '/..' . '/predis/predis/src/Command/Strategy/ContainerCommands/Functions/ListStrategy.php',
         'Predis\\Command\\Strategy\\ContainerCommands\\Functions\\LoadStrategy' => __DIR__ . '/..' . '/predis/predis/src/Command/Strategy/ContainerCommands/Functions/LoadStrategy.php',
+        'Predis\\Command\\Strategy\\ContainerCommands\\Functions\\RestoreStrategy' => __DIR__ . '/..' . '/predis/predis/src/Command/Strategy/ContainerCommands/Functions/RestoreStrategy.php',
+        'Predis\\Command\\Strategy\\ContainerCommands\\Functions\\StatsStrategy' => __DIR__ . '/..' . '/predis/predis/src/Command/Strategy/ContainerCommands/Functions/StatsStrategy.php',
         'Predis\\Command\\Strategy\\StrategyResolverInterface' => __DIR__ . '/..' . '/predis/predis/src/Command/Strategy/StrategyResolverInterface.php',
         'Predis\\Command\\Strategy\\SubcommandStrategyInterface' => __DIR__ . '/..' . '/predis/predis/src/Command/Strategy/SubcommandStrategyInterface.php',
         'Predis\\Command\\Strategy\\SubcommandStrategyResolver' => __DIR__ . '/..' . '/predis/predis/src/Command/Strategy/SubcommandStrategyResolver.php',
@@ -6606,6 +6620,7 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'Psr\\Cache\\CacheItemInterface' => __DIR__ . '/..' . '/psr/cache/src/CacheItemInterface.php',
         'Psr\\Cache\\CacheItemPoolInterface' => __DIR__ . '/..' . '/psr/cache/src/CacheItemPoolInterface.php',
         'Psr\\Cache\\InvalidArgumentException' => __DIR__ . '/..' . '/psr/cache/src/InvalidArgumentException.php',
+        'Psr\\Clock\\ClockInterface' => __DIR__ . '/..' . '/psr/clock/src/ClockInterface.php',
         'Psr\\Container\\ContainerExceptionInterface' => __DIR__ . '/..' . '/psr/container/src/ContainerExceptionInterface.php',
         'Psr\\Container\\ContainerInterface' => __DIR__ . '/..' . '/psr/container/src/ContainerInterface.php',
         'Psr\\Container\\NotFoundExceptionInterface' => __DIR__ . '/..' . '/psr/container/src/NotFoundExceptionInterface.php',
