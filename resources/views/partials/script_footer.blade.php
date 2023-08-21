@@ -36,9 +36,9 @@
 
 </script>
 
-{{--<script src="http{{env('HTTP_SUFIX')}}://{{ Request::getHost() }}:{{env('LARAVEL_ECHO_PORT')}}/socket.io/socket.io.js"  ></script>--}}
+<script src="http{{env('HTTP_SUFIX')}}://{{ Request::getHost() }}:{{env('LARAVEL_ECHO_PORT')}}/socket.io/socket.io.js"  ></script>
 
-<script src="http{{env('HTTP_SUFIX')}}://{{ env('DB_HOST') }}:{{env('LARAVEL_ECHO_PORT')}}/socket.io/socket.io.js"  ></script>
+{{--<script src="http{{env('HTTP_SUFIX')}}://{{ env('DB_HOST') }}:{{env('LARAVEL_ECHO_PORT')}}/socket.io/socket.io.js"  ></script>--}}
 
 {{--<script src="http://localhost:{{env('LARAVEL_ECHO_PORT')}}/socket.io/socket.io.js"  ></script>--}}
 
