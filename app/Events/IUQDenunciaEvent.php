@@ -22,7 +22,7 @@ class IUQDenunciaEvent implements ShouldBroadcast{
 
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $denuncia_id, $user_id, $trigger_type, $msg, $icon, $status;
+    public $denuncia_id, $user_id, $trigger_type, $msg, $icon, $status, $power;
     /**
      * Create a new event instance.
      *
@@ -33,6 +33,7 @@ class IUQDenunciaEvent implements ShouldBroadcast{
         $this->user_id      = $user_id;
         $this->trigger_type = $trigger_type;
         $this->status       = 204;
+        $this->power        = 10;
     }
 
     public function broadcastOn(): array{
@@ -95,6 +96,7 @@ class IUQDenunciaEvent implements ShouldBroadcast{
             'msg'          => $this->msg,
             'icon'         => $this->icon,
             'status'       => $this->status,
+            'power'        => $this->power,
         ];
     }
 

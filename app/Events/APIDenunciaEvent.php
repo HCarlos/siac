@@ -72,6 +72,7 @@ class APIDenunciaEvent  implements ShouldBroadcast {
             'msg'          => $this->msg,
             'icon'         => $this->icon,
             'status'       => $this->status,
+            'power'        => 10,
         ];
 
 

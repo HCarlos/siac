@@ -55,6 +55,7 @@ jQuery(function($) {
             .listen('.APIDenunciaEvent', (data) => {
                 if ( parseInt(data.status) === 200 ){
                     i++;
+                    // alert(data.power);
                     $('#power').html(parseInt(data.power) * i);
                     if ( $("#pantallaMobileMaster") != null ) {
                         localStorage.setItems++;
