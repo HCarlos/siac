@@ -44,7 +44,10 @@
 
 {{--<script src="{{env('HOST_REDIS')}}:{{env('LARAVEL_ECHO_PORT')}}/socket.io/socket.io.js"  ></script>--}}
 
-<script src="//{{ Request::getHost() }}:{{env('LARAVEL_ECHO_PORT')}}/socket.io/socket.io.js"></script>
+{{--<script src="//{{ Request::getHost() }}:{{env('LARAVEL_ECHO_PORT')}}/socket.io/socket.io.js"></script>--}}
+
+<script src="http://{{ Request::getHost() }}:6001/socket.io/socket.io.js"></script>
+
 
 {{--<script src="{{ url('/js/socket.io.js') }}" type="text/javascript" ></script>--}}
 
