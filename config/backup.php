@@ -47,7 +47,7 @@ return [
                  * Set to `null` to include complete absolute path
                  * Example: base_path()
                  */
-                'relative_path' => null,
+                'relative_path' => false,
             ],
 
             /*
@@ -104,7 +104,7 @@ return [
          * If not specified, the file extension will be .archive for MongoDB and .sql for all other databases
          * The file extension should be specified without a leading .
          */
-        'database_dump_file_extension' => '',
+        'database_dump_file_extension' => 'backup',
 
         'destination' => [
 

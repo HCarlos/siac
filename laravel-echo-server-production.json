@@ -18,11 +18,16 @@
     "host": null,
     "port": "6001",
     "protocol": "https",
-    "socketio": {},
+    "socketio": {
+        "cors": {
+            "origin": "https://siac.villahermosa.gob.mx",
+            "credentials": true
+        }
+    },
     "secureOptions": 67108864,
-    "sslCertPath": "/etc/letsencrypt/live/servimun.mx/cert.pem",
-    "sslKeyPath": "/etc/letsencrypt/live/servimun.mx/privkey.pem",
-    "sslCertChainPath": "/etc/letsencrypt/live/servimun.mx/chain.pem",
+    "sslCertPath": "/etc/ssl/villahermosa.crt",
+    "sslKeyPath": "/etc/ssl/villahermosa.key",
+    "sslCertChainPath": "/etc/ssl/bundle.crt",
     "sslPassphrase": "",
     "subscribers": {
         "http": true,
@@ -33,7 +38,6 @@
         "allowCors": true,
         "allowOrigin": "",
         "allowMethods": "",
-        "allowHeaders": ""
+        "allowHeaders": "Origin, Content-Type, X-Auth-Token, X-Requested-With, Accept, Authorization, X-XSRF-TOKEN, X-Socket-Id"
     }
 }
-

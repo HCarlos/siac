@@ -69,8 +69,10 @@ return [
             'schema' => 'public',
             'sslmode' => 'prefer',
             'add_extra_option' => '--jobs=2',
+            'dump' => [
+                'add_extra_option' => '--format=c', // and any other pg_dump flags
+            ],
         ],
-
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'host' => env('DB_HOST', 'localhost'),
@@ -99,7 +101,6 @@ return [
                 'port' => env('REDIS_PORT', 6379),
                 'database' => env('REDIS_DB', 0),
             ],
-
             'cache' => [
                 'url' => env('REDIS_URL'),
                 'host' => env('REDIS_HOST', '127.0.0.1'),
