@@ -70,7 +70,11 @@ return [
             'sslmode' => 'prefer',
             'add_extra_option' => '--jobs=2',
             'dump' => [
+                // 'dump_binary_path' => '/var/lib/pgsql',
                 'add_extra_option' => '--format=c', // and any other pg_dump flags
+                'use_single_transaction',
+		        'timeout' => 60 * 30, // 30 minute timeout
+		        // 'exclude_tables' => ['table1', 'table2'],
             ],
         ],
         'sqlsrv' => [
