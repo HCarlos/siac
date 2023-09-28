@@ -154,6 +154,38 @@ class Stack extends \Com\Tecnick\Pdf\Font\Buffer
     }
 
     /**
+     * Returns the current font type (i.e.: Core, TrueType, TrueTypeUnicode, Type1).
+     *
+     * @return string
+     */
+    public function getCurrentFontType()
+    {
+        return $this->getFont($this->stack[$this->index]['key'])['type'];
+    }
+
+    /**
+     * Returns true if the current font type is Core, TrueType or Type1.
+     *
+     * @return bool
+     */
+    public function isCurrentByteFont()
+    {
+        $type = $this->getCurrentFontType();
+        return !(($type == 'Core') || ($type == 'TrueType') || ($type == 'Type1'));
+    }
+
+    /**
+     * Returns true if the current font type is TrueTypeUnicode or cidfont0.
+     *
+     * @return bool
+     */
+    public function isCurrentUnicodeFont()
+    {
+        $type = $this->getCurrentFontType();
+        return !(($type == 'TrueTypeUnicode') || ($type == 'cidfont0'));
+    }
+
+    /**
      * Remove and return the last inserted font
      *
      * @return array
@@ -237,15 +269,39 @@ class Stack extends \Com\Tecnick\Pdf\Font\Buffer
      */
     public function getOrdArrWidth($uniarr)
     {
-        $width = 0;
+        return $this->getOrdArrDims($uniarr)['totwidth'];
+    }
+
+    /**
+     * Returns various dimensions of the string specified using an array of codepoints.
+     *
+     * @param array $uniarr Array of character codepoints.
+     *
+     * @return array  ('chars', 'spaces', 'totwidth', 'totspacewidth')
+     */
+    public function getOrdArrDims($uniarr)
+    {
+        $chars = count($uniarr); // total number of chars
+        $spaces = 0; // total number of spaces
+        $totwidth = 0; // total string width
+        $totspacewidth = 0; // total space width
+        $spw = $this->getCharWidth(32); // width of a single space
         foreach ($uniarr as $ord) {
-            $width += $this->getCharWidth($ord);
+            $totwidth += $this->getCharWidth($ord);
+            if ($ord == 32) {
+                ++$spaces;
+                $totspacewidth += $spw;
+            }
         }
-        $width += ($this->stack[$this->index]['spacing']
-            * $this->stack[$this->index]['stretching']
-            * (count($uniarr) - 1)
+        $fact = ($this->stack[$this->index]['spacing'] * $this->stack[$this->index]['stretching']);
+        $totwidth += ($fact * ($chars - 1));
+        $totspacewidth += ($fact * ($spaces - 1));
+        return array(
+            'chars' => $chars,
+            'spaces' => $spaces,
+            'totwidth' => $totwidth,
+            'totspacewidth' => $totspacewidth
         );
-        return $width;
     }
 
     /**
@@ -307,6 +363,7 @@ class Stack extends \Com\Tecnick\Pdf\Font\Buffer
         $this->metric[$mkey] = array(
             'out'          => sprintf('BT /F%d %F Tf ET', $data['i'], $font['size']), // PDF output string
             'key'          => $font['key'],
+            'type'         => $data['type'],
             'size'         => $font['size'],                                          // size in points
             'spacing'      => $font['spacing'],
             'stretching'   => $font['stretching'],
