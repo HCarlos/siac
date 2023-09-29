@@ -56,15 +56,23 @@ trait DenunciaTrait
 
     public function getUltimoEstatusAttribute(){
         if ( $this->ultimo_estatu_denuncia_dependencia_servicio->count() > 0){
-            return $this->ultimo_estatu_denuncia_dependencia_servicio->sortByDesc('id')->first()->estatu->estatus;
+            return $this->ultimo_estatu_denuncia_dependencia_servicio
+                ->where('dependencia_id',$this->dependencia_id)
+                ->sortByDesc('id')
+                ->first()->estatu->estatus;
         }else{
             return 'Error en Denuncia -> Estatus';
         }
     }
 
+//    ->where('dependencia_id',$this->dependencia_id)
+
     public function getUltimaFechaEstatusAttribute(){
         if ( $this->ultimo_estatu_denuncia_dependencia_servicio->count() > 0){
-            $FechaMovto =  $this->ultimo_estatu_denuncia_dependencia_servicio->sortByDesc('id')->first()->fecha_movimiento;
+            $FechaMovto =  $this->ultimo_estatu_denuncia_dependencia_servicio
+                ->where('dependencia_id',$this->dependencia_id)
+                ->sortByDesc('id')
+                ->first()->fecha_movimiento;
             return date_format($FechaMovto,'d-m-Y');
         }else{
             return 'Error en Denuncia -> Estatus';

@@ -352,6 +352,4 @@ class ListDenunciaXLSXController extends Controller
 
 
 
-
-
 }
