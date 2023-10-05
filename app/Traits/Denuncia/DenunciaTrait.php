@@ -73,13 +73,17 @@ trait DenunciaTrait
 
     public function getUltimaFechaEstatusAttribute(){
         if ( $this->ultimo_estatu_denuncia_dependencia_servicio->count() > 0){
-            $FechaMovto =  $this->ultimo_estatu_denuncia_dependencia_servicio
-                ->where('dependencia_id',$this->dependencia_id)
-                ->sortByDesc('id')
-                ->first()->fecha_movimiento;
-            return date_format($FechaMovto,'d-m-Y');
+            try {
+                $FechaMovto =  $this->ultimo_estatu_denuncia_dependencia_servicio
+                    ->where('dependencia_id',$this->dependencia_id)
+                    ->sortByDesc('id')
+                    ->first()->fecha_movimiento;
+                return date_format($FechaMovto,'d-m-Y');
+            }catch (\Exception $e){
+                return 'NULO';
+            }
         }else{
-            return 'Error en Denuncia -> Estatus';
+            return 'Error en Denuncia -> Fecha Movimiento';
         }
     }
 
