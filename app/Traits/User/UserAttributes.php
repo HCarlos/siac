@@ -63,8 +63,6 @@ trait UserAttributes
     }
 
     public function getDependenciaIdArrayAttribute(){
-//        dd($this->dependencias()->pluck('dependencia_id')->toArray());
-//        return $this->dependencias()->pluck('dependencia_id')->implode(',','name');
         return $this->dependencias()->pluck('dependencia_id')->toArray();
     }
 

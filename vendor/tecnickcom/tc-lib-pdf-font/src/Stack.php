@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Stack.php
  *
@@ -6,7 +7,7 @@
  * @category    Library
  * @package     PdfFont
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2011-2015 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2011-2023 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-pdf-font
  *
@@ -15,8 +16,8 @@
 
 namespace Com\Tecnick\Pdf\Font;
 
-use \Com\Tecnick\Pdf\Font\Font;
-use \Com\Tecnick\Pdf\Font\Exception as FontException;
+use Com\Tecnick\Pdf\Font\Font;
+use Com\Tecnick\Pdf\Font\Exception as FontException;
 
 /**
  * Com\Tecnick\Pdf\Font\Stack
@@ -25,7 +26,7 @@ use \Com\Tecnick\Pdf\Font\Exception as FontException;
  * @category    Library
  * @package     PdfFont
  * @author      Nicola Asuni <info@tecnick.com>
- * @copyright   2011-2015 Nicola Asuni - Tecnick.com LTD
+ * @copyright   2011-2023 Nicola Asuni - Tecnick.com LTD
  * @license     http://www.gnu.org/copyleft/lesser.html GNU-LGPL v3 (see LICENSE.TXT)
  * @link        https://github.com/tecnickcom/tc-lib-pdf-font
  */
@@ -372,7 +373,7 @@ class Stack extends \Com\Tecnick\Pdf\Font\Buffer
         // add this font in the stack wit metrics in internal units
         $this->metric[$mkey] = array(
             'outraw'       => $outfont,
-            'out'          => sprintf('BT '.$outfont.' ET'."\r"), // PDF output string
+            'out'          => sprintf('BT ' . $outfont . ' ET' . "\r"), // PDF output string
             'key'          => $font['key'],
             'type'         => $data['type'],
             'size'         => $size,   // size in points
@@ -395,10 +396,10 @@ class Stack extends \Com\Tecnick\Pdf\Font\Buffer
         );
         $tbox = explode(' ', substr($data['desc']['FontBBox'], 1, -1));
         $this->metric[$mkey]['fbbox'] = array(
-            ($tbox[0] * $wratio), // left
-            ($tbox[1] * $cratio), // bottom
-            ($tbox[2] * $wratio), // right
-            ($tbox[3] * $cratio), // top
+            ((float)$tbox[0] * $wratio), // left
+            ((float)$tbox[1] * $cratio), // bottom
+            ((float)$tbox[2] * $wratio), // right
+            ((float)$tbox[3] * $cratio), // top
         );
         //left, bottom, right, and top edges
         foreach ($data['cw'] as $chr => $width) {

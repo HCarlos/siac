@@ -23,10 +23,10 @@
                         <small>{{$item->ciudadano->curp}}</small>
                     </td>
                     <td  class="w-15">{{($item->fecha_ingreso)}}</td>
-                    <td><a title="{{($item->dependencia->dependencia)}}">{{($item->dependencia->abreviatura)}}</a></td>
+                    <td><a title="{{($item->ultima_dependencia)}}">{{($item->ultima_dependencia)}}</a></td>
 
                     <td class="w-25">
-                        {{($item->servicio->servicio)}}<br>
+                        {{($item->ultimo_servicio)}}<br>
                         <small class="text-gray-lighter">{{( $item->ultimo_estatus )}}</small>
                         @if( $item->TotalRespuestas>0 )
                             > <small class="text-danger"><strong> {{( $item->TotalRespuestas )}}</strong></small>

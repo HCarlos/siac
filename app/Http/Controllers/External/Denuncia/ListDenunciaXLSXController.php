@@ -86,7 +86,10 @@ class ListDenunciaXLSXController extends Controller
             $creadopor   = User::find($item->creadopor_id);
 
 //                $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
-            $fechaIngreso   = date_format($item->fecha_ingreso,'d-m-Y');
+
+            //dd($item->fecha_ingreso);
+
+            $fechaIngreso   = !is_null($item->fecha_ingreso) ? date_format($item->fecha_ingreso,'d-m-Y') : '';
             $fechaLimite    = Carbon::parse($item->fecha_limite)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
             $fechaEjecucion = Carbon::parse($item->fecha_ejecucion)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
 
@@ -118,17 +121,17 @@ class ListDenunciaXLSXController extends Controller
                 ->setCellValue('K'.$C, $ubicacion->Ubicacion ?? '')
                 ->setCellValue('L'.$C, $ciudadano->TelefonosCelularesEmails ?? '')
                 ->setCellValue('M'.$C, $fechaIngreso ?? '')
-                ->setCellValue('N'.$C, $servicio->subarea->area->dependencia->dependencia ?? '')
+                ->setCellValue('N'.$C, $item->ultima_dependencia ?? '')
                 ->setCellValue('O'.$C, $servicio->subarea->area->area ?? '')
                 ->setCellValue('P'.$C, $servicio->subarea->subarea ?? '')
-                ->setCellValue('Q'.$C, $servicio->servicio ?? '')
+                ->setCellValue('Q'.$C, $item->ultimo_servicio ?? '')
                 ->setCellValue('R'.$C, $item->descripcion ?? '')
                 ->setCellValue('S'.$C, $item->referencia ?? '')
                 ->setCellValue('T'.$C, $prioridad->prioridad ?? '')
                 ->setCellValue('U'.$C, $origen->origen ?? '')
                 ->setCellValue('V'.$C, $item->ultimo_estatus ?? '')
                 ->setCellValue('W'.$C, $item->ultima_fecha_estatus ?? '')
-                ->setCellValue('X'.$C, $respuesta )
+                ->setCellValue('X'.$C, $item->ultima_respuesta )
                 ->setCellValue('Y'.$C, $item->observaciones )
                 ->setCellValue('Z'.$C, $item->creadopor->username )
                 ->setCellValue('AA'.$C, $item->uuid )
@@ -138,6 +141,9 @@ class ListDenunciaXLSXController extends Controller
                 ->setCellValue('AE'.$C, trim($creadopor->FullName ?? ''));
             $C++;
         }
+//        ->setCellValue('N'.$C, $servicio->subarea->area->dependencia->dependencia ?? '')
+//        ->setCellValue('Q'.$C, $servicio->servicio ?? '')
+
         $Cx = $C  - 1;
         $oVal = $sh->getCell('G1')->getValue();
         $sh->setCellValue('B'.$C, 'TOTAL DE REGISTROS')
@@ -173,7 +179,7 @@ class ListDenunciaXLSXController extends Controller
         $sh->setCellValue('I1', Carbon::now()->format('d-m-Y h:m:s'));
         foreach ($Items as $item){
 
-            //dd($item);
+//            dd($item);
 
             $ciudadano   = User::find($item->ciudadano_id);
             $prioridad   = Prioridad::find($item->prioridad_id);
@@ -185,7 +191,7 @@ class ListDenunciaXLSXController extends Controller
             $creadopor   = User::find($item->creadopor_id);
 
 //                $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
-            $fechaIngreso   = date_format($item->fecha_ingreso,'d-m-Y');
+            $fechaIngreso   = !is_null($item->fecha_ingreso) ? date_format($item->fecha_ingreso,'d-m-Y') : '';
             $fechaLimite    = Carbon::parse($item->fecha_limite)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
             $fechaEjecucion = Carbon::parse($item->fecha_ejecucion)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
 
@@ -204,7 +210,7 @@ class ListDenunciaXLSXController extends Controller
             $sh
                 ->setCellValue('A'.$C, $item->id ?? 0)
                 ->setCellValue('B'.$C, $fechaIngreso ?? '')
-                ->setCellValue('C'.$C, trim($item->servicio->servicio ?? ''))
+                ->setCellValue('C'.$C, trim($item->ultimo_servicio ?? ''))
                 ->setCellValue('D'.$C, trim($ciudadano->FullName ?? ''))
                 ->setCellValue('E'.$C, trim($ciudadano->telefonos ?? ''))
                 ->setCellValue('F'.$C, $ubicacion->Ubicacion ?? '')
