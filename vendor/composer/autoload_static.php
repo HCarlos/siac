@@ -4585,6 +4585,8 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'Maatwebsite\\Excel\\Console\\WithModelStub' => __DIR__ . '/..' . '/maatwebsite/excel/src/Console/WithModelStub.php',
         'Maatwebsite\\Excel\\DefaultValueBinder' => __DIR__ . '/..' . '/maatwebsite/excel/src/DefaultValueBinder.php',
         'Maatwebsite\\Excel\\DelegatedMacroable' => __DIR__ . '/..' . '/maatwebsite/excel/src/DelegatedMacroable.php',
+        'Maatwebsite\\Excel\\Events\\AfterBatch' => __DIR__ . '/..' . '/maatwebsite/excel/src/Events/AfterBatch.php',
+        'Maatwebsite\\Excel\\Events\\AfterChunk' => __DIR__ . '/..' . '/maatwebsite/excel/src/Events/AfterChunk.php',
         'Maatwebsite\\Excel\\Events\\AfterImport' => __DIR__ . '/..' . '/maatwebsite/excel/src/Events/AfterImport.php',
         'Maatwebsite\\Excel\\Events\\AfterSheet' => __DIR__ . '/..' . '/maatwebsite/excel/src/Events/AfterSheet.php',
         'Maatwebsite\\Excel\\Events\\BeforeExport' => __DIR__ . '/..' . '/maatwebsite/excel/src/Events/BeforeExport.php',

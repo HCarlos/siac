@@ -110,11 +110,11 @@ trait DenunciaTrait
                     $ret = $this->ultimo_estatu_denuncia_dependencia_servicio
                         ->whereIn('dependencia_id',$DependenciaIdArray)
                         ->sortByDesc('id')
-                        ->first()->dependencia->abreviatura;
+                        ->first()->dependencia->dependencia;
                 }else{
                     $ret = $this->ultimo_estatu_denuncia_dependencia_servicio
                         ->sortByDesc('id')
-                        ->first()->dependencia->abreviatura;
+                        ->first()->dependencia->dependencia;
                 }
                 return $ret;
             }catch (\Exception $e){

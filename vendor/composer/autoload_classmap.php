@@ -3857,6 +3857,8 @@ return array(
     'Maatwebsite\\Excel\\Console\\WithModelStub' => $vendorDir . '/maatwebsite/excel/src/Console/WithModelStub.php',
     'Maatwebsite\\Excel\\DefaultValueBinder' => $vendorDir . '/maatwebsite/excel/src/DefaultValueBinder.php',
     'Maatwebsite\\Excel\\DelegatedMacroable' => $vendorDir . '/maatwebsite/excel/src/DelegatedMacroable.php',
+    'Maatwebsite\\Excel\\Events\\AfterBatch' => $vendorDir . '/maatwebsite/excel/src/Events/AfterBatch.php',
+    'Maatwebsite\\Excel\\Events\\AfterChunk' => $vendorDir . '/maatwebsite/excel/src/Events/AfterChunk.php',
     'Maatwebsite\\Excel\\Events\\AfterImport' => $vendorDir . '/maatwebsite/excel/src/Events/AfterImport.php',
     'Maatwebsite\\Excel\\Events\\AfterSheet' => $vendorDir . '/maatwebsite/excel/src/Events/AfterSheet.php',
     'Maatwebsite\\Excel\\Events\\BeforeExport' => $vendorDir . '/maatwebsite/excel/src/Events/BeforeExport.php',
