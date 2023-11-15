@@ -209,19 +209,18 @@ class ListDenunciaXLSXController extends Controller
 
             $sh
                 ->setCellValue('A'.$C, $item->id ?? 0)
-                ->setCellValue('B'.$C, $fechaIngreso ?? '')
-                ->setCellValue('C'.$C, trim($item->ultimo_servicio ?? ''))
+                ->setCellValue('B'.$C, trim($item->ultimo_servicio ?? ''))
+                ->setCellValue('C'.$C, $fechaIngreso ?? '')
                 ->setCellValue('D'.$C, trim($ciudadano->FullName ?? ''))
                 ->setCellValue('E'.$C, trim($ciudadano->telefonos ?? ''))
-                ->setCellValue('F'.$C, $ubicacion->Ubicacion ?? '')
-                ->setCellValue('G'.$C, trim($ubicacion->colonia ?? ''))
-                ->setCellValue('H'.$C, trim($ubicacion->calle ?? ''))
-                ->setCellValue('I'.$C, trim($ubicacion->num_ext ?? ''))
-                ->setCellValue('J'.$C, trim($ubicacion->num_int ?? ''))
-                ->setCellValue('K'.$C, $item->referencia ?? '')
-                ->setCellValue('L'.$C, $item->Ambito() ?? '')
-                ->setCellValue('M'.$C, $item->ultimo_estatus ?? '')
-                ->setCellValue('N'.$C, $item->ultima_fecha_estatus ?? '');
+                ->setCellValue('F'.$C, trim($ubicacion->calle ?? ''))
+                ->setCellValue('G'.$C, trim($ubicacion->num_ext ?? ''))
+                ->setCellValue('H'.$C, trim($ubicacion->num_int ?? ''))
+                ->setCellValue('I'.$C, trim($ubicacion->colonia ?? ''))
+                ->setCellValue('J'.$C, $item->referencia ?? '')
+                ->setCellValue('K'.$C, $item->Ambito() ?? '')
+                ->setCellValue('L'.$C, $item->ultimo_estatus ?? '')
+                ->setCellValue('M'.$C, $item->ultima_fecha_estatus ?? '');
 
             $C++;
         }
