@@ -531,4 +531,8 @@ Route::get('/imprimir_denuncia_archivo/{uuid}', 'External\Denuncia\HojaDenunciaA
             $response = $fcm->sendNotification(1,1,'ANDROID','ezffbR76Sc6wlFKNm02ajT:APA91bH-vk23O3lmEFQCEqASli93-D4IVWkRccwRIUsmJvtxBrv_QGVNbHZ40aW-DzYOEu5zy6LpwKXx9NtPL02AVRsVJMXIAw0wdIHu3orkXaifx-H8YOZh313ObhbYjtnaS12TPEmZ','hola android','carlos android');
     });
 
+Route::get('getServiciosFromDependenciasAxios/{id}', 'Denuncia\ServicioController@getServiciosFromDependenciasAxios')->name('getServiciosFromDependenciasAxios');
+
+
+
 //});

@@ -405,9 +405,6 @@ class DenunciaController extends Controller{
 // ***************** ELIMINA EL ITEM VIA AJAX ++++++++++++++++++++ //
     protected function getServiciosFromDependencias($id= 0){
 
-
-//        dd($id);
-
         $item = Servicio::getQueryServiciosFromDependencias($id);
 
         if (isset($item)) {

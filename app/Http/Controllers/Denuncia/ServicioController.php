@@ -214,5 +214,15 @@ class ServicioController extends Controller
         }
     }
 
+    protected function getServiciosFromDependenciasAxios($id= 0){
 
+        $item = Servicio::getQueryServiciosFromDependencias($id);
+
+        if (isset($item)) {
+            return Response::json(['mensaje' => 'OK', 'data' => $item, 'status' => '200'], 200);
+        } else {
+            return Response::json(['mensaje' => 'Error', 'data' => dd($item), 'status' => '200'], 200);
+        }
+
+    }
 }
