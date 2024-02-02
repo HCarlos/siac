@@ -121,6 +121,7 @@ return array(
     'Com\\Tecnick\\Pdf\\Font\\' => array($vendorDir . '/tecnickcom/tc-lib-pdf-font/src'),
     'Com\\Tecnick\\Pdf\\Encrypt\\' => array($vendorDir . '/tecnickcom/tc-lib-pdf-encrypt/src'),
     'Com\\Tecnick\\File\\' => array($vendorDir . '/tecnickcom/tc-lib-file/src'),
+    'Carbon\\Doctrine\\' => array($vendorDir . '/carbonphp/carbon-doctrine-types/src/Carbon/Doctrine'),
     'Carbon\\' => array($vendorDir . '/nesbot/carbon/src/Carbon'),
     'Brick\\Math\\' => array($vendorDir . '/brick/math/src'),
     'App\\' => array($baseDir . '/app'),

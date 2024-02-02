@@ -8,7 +8,7 @@
             <div class="col-md-6">
                 <div class="text-md-right footer-links d-none d-md-block">
                     {{config("atemun.nombre_software")}}
-                    <small id="power"></small>
+                    <small class="text-warning-d1" id="power"></small>
                 </div>
             </div>
         </div>
