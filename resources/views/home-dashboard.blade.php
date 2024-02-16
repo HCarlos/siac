@@ -37,10 +37,10 @@
 
                                     <div class="ml-3 flex-grow-1">
                                         <div class="pos-rel">
-                                            <span class="text-dark-tp3 text-180">
+                                            <span class="text-dark-tp3 text-180" id="denuncias_hoy">
                                                 {{ $DenunciasHoy }}
                                             </span>
-                                            <span class="@if($porc > 0) text-blue-m1 @else text-danger-m1 @endif  text-600 text-90 ml-15 text-nowrap">
+                                            <span class="@if($porc > 0) text-blue-m1 @else text-danger-m1 @endif  text-600 text-90 ml-15 text-nowrap"  id="porcentaje_hoy">
                                                  {{ $porc }} %
                                                 @if($porc > 0)
                                                      <i class="fa fa-arrow-up"></i>

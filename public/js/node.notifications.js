@@ -43,7 +43,16 @@ jQuery(function($) {
                     if ( data.trigger_type === 0){
                         localStorage.last_denuncia_id = data.denuncia_id
                         localStorage.last_user_id = data.user_id
-                        window.location.reload();
+                        $('#denuncias_hoy').html(data.denuncia_hoy)
+                        $('#porcentaje_hoy').removeClass('text-blue-m1')
+                        $('#porcentaje_hoy').removeClass('text-danger-m1')
+                        if (parseInt(data.porcentaje_hoy) > 0){
+                            $('#porcentaje_hoy').html(data.porcentaje_hoy+ ' <i class="fa fa-arrow-up"></i>')
+                        }else{
+                            $('#porcentaje_hoy').html(data.porcentaje_hoy+ ' <i class="fa fa-arrow-down"></i>')
+                        }
+                        // window.location.reload();
+
                         evalNotificationBadge();
                     }
                 }

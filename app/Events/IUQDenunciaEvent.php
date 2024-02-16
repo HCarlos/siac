@@ -89,14 +89,38 @@ class IUQDenunciaEvent implements ShouldBroadcast{
             'user_id'        => $this->user_id,
         ]);
 
+
+        $h1 = ' 00:00:00';
+        $h2 = ' 23:59:59';
+
+        $fa0 = Carbon::now()->format('Y-m-d');
+        $fa1 = $fa0 . $h1;
+        $fa2 = $fa0 . $h2;
+
+        $fy0 = Carbon::yesterday()->format('Y-m-d');
+        $fy1 = $fy0 . $h1;
+        $fy2 = $fy0 . $h2;
+
+
+        $DenunciasHoy = Denuncia::query()->whereBetween('fecha_ingreso',[$fa1,$fa2])->count();
+        $DenunciasAyer = Denuncia::query()->whereBetween('fecha_ingreso',[$fy1,$fy2])->count();
+        $porc = 0;
+        if ($DenunciasAyer > 0){
+            $porc = ((($DenunciasHoy / $DenunciasAyer) * 100) - 100);
+        }
+
+
+
         return [
-            'denuncia_id'  => $this->denuncia_id,
-            'user_id'      => $this->user_id,
-            'trigger_type' => $this->trigger_type,
-            'msg'          => $this->msg,
-            'icon'         => $this->icon,
-            'status'       => $this->status,
-            'power'        => $this->power,
+            'denuncia_id'    => $this->denuncia_id,
+            'user_id'        => $this->user_id,
+            'trigger_type'   => $this->trigger_type,
+            'msg'            => $this->msg,
+            'icon'           => $this->icon,
+            'status'         => $this->status,
+            'power'          => $this->power,
+            'denuncias_hoy'  => $DenunciasHoy,
+            'porcentaje_hoy' => $porc,
         ];
     }
 
