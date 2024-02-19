@@ -120,7 +120,7 @@ class IUQDenunciaEvent implements ShouldBroadcast{
             'status'         => $this->status,
             'power'          => $this->power,
             'denuncias_hoy'  => $DenunciasHoy,
-            'porcentaje_hoy' => $porc,
+            'porcentaje_hoy' => number_format($porc, 2, '.', ','),
         ];
     }
 
