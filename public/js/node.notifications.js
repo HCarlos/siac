@@ -48,10 +48,10 @@ jQuery(function($) {
                         $('#porcentaje_hoy').removeClass('text-danger-m1')
                         if (parseInt(data.porcentaje_hoy) > 0){
                             $('#porcentaje_hoy').addClass('text-blue-m1');
-                            $('#porcentaje_hoy').html(parseInt(data.porcentaje_hoy,0)+ '% <i class="fa fa-arrow-up"></i>')
+                            $('#porcentaje_hoy').html(data.porcentaje_hoy + '% <i class="fa fa-arrow-up"></i>')
                         }else{
                             $('#porcentaje_hoy').addClass('text-danger-m1')
-                            $('#porcentaje_hoy').html(parseInt(data.porcentaje_hoy,0)+ '% <i class="fa fa-arrow-down"></i>')
+                            $('#porcentaje_hoy').html(data.porcentaje_hoy + '% <i class="fa fa-arrow-down"></i>')
                         }
                         // window.location.reload();
 
