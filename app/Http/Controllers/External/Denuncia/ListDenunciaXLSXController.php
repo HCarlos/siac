@@ -198,6 +198,10 @@ class ListDenunciaXLSXController extends Controller
             $resp = Denuncia_Dependencia_Servicio::query()->where('denuncia_id',$item->id)->orderByDesc('id')->get();
             $respuesta = "";
             $favorable = false;
+//            dd($resp->denuncia_id);
+            $dr = Denuncia::find($item->id);
+//            dd($dr->Ambito());
+
             foreach ($resp as $r){
                 $res = trim($r->observaciones);
                 if ( $res != ""){
@@ -206,6 +210,7 @@ class ListDenunciaXLSXController extends Controller
                     $favorable = $r->favorable;
                 }
             }
+
 
             $sh
                 ->setCellValue('A'.$C, $item->id ?? 0)
@@ -218,7 +223,7 @@ class ListDenunciaXLSXController extends Controller
                 ->setCellValue('H'.$C, trim($ubicacion->num_int ?? ''))
                 ->setCellValue('I'.$C, trim($ubicacion->colonia ?? ''))
                 ->setCellValue('J'.$C, $item->referencia ?? '')
-                ->setCellValue('K'.$C, $item->denuncia->Ambito() ?? '')
+                ->setCellValue('K'.$C, $dr->Ambito() ?? '')
                 ->setCellValue('L'.$C, $item->ultimo_estatus ?? '')
                 ->setCellValue('M'.$C, $item->ultima_fecha_estatus ?? '');
 
