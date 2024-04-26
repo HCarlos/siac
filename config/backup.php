@@ -9,7 +9,7 @@ return [
          * the backups.
          */
 //        'name' => env('APP_NAME', 'laravel-backup'),
-        'name' => env('RESPALDO_NAME', 'laravel-backup'),
+        'name' => env('BACKUP_NAME', 'laravel-backup'),
 
         'source' => [
 

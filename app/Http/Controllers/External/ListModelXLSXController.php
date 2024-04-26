@@ -112,7 +112,7 @@ class ListModelXLSXController extends Controller
                 $Model = Afiliacion::all();
                 break;
             case 23:
-                $Model = Denuncia::all();
+                $Model = Denuncia::query()->orderByDesc('id')->first();
                 break;
             case 24:
                 $Model = Estatu::all();

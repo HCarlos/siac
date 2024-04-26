@@ -77,13 +77,13 @@ class FuncionesController extends Controller
         switch ($type){
             case 0:
                 return 1;
-                beark;
+                break;
             case 1:
                 return $_SERVER['REMOTE_ADDR'];
-                beark;
+                break;
             case 2:
                 return gethostbyaddr($_SERVER['REMOTE_ADDR']);
-                beark;
+                break;
         }
     }
 

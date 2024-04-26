@@ -8,7 +8,6 @@
         "php": "^7.3",
         "ext-openssl": "*",
         "doctrine/dbal": "^2.13.9",
-        "elibyy/tcpdf-laravel": "^7.0.0",
         "facade/ignition": "^2.17.7",
         "fakerphp/faker": "^1.23.0",
         "fideloper/proxy": "^4.4.2",

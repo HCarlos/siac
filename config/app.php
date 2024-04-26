@@ -179,7 +179,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         App\Providers\ValidatorServiceProvider::class,
-        Elibyy\TCPDF\ServiceProvider::class,
+//        Elibyy\TCPDF\ServiceProvider::class,
         Spatie\Backup\BackupServiceProvider::class,
     ],
 

@@ -17,7 +17,7 @@ class HojaDenunciaController extends Controller
 
     public function imprimirDenuncia($UUID=""){
 
-        $den = Denuncia::all()->where('uuid',$UUID)->first();
+        $den = Denuncia::query()->where('uuid',$UUID)->first();
 
         $alto   = 6;
 
@@ -98,7 +98,7 @@ class HojaDenunciaController extends Controller
     public function imprimirDenunciaConRespuestas($UUID=""){
         ini_set('max_execution_time', 72000);
 
-        $den = Denuncia::all()->where('uuid',$UUID)->first();
+        $den = Denuncia::query()->where('uuid',$UUID)->first();
 
         $Sector = new sector();
 

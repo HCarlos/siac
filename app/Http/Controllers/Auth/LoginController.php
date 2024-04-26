@@ -63,6 +63,13 @@ class LoginController extends Controller
             $role1 = Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|ENLACE|USER_ARCHIVO_CAP|USER_ARCHIVO_ADMIN');
             $role2 = Auth::user()->hasRole('CIUDADANO|DELEGADO');
 
+            $user = Auth::user();
+            $user->session_id = session()->getId();
+            $user->logged_at = now();
+            $user->logged = true;
+            $user->save();
+
+
             if ($role1) {
                 return redirect()->route('home');
             } elseif($role2) {
@@ -123,8 +130,13 @@ class LoginController extends Controller
             ?: redirect()->intended($this->redirectPath());
     }
 
-    public function logout(Request $request)
-    {
+    public function logout(Request $request){
+        $user = Auth::user();
+
+        $user->logged = false;
+        $user->logout_at = now();
+        $user->save();
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

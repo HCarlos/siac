@@ -20,7 +20,7 @@ class Llenado_de_Catalogo_03_Seeder extends Seeder
 //        @ini_set( 'max_execution_time', '256000000' );
 //        @ini_set('memory_limit', '-1');
 //
-        $Denuncias = Denuncia::all();
+        $Denuncias = Denuncia::query()->orderByDesc('id')->first();
 
         foreach ($Denuncias as $Den){
             try{

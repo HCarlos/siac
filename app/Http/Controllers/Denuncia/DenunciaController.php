@@ -168,7 +168,6 @@ class DenunciaController extends Controller{
             $Dependencias = Dependencia::all()->sortBy('dependencia');
         }
 
-
         $Servicios = Servicio::getQueryServiciosFromDependencias($item->dependencia_id);
 
         $user_ubicacion = $item->Ciudadano->ubicaciones->first->id->id;
@@ -330,9 +329,6 @@ class DenunciaController extends Controller{
         // $hashtag = Denuncia::query()->select('clave_identificadora')->distinct()->get();
         $hashtag = Denuncia::select('clave_identificadora')->distinct('clave_identificadora')->orderBy('clave_identificadora')->pluck('clave_identificadora','clave_identificadora');
 
-//        dd($hashtag);
-
-
         $user = Auth::user();
         return view ('SIAC.denuncia.search.denuncia_search_panel',
             [
@@ -367,9 +363,6 @@ class DenunciaController extends Controller{
             ->filterBy($queryFilters)
             ->orderByDesc('id')
             ->paginate($this->max_item_for_query);
-
-//        Denuncia_Dependencia_Servicio::query()
-//            Denuncia_Dependencia_Servicio
 
         $items->appends($queryFilters)->fragment('table');
 
