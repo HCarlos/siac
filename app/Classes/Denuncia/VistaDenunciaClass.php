@@ -29,6 +29,7 @@ class VistaDenunciaClass{
                     ->where('denuncia_id', $d1->denuncia_id)
                     ->where('dependencia_id', $d1->dependencia_id)
                     ->where('servicio_id', $d1->servicio_id)
+                    ->get()
                     ->last();
                 $abrev = $dds->dependencia->abreviatura;
                 $estatus = $dds->estatu->estatus;
@@ -39,6 +40,7 @@ class VistaDenunciaClass{
             $den->save();
 
         }
+        return $den;
 
     }
 
