@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Denuncia;
 
+use App\Classes\Denuncia\VistaDenunciaClass;
 use App\Classes\FiltersRules;
 use App\Events\IUQDenunciaEvent;
 use App\Http\Controllers\Controller;
@@ -15,6 +16,7 @@ use App\Models\Catalogos\Origen;
 use App\Models\Catalogos\Prioridad;
 use App\Models\Catalogos\Servicio;
 use App\Models\Denuncias\Denuncia;
+use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use App\Models\Denuncias\Firma;
 use App\User;
 use Illuminate\Http\Request;
@@ -403,7 +405,7 @@ class DenunciaController extends Controller{
         if (isset($item)) {
             return Response::json(['mensaje' => 'OK', 'data' => $item, 'status' => '200'], 200);
         } else {
-            return Response::json(['mensaje' => 'Error', 'data' => dd($item), 'status' => '200'], 200);
+            return Response::json(['mensaje' => 'Error', 'data' => $item, 'status' => '200'], 200);
         }
 
     }
@@ -544,6 +546,12 @@ class DenunciaController extends Controller{
         $item->ciudadanos()->detach($id1);
         return Response::json(['mensaje' => 'Eliminado', 'data' => 'OK', 'status' => '200'], 200);
 
+    }
+
+    public function vistaDenuncia($denuncia_id){
+        $viDen = new VistaDenunciaClass();
+        $viDen->vistaDenuncia($denuncia_id);
+        return \redirect()->route('listDenuncias');
     }
 
 

@@ -232,6 +232,7 @@ return array(
     'App\\Traits\\Denuncia\\DenunciaTrait' => $baseDir . '/app/Traits/Denuncia/DenunciaTrait.php',
     'App\\Traits\\Denuncia\\ImagenMobileTrait' => $baseDir . '/app/Traits/Denuncia/ImagenMobileTrait.php',
     'App\\Traits\\Denuncia\\ImageneTrait' => $baseDir . '/app/Traits/Denuncia/ImageneTrait.php',
+    'App\\Traits\\Denuncia\\VistaDenunciaTrait' => $baseDir . '/app/Traits/Denuncia/VistaDenunciaTrait.php',
     'App\\Traits\\TCPDF\\InitTrait' => $baseDir . '/app/Traits/TCPDF/InitTrait.php',
     'App\\Traits\\User\\UserAttributes' => $baseDir . '/app/Traits/User/UserAttributes.php',
     'App\\Traits\\User\\UserImport' => $baseDir . '/app/Traits/User/UserImport.php',

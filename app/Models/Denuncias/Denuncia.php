@@ -37,7 +37,7 @@ class Denuncia extends Model
         'fecha_ingreso', 'fecha_oficio_dependencia', 'fecha_limite', 'fecha_ejecucion',
         'ciudadano_id','creadopor_id','created_at','modificadopor_id','updated_at','deleted_at',
         'searchtextdenuncia', 'denunciamobile_id',
-        'folio_sas','favorable',
+        'folio_sas','favorable','estatus_general',
         'cerrado','fecha_cerrado','cerradopor_id','firmado','uuid',
         'ip', 'host','ambito',
 

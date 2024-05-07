@@ -410,6 +410,7 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
     Route::get('cerrarDenuncia/{id}', 'Denuncia\DenunciaController@closeItem')->name('cerrarDenuncia');
     Route::get('firmarDenuncia/{id}', 'Denuncia\DenunciaController@signItem')->name('firmarDenuncia');
 
+    Route::get('vistaDenuncia/{id}', 'Denuncia\DenunciaController@vistaDenuncia')->name('vistaDenuncia');
 
 });
 
