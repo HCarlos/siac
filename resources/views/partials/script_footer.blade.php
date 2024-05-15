@@ -66,4 +66,3 @@
 @yield("script_extra")
 @yield("script_extra_modal")
 @yield("script_interno")
-

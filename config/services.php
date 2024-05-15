@@ -47,7 +47,10 @@ return [
         'service' => \NotificationChannels\Apn\Apn::class,
     ],
 
-
+    'recaptcha' => [
+        'key' => env('RECAPTCHA_SITE_KEY'),
+        'secret' => env('RECAPTCHA_SITE_SECRET'),
+    ]
 
 
 

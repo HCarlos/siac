@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
+@section('styles')
+<script async src="https://www.google.com/recaptcha/api.js"></script>
+{{--<script async src="{{ asset('js/recaptcha-api.js') }}"></script>--}}
+
+@endsection
+
 @section('content')
 
 
@@ -40,6 +46,10 @@
                                     </span>
                             @endif
                         </div>
+                        <div class="form-group">
+                        <div class="g-recaptcha mt-4" data-sitekey={{config('services.recaptcha.key')}}></div>
+                        </div>
+
                         <div class="form-group mb-3">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="checkbox-signin">
@@ -47,7 +57,8 @@
                             </div>
                         </div>
                         <div class="form-group mb-4 text-center">
-                            <button class="btn btn-danger btn-danger-primary btn-block" type="submit"><i class="mdi mdi-login"></i> INICIAR SESIÓN </button>
+                            <button class="btn btn-danger btn-danger-primary btn-block" type="submit"
+                            ><i class="mdi mdi-login"></i> INICIAR SESIÓN </button>
                         </div>
                         <div class="clearfix"></div>
                         <div class="form-group  mt-2">
@@ -74,6 +85,15 @@
     <!-- App js -->
     @include('partials/script_footer')
 
+    <!-- Replace the variables below. -->
+    <script>
+        function onSubmit(token) {
+            document.getElementById("demo-form").submit();
+        }
+    </script>
+
     </body>
 
+
 @endsection
+

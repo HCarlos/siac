@@ -448,8 +448,8 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-factory/src',
-            1 => __DIR__ . '/..' . '/psr/http-message/src',
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+            1 => __DIR__ . '/..' . '/psr/http-factory/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -744,6 +744,7 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'Agregar_Usuarios_01_Seeder' => __DIR__ . '/../..' . '/database/seeds/Agregar_Usuarios_01_Seeder.php',
         'App\\Classes\\Denuncia\\DenunciaArchivoTCPDF' => __DIR__ . '/../..' . '/app/Classes/Denuncia/DenunciaArchivoTCPDF.php',
         'App\\Classes\\Denuncia\\DenunciaTCPDF' => __DIR__ . '/../..' . '/app/Classes/Denuncia/DenunciaTCPDF.php',
+        'App\\Classes\\Denuncia\\VistaDenunciaClass' => __DIR__ . '/../..' . '/app/Classes/Denuncia/VistaDenunciaClass.php',
         'App\\Classes\\FiltersRules' => __DIR__ . '/../..' . '/app/Classes/FiltersRules.php',
         'App\\Classes\\Items' => __DIR__ . '/../..' . '/app/Classes/Items.php',
         'App\\Classes\\MessageAlertClass' => __DIR__ . '/../..' . '/app/Classes/MessageAlertClass.php',

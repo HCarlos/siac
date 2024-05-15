@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
+use Symfony\Component\HttpFoundation\IpUtils;
 
 class LoginController extends Controller
 {
@@ -56,31 +59,60 @@ class LoginController extends Controller
         $this->validate($request, [
             'username' => 'required',
             'password' => 'required',
+            'g-recaptcha-response' => 'required',
         ]);
 
-        $fieldType = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-        if(auth()->attempt(array($fieldType => $input['username'], 'password' => $input['password']))) {
-            $role1 = Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|ENLACE|USER_ARCHIVO_CAP|USER_ARCHIVO_ADMIN');
-            $role2 = Auth::user()->hasRole('CIUDADANO|DELEGADO');
+        $recaptcha_response = $request->input('g-recaptcha-response');
 
-            $user = Auth::user();
-            $user->session_id = session()->getId();
-            $user->logged_at = now();
-            $user->logged = true;
-            $user->save();
-
-
-            if ($role1) {
-                return redirect()->route('home');
-            } elseif($role2) {
-                return redirect()->route('home-ciudadano');
-            } else {
-                return redirect()->route('home');
-            }
-        }else{
-            return redirect()->route('login')
-                ->with('error','Username, email ó password incorrecto');
+        if (is_null($recaptcha_response)) {
+            return redirect()->back()->with('status', 'Please Complete the Recaptcha to proceed');
         }
+
+        $url = "https://www.google.com/recaptcha/api/siteverify";
+
+        $body = [
+            'secret' => config('services.recaptcha.secret'),
+            'response' => $recaptcha_response,
+            'remoteip' => IpUtils::anonymize($request->ip()) //anonymize the ip to be GDPR compliant. Otherwise just pass the default ip address
+        ];
+
+        $response = Http::asForm()->post($url, $body);
+
+        $result = json_decode($response);
+
+        if ($response->successful() && $result->success == true) {
+
+
+            $fieldType = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+            if(auth()->attempt(array($fieldType => $input['username'], 'password' => $input['password']))) {
+                $role1 = Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|ENLACE|USER_ARCHIVO_CAP|USER_ARCHIVO_ADMIN');
+                $role2 = Auth::user()->hasRole('CIUDADANO|DELEGADO');
+
+                $user = Auth::user();
+                $user->session_id = session()->getId();
+                $user->logged_at = now();
+                $user->logged = true;
+                $user->save();
+
+
+                if ($role1) {
+                    return redirect()->route('home');
+                } elseif($role2) {
+                    return redirect()->route('home-ciudadano');
+                } else {
+                    return redirect()->route('home');
+                }
+            }else{
+                return redirect()->route('login')
+                    ->with('error','Username, email ó password incorrecto');
+            }
+
+        } else {
+            return redirect()->back()->with('status', 'Please Complete the Recaptcha Again to proceed');
+        }
+
+
+
 
     }
 
@@ -91,16 +123,6 @@ class LoginController extends Controller
 
     public function redirectPath(){
 
-//        $role1 = Auth::user()->hasRole('Administrator|SysOp|CAPTURISTA_A|CAPTURISTA_B|CAPTURISTA_C');
-//        $role2 = Auth::user()->hasRole('Administrator|SysOp|ENLACE');
-//        if ($role1) {
-//            return redirect()->route('home');
-//        } elseif($role2) {
-//            return redirect()->route('home-dependencia');
-//        } else {
-//            return redirect()->route('home-ciudadano');
-//        }
-//
     }
 
     public function authenticated(Request $request, $user)

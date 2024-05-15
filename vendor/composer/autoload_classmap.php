@@ -11,6 +11,7 @@ return array(
     'Agregar_Usuarios_01_Seeder' => $baseDir . '/database/seeds/Agregar_Usuarios_01_Seeder.php',
     'App\\Classes\\Denuncia\\DenunciaArchivoTCPDF' => $baseDir . '/app/Classes/Denuncia/DenunciaArchivoTCPDF.php',
     'App\\Classes\\Denuncia\\DenunciaTCPDF' => $baseDir . '/app/Classes/Denuncia/DenunciaTCPDF.php',
+    'App\\Classes\\Denuncia\\VistaDenunciaClass' => $baseDir . '/app/Classes/Denuncia/VistaDenunciaClass.php',
     'App\\Classes\\FiltersRules' => $baseDir . '/app/Classes/FiltersRules.php',
     'App\\Classes\\Items' => $baseDir . '/app/Classes/Items.php',
     'App\\Classes\\MessageAlertClass' => $baseDir . '/app/Classes/MessageAlertClass.php',

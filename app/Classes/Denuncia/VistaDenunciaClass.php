@@ -23,7 +23,7 @@ class VistaDenunciaClass{
                 ->where('denuncia_id', $denuncia_id)
                 ->distinct()
                 ->get();
-
+            
             foreach ($dens as $d1){
                 $dds = Denuncia_Dependencia_Servicio::query()
                     ->where('denuncia_id', $d1->denuncia_id)
