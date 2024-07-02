@@ -5,11 +5,11 @@
             <thead>
                 <tr role="row">
                     <th class="sorting_asc" aria-sort="ascending" aria-label="Name: activate to sort column descending">ID</th>
-                    <th class="sorting">Ciudadano</th>
-                    <th class="sorting">Fecha</th>
-                    <th class="sorting">Área</th>
-                    <th class="sorting">Servicio</th>
-                    <th class="sorting ">Ubicación</th>
+                    <th class="sorting">CIUDADANO</th>
+                    <th class="sorting">FECHA</th>
+                    <th class="sorting">ÁREA</th>
+                    <th class="sorting">SERVICIO</th>
+                    <th class="sorting ">UBICACIÓN</th>
                     <th></th>
                 </tr>
             </thead>

@@ -512,12 +512,6 @@ class DenunciaController extends Controller{
 
     protected function updateAddUserDenuncia(Request $request){
 
-//        $item = Denuncia::find($request['id']);
-//        if ($item->cerrado == false){
-//            $item->ciudadanos()->detach($request['usuario_id']);
-//            $item->ciudadanos()->attach($request['usuario_id']);
-//        }
-
         return $this->addUserToDemanda($request['id'], $request['usuario_id']);
     }
 
