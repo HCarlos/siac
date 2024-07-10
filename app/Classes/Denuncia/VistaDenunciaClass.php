@@ -16,29 +16,58 @@ class VistaDenunciaClass{
 
         $den = Denuncia::findOrFail($denuncia_id);
         if ( ! $den->cerrado ){
-            $estatus_general = "";
 
             $dens = Denuncia_Dependencia_Servicio::query()
-                ->select('denuncia_id','dependencia_id','servicio_id')
+                ->select('denuncia_id','dependencia_id','servicio_id','estatu_id')
                 ->where('denuncia_id', $denuncia_id)
-                ->distinct()
+                ->orderBy('id')
                 ->get();
-            
-            foreach ($dens as $d1){
-                $dds = Denuncia_Dependencia_Servicio::query()
-                    ->where('denuncia_id', $d1->denuncia_id)
-                    ->where('dependencia_id', $d1->dependencia_id)
-                    ->where('servicio_id', $d1->servicio_id)
-                    ->get()
-                    ->last();
-                $abrev = $dds->dependencia->abreviatura;
-                $estatus = $dds->estatu->estatus;
-                $estatus_general .= $estatus_general === "" ? "" : " | ";
-                $estatus_general .= $abrev . " => " . $estatus ;
-            }
-            $den->estatus_general = $estatus_general;
-            $den->save();
 
+            $arr = [];
+            foreach ($dens as $d1) {
+                $val = $d1->denuncia_id.'|'.$d1->dependencia_id.'|'.$d1->servicio_id.'|'.$d1->estatu_id;
+                if ( array_search($val, $arr) === false ){
+                    $arr[] = $val;
+                }
+            }
+
+//            dd($arr);
+            if (count($arr) > 0) {
+
+                $estatus_general = "";
+                $estatus_id = $den->estatus_id;
+                $servicio_id = $den->servicio_id;
+                $dependencia_id = $den->dependencia_id;
+
+                foreach ($arr as $valor) {
+                    $d1 = explode('|', $valor);
+                    $dds = Denuncia_Dependencia_Servicio::query()
+                        ->where('denuncia_id', (int)$d1[0])
+                        ->where('dependencia_id', (int)$d1[1])
+                        ->where('servicio_id', (int)$d1[2])
+                        ->where('estatu_id', (int)$d1[3])
+                        ->orderByDesc('id')
+                        ->first();
+
+                    if ($dds) {
+                        $abrev = $dds->dependencia->abreviatura;
+                        $estatus = $dds->estatu->estatus;
+                        $servicio = $dds->servicio->servicio;
+                        $estatus_general .= $estatus_general === "" ? "" : " | ";
+                        $estatus_general .= $dds->dependencia_id . '->' . $abrev . " => " . $dds->estatu_id . '->' . $estatus . ": " . $dds->servicio_id . '->' . $servicio;
+
+                        $estatus_id = $dds->estatu_id;
+                        $servicio_id = $dds->servicio_id;
+                        $dependencia_id = $dds->dependencia_id;
+                    }
+
+                }
+                $den->estatus_general = $estatus_general;
+                $den->estatus_id = $estatus_id;
+                $den->servicio_id = $servicio_id;
+                $den->dependencia_id = $dependencia_id;
+                $den->save();
+            }
         }
         return $den;
 

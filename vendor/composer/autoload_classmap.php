@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'ActualizacionUsuarioUbicacionImagenIdSeeder' => $baseDir . '/database/seeds/ActualizacionUsuarioUbicacionImagenIdSeeder.php',
+    'Actualizar_Estatus_General_Seeder' => $baseDir . '/database/seeds/Actualizar_Estatus_General_Seeder.php',
     'Agregar_Permisos_Seeder_01' => $baseDir . '/database/seeds/Agregar_Permisos_Seeder_01.php',
     'Agregar_Usuarios_01_Seeder' => $baseDir . '/database/seeds/Agregar_Usuarios_01_Seeder.php',
     'App\\Classes\\Denuncia\\DenunciaArchivoTCPDF' => $baseDir . '/app/Classes/Denuncia/DenunciaArchivoTCPDF.php',
