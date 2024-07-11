@@ -309,7 +309,7 @@ class UserDataController extends Controller
         foreach ($items as $item) {
             $data[]=array(
                 'value'=>$item->fullName.' - '.$item->curp,
-                'domicilio'=>$item->ubicaciones()->first()->Ubicacion,
+                'domicilio'=>$item->ubicaciones()->first()->Ubicacion ?? "",
                 'telefonos'=>$item->TelefonosCelularesEmails,
                 'id'=>$item->id,
             );

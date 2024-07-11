@@ -34,10 +34,12 @@ class VistaDenunciaClass{
 //            dd($arr);
             if (count($arr) > 0) {
 
-                $estatus_general = "";
+                $estatus_general = [];
                 $estatus_id = $den->estatus_id;
                 $servicio_id = $den->servicio_id;
                 $dependencia_id = $den->dependencia_id;
+                $favorable = false;
+                $is_favorable = false;
 
                 foreach ($arr as $valor) {
                     $d1 = explode('|', $valor);
@@ -53,19 +55,31 @@ class VistaDenunciaClass{
                         $abrev = $dds->dependencia->abreviatura;
                         $estatus = $dds->estatu->estatus;
                         $servicio = $dds->servicio->servicio;
-                        $estatus_general .= $estatus_general === "" ? "" : " | ";
-                        $estatus_general .= $dds->dependencia_id . '->' . $abrev . " => " . $dds->estatu_id . '->' . $estatus . ": " . $dds->servicio_id . '->' . $servicio;
+                        //$estatus_general .= $estatus_general === "" ? "" : " | ";
+                        $estatus_general[] = array('dependencia_id' => $dds->dependencia_id,
+                            'abreviatura' => $abrev,
+                            'estatu_id' => $dds->estatu_id,
+                            'estatus' => $estatus,
+                            'servicio_id' => $dds->servicio_id,
+                            'servicio' => $servicio,
+                            'favorable' => $dds->favorable);
 
                         $estatus_id = $dds->estatu_id;
                         $servicio_id = $dds->servicio_id;
                         $dependencia_id = $dds->dependencia_id;
+                        if ($dds->favorable && !$is_favorable){
+                            $favorable = $dds->favorable;
+                            $is_favorable = true;
+                        }
+
                     }
 
                 }
-                $den->estatus_general = $estatus_general;
+                $den->estatus_general = json_encode($estatus_general,JSON_UNESCAPED_UNICODE);
                 $den->estatus_id = $estatus_id;
                 $den->servicio_id = $servicio_id;
                 $den->dependencia_id = $dependencia_id;
+                $den->favorable = $favorable;
                 $den->save();
             }
         }

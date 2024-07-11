@@ -17,7 +17,7 @@ class AlterDenuncias2Table extends Migration
 
         if (Schema::hasTable($Catalogos['denuncias'])) {
             Schema::table($Catalogos['denuncias'], function (Blueprint $table) use ($Catalogos) {
-                $table->string('estatus_general',1000)->default("")->comment('Guardael estatus general de la denuncia');
+                $table->string('estatus_general',4000)->default("")->comment('Guardael estatus general de la denuncia');
             });
         }
 

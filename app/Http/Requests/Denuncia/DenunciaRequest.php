@@ -6,6 +6,7 @@
 namespace App\Http\Requests\Denuncia;
 
 use App\Classes\MessageAlertClass;
+use App\Events\DenunciaUpdateStatusGeneralEvent;
 use App\Events\IUQDenunciaEvent;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Http\Controllers\Storage\StorageDenunciaController;
@@ -177,6 +178,7 @@ class DenunciaRequest extends FormRequest
             $Storage->subirArchivoDenuncia($this, $item);
         }
         event(new IUQDenunciaEvent($item->id,Auth::user()->id,$trigger_type));
+        event(new DenunciaUpdateStatusGeneralEvent($item->id,Auth::user()->id,$trigger_type));
         return $item;
     }
 
