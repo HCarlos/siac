@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '2b4c8880dc1b7921bcde0245ff7137b6f4de30b1',
+        'reference' => '1eb95c7dd9b17bb4dd8b4c8b47b88c65939d8ab9',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -29,9 +29,9 @@
             'dev_requirement' => false,
         ),
         'composer/semver' => array(
-            'pretty_version' => '3.4.0',
-            'version' => '3.4.0.0',
-            'reference' => '35e8d0af4486141bc745f23a29cc2091eb624a32',
+            'pretty_version' => '3.4.2',
+            'version' => '3.4.2.0',
+            'reference' => 'c51258e759afdb17f1fd1fe83bc12baaef6309d6',
             'type' => 'library',
             'install_path' => __DIR__ . '/./semver',
             'aliases' => array(),
@@ -487,7 +487,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '2b4c8880dc1b7921bcde0245ff7137b6f4de30b1',
+            'reference' => '1eb95c7dd9b17bb4dd8b4c8b47b88c65939d8ab9',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -782,9 +782,9 @@
             'dev_requirement' => true,
         ),
         'phpunit/phpunit' => array(
-            'pretty_version' => '9.6.19',
-            'version' => '9.6.19.0',
-            'reference' => 'a1a54a473501ef4cdeaae4e06891674114d79db8',
+            'pretty_version' => '9.6.20',
+            'version' => '9.6.20.0',
+            'reference' => '49d7820565836236411f5dc002d16dd689cde42f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpunit/phpunit',
             'aliases' => array(),
@@ -1061,7 +1061,7 @@
         'roave/security-advisories' => array(
             'pretty_version' => 'dev-latest',
             'version' => 'dev-latest',
-            'reference' => '27714b56f04815b654c3805502ab77207505ac19',
+            'reference' => 'c31e886d98723c528ab99e920e7903ccb7391bd0',
             'type' => 'metapackage',
             'install_path' => NULL,
             'aliases' => array(

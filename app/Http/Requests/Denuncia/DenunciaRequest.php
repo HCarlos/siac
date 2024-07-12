@@ -178,14 +178,18 @@ class DenunciaRequest extends FormRequest
             $Storage->subirArchivoDenuncia($this, $item);
         }
         event(new IUQDenunciaEvent($item->id,Auth::user()->id,$trigger_type));
-        event(new DenunciaUpdateStatusGeneralEvent($item->id,Auth::user()->id,$trigger_type));
         return $item;
     }
 
     public function attaches($Item){
         try {
             $user_id = Auth::user()->id;
+            $trigger_type = 0;
+            if ($Item->id === 1) {
+                $trigger_type = 1;
+            }
 
+            // Buscamos en denuncia_prioridad
             $Obj = DB::table('denuncia_prioridad')
                 ->where('denuncia_id','=',$Item->id)
                 ->where('prioridad_id','=',$this->prioridad_id)
@@ -193,6 +197,7 @@ class DenunciaRequest extends FormRequest
             if ($Obj->count() <= 0 )
                 $Obj = $Item->prioridades()->attach($this->prioridad_id);
 
+            // Buscamos en denuncia_origen
             $Obj = DB::table('denuncia_origen')
                 ->where('denuncia_id','=',$Item->id)
                 ->where('origen_id','=',$this->origen_id)
@@ -200,15 +205,19 @@ class DenunciaRequest extends FormRequest
             if ($Obj->count() <= 0 )
                 $Obj = $Item->origenes()->attach($this->origen_id);
 
+            // Buscamos en denuncia_dependencia_servicio_estatus
             $Obj = DB::table('denuncia_dependencia_servicio_estatus')
                 ->where('denuncia_id','=',$Item->id)
                 ->where('dependencia_id','=',$this->dependencia_id)
                 ->where('servicio_id','=',$this->servicio_id)
                 ->where('estatu_id','=',$this->estatus_id)
                 ->get();
-            if ($Obj->count() <= 0 )
-                $Obj = $Item->dependencias()->attach($this->dependencia_id,['servicio_id'=>$this->servicio_id,'estatu_id'=>$this->estatus_id,'favorable' => false,'fecha_movimiento' => now(),'creadopor_id' => $user_id ]);
+            if ($Obj->count() <= 0 ) {
+                $Objx = $Item->dependencias()->attach($this->dependencia_id, ['servicio_id' => $this->servicio_id, 'estatu_id' => $this->estatus_id, 'favorable' => false, 'fecha_movimiento' => now(), 'creadopor_id' => $user_id]);
+                event(new DenunciaUpdateStatusGeneralEvent($Item->id,$user_id,$trigger_type));
+            }
 
+            // Buscamos en denuncia_ubicacion
             $Obj = DB::table('denuncia_ubicacion')
                 ->where('denuncia_id','=',$Item->id)
                 ->where('ubicacion_id','=',$this->ubicacion_id)
@@ -216,6 +225,7 @@ class DenunciaRequest extends FormRequest
             if ($Obj->count() <= 0 )
                 $Obj = $Item->ubicaciones()->attach($this->ubicacion_id);
 
+            // Buscamos en denuncia_servicio
             $Obj = DB::table('denuncia_servicio')
                 ->where('denuncia_id','=',$Item->id)
                 ->where('servicio_id','=',$this->servicio_id)
@@ -223,6 +233,7 @@ class DenunciaRequest extends FormRequest
             if ($Obj->count() <= 0 )
                 $Obj = $Item->servicios()->attach($this->servicio_id);
 
+            // Buscamos en denuncia_dependencia_servicio_estatus
             $Obj = DB::table('denuncia_dependencia_servicio_estatus')
                 ->where('denuncia_id','=',$Item->id)
                 ->where('dependencia_id','=',$this->dependencia_id)
@@ -232,6 +243,7 @@ class DenunciaRequest extends FormRequest
             if ($Obj->count() <= 0 )
                 $Obj = $Item->estatus()->attach($this->estatus_id,['ultimo'=>true]);
 
+            // Buscamos en ciudadano_denuncia
             $Obj = DB::table('ciudadano_denuncia')
                 ->where('denuncia_id','=',$Item->id)
                 ->where('ciudadano_id','=',$this->usuario_id)
@@ -239,6 +251,7 @@ class DenunciaRequest extends FormRequest
             if ($Obj->count() <= 0 )
                 $Obj = $Item->ciudadanos()->attach($this->usuario_id);
 
+            // Buscamos en creadopor_denuncia
             $Obj = DB::table('creadopor_denuncia')
                 ->where('denuncia_id','=',$Item->id)
                 ->where('creadopor_id','=',$this->creadopor_id)
@@ -246,6 +259,7 @@ class DenunciaRequest extends FormRequest
             if ($Obj->count() <= 0 )
                 $Obj = $Item->creadospor()->attach($this->creadopor_id);
 
+            // Buscamos en denuncia_modificadopor
             $Obj = DB::table('denuncia_modificadopor')
                 ->where('denuncia_id','=',$Item->id)
                 ->where('modificadopor_id','=',$this->modificadopor_id)
@@ -260,6 +274,13 @@ class DenunciaRequest extends FormRequest
     }
 
     public function detaches($Item){
+        $user_id = Auth::user()->id;
+        $trigger_type = 0;
+        if ($Item->id === 1) {
+            $trigger_type = 1;
+        }
+
+
         $Item->prioridades()->detach($this->prioridad_id);
         $Item->origenes()->detach($this->origen_id);
 
@@ -269,6 +290,9 @@ class DenunciaRequest extends FormRequest
         $Item->ciudadanos()->detach($this->usuario_id);
         $Item->creadospor()->detach($this->creadopor_id);
         $Item->modificadospor()->detach($this->modificadopor_id);
+
+        event(new DenunciaUpdateStatusGeneralEvent($Item->id,$user_id,$trigger_type));
+
         return $Item;
     }
 

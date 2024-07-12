@@ -7,6 +7,7 @@ namespace App\Http\Requests\Denuncia\Respuesta;
 
 use App\Classes\MessageAlertClass;
 use App\Classes\NotificationsMobile\SendNotificationFCM;
+use App\Events\DenunciaUpdateStatusGeneralEvent;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Respuesta;
 use Carbon\Carbon;
@@ -92,17 +93,32 @@ class RespuestaRequest extends FormRequest
     }
 
     public function attaches($Item){
+        $user_id = Auth::user()->id;
+        $trigger_type = 0;
+        if ($Item->id === 1) {
+            $trigger_type = 1;
+        }
 
         $Item->users()->attach($this->user__id);
         $den = Denuncia::find($this->denuncia__id);
         $den->respuestas()->attach($Item);
+        event(new DenunciaUpdateStatusGeneralEvent($Item->id,$user_id,$trigger_type));
+
         return $Item;
     }
 
     public function detaches($Item){
+        $user_id = Auth::user()->id;
+        $trigger_type = 0;
+        if ($Item->id === 1) {
+            $trigger_type = 1;
+        }
+
         $Item->users()->detach($this->user__id);
         $den = Denuncia::find($this->denuncia__id);
         $den->respuestas()->detach($this->id);
+
+        event(new DenunciaUpdateStatusGeneralEvent($Item->id,$user_id,$trigger_type));
 
         return $Item;
     }

@@ -98,7 +98,7 @@ class StatuRequest extends FormRequest
                 $item->update($Item);
                 if ($this->dependencia_id > 0 && $isExsit <= 0 ){
                     $item->dependencias()->attach($this->dependencia_id);
-                    $observer = PostUpdating::updating($item);
+                    PostUpdating::updating($item);
                 }
             }
         }catch (QueryException $e){
