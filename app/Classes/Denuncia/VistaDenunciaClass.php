@@ -53,9 +53,11 @@ class VistaDenunciaClass{
                     $estatus = $dds->estatu->estatus;
                     $servicio = $dds->servicio->servicio;
                     //$estatus_general .= $estatus_general === "" ? "" : " | ";
-                    $estatus_general[] = array('dependencia_id' => $dds->dependencia_id,
+                    $estatus_general[] = array(
+                        'denuncia_id' => $dds->denuncia_id,
+                        'dependencia_id' => $dds->dependencia_id,
                         'abreviatura' => $abrev,
-                        'estatu_id' => $dds->estatu_id,
+                        'estatus_id' => $dds->estatu_id,
                         'estatus' => $estatus,
                         'servicio_id' => $dds->servicio_id,
                         'servicio' => $servicio,
@@ -90,15 +92,17 @@ class VistaDenunciaClass{
             $estatus = $den->estatu->estatus;
             $servicio = $den->servicio->servicio;
 
-            $estatus_general[] = array('dependencia_id' => $den->dependencia_id,
+            $estatus_general[] = array(
+                'denuncia_id' => $den->id,
+                'dependencia_id' => $den->dependencia_id,
                 'abreviatura' => $abrev,
-                'estatu_id' => $den->estatu_id,
+                'estatus_id' => $den->estatus_id,
                 'estatus' => $estatus,
                 'servicio_id' => $den->servicio_id,
                 'servicio' => $servicio,
                 'favorable' => false,
                 'leida' => false,
-                'fecha' => $den->fecha_ingresoo,
+                'fecha' => $den->fecha_ingreso,
                 'creadopor_id' => $den->creadopor_id,
                 'creado_por' => $den->creadopor->FullName,
             );
