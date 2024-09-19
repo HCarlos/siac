@@ -21,7 +21,7 @@ class Actualizar_Estatus_General_Seeder extends Seeder
 
         $dens = Denuncia::query()
             ->select('id')
-            ->orderBy('id')
+            ->orderByDesc('id')
             ->get();
 
         $vid = new VistaDenunciaClass();
