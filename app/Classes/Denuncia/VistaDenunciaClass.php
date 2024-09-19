@@ -71,11 +71,16 @@ class VistaDenunciaClass{
                     $estatus_id = $dds->estatu_id;
                     $servicio_id = $dds->servicio_id;
                     $dependencia_id = $dds->dependencia_id;
+
+                    $ue_id =  $dds->estatu_id;
+                    $due_id = $dds->dependencia_id;
+                    $sue_id = $dds->servicio_id;
+                    $fecha_ultimo_estatus = $dds->fecha_movimiento;
+
                     if ($dds->favorable && !$is_favorable){
                         $favorable = $dds->favorable;
                         $is_favorable = true;
                     }
-
                 }
 
             }
@@ -84,6 +89,11 @@ class VistaDenunciaClass{
             $den->servicio_id = $servicio_id;
             $den->dependencia_id = $dependencia_id;
             $den->favorable = $favorable;
+            $den->ue_id =  $ue_id;
+            $den->due_id = $due_id;
+            $den->sue_id = $sue_id;
+            $den->fecha_ultimo_estatus = $fecha_ultimo_estatus;
+
             $den->save();
 
         }else{
@@ -108,6 +118,10 @@ class VistaDenunciaClass{
             );
             $den->estatus_general = json_encode($estatus_general,JSON_UNESCAPED_UNICODE);
             $den->favorable = false;
+            $den->ue_id =  $den->estatus_id;
+            $den->due_id = $den->dependencia_id;
+            $den->sue_id = $den->servicio_id;
+            $den->fecha_ultimo_estatus = $den->fecha_ingreso;
             $den->save();
 
         }

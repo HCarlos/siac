@@ -28,8 +28,7 @@ class AlterDenuncias2Table extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down(){
         $Catalogos  = config('atemun.table_names.catalogos');
         if (Schema::hasTable($Catalogos['denuncias'])) {
             Schema::table($Catalogos['denuncias'], function (Blueprint $table) use ($Catalogos) {

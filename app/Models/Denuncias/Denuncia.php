@@ -40,8 +40,7 @@ class Denuncia extends Model
         'folio_sas','favorable','estatus_general',
         'cerrado','fecha_cerrado','cerradopor_id','firmado','uuid',
         'ip', 'host','ambito',
-
-
+        'ue_id','due_id','sue_id','fecha_ultimo_estatus',
     ];
 //    protected $hidden = ['deleted_at','created_at','updated_at'];
     protected $dates = ['fecha_ingreso', 'fecha_oficio_dependencia' => 'datetime:d-m-Y', 'fecha_limite' => 'datetime:d-m-Y', 'fecha_ejecucion' => 'datetime:d-m-Y', 'created_at' => 'datetime:d-m-Y H:mm:ss', 'updated_at' => 'datetime:d-m-Y H:mm:ss','fecha_cerrado'];
@@ -194,5 +193,18 @@ class Denuncia extends Model
     public function ultimo_estatu_denuncia_dependencia_servicio(){
         return $this->hasMany(Denuncia_Dependencia_Servicio::class,'denuncia_id','id');
     }
+
+    public function ultimo_estatus(){
+        return $this->hasOne(Estatu::class,'id','ue_id');
+    }
+
+    public function dependencia_ultimo_estatus(){
+        return $this->hasOne(Dependencia::class,'id','due_id');
+    }
+
+    public function servicio_ultimo_estatus(){
+        return $this->hasOne(Servicio::class,'id','due_id');
+    }
+
 
 }
