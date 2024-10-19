@@ -49,8 +49,9 @@ Route::get('sendVerificationAPIUrl/{id}/{hash}/{notifiable}', 'Catalogos\User\Us
 
 Route::group(['middleware' => 'auth'], function () {
 
-    Route::match(['get','put','post'],'dashboard', 'Denuncia\DashboardController@index')->name('dashboard');
-    Route::match(['get','put','post'],'dashboard_enlace', 'Denuncia\DashboardEnlaceController@index')->name('dashboard_enlace');
+    Route::match(['get','put','post'],'dashboard', 'Dashboard\DashboardController@index')->name('dashboard');
+    Route::match(['get','put','post'],'dashboard_enlace', 'Dashboard\DashboardEnlaceController@index')->name('dashboard_enlace');
+    Route::match(['get','put','post'],'dashboard-statistics', 'Dashboard\DashboardStaticController@index')->name('dashboard-statistics');
 
     // USUARIOS
     Route::get('edit', 'Catalogos\User\UserDataController@showEditUserData')->name('edit');

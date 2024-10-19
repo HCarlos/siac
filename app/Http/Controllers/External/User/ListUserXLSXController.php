@@ -49,13 +49,31 @@ class ListUserXLSXController extends Controller
             $sh = $spreadsheet->setActiveSheetIndex(0);
 
 
-            $sh->setCellValue('K1', Carbon::now()->format('d-m-Y h:m:s'));
+            $sh->setCellValue('J1', Carbon::now()->format('d-m-Y h:m:s'));
             foreach ($Users as $user){
+                $uaId            = $user->DependenciaIdStrArray;
+                $uaName          = $user->DependenciaNameStrArray;
+                $uaAbrevName     = $user->DependenciaAbreviaturaStrArray;
                 $rolId           = $user->RoleIdStrArray;
                 $rolName         = $user->RoleNameStrArray;
+                $permisionId     = $user->PermisionIdStrArray;
+                $permisionName   = $user->PermisionNameStrArray;
+                $deps_abrev      = isset($user->dependencias->first()->abreviatura) ? $user->dependencias->first()->abreviatura : '';
+                $deps_name       = isset($user->dependencias->first()->dependencia) ? $user->dependencias->first()->dependencia : '';
                 $fechaNacimiento = Carbon::parse($user->fecha_nacimiento)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $user->fecha_nacimiento);
                 $sh
                     ->setCellValue('A'.$C, $user->id)
+                    ->setCellValue('B'.$C, $user->ap_paterno)
+                    ->setCellValue('C'.$C, $user->ap_materno)
+                    ->setCellValue('D'.$C, $user->nombre)
+                    ->setCellValue('E'.$C, $user->curp)
+                    ->setCellValue('F'.$C, $uaAbrevName)
+                    ->setCellValue('G'.$C, $uaName)
+                    ->setCellValue('H'.$C, $rolName)
+                    ->setCellValue('I'.$C, $permisionName)
+                    ->setCellValue('J'.$C, $user->logged_at);
+
+/*                ->setCellValue('A'.$C, $user->id)
                     ->setCellValue('B'.$C, $user->username)
                     ->setCellValue('C'.$C, $user->ap_paterno)
                     ->setCellValue('D'.$C, $user->ap_materno)
@@ -81,8 +99,11 @@ class ListUserXLSXController extends Controller
                     ->setCellValue('Y'.$C, $user->empresa_id)
                     ->setCellValue('Z'.$C, $user->user_data_extend->ocupacion)
                     ->setCellValue('AA'.$C, $user->user_data_extend->profesion)
-                    ->setCellValue('BB'.$C, $rolId)
-                    ->setCellValue('CC'.$C, $rolName);
+                    ->setCellValue('AB'.$C, $rolId)
+                    ->setCellValue('AC'.$C, $rolName);*/
+
+
+
                 $C++;
             }
             $Cx = $C  - 1;
@@ -98,7 +119,7 @@ class ListUserXLSXController extends Controller
             $sh->getStyle('A'.$C.':G'.$C)->getFont()->setBold(true);
 
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="_'.$arrFE[0].'.'.$arrFE[1].'"');
+            header('Content-Disposition: attachment;filename="users_roles_permissions_file"');
             header('Cache-Control: max-age=0');
             header('Cache-Control: max-age=1');
             header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
@@ -132,7 +153,7 @@ class ListUserXLSXController extends Controller
         $C = $C0;
 
         try {
-            $file_external = trim(config("atemun.archivos.fmt_lista_usuarios"));
+            $file_external = trim(config("atemun.archivos.fmt_lista_usuarios_roles"));
             $arrFE = explode('.',$file_external);
             $extension = Str::ucfirst($arrFE[1]);
             $archivo =  LoadTemplateExcel::getFileTemplate($file_external);
@@ -174,8 +195,8 @@ class ListUserXLSXController extends Controller
                     ->setCellValue('Y'.$C, $user->empresa_id)
                     ->setCellValue('Z'.$C, $user->user_data_extend->ocupacion)
                     ->setCellValue('AA'.$C, $user->user_data_extend->profesion)
-                    ->setCellValue('BB'.$C, $rolId)
-                    ->setCellValue('CC'.$C, $rolName);
+                    ->setCellValue('AB'.$C, $rolId)
+                    ->setCellValue('AC'.$C, $rolName);
                 $C++;
             }
             $Cx = $C  - 1;

@@ -94,7 +94,7 @@ class HomeController extends Controller
         }
 
 
-        return view('home-dashboard',
+        return view('dashboard.home-dashboard',
             [
                 'DenunciasHoy' => $DenunciasHoy,
                 'porc' => number_format($porc, 2, '.', ','),

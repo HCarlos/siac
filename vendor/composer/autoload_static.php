@@ -655,8 +655,8 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         ),
         'Doctrine\\Common\\' => 
         array (
-            0 => __DIR__ . '/..' . '/doctrine/common/src',
-            1 => __DIR__ . '/..' . '/doctrine/event-manager/src',
+            0 => __DIR__ . '/..' . '/doctrine/event-manager/src',
+            1 => __DIR__ . '/..' . '/doctrine/common/src',
         ),
         'DeepCopy\\' => 
         array (
@@ -818,9 +818,10 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'App\\Http\\Controllers\\Catalogos\\User\\RoleController' => __DIR__ . '/../..' . '/app/Http/Controllers/Catalogos/User/RoleController.php',
         'App\\Http\\Controllers\\Catalogos\\User\\UserDataController' => __DIR__ . '/../..' . '/app/Http/Controllers/Catalogos/User/UserDataController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\Dashboard\\DashboardController' => __DIR__ . '/../..' . '/app/Http/Controllers/Dashboard/DashboardController.php',
+        'App\\Http\\Controllers\\Dashboard\\DashboardEnlaceController' => __DIR__ . '/../..' . '/app/Http/Controllers/Dashboard/DashboardEnlaceController.php',
+        'App\\Http\\Controllers\\Dashboard\\DashboardStaticController' => __DIR__ . '/../..' . '/app/Http/Controllers/Dashboard/DashboardStaticController.php',
         'App\\Http\\Controllers\\Denuncia\\AfiliacionController' => __DIR__ . '/../..' . '/app/Http/Controllers/Denuncia/AfiliacionController.php',
-        'App\\Http\\Controllers\\Denuncia\\DashboardController' => __DIR__ . '/../..' . '/app/Http/Controllers/Denuncia/DashboardController.php',
-        'App\\Http\\Controllers\\Denuncia\\DashboardEnlaceController' => __DIR__ . '/../..' . '/app/Http/Controllers/Denuncia/DashboardEnlaceController.php',
         'App\\Http\\Controllers\\Denuncia\\DenunciaCiudadanaController' => __DIR__ . '/../..' . '/app/Http/Controllers/Denuncia/DenunciaCiudadanaController.php',
         'App\\Http\\Controllers\\Denuncia\\DenunciaController' => __DIR__ . '/../..' . '/app/Http/Controllers/Denuncia/DenunciaController.php',
         'App\\Http\\Controllers\\Denuncia\\DenunciaDependenciaServicioController' => __DIR__ . '/../..' . '/app/Http/Controllers/Denuncia/DenunciaDependenciaServicioController.php',

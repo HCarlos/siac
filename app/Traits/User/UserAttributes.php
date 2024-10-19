@@ -50,6 +50,26 @@ trait UserAttributes
         return $this->roles()->pluck('name')->implode('|','name');
     }
 
+    public function getPermisionIdStrArrayAttribute(){
+        return $this->permisos()->allRelatedIds('id')->implode('|','id');
+    }
+
+    public function getPermisionNameStrArrayAttribute(){
+        return $this->permisos()->pluck('name')->implode('|','name');
+    }
+
+    public function getDependenciaIdStrArrayAttribute(){
+        return $this->dependencias()->allRelatedIds('id')->implode('|','id');
+    }
+
+    public function getDependenciaNameStrArrayAttribute(){
+        return $this->dependencias()->pluck('dependencia')->implode('|','dependencia');
+    }
+
+    public function getDependenciaAbreviaturaStrArrayAttribute(){
+        return $this->dependencias()->pluck('abreviatura')->implode('|','abreviatura');
+    }
+
     public function hasDependencia($dependencia): bool{
         return $this->dependencias->contains('id',$dependencia);
     }
