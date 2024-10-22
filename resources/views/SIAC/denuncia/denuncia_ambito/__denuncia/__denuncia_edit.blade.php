@@ -14,10 +14,29 @@
                     <div class="input-group btn-group-xs">
                         <input type="text" name="usuario" id="usuario" value="{{ $items->Ciudadano->FullName }}" class="form-control" readonly>
                         <span class="input-group-append">
-                            <a  href="{{route("editUser",['Id'=>$items->Ciudadano->id])}}" target="_blank" class="btn btn-xs btn-icon btn-primary editUser" id="editUser" name="editUser"> <i class="mdi mdi-account-edit text-white "></i></a>
+                            <a  href="{{route("editUser",['Id'=>$items->Ciudadano->id])}}" target="_blank" class="btn btn-xs btn-icon btn-primary editUser" id="editUser" > <i class="mdi mdi-account-edit text-white "></i></a>
+                        </span>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-ico btn-secondary" id="btnRefreshButtonUser" >
+                                <i class="mdi mdi-refresh"></i>
+                            </button>
                         </span>
                     </div>
-                    <input type="text" name="usuario_telefonos" id="usuario_telefonos" value="{{ $items->Ciudadano->TelefonosCelularesEmails }}" class="form-control" readonly>
+                    <div class="input-group btn-group-xs mb-1 border-bottom">
+                        <span class="input-group-append">
+                            <i class="mdi mdi-cellphone-iphone font-18 pr-1"></i> <span class="pt-1" id="lblCelulares">{{ $items->Ciudadano->celulares }}</span>
+                        </span>
+                    </div>
+                    <div class="input-group btn-group-xs mb-1 border-bottom">
+                        <span class="input-group-append">
+                            <i class="mdi mdi-phone font-18 pr-1"></i> <span class="pt-1" id="lblTelefonos">{{ $items->Ciudadano->telefonos }}</span>
+                        </span>
+                    </div>
+                    <div class="input-group btn-group-xs mb-1 border-bottom">
+                        <span class="input-group-append">
+                            <i class="mdi mdi-email font-18 pr-1"></i> <span class="pt-1" id="lblEMails">{{ $items->Ciudadano->emails }}</span>
+                        </span>
+                    </div>
                 </div>
         </div>
 
@@ -433,3 +452,5 @@
 <input type="hidden" name="ambito" id="ambito" value="{{$items->ambito}}" >
 
 <input type="hidden" name="isFechaIngresoView" id="isFechaIngresoView" value="{{ config('atemun.modificar_fecha_ingreso') }}" >
+
+<input type="hidden" name="usuario_telefonos" id="usuario_telefonos" value="{{ $items->Ciudadano->TelefonosCelularesEmails }}" class="form-control" readonly>

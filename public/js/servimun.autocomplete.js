@@ -7,7 +7,6 @@ jQuery(function($) {
             }
         });
 
-        $("#editUser").prop('readonly',true);
 
         var Objs = ["#search_autocomplete","#search_autocomplete_user",".search_autocomplete_user","#search_autocomplete_calle","#search_autocomplete_colonia","#search_autocomplete_cp","#search_autocomplete_comunidad"];
         var Urls = ["/searchAdress","/searchUser","/searchUser","/buscarCalle","/buscarColonia","/buscarCodigopostal","/buscarComunidad"];
@@ -22,6 +21,8 @@ jQuery(function($) {
         function callAjax(Obj, Url, Get, Item, ID, Elem) {
             $(Obj).autocomplete({
                 source: function(request, response) {
+                    $("#btnRefreshButtonUser").prop('disabled',true);
+                    $("#editUser").prop('disabled',true);
                     $.ajax({
                         url: Url,
                         dataType: "json",
@@ -74,9 +75,9 @@ jQuery(function($) {
                     if ( $("#ubicacion_id_span") )  $("#ubicacion_id_span").html(d.ubicacion_id);
                     if ( $("#ubicacion") )          $("#ubicacion").val(d.id+' '+d.domicilio);
                     if ( $("#ubicacion_nueva_id") ) $("#ubicacion_nueva_id").val(d.ubicacion_id);
-                    if ( $("#editUser") ) $("#editUser").prop('readonly',false);
+                    if ( $("#editUser") ) $("#editUser").prop('disabled',false);
                     if ( $("#editUser") ) $("#editUser").attr('href','/editUser/'+d.id);
-
+                    $("#btnRefreshButtonUser").prop('disabled',false);
                     break;
                 case 2:
                     if ( $("#lstAsigns") ) $("#lstAsigns").empty();
@@ -115,8 +116,9 @@ jQuery(function($) {
                     $("#usuario_domicilio").val("");
                     $("#usuario_telefonos").val("");
                     $("#usuario_id").val(0);
-                    $("#editUser").prop('readonly',true);
+                    $("#editUser").prop('disabled',true);
                     $("#editUser").prop('href',null);
+                    $("#btnRefreshButtonUser").prop('disabled',true);
                     break;
                 case 2:
                     if ( $("#lstAsigns") ) $("#lstAsigns").empty();
@@ -149,9 +151,31 @@ jQuery(function($) {
             }, "json" );
         }
 
-            $("#user_address_list").on('change',function(event){
-                 $("#ubicacion_nueva_id").val( $(this).val() );
-            });
+        $("#user_address_list").on('change',function(event){
+             $("#ubicacion_nueva_id").val( $(this).val() );
+        });
+
+        $("#btnRefreshButtonUser").on('click',function(event){
+            event.preventDefault();
+            if ( $("#usuario_id") ) {
+                var user_id = parseInt($("#usuario_id").val());
+                if ( user_id > 0 ) {
+                    // alert(user_id);
+                    $.ajax({
+                        methods: "GET",
+                        url: "/getUser/"+user_id,
+                        dataType: "json",
+                        success: function(data) {
+                            var d = data.data;
+                            $("#lblCelulares").html(d.celulares);
+                            $("#lblTelefonos").html(d.telefonos_casa);
+                            $("#lblEMails").html(d.emails);
+                        },
+                    });
+                }
+            }
+
+        });
 
 
     });

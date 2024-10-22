@@ -123,23 +123,19 @@ class DenunciaAmbitoRequest extends FormRequest
 
 //            dd($Item);
 
-            //            if (Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|USER_SAS_ADMIN|USER_DIF_ADMIN')){
             if (Auth::user()->isRole('Administrator|SysOp')){
                 $item = $this->guardar($Item);
             }elseif ( Auth::user()->isRole('ENLACE|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN') ){
-//                dd("Hola");
-//                if (Auth::user()->id == $this->creadopor_id ) {
-                    if (auth()->user()->hasAnyPermission(['all','guardar_expediente','modificar_expediente'])) {
-                        $item = $this->guardar($Item);
-                    }else {
-                        return null;
-                    }
+                if (auth()->user()->hasAnyPermission(['all','guardar_expediente','modificar_expediente'])) {
+                    $item = $this->guardar($Item);
+                }else {
+                    return null;
+                }
             }else{
                 return null;
             }
         }catch (QueryException $e){
             $Msg = new MessageAlertClass();
-//            dd($Msg->Message());
             throw new HttpResponseException(response()->json( $Msg->Message($e), 422));
         }
         return $item;

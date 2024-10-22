@@ -186,9 +186,9 @@ trait UserAttributes
     }
 
     public static function getUsernameNext( string $Abreviatura ): array{
-        $Abreviatura = $Abreviatura == "0" ? "inv" : $Abreviatura;
+        $Abreviatura = $Abreviatura === "0" ? "inv" : $Abreviatura;
         $next_id=DB::select("SELECT NEXTVAL('users_id_seq')");
-        $Id = intval($next_id['0']->nextval);
+        $Id = (int)$next_id['0']->nextval;
         DB::select("SELECT SETVAL('users_id_seq',".($Id-1).")" );
         $Id = str_pad($Id,6,'0',0);
         $role = Role::query()->where('abreviatura',$Abreviatura)->first();
