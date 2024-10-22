@@ -871,3 +871,7 @@ gmp-map {
 .text-gris-oscuro-1 {
     color: #676c70;
 }
+
+.table-1 > thead{
+    padding: 0.5em 0.5em 0.5em !important;
+}

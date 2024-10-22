@@ -18,7 +18,8 @@ class FiltersRules
 {
 
     public function filterRulesDenuncia(Request $request){
-        $data = $request->all(['curp','ciudadano','id','desde','hasta','dependencia_id','servicio_id','estatus_id','creadopor_id','incluirFecha','conRespuesta','clave_identificadora','uuid','incluirFechaMovto','origen_id','ciudadano_id']);
+        $data = $request->all(['ambito_dependencia','curp','ciudadano','id','desde','hasta','dependencia_id','servicio_id','estatus_id','creadopor_id','incluirFecha','conRespuesta','clave_identificadora','uuid','incluirFechaMovto','origen_id','ciudadano_id']);
+        $data['ambito_dependencia']   = $data['ambito_dependencia']   == null ? "" : $data['ambito_dependencia'];
         $data['curp']                 = $data['curp']                 == null ? "" : $data['curp'];
         $data['ciudadano']            = $data['ciudadano']            == null ? "" : $data['ciudadano'];
         $data['id']                   = $data['id']                   == null ? "" : $data['id'];
@@ -39,9 +40,10 @@ class FiltersRules
         $data['creadopor_id']         = $data['creadopor_id']   == "0" ? "" : $data['creadopor_id'];
 
         $filters = [
-            'curp'           => $data['curp'],
-            'ciudadano'      => $data['ciudadano'],
-            'id'             => $data['id'],
+            'ambito_dependencia' => $data['ambito_dependencia'],
+            'curp'               => $data['curp'],
+            'ciudadano'          => $data['ciudadano'],
+            'id'                 => $data['id'],
         ];
         if ($data['incluirFecha'] != null){
             $filters = array_merge($filters, ['desde' => $data['desde'], 'hasta' => $data['hasta'] ] );

@@ -8,13 +8,11 @@
                 @slot('title_card','')
                 @slot('body_card')
                     @include('shared.code.__errors')
-{{--                    @include('shared.search.__search_denuncia_adress_list')--}}
-                    <form method="POST" action="{{ route('updateDenuncia') }}">
+                    <form method="POST" action="{{ route('createDenuncia') }}">
                         @csrf
-                        {{method_field('PUT')}}
-                        @include('shared.denuncia.denuncia.__denuncia_edit')
+                        @include('shared.denuncia.denuncia.__denuncia_new')
                         @component('components.tools.buttons-form-denuncia')
-                            @slot('msgLeft','')
+                            @slot('msgLeft',' ')
                         @endcomponent
                     </form>
                 @endslot

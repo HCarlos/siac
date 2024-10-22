@@ -413,6 +413,30 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
 
     Route::get('vistaDenuncia/{id}', 'Denuncia\DenunciaController@vistaDenuncia')->name('vistaDenuncia');
 
+    /// DENUNCIAS CON AMBITO
+    Route::get('listDenunciasAmbito1', 'Denuncia\DenunciaAmbitoController@index1')->name('listDenunciasAmbito1');
+    Route::get('listDenunciasAmbito2', 'Denuncia\DenunciaAmbitoController@index2')->name('listDenunciasAmbito2');
+    Route::get('editDenunciaAmbito/{Id}', 'Denuncia\DenunciaAmbitoController@editItem')->name('editDenunciaAmbito');
+    Route::put('updateDenunciaAmbito1', 'Denuncia\DenunciaAmbitoController@updateItem1')->name('updateDenunciaAmbito1');
+    Route::put('updateDenunciaAmbito2', 'Denuncia\DenunciaAmbitoController@updateItem2')->name('updateDenunciaAmbito2');
+    Route::get('addUserDenunciaAmbito/{Id}', 'Denuncia\DenunciaAmbitoController@addUserItem')->name('addUserDenunciaAmbito');
+    Route::put('updateAddUserDenunciaAmbito', 'Denuncia\DenunciaAmbitoController@updateAddUserDenuncia')->name('updateAddUserDenunciaAmbito');
+    Route::get('updateAddUserDenunciaAmbitoGet/{id}/{usuario_id}', 'Denuncia\DenunciaAmbitoController@updateAddUserDenunciaGet')->name('updateAddUserDenunciaAmbitoGet');
+    Route::get('removeAddUserDenunciaAmbito/{id0}/{id1}', 'Denuncia\DenunciaAmbitoController@removeAddUserDenuncia')->name('removeAddUserDenunciaAmbito');
+    Route::get('newDenunciaAmbito', 'Denuncia\DenunciaAmbitoController@newItem')->name('newDenunciaAmbito');
+    Route::post('createDenunciaAmbito1', 'Denuncia\DenunciaAmbitoController@createItem1')->name('createDenunciaAmbito1');
+    Route::post('createDenunciaAmbito2', 'Denuncia\DenunciaAmbitoController@createItem2')->name('createDenunciaAmbito2');
+    Route::get('removeDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@removeItem')->name('removeDenunciaAmbito');
+    Route::get('searchAdressAmbito/', 'Denuncia\DenunciaAmbitoController@searchAdress')->name('searchAdressAmbito');
+    Route::get('getUbiAmbito/{IdUbi}', 'Denuncia\DenunciaAmbitoController@getUbi')->name('getUbiAmbito');
+    Route::get('showModalSearchDenunciaAmbito/', 'Denuncia\DenunciaAmbitoController@showModalSearchDenuncia')->name('showModalSearchDenunciaAmbito');
+    Route::match(['get','put','post'],'findDataInDenunciaAmbito/', 'Denuncia\DenunciaAmbitoController@findDataInDenuncia')->name('findDataInDenunciaAmbito');
+    Route::post('showDataListDenunciaAmbitoExcel1A/', 'External\Denuncia\ListDenunciaXLSXController@getListDenunciaXLSX')->name('showDataListDenunciaAmbitoExcel1A');
+    Route::post('showDataListDenunciaAmbitoRespuestaExcel1A/', 'External\Denuncia\ListDenunciaXLSXController@showDataListDenunciaRespuestaExcel1A')->name('showDataListDenunciaAmbitoRespuestaExcel1A');
+    Route::get('cerrarDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@closeItem')->name('cerrarDenunciaAmbito');
+    Route::get('firmarDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@signItem')->name('firmarDenunciaAmbito');
+
+
 });
 
 Route::group(['middleware' => 'role:auth|Administrator|SysOp|DELEGADO|CIUDADANO|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|ENLACE|USER_ARCHIVO_CAP|USER_ARCHIVO_ADMIN'], function () {

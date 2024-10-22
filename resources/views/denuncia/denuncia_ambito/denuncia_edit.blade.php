@@ -3,6 +3,8 @@
 @section('container')
 
 @component('components.denuncia')
+{{--    @slot('titulo_catalogo',$titulo_catalogo)--}}
+{{--    @slot('titulo_header','Folio: '. $items->id)--}}
     @slot('contenido')
             @component('components.card')
                 @slot('title_card','')

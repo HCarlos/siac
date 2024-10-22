@@ -55,7 +55,6 @@ class DenunciaDependenciaServicioController extends Controller
                 'Id'                                  => $this->Id,
                 'Denuncia'                            => $Denuncia,
                 'titulo_catalogo'                     => "Cronología de cambios de estatus de la orden: " . $this->Id,
-                'titulo_header'                       => '',
                 'user'                                => $user,
                 'newWindow'                           => true,
                 'newItem'                             => 'addDenunciaDependenciaServicio',
@@ -67,7 +66,7 @@ class DenunciaDependenciaServicioController extends Controller
                 'removeItem'                          => 'removeDenunciaDependenciaServicio',
                 'imprimirDenuncia'                    => "imprimirDenuncia/",
                 'imprimirDenunciaConRespuesta'        => "imprimir_denuncia_respuesta/",
-                'showEditDenunciaDependenciaServicio' =>'listDenunciaDependenciaServicio',
+                'showEditDenunciaDependenciaServicio' => 'listDenunciaDependenciaServicio',
                 'imagenesDenunciaItem'                => 'listImagenes',
             ]
         );

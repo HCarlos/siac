@@ -5,7 +5,7 @@
 <a href="#"
    class="action-icon text-center removeItemList"
    id="{{$removeItem.'-'.$item->id}}"
-   data-toggle="tooltip" title="Eliminar permanentemente esta solicitud"
+   data-toggle="tooltip" title="Eliminar permanentemente este objeto."
     >
     <i class="fas fa-trash-alt text-danger"></i>
 </a>

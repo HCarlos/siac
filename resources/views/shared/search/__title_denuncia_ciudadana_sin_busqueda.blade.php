@@ -3,7 +3,7 @@
         {{$titulo_catalogo}}
         <small>
             @isset($titulo_header)
-                {{$titulo_header}}
+{{--                {{$titulo_header}}--}}
             @endisset
         </small>
     </h4>

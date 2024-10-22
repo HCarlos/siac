@@ -40,8 +40,10 @@
                     <td>{{$item->fecha_movimiento}}</td>
                     <td class="table-action  w-25">
                         <div class="button-list">
-                            @if(Gate::check('all') || Gate::check('eliminar_respuesta'))
+                            @if(Gate::check('all') || Gate::check('editar_respuesta'))
                                 @include('shared.ui_kit.__edit_item')
+                            @endif
+                            @if(Gate::check('all') || Gate::check('eliminar_respuesta'))
                                 @include('shared.ui_kit.__remove_item')
                             @endif
 

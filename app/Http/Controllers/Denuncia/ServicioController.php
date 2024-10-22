@@ -8,7 +8,7 @@ use App\Http\Requests\Denuncia\ServicioRequest;
 use App\Models\Catalogos\Medida;
 use App\Models\Catalogos\Servicio;
 use App\Models\Catalogos\Subarea;
-use App\Models\Denuncias\_Servicios;
+use App\Models\Denuncias\_vi_Servicios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -33,7 +33,7 @@ class ServicioController extends Controller
 //        dd($filters);
 
 
-        $items = _Servicios::query()
+        $items = _vi_Servicios::query()
             ->filterBy($filters)
             ->orderByDesc('id')
             ->paginate(10000);

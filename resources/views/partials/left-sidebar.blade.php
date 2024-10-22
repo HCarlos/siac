@@ -6,10 +6,10 @@
         <!-- LOGO -->
         <a href="/home" class="logo text-left pr-2 pl-2 pt-1 pb-1"  style="background: #FFF">
             <span class="logo-lg">
-                <img src="{{asset('images/web/logo-0.png')}}" >
+                <img src="{{asset('images/web/logo-0.png')}}" alt="" >
             </span>
             <span class="logo-sm">
-                <img src="{{asset('images/logo_sm.png')}}" >
+                <img src="{{asset('images/logo_sm.png')}}" alt="" >
             </span>
         </a>
     @guest()
@@ -18,15 +18,15 @@
         <ul class="metismenu side-nav mb-0">
             @if (Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_SAS_CAP|USER_SAS_ADMIN|USER_DIF_CAP|USER_DIF_ADMIN|ENLACE') )
                 <li class="side-nav-item">
-                    @if (Auth::user()->hasRole('ENLACE') )
-                        <a href="{{ url('dashboard_enlace') }}" class="side-nav-link">
-                    @else
-                        <a href="{{ url('dashboard_enlace') }}" class="side-nav-link">
-                    @endif
+{{--                    @if (Auth::user()->hasRole('ENLACE') )--}}
+                        <a href="{{ url(Auth::user()->hasRole('ENLACE') ? 'dashboard_enlace' : 'dashboard_enlace') }}" class="side-nav-link">
+{{--                    @else--}}
+{{--                        <a href="{{ url('dashboard_enlace') }}" class="side-nav-link">--}}
+{{--                    @endif--}}
                         <i class="mdi dripicons-meter"></i>
                         <span class="badge badge-light float-right"></span>
                         <span>Dashboard</span>
-                    </a>
+                        </a>
                 </li>
             @endif
             <li class="side-nav-item">
@@ -37,6 +37,29 @@
                     <span>Solicitudes</span>
                 </a>
             </li>
+
+            @if (Auth::user()->hasRole('Administrator|SysOp|test_admin'))
+            <li class="side-nav-item">
+                <a href="{{route('listDenunciasAmbito1')}}" class="side-nav-link">
+                    <i class="mdi dripicons-archive"></i>
+                    @php $filters['filterdata']=""; @endphp
+                    <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',1)->count()}}</span>
+                    <span>Apoyos Soc.</span>
+                </a>
+            </li>
+            @endif
+
+            @if (Auth::user()->hasRole('Administrator|SysOp|test_admin'))
+                <li class="side-nav-item">
+                    <a href="{{route('listDenunciasAmbito2')}}" class="side-nav-link">
+                        <i class="mdi dripicons-archive"></i>
+                        @php $filters['filterdata']=""; @endphp
+                        <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->count()}}</span>
+                        <span>Servicios Mun.</span>
+                    </a>
+                </li>
+            @endif
+
             @if (Auth::user()->hasRole('Administrator|SysOp'))
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">

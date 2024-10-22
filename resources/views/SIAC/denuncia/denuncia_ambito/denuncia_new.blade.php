@@ -5,16 +5,14 @@
 @component('components.denuncia')
     @slot('contenido')
             @component('components.card')
-                @slot('title_card','')
+                @slot('title_card',$titulo_header ?? "")
                 @slot('body_card')
                     @include('shared.code.__errors')
-{{--                    @include('shared.search.__search_denuncia_adress_list')--}}
-                    <form method="POST" action="{{ route('updateDenuncia') }}">
+                    <form method="POST" action="{{ route($createDenunciaAmbito) }}" accept-charset="UTF-8" enctype="multipart/form-data" class="formData" id="formData" >
                         @csrf
-                        {{method_field('PUT')}}
-                        @include('shared.denuncia.denuncia.__denuncia_edit')
+                        @include('SIAC.denuncia.denuncia_ambito.__denuncia.__denuncia_new')
                         @component('components.tools.buttons-form-denuncia')
-                            @slot('msgLeft','')
+                            @slot('msgLeft',' ')
                         @endcomponent
                     </form>
                 @endslot

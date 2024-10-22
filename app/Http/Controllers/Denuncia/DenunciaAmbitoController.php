@@ -7,6 +7,7 @@ use App\Classes\FiltersRules;
 use App\Events\IUQDenunciaEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Funciones\FuncionesController;
+use App\Http\Requests\Denuncia\DenunciaAmbitoRequest;
 use App\Http\Requests\Denuncia\DenunciaRequest;
 use App\Http\Requests\Denuncia\SearchIdenticalRequest;
 use App\Models\Catalogos\Dependencia;
@@ -15,6 +16,8 @@ use App\Models\Catalogos\Estatu;
 use App\Models\Catalogos\Origen;
 use App\Models\Catalogos\Prioridad;
 use App\Models\Catalogos\Servicio;
+use App\Models\Denuncias\_viDDSs;
+use App\Models\Denuncias\_viServicios;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use App\Models\Denuncias\Firma;
@@ -26,12 +29,13 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 
 
-class DenunciaController extends Controller{
+class DenunciaAmbitoController extends Controller{
 
     protected $tableName = "solicitudes";
     protected $paginationTheme = 'bootstrap';
     protected $msg = "";
     protected $max_item_for_query = 150;
+    protected $ambito_dependencia = 0;
 
     // ***************** MUESTRA EL LISTADO DE USUARIOS ++++++++++++++++++++ //
 
@@ -43,20 +47,23 @@ class DenunciaController extends Controller{
         $this->middleware('auth');
     }
 
-    protected function index(Request $request)
+
+    protected function index(Request $request, $ambito_dependencia)
     {
         ini_set('max_execution_time', 300);
-
-//        if ( Auth::user()->can('consulta_500_items_general') ){
-//            $this->max_item_for_query = config("atemun.consulta_500_items_general");
-//        }
-
         $search = $request->only(['search']);
 
         $filters['filterdata'] = $request->only(['search']);
-         //dd( $filter );
-        $items = Denuncia::query()
-            ->getDenunciasItemCustomFilter($filters)
+        $filters['ambito_dependencia'] = $ambito_dependencia;
+
+        $this->ambito_dependencia = $ambito_dependencia;
+
+        // dd($this->ambito_dependencia);
+
+//         dd( $filters );
+
+        $items = _viDDSs::query()
+            ->GetDenunciasAmbitoItemCustomFilter($filters)
             ->orderByDesc('id')
             ->paginate($this->max_item_for_query);
         $items->appends($filters)->fragment('table');
@@ -69,26 +76,27 @@ class DenunciaController extends Controller{
 
         $user = Auth::User();
 
-        return view('SIAC.denuncia.denuncia.denuncia_list',
+        return view('SIAC.denuncia.denuncia_ambito.denuncia_list',
             [
                 'items'                               => $items,
                 'titulo_catalogo'                     => "Catálogo de " . ucwords($this->tableName),
+                'titulo_header'                       => $this->ambito_dependencia == 1 ? "Apoyos Sociales" : "Servicios Municipales",
                 'user'                                => $user,
-                'searchInListDenuncia'                => 'listDenuncias',
+                'searchInListDenuncia'                => 'listDenunciasAmbito'.$this->ambito_dependencia,
                 'newWindow'                           => true,
                 'tableName'                           => $this->tableName,
-                'showEdit'                            => 'editDenuncia',
-                'showAddUser'                         => 'addUserDenuncia',
+                'showEdit'                            => 'editDenunciaAmbito',
+                'showAddUser'                         => 'addUserDenunciaAmbito',
                 'showEditDenunciaDependenciaServicio' => 'listDenunciaDependenciaServicio',
-                'showProcess1'                        => 'showDataListDenunciaExcel1A',
-                'newItem'                             => 'newDenuncia',
-                'removeItem'                          => 'removeDenuncia',
+                'showProcess1'                        => 'showDataListDenunciaAmbitoExcel1A',
+                'newItem'                             => 'newDenunciaAmbito',
+                'removeItem'                          => 'removeDenunciaAmbito',
                 'respuestasDenunciaItem'              => 'listRespuestas',
                 'respuestasDenunciaCiudadanaItem'     => 'listRespuestasCiudadanas',
                 'imagenesDenunciaItem'                => 'listImagenes',
                 'searchAdressDenuncia'                => 'listDenuncias',
-                'showModalSearchDenuncia'             => 'showModalSearchDenuncia',
-                'findDataInDenuncia'                  => 'findDataInDenuncia',
+                'showModalSearchDenuncia'             => 'showModalSearchDenunciaAmbito',
+                'findDataInDenunciaAmbito'            => 'findDataInDenunciaAmbito',
                 'imprimirDenuncia'                    => "imprimir_denuncia_archivo/",
                 'IsEnlace'                            => session('IsEnlace'),
                 'DependenciaArray'                    => session('DependenciaArray'),
@@ -96,20 +104,31 @@ class DenunciaController extends Controller{
         );
     }
 
-    protected function newItem(){
+    protected function index1(Request $request){
+        return $this->index($request, 1);
+    }
+
+    protected function index2(Request $request){
+        return $this->index($request, 2);
+    }
+
+    protected function newItem1($ambito_dependencia){
         $Prioridades  = Prioridad::all()->sortBy('prioridad');
         $Origenes     = Origen::all()->sortBy('origen');
 
         $IsEnlace = Session::get('IsEnlace');
-        if($IsEnlace){
-//            $DependenciaIdArray = explode('|',Session::get('DependenciaIdArray'));
-            $DependenciaIdArray = Session::get('DependenciaIdArray');
-            //dd($DependenciaArray);
-            $Dependencias = Dependencia::all()->whereIn('id',$DependenciaIdArray,false)->sortBy('dependencia');
-            //dd($Dependencias);
+        $this->ambito_dependencia = $ambito_dependencia;
 
+        if($IsEnlace){
+            $DependenciaIdArray = Session::get('DependenciaIdArray');
+            $Dependencias = Dependencia::all()
+                ->where('ambito_dependencia',$this->ambito_dependencia)
+                ->whereIn('id',$DependenciaIdArray,false)
+                ->sortBy('dependencia');
         }else{
-            $Dependencias = Dependencia::all()->sortBy('dependencia');
+            $Dependencias = Dependencia::all()
+                ->where('ambito_dependencia',$this->ambito_dependencia)
+                ->sortBy('dependencia');
         }
 
         if (Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN') ) {
@@ -121,52 +140,126 @@ class DenunciaController extends Controller{
         $hashtag = Denuncia::select('clave_identificadora')->distinct('clave_identificadora')->orderBy('clave_identificadora')->pluck('clave_identificadora','clave_identificadora');
 
         $this->msg = "";
+        $th = $this->ambito_dependencia == 1 ? "Apoyos Sociales" : "Servicios Municipales";
         return view('SIAC.denuncia.denuncia.denuncia_new',
             [
-                'user'            => Auth::user(),
-                'editItemTitle'   => 'Nuevo',
-                'prioridades'     => $Prioridades,
-                'origenes'        => $Origenes,
-                'dependencias'    => $Dependencias,
-                'estatus'         => $Estatus,
-                'hashtag'        => $hashtag,
-                'postNew'         => 'createDenuncia',
-                'titulo_catalogo' => ucwords($this->tableName),
-                'titulo_header'   => 'Folio Nuevo',
-                'exportModel'     => 23,
-                'msg'             => $this->msg,
+                'user'                 => Auth::user(),
+                'editItemTitle'        => 'Nuevo',
+                'prioridades'          => $Prioridades,
+                'origenes'             => $Origenes,
+                'dependencias'         => $Dependencias,
+                'estatus'              => $Estatus,
+                'hashtag'              => $hashtag,
+                'postNew'              => 'createDenunciaAmbito',
+                'titulo_catalogo'      => ucwords($this->tableName) . " de " . $th,
+                'titulo_header'        => 'Folio Nuevo',
+                'createDenunciaAmbito' => 'createDenunciaAmbito1',
+                'exportModel'          => 23,
+                'msg'                  => $this->msg,
             ]
         );
     }
 
+    protected function newItem2($ambito_dependencia){
+        $IsEnlace = Session::get('IsEnlace');
+        $this->ambito_dependencia = $ambito_dependencia;
+
+        if($IsEnlace){
+            $DependenciaIdArray = Session::get('DependenciaIdArray');
+            $Dependencias = Dependencia::query()->select('id')
+                ->where('ambito_dependencia',$this->ambito_dependencia)
+                ->whereIn('id',$DependenciaIdArray,false)
+                ->orderBy('dependencia')
+                ->get()
+                ->toArray();
+        }else{
+            $Dependencias = Dependencia::query()->select('id')
+                ->where('ambito_dependencia',$this->ambito_dependencia)
+                ->orderBy('dependencia')
+                ->get()
+                ->toArray();
+
+        }
+
+        $Servicios = _viServicios::query()->select('id','servicio','abreviatura_dependencia')
+            ->where('ambito_dependencia',$this->ambito_dependencia)
+            ->whereIn('dependencia_id',$Dependencias)
+            ->orderBy('servicio')
+            ->get();
+
+//        dd($Servicios);
+
+        $this->msg = "";
+        $th = $this->ambito_dependencia == 1 ? "Apoyos Sociales" : "Servicios Municipales";
+        return view('SIAC.denuncia.denuncia_ambito.denuncia_new',
+            [
+                'user'                 => Auth::user(),
+                'editItemTitle'        => 'Nuevo',
+                'servicios'            => $Servicios,
+                'postNew'              => 'createDenunciaAmbito2',
+                'titulo_catalogo'      => ucwords($this->tableName) . " de " . $th,
+                'titulo_header'        => 'Folio Nuevo',
+                'createDenunciaAmbito' => 'createDenunciaAmbito2',
+                'exportModel'          => 23,
+                'msg'                  => $this->msg,
+            ]
+        );
+    }
+
+    protected function newItem(){
+        $this->ambito_dependencia = Session::get('ambito_dependencia');
+        return ($this->ambito_dependencia == 1)
+            ? $this->newItem1($this->ambito_dependencia)
+            : $this->newItem2($this->ambito_dependencia);
+    }
+
     // ***************** CREAR NUEVO ++++++++++++++++++++ //
-    protected function createItem(DenunciaRequest $request){
+    protected function createItem1(DenunciaRequest $request){
+        $this->ambito_dependencia = Session::get('ambito_dependencia');
         $item = $request->manage();
         if (!isset($item->id)) {
             abort(422);
         }
         $this->msg = "Registro Guardado con éxito!";
         session(['msg' => $this->msg]);
-        return Redirect::to('editDenuncia/'.$item->id);
+//        return Redirect::to('editDenunciaAmbito/'.$item->id);
+        return Redirect::to('editDenunciaAmbito/'.$item->id);
+
+    }
+
+    protected function createItem2(DenunciaAmbitoRequest $request){
+        $this->ambito_dependencia = Session::get('ambito_dependencia');
+        $item = $request->manage($this->ambito_dependencia);
+        if (!isset($item->id)) {
+            abort(422);
+        }
+        $this->msg = "Registro Guardado con éxito!";
+        session(['msg' => $this->msg]);
+//        return Redirect::to('editDenunciaAmbito/'.$item->id);
+        return Redirect::to('editDenunciaAmbito/'.$item->id);
 
     }
 
 
-
-    protected function editItem($Id){
+    protected function editItem1($Id, $ambito_dependencia){
 
         $item         = Denuncia::find($Id);
         $Prioridades  = Prioridad::all()->sortBy('prioridad');
         $Origenes     = Origen::all()->sortBy('origen');
 
         $IsEnlace = Session::get('IsEnlace');
-        if($IsEnlace){
-//            $DependenciaIdArray = explode('|',Session::get('DependenciaIdArray'));
-            $DependenciaIdArray = Session::get('DependenciaIdArray');
-            $Dependencias = Dependencia::all()->whereIn('id',$DependenciaIdArray,false)->sortBy('dependencia');
+        $this->ambito_dependencia = $ambito_dependencia;
 
+        if($IsEnlace){
+            $DependenciaIdArray = Session::get('DependenciaIdArray');
+            $Dependencias = Dependencia::all()
+                ->where('ambito_dependencia',$this->ambito_dependencia)
+                ->whereIn('id',$DependenciaIdArray,false)
+                ->sortBy('dependencia');
         }else{
-            $Dependencias = Dependencia::all()->sortBy('dependencia');
+            $Dependencias = Dependencia::all()
+                ->where('ambito_dependencia',$this->ambito_dependencia)
+                ->sortBy('dependencia');
         }
 
         $Servicios = Servicio::getQueryServiciosFromDependencias($item->dependencia_id);
@@ -188,40 +281,120 @@ class DenunciaController extends Controller{
         $hashtag = Denuncia::select('clave_identificadora')->distinct('clave_identificadora')->orderBy('clave_identificadora')->pluck('clave_identificadora','clave_identificadora');
 
         $this->msg = "";
+        $th = $this->ambito_dependencia == 1 ? "Apoyos Sociales" : "Servicios Municipales";
         return view('SIAC.denuncia.denuncia.denuncia_edit',
             [
-                'user'            => Auth::user(),
-                'prioridades'     => $Prioridades,
-                'origenes'        => $Origenes,
-                'dependencias'    => $Dependencias,
-                'servicios'       => $Servicios,
-                'estatus'         => $Estatus,
-                'hashtag'         => $hashtag,
-                'items'           => $item,
-                'editItemTitle'   => isset($item->denuncia) ? $item->denuncia : 'Nuevo',
-                'putEdit'         => 'updateDenuncia',
-                'removeItem'      => 'removeImagene',
-                'titulo_catalogo' => "Catálogo de " . ucwords($this->tableName),
-                'titulo_header'   => 'Editando el Folio: '.$Id,
-                'msg'             => $this->msg,
-                'pregunta1'       => $pregunta1,
+                'user'                 => Auth::user(),
+                'prioridades'          => $Prioridades,
+                'origenes'             => $Origenes,
+                'dependencias'         => $Dependencias,
+                'servicios'            => $Servicios,
+                'estatus'              => $Estatus,
+                'hashtag'              => $hashtag,
+                'items'                => $item,
+                'editItemTitle'        => isset($item->denuncia) ? $item->denuncia : 'Nuevo',
+                'putEdit'              => 'updateDenunciaAmbito1',
+                'removeItem'           => 'removeImagene',
+                'updateDenunciaAmbito' => 'updateDenunciaAmbito1',
+                'titulo_catalogo'      => ucwords($this->tableName) . " de " . $th,
+                'titulo_header'        => 'Editando el Folio: '.$Id,
+                'msg'                  => $this->msg,
+                'pregunta1'            => $pregunta1,
             ]
         );
     }
 
-// ***************** GUARDA LOS CAMBIOS ++++++++++++++++++++ //
-    protected function updateItem(DenunciaRequest $request){
 
+    protected function editItem2($Id, $ambito_dependencia){
+
+        $item         = Denuncia::find($Id);
+
+        $IsEnlace = Session::get('IsEnlace');
+        $this->ambito_dependencia = $ambito_dependencia;
+
+        if($IsEnlace){
+            $DependenciaIdArray = Session::get('DependenciaIdArray');
+            $Dependencias = Dependencia::query()->select('id')
+                ->where('ambito_dependencia',$this->ambito_dependencia)
+                ->whereIn('id',$DependenciaIdArray,false)
+                ->orderBy('dependencia')
+                ->get()
+                ->toArray();
+        }else{
+            $Dependencias = Dependencia::query()->select('id')
+                ->where('ambito_dependencia',$this->ambito_dependencia)
+                ->orderBy('dependencia')
+                ->get()
+                ->toArray();
+
+        }
+
+        $Servicios = _viServicios::query()->select('id','servicio','abreviatura_dependencia')
+            ->where('ambito_dependencia',$this->ambito_dependencia)
+            ->whereIn('dependencia_id',$Dependencias)
+            ->orderBy('servicio')
+            ->get();
+
+//        dd($Servicios);
+
+        $user_ubicacion = $item->Ciudadano->ubicaciones->first->id->id;
+
+        if ( $user_ubicacion === $item->ubicacion_id ){
+            $pregunta1 = 0;
+        }else{
+            $pregunta1 = 1;
+        }
+
+        $this->msg = "";
+        $th = $this->ambito_dependencia == 1 ? "Apoyos Sociales" : "Servicios Municipales";
+        return view('SIAC.denuncia.denuncia_ambito.denuncia_edit',
+            [
+                'user'                 => Auth::user(),
+                'servicios'            => $Servicios,
+                'items'                => $item,
+                'editItemTitle'        => $item->denuncia ?? 'Nuevo',
+                'putEdit'              => 'updateDenunciaAmbito2',
+                'removeItem'           => 'removeImagene',
+                'updateDenunciaAmbito' => 'updateDenunciaAmbito2',
+                'titulo_catalogo'      => ucwords($this->tableName) . " de " . $th,
+                'titulo_header'        => 'Editando el Folio: '.$Id,
+                'msg'                  => $this->msg,
+                'pregunta1'            => $pregunta1,
+            ]
+        );
+    }
+
+
+    protected function editItem($Id){
+        $this->ambito_dependencia = Session::get('ambito_dependencia');
+        return ($this->ambito_dependencia == 1)
+            ? $this->editItem1($Id,$this->ambito_dependencia)
+            : $this->editItem2($Id,$this->ambito_dependencia);
+    }
+
+
+
+// ***************** GUARDA LOS CAMBIOS ++++++++++++++++++++ //
+    protected function updateItem1(DenunciaRequest $request){
+        $this->ambito_dependencia = Session::get('ambito_dependencia');
         $item = $request->manage();
-//        dd($item);
         if (!isset($item->id)) {
             abort(422);
-//            dd($item);
         }
         $this->msg = "Registro Guardado con éxito!";
         session(['msg' => $this->msg]);
+        return Redirect::to('editDenunciaAmbito/'.$item->id);
+    }
 
-        return Redirect::to('editDenuncia/'.$item->id);
+    protected function updateItem2(DenunciaAmbitoRequest $request){
+        $this->ambito_dependencia = Session::get('ambito_dependencia');
+        $item = $request->manage($this->ambito_dependencia);
+        if (!isset($item->id)) {
+            abort(422);
+        }
+        $this->msg = "Registro Guardado con éxito!";
+        session(['msg' => $this->msg]);
+        return Redirect::to('editDenunciaAmbito/'.$item->id);
     }
 
 // ***************** ELIMINA EL ITEM VIA AJAX ++++++++++++++++++++ //
@@ -293,13 +466,16 @@ class DenunciaController extends Controller{
 
     protected function showModalSearchDenuncia(){
 
+        $this->ambito_dependencia = Session::get('ambito_dependencia');
         if (Auth::user()->isRole('ENLACE')){
 
 //            $dep_id = intval(Auth::user()->IsEnlaceDependencia);
             $DependenciaIdArray = Auth::user()->DependenciaIdArray;
 //            $dependencia_id_array = explode('|',$DependenciaIdArray);
             $dependencia_id_array = $DependenciaIdArray;
-            $Dependencias = Dependencia::all()->whereIn('id',$dependencia_id_array)->sortBy('dependencia')->pluck('dependencia','id');
+            $Dependencias = Dependencia::all()
+                ->whereIn('id',$dependencia_id_array)
+                ->sortBy('dependencia')->pluck('dependencia','id');
             $dep_id = $dependencia_id_array[0];
             $Servicios = Servicio::whereHas('subareas', function($p) use ($dep_id) {
                 $p->whereHas("areas", function($q) use ($dep_id){
@@ -308,7 +484,9 @@ class DenunciaController extends Controller{
             })->orderBy('servicio')->get()->pluck('servicio','id');
 
         }else{
-            $Dependencias = Dependencia::all()->sortBy('dependencia')->pluck('dependencia','id');
+            $Dependencias = Dependencia::all()
+                            ->where('ambito_dependencia',$this->ambito_dependencia)
+                            ->sortBy('dependencia')->pluck('dependencia','id');
             $Servicios    = Servicio::all()->where('')->sortBy('servicio')->pluck('servicio','id');
         }
 
@@ -330,10 +508,13 @@ class DenunciaController extends Controller{
         // $hashtag = Denuncia::query()->select('clave_identificadora')->distinct()->get();
         $hashtag = Denuncia::select('clave_identificadora')->distinct('clave_identificadora')->orderBy('clave_identificadora')->pluck('clave_identificadora','clave_identificadora');
 
+        $this->ambito_dependencia = session::get('ambito_dependencia');
+//        dd($this->ambito_dependencia);
+
         $user = Auth::user();
-        return view ('SIAC.denuncia.search.denuncia_search_panel',
+        return view ('SIAC.denuncia.search_ambito.denuncia_search_panel',
             [
-                'findDataInDenuncia' => 'findDataInDenuncia',
+                'findDataInDenunciaAmbito' => 'findDataInDenunciaAmbito',
                 'dependencias'       => $Dependencias,
                 'capturistas'        => $Capturistas,
                 'servicios'          => $Servicios,
@@ -341,6 +522,7 @@ class DenunciaController extends Controller{
                 'origenes'           => $Origenes,
                 'hashtag'            => $hashtag,
                 'items'              => $user,
+                'ambito_dependencia' => $this->ambito_dependencia,
             ]
         );
     }
@@ -348,6 +530,11 @@ class DenunciaController extends Controller{
 
  // ***************** MUESTRA EL MENU DE BUSQUEDA ++++++++++++++++++++ //
     protected function findDataInDenuncia(Request $request){
+
+
+//        dd( $request );
+
+
         $filters = new FiltersRules();
 
         $queryFilters = $filters->filterRulesDenuncia($request);
@@ -360,7 +547,7 @@ class DenunciaController extends Controller{
             $this->max_item_for_query = session::get('items_for_query');
         }
 
-        $items = Denuncia::query()
+        $items = _viDDSs::query()
             ->filterBy($queryFilters)
             ->orderByDesc('id')
             ->paginate($this->max_item_for_query);
@@ -370,25 +557,26 @@ class DenunciaController extends Controller{
         $user = Auth::User();
 
         $request->session()->put('items', $items);
-
-        return view('SIAC.denuncia.denuncia.denuncia_list',
+        $this->ambito_dependencia = session::get('ambito_dependencia');
+        return view('SIAC.denuncia.denuncia_ambito.denuncia_list',
             [
                 'items'                               => $items,
                 'titulo_catalogo'                     => "Catálogo de " . ucwords($this->tableName),
+                'titulo_header'                       => $this->ambito_dependencia == 1 ? "Apoyos Sociales" : "Servicios Municipales",
                 'user'                                => $user,
-                'searchInListDenuncia'                => 'listDenuncias',
+                'searchInListDenuncia'                => 'listDenunciasAmbito'.$this->ambito_dependencia,
                 'respuestasDenunciaItem'              => 'listRespuestas',
                 'respuestasDenunciaCiudadanaItem'     => 'listRespuestasCiudadanas',
                 'newWindow'                           => true,
                 'tableName'                           => $this->tableName,
-                'showEdit'                            => 'editDenuncia',
-                'showAddUser'                         => 'addUserDenuncia',
-                'newItem'                             => 'newDenuncia',
-                'removeItem'                          => 'removeDenuncia',
-                'showProcess1'                        => 'showDataListDenunciaExcel1A',
-                'searchAdressDenuncia'                => 'listDenuncias',
-                'showModalSearchDenuncia'             => 'showModalSearchDenuncia',
-                'findDataInDenuncia'                  => 'findDataInDenuncia',
+                'showEdit'                            => 'editDenunciaAmbito',
+                'showAddUser'                         => 'addUserDenunciaAmbito',
+                'newItem'                             => 'newDenunciaAmbito',
+                'removeItem'                          => 'removeDenunciaAmbito',
+                'showProcess1'                        => 'showDataListDenunciaremoveImageneExcel1A',
+                'searchAdressDenuncia'                => 'listDenunciasAmbito'.$this->ambito_dependencia,
+                'showModalSearchDenuncia'             => 'showModalSearchDenunciaAmbito',
+                'findDataInDenunciaAmbito'            => 'findDataInDenunciaAmbito',
                 'showEditDenunciaDependenciaServicio' => 'listDenunciaDependenciaServicio',
                 'imagenesDenunciaItem'                => 'listImagenes',
             ]
@@ -494,8 +682,8 @@ class DenunciaController extends Controller{
             [
                 'user'            => Auth::user(),
                 'items'           => $item,
-                'putAddUserEdit'  => 'updateAddUserDenuncia',
-                'removeItem'      => 'removeAddUserDenuncia',
+                'putAddUserEdit'  => 'updateAddUserDenunciaAmbito',
+                'removeItem'      => 'removeAddUserDenunciaAmbito',
                 'titulo_catalogo' => "Agregando usuario al folio " .$Id,
                 'titulo_header'   => "Agregando usuario al folio " .$Id,
                 'msg'             => $this->msg,
@@ -542,9 +730,10 @@ class DenunciaController extends Controller{
     }
 
     public function vistaDenuncia($denuncia_id){
+        $this->ambito_dependencia = session::get('ambito_dependencia');
         $viDen = new VistaDenunciaClass();
         $viDen->vistaDenuncia($denuncia_id);
-        return \redirect()->route('listDenuncias');
+        return \redirect()->route('listDenunciasAmbito'.$this->ambito_dependencia);
     }
 
 

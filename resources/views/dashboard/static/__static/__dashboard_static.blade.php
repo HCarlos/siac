@@ -109,7 +109,7 @@
 
 
                                 <div class="table-responsive-sm">
-                                    <table class="table table-centered mb-0">
+                                    <table class="table table-condensed table-centered mb-0">
                                         <thead>
                                         <tr>
                                             <th>Servicio</th>
