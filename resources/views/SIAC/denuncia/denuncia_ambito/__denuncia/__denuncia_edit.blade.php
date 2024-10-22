@@ -410,5 +410,26 @@
 <input type="hidden" name="creadopor_id" id="creadopor_id" value="{{$items->creadopor_id}}" >
 <input type="hidden" name="modificadopor_id" id="modificadopor_id" value="{{$user->id}}" >
 <input type="hidden" name="usuario_id" id="usuario_id" value="{{$items->Ciudadano->id}}" >
-{{--<input type="hidden" name="isFechaIngresoView" id="isFechaIngresoView" value="{{ env('MODIFICAR_FECHA_INGRESO') }}" >--}}
+
+<input type="hidden" name="oficio_envio" id="oficio_envio" value="{{$items->oficio_envio}}" >
+<input type="hidden" name="folio_sas" id="folio_sas" value="{{$items->folio_sas}}" >
+
+<input type="hidden" name="fecha_ingreso" id="fecha_ingreso" value="{{$items->fecha_ingreso}}" >
+<input type="hidden" name="fecha_oficio_dependencia" id="fecha_oficio_dependencia" value="{{$items->fecha_oficio_dependencia}}" >
+<input type="hidden" name="fecha_limite" id="fecha_limite" value="{{$items->fecha_limite}}" >
+<input type="hidden" name="fecha_ejecucion" id="fecha_ejecucion" value="{{$items->fecha_ejecucion}}" >
+
+<input type="hidden" name="referencia" id="referencia" value="{{$items->referencia}}" >
+
+<input type="hidden" name="clave_identificadora" id="clave_identificadora" value="{{$items->clave_identificadora}}" >
+<input type="hidden" name="latitud" id="latitud" value="{{$items->latitud}}" >
+<input type="hidden" name="longitud" id="longitud" value="{{$items->longitud}}" >
+
+<input type="hidden" name="prioridad_id" id="prioridad_id" value="{{$items->prioridad_id}}" >
+<input type="hidden" name="origen_id" id="origen_id" value="{{$items->origen_id}}" >
+<input type="hidden" name="estatus_id" id="estatus_id" value="{{$items->estatus_id}}" >
+
+<input type="hidden" name="observaciones" id="observaciones" value="{{$items->observaciones}}" >
+<input type="hidden" name="ambito" id="ambito" value="{{$items->ambito}}" >
+
 <input type="hidden" name="isFechaIngresoView" id="isFechaIngresoView" value="{{ config('atemun.modificar_fecha_ingreso') }}" >

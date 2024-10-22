@@ -73,6 +73,7 @@ class ListDenunciaXLSXController extends Controller
 
         $sh->setCellValue('S1', Carbon::now()->format('d-m-Y h:m:s'));
         foreach ($Items as $item){
+//            $item = Denuncia::find($it->id);
 
             //dd($item);
 
@@ -87,9 +88,10 @@ class ListDenunciaXLSXController extends Controller
 
 //                $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
 
-            //dd($item->fecha_ingreso);
+//            dd($item->fecha_ingreso);
 
-            $fechaIngreso   = !is_null($item->fecha_ingreso) ? date_format($item->fecha_ingreso,'d-m-Y') : '';
+//            $fechaIngreso   = !is_null($item->fecha_ingreso) ? date_format($item->fecha_ingreso,'d-m-Y') : '';
+            $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
             $fechaLimite    = Carbon::parse($item->fecha_limite)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
             $fechaEjecucion = Carbon::parse($item->fecha_ejecucion)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
 
@@ -133,7 +135,7 @@ class ListDenunciaXLSXController extends Controller
                 ->setCellValue('W'.$C, $item->ultima_fecha_estatus ?? '')
                 ->setCellValue('X'.$C, $item->ultima_respuesta )
                 ->setCellValue('Y'.$C, $item->observaciones )
-                ->setCellValue('Z'.$C, $item->creadopor->username )
+                ->setCellValue('Z'.$C, $item->creadopor_curp ?? '')
                 ->setCellValue('AA'.$C, $item->uuid )
                 ->setCellValue('AB'.$C, $favorable ? "SI" : "NO" )
                 ->setCellValue('AC'.$C, $item->clave_identificadora )
