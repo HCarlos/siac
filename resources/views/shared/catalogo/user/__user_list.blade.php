@@ -6,7 +6,6 @@
                         <th class="sorting">Nombre Completo</th>
                         <th class="sorting">CURP</th>
                         <th class="sorting">Roles</th>
-                        <th class="sorting">Ubicaciones</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -27,14 +26,12 @@
                                 @endif
                             @endforeach
                         </td>
-                        <td class="text-right">{{($item->ubicacion_id)}}</td>
                         <td class="table-action w-100">
                             <div class="button-list w-100">
                                 @include('shared.ui_kit.__edit_item')
-                                @if (Auth::user()->hasRole('Administrator'))
+                                @if (Auth::user()->hasRole('Administrator|SysOp|test_admin'))
                                     @include('shared.ui_kit.__remove_item')
                                 @endif
-{{--                                @include('shared.ui_kit.__edit_item_becas')--}}
                             </div>
                         </td>
                     </tr>

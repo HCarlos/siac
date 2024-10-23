@@ -1,4 +1,4 @@
-@if (Auth::user()->hasAnyPermission(['all', 'eliminar_respuesta']) )
+@if (Auth::user()->hasAnyPermission(['all', 'eliminar_respuesta', 'test_admin']) )
 
 {{--@can('eliminar')--}}
 @if(Auth::user()->getAuthIdentifier() == $user->id)

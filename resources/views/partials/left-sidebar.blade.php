@@ -60,7 +60,7 @@
                 </li>
             @endif
 
-            @if (Auth::user()->hasRole('Administrator|SysOp'))
+            @if (Auth::user()->hasRole('Administrator|SysOp|test_admin'))
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
                     <i class="dripicons-browser"></i>
@@ -68,12 +68,12 @@
                     <span class="menu-arrow"></span>
                 </a>
                 <ul class="side-nav-second-level" aria-expanded="false">
-                    @if (Auth::user()->hasRole('Administrator|SysOp'))
+                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin'))
                     <li>
                         <a href="{{route('listDependencias')}}">
                             <i class="mdi mdi-account-multiple-outline"></i>
                             <span class="badge badge-light float-right">{{\App\Models\Catalogos\Dependencia::count()}}</span>
-                            <span>Dependencias</span>
+                            <span>Unidades Administrativas</span>
                         </a>
                     </li>
                     @endif
@@ -95,7 +95,7 @@
                         </a>
                     </li>
                     @endif
-                    @if (Auth::user()->hasRole('Administrator|SysOp'))
+                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin'))
                     <li>
                         <a href="{{route('listEstatus')}}">
                             <i class="fas fa-money-check-alt"></i>
@@ -113,7 +113,7 @@
                         </a>
                     </li>
                     @endif
-                    @if (Auth::user()->hasRole('Administrator|SysOp'))
+                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin'))
                     <li>
                         <a href="{{route('listOrigenes')}}">
                             <i class="fas fa-money-check-alt"></i>
@@ -122,7 +122,7 @@
                         </a>
                     </li>
                     @endif
-                    @if (Auth::user()->hasRole('Administrator|SysOp'))
+                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin'))
                     <li>
                         <a href="{{route('listPrioridades')}}">
                             <i class="fas fa-money-check-alt"></i>
@@ -131,7 +131,7 @@
                         </a>
                     </li>
                     @endif
-                    @if (Auth::user()->hasRole('Administrator|SysOp'))
+                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin'))
                     <li>
                         <a href="{{route('listServicios')}}">
                             <i class="fas fa-money-check-alt"></i>
@@ -196,7 +196,7 @@
                         </a>
                     </li>
                     @endif
-                    @if (Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|ENLACE'))
+                    @if (Auth::user()->hasRole('Administrator'))
                     <li>
                         <a href="{{route('listLocalidades')}}">
                             <i class="fas fa-money-check-alt"></i>
@@ -205,7 +205,7 @@
                         </a>
                     </li>
                     @endif
-                    @if (Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|ENLACE'))
+                    @if (Auth::user()->hasRole('Administrator'))
                     <li>
                         <a href="{{route('listMunicipios')}}">
                             <i class="fas fa-money-check-alt"></i>
@@ -214,7 +214,7 @@
                         </a>
                     </li>
                     @endif
-                    @if (Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|ENLACE'))
+                    @if (Auth::user()->hasRole('Administrator'))
                     <li>
                         <a href="{{route('listEstados')}}">
                             <i class="fas fa-money-check-alt"></i>
@@ -232,7 +232,7 @@
                         </a>
                     </li>
                     @endif
-                    @if (Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|ENLACE'))
+                    @if (Auth::user()->hasRole('Administrator'))
                     <li>
                         <a href="{{route('listTipocomunidades')}}">
                             <i class="fas fa-money-check-alt"></i>
@@ -334,7 +334,7 @@
                         </a>
                     </li>
                     @endif
-                    @if (Auth::user()->hasRole('Administrator|SysOp') || Auth::user()->can('asignar_roles'))
+                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') || Auth::user()->can('asignar_roles'))
                     <li>
                         <a href="{{route('asignaRoleList',['Id'=>0])}}">
                             <i class="fas fa-users-cog"></i>
@@ -343,7 +343,7 @@
                         </a>
                     </li>
                     @endif
-                    @if (Auth::user()->hasRole('Administrator|SysOp') || Auth::user()->can('asignar_permisos'))
+                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') || Auth::user()->can('asignar_permisos'))
                     <li>
                         <a href="{{route('asignaPermissionList',['Id'=>0])}}">
                             <i class="fas fa-user-cog"></i>
@@ -352,7 +352,7 @@
                         </a>
                     </li>
                     @endif
-                    @if (Auth::user()->hasRole('Administrator|SysOp') || Auth::user()->can('asignar_dependencias'))
+                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') || Auth::user()->can('asignar_dependencias'))
                         <li>
                             <a href="{{route('asignaDependenciaList',['Id'=>0])}}">
                                 <i class="fas fa-user-cog"></i>
@@ -361,7 +361,7 @@
                             </a>
                         </li>
                     @endif
-                    @if (Auth::user()->hasRole('Administrator|SysOp'))
+                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin'))
                     <li>
                         <a href="{{route('archivosConfig')}}">
                             <i class="fas fa-file-excel"></i>
