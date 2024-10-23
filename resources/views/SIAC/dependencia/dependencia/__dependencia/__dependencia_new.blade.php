@@ -1,6 +1,6 @@
 
 <div class="form-group row mb-1">
-    <label for = "dependencia" class="col-md-3 col-form-label has-dependencia">Dependencia</label>
+    <label for = "dependencia" class="col-md-3 col-form-label has-dependencia">Unidad</label>
     <div class="col-md-9">
         <input type="text" name="dependencia" id="dependencia" value="{{ old('dependencia') }}" class="form-control" />
         <span class="has-dependencia">
@@ -36,10 +36,19 @@
 <div class="form-group row mb-1">
     <label for = "is_areas" class="col-md-3 col-form-label">Es un Área</label>
     <div class="col-md-9">
-{{--        {{ Form::select('is_areas', array('1'=>'SI', '0'=>'NO'), old('is_areas'), ['id' => 'is_areas','class' => 'form-control']) }}--}}
         <select class="is_areas form-control select2" data-toggle="select2"  name="is_areas" id="is_areas" size="1">
             <option value="1" selected >SI</option>
             <option value="0">NO</option>
+        </select>
+    </div>
+</div>
+<div class="form-group row mb-1">
+    <label for = "ambito_dependencia" class="col-md-3 col-form-label">Categoría</label>
+    <div class="col-md-9">
+        <select class=" form-control "  name="ambito_dependencia" id="ambito_dependencia" size="1">
+            @foreach($ambito as $id => $valor)
+                <option value="{{ $id }}" >{{ $valor }}</option>
+            @endforeach
         </select>
     </div>
 </div>

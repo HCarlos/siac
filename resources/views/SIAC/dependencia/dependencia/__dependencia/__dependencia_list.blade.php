@@ -5,7 +5,7 @@
                 <thead>
                     <tr role="row">
                         <th class="sorting_asc" aria-sort="ascending" aria-label="Name: activate to sort column descending">ID</th>
-                        <th class="sorting" >Dependencia</th>
+                        <th class="sorting" >Unidad</th>
                         <th class="sorting" >Abreviatura</th>
                         <th class="sorting" >Jefe</th>
                         <th style="width: 100vw"></th>

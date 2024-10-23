@@ -60,13 +60,14 @@ class DependenciaRequest extends FormRequest
     {
 
         $Item = [
-            'dependencia' => strtoupper($this->dependencia),
-            'abreviatura' => strtoupper($this->abreviatura),
-            'class_css' => $this->class_css,
-            'visible_internet' => $this->visible_internet==1?true:false,
-            'is_areas' => $this->is_areas==1?true:false,
-            'jefe_id' => $this->jefe_id,
-            'user_id' => 1,
+            'dependencia'        => strtoupper($this->dependencia),
+            'abreviatura'        => strtoupper($this->abreviatura),
+            'ambito_dependencia' => $this->ambito_dependencia,
+            'class_css'          => $this->class_css,
+            'visible_internet'   => $this->visible_internet===1,
+            'is_areas'           => $this->is_areas===1,
+            'jefe_id'            => $this->jefe_id,
+            'user_id'            => 1,
         ];
 
 //        dd($Item);

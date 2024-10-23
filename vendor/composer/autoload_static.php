@@ -655,8 +655,8 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         ),
         'Doctrine\\Common\\' => 
         array (
-            0 => __DIR__ . '/..' . '/doctrine/event-manager/src',
-            1 => __DIR__ . '/..' . '/doctrine/common/src',
+            0 => __DIR__ . '/..' . '/doctrine/common/src',
+            1 => __DIR__ . '/..' . '/doctrine/event-manager/src',
         ),
         'DeepCopy\\' => 
         array (
@@ -780,8 +780,10 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'App\\Filters\\Catalogo\\PrioridadFilter' => __DIR__ . '/../..' . '/app/Filters/Catalogo/PrioridadFilter.php',
         'App\\Filters\\Catalogo\\ServicioFilter' => __DIR__ . '/../..' . '/app/Filters/Catalogo/ServicioFilter.php',
         'App\\Filters\\Common\\QueryFilter' => __DIR__ . '/../..' . '/app/Filters/Common/QueryFilter.php',
+        'App\\Filters\\Denuncia\\DenunciaAmbitoFilter' => __DIR__ . '/../..' . '/app/Filters/Denuncia/DenunciaAmbitoFilter.php',
         'App\\Filters\\Denuncia\\DenunciaFilter' => __DIR__ . '/../..' . '/app/Filters/Denuncia/DenunciaFilter.php',
         'App\\Filters\\Denuncia\\DenunciamobileFilter' => __DIR__ . '/../..' . '/app/Filters/Denuncia/DenunciamobileFilter.php',
+        'App\\Filters\\Denuncia\\GetDenunciasAmbitoItemCustomFilter' => __DIR__ . '/../..' . '/app/Filters/Denuncia/GetDenunciasAmbitoItemCustomFilter.php',
         'App\\Filters\\Denuncia\\GetDenunciasFilterCount' => __DIR__ . '/../..' . '/app/Filters/Denuncia/GetDenunciasFilterCount.php',
         'App\\Filters\\Denuncia\\GetDenunciasItemCustomFilter' => __DIR__ . '/../..' . '/app/Filters/Denuncia/GetDenunciasItemCustomFilter.php',
         'App\\Filters\\User\\CategoriaFilter' => __DIR__ . '/../..' . '/app/Filters/User/CategoriaFilter.php',
@@ -822,6 +824,7 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'App\\Http\\Controllers\\Dashboard\\DashboardEnlaceController' => __DIR__ . '/../..' . '/app/Http/Controllers/Dashboard/DashboardEnlaceController.php',
         'App\\Http\\Controllers\\Dashboard\\DashboardStaticController' => __DIR__ . '/../..' . '/app/Http/Controllers/Dashboard/DashboardStaticController.php',
         'App\\Http\\Controllers\\Denuncia\\AfiliacionController' => __DIR__ . '/../..' . '/app/Http/Controllers/Denuncia/AfiliacionController.php',
+        'App\\Http\\Controllers\\Denuncia\\DenunciaAmbitoController' => __DIR__ . '/../..' . '/app/Http/Controllers/Denuncia/DenunciaAmbitoController.php',
         'App\\Http\\Controllers\\Denuncia\\DenunciaCiudadanaController' => __DIR__ . '/../..' . '/app/Http/Controllers/Denuncia/DenunciaCiudadanaController.php',
         'App\\Http\\Controllers\\Denuncia\\DenunciaController' => __DIR__ . '/../..' . '/app/Http/Controllers/Denuncia/DenunciaController.php',
         'App\\Http\\Controllers\\Denuncia\\DenunciaDependenciaServicioController' => __DIR__ . '/../..' . '/app/Http/Controllers/Denuncia/DenunciaDependenciaServicioController.php',
@@ -867,6 +870,7 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'App\\Http\\Requests\\API\\UserAPIRegistryRequest' => __DIR__ . '/../..' . '/app/Http/Requests/API/UserAPIRegistryRequest.php',
         'App\\Http\\Requests\\DenunciaCiudadana\\DenunciaCiudadanaRequest' => __DIR__ . '/../..' . '/app/Http/Requests/DenunciaCiudadana/DenunciaCiudadanaRequest.php',
         'App\\Http\\Requests\\Denuncia\\AfiliacionRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Denuncia/AfiliacionRequest.php',
+        'App\\Http\\Requests\\Denuncia\\DenunciaAmbitoRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Denuncia/DenunciaAmbitoRequest.php',
         'App\\Http\\Requests\\Denuncia\\DenunciaDependenciaServicioRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Denuncia/DenunciaDependenciaServicioRequest.php',
         'App\\Http\\Requests\\Denuncia\\DenunciaRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Denuncia/DenunciaRequest.php',
         'App\\Http\\Requests\\Denuncia\\Imagene\\ImagenAImagenRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Denuncia/Imagene/ImagenAImagenRequest.php',
@@ -930,8 +934,8 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'App\\Models\\Denuncias\\Firma' => __DIR__ . '/../..' . '/app/Models/Denuncias/Firma.php',
         'App\\Models\\Denuncias\\Imagene' => __DIR__ . '/../..' . '/app/Models/Denuncias/Imagene.php',
         'App\\Models\\Denuncias\\Respuesta' => __DIR__ . '/../..' . '/app/Models/Denuncias/Respuesta.php',
-        'App\\Models\\Denuncias\\_Servicios' => __DIR__ . '/../..' . '/app/Models/Denuncias/_Servicios.php',
         'App\\Models\\Denuncias\\_viDDSs' => __DIR__ . '/../..' . '/app/Models/Denuncias/_viDDSs.php',
+        'App\\Models\\Denuncias\\_viServicios' => __DIR__ . '/../..' . '/app/Models/Denuncias/_viServicios.php',
         'App\\Models\\Mobiles\\Denunciamobile' => __DIR__ . '/../..' . '/app/Models/Mobiles/Denunciamobile.php',
         'App\\Models\\Mobiles\\Imagemobile' => __DIR__ . '/../..' . '/app/Models/Mobiles/Imagemobile.php',
         'App\\Models\\Mobiles\\Respuestamobile' => __DIR__ . '/../..' . '/app/Models/Mobiles/Respuestamobile.php',

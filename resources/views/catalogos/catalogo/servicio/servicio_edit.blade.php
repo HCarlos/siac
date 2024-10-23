@@ -9,7 +9,7 @@
         <div class="col-md-8">
             <!-- Chart-->
             @component('components.card')
-                @slot('title_card','')
+                @slot('title_card',$titulo_header ?? 'Nuevo')
                 @slot('body_card')
                     @include('shared.code.__errors')
                     <form method="POST" action="{{ route('updateServicio') }}">

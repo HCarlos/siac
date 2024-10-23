@@ -72,13 +72,15 @@
         .links a {
             color: darkred !important;
             padding: 0 25px;
-            font-size: 16px;
-            font-weight: 600;
+            font-family: 'Raleway', sans-serif;
+            font-size: 20px;
+            font-weight: bold !important;
             letter-spacing: .1rem;
             text-decoration: none !important;;
             list-style:none !important;
             text-transform: uppercase;
             background-size: cover;
+            text-shadow: white 2px 0px 5px;
         }
         .m-b-md {
             margin-bottom: 30px;
@@ -110,8 +112,7 @@
                 @auth
                     <a href="{{ url('/home') }}" class="" ><strong>Entrar</strong></a>
                 @else
-                    <a href="{{ route('login') }}" class="text-blanco "><strong>Iniciar sesión</strong></a>
-{{--                    <a href="{{ route('register') }}" class="text-blanco">Regístrate</a>--}}
+                    <a href="{{ route('login') }}" class="text-white "><strong>Iniciar sesión</strong></a>
                 @endauth
             </li>
         </ul>

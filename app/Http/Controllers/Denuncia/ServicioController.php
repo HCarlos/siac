@@ -9,6 +9,7 @@ use App\Models\Catalogos\Medida;
 use App\Models\Catalogos\Servicio;
 use App\Models\Catalogos\Subarea;
 use App\Models\Denuncias\_vi_Servicios;
+use App\Models\Denuncias\_viServicios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Response;
 class ServicioController extends Controller
 {
 
-    protected $tableName = "Servicios";
+    protected $tableName = "_viservicios";
 
 // ***************** MUESTRA EL LISTADO DE USUARIOS ++++++++++++++++++++ //
     protected function index(Request $request)
@@ -33,7 +34,7 @@ class ServicioController extends Controller
 //        dd($filters);
 
 
-        $items = _vi_Servicios::query()
+        $items = _viServicios::query()
             ->filterBy($filters)
             ->orderByDesc('id')
             ->paginate(10000);
@@ -78,11 +79,11 @@ class ServicioController extends Controller
         $subareas = Subarea::all()->sortBy('subarea');
         return view('SIAC.estructura.servicio.servicio_new',
             [
-                'editItemTitle' => 'Nuevo',
-                'postNew' => 'createServicio',
-                'medidas' => $medidas,
-                'subareas' => $subareas,
-                'titulo_catalogo' => "Catálogo de " . ucwords($this->tableName),
+                'editItemTitle'   => 'Nuevo',
+                'postNew'         => 'createServicio',
+                'medidas'         => $medidas,
+                'subareas'        => $subareas,
+                'titulo_catalogo' => "Catálogo de Servicios",
                 'titulo_header'   => 'Nuevo registro',
             ]
         );

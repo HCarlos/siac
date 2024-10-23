@@ -21,9 +21,11 @@ class Servicio extends Model
         'id', 'servicio','habilitado', 'medida_id', 'subarea_id','orden_impresion',
         'root','filename','filename_png','filename_thumb', 'ambito_servicio',
         'is_visible_mobile', 'nombre_mobile', 'url_image_mobile', 'orden_image_mobile',
+        'nombre_corto_ss', 'nombre_corto_orden_ss', 'is_visible_nombre_corto_ss',
+        'dias_ejecucion', 'dias_maximos_ejecucion',
     ];
     protected $hidden = ['deleted_at','created_at','updated_at'];
-    protected $casts = ['habilitado'=>'boolean','is_visible_mobile'=>'boolean',];
+    protected $casts = ['habilitado'=>'boolean','is_visible_mobile'=>'boolean', 'is_visible_nombre_corto_ss'=>'boolean',];
 
     public function scopeSearch($query, $search){
         if ( !$search || $search == "" || is_null($search) ) return $query;

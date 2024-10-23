@@ -8,7 +8,7 @@
         @slot('contenido')
             <div class="col-md-8">
                 @component('components.card')
-                    @slot('title_card','')
+                    @slot('title_card',$titulo_header ?? 'Nuevo')
                     @slot('body_card')
                         @include('shared.code.__errors')
                         <form method="POST" action="{{ route('createServicio') }}" accept-charset="UTF-8" enctype="multipart/form-data" class="formData" id="formData" >

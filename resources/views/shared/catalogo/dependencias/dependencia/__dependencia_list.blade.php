@@ -5,8 +5,9 @@
                 <thead>
                     <tr role="row">
                         <th class="sorting_asc" aria-sort="ascending" aria-label="Name: activate to sort column descending">ID</th>
-                        <th class="sorting" >Dependencia</th>
+                        <th class="sorting" >Unidad</th>
                         <th class="sorting" >Abreviatura</th>
+                        <th class="sorting" >Categoría</th>
                         <th class="sorting" >CSS</th>
                         <th class="sorting" >Jefe</th>
                         <th style="width: 100vw"></th>
@@ -18,6 +19,7 @@
                         <td class="table-user">{{$item->id}}</td>
                         <td>{{$item->dependencia}}</td>
                         <td>{{$item->abreviatura}}</td>
+                        <td>{{$item->ambito_dependencia===1?'Apoyos':'Servicios'}}</td>
                         <td style="background: {{$item->class_css}}">{{$item->class_css}}</td>
                         <td>{{ $item->jefe->FullName }}</td>
                         <td class="table-action w-100">

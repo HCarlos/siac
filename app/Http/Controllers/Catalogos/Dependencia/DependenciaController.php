@@ -16,6 +16,7 @@ class DependenciaController extends Controller
 {
 
     protected $tableName = "dependencias";
+    protected $ambito_dependencia = [1=>"Apoyos Sociales",2=>"Servicios Municipales"];
 
 // ***************** MUESTRA EL LISTADO DE USUARIOS ++++++++++++++++++++ //
     protected function index(Request $request)
@@ -35,7 +36,7 @@ class DependenciaController extends Controller
         return view('catalogos.catalogo.dependencias.dependencia.dependencia_list',
             [
                 'items'           => $items,
-                'titulo_catalogo' => "Catálogo de " . ucwords($this->tableName),
+                'titulo_catalogo' => "Catálogo de Unidades Administrativas" ,
                 'titulo_header'   => '',
                 'user'            => $user,
                 'searchInList'    => 'listDependencias',
@@ -58,10 +59,11 @@ class DependenciaController extends Controller
         });
         return view('catalogos.catalogo.dependencias.dependencia.dependencia_new',
             [
-                'editItemTitle' => 'Nuevo',
-                'jefes' => $Jefes,
-                'postNew' => 'createDependencia',
-                'titulo_catalogo' => "Catálogo de " . ucwords($this->tableName),
+                'editItemTitle'   => 'Nuevo',
+                'jefes'           => $Jefes,
+                'postNew'         => 'createDependencia',
+                'titulo_catalogo' => "Catálogo de Unidades Administrativas",
+                'ambito'          => $this->ambito_dependencia,
                 'titulo_header'   => 'Nuevo registro',
             ]
         );
@@ -85,6 +87,9 @@ class DependenciaController extends Controller
                 })->orderByRaw("concat(ap_paterno,' ',ap_materno,' ',nombre) DESC")
                 ->get();
         $user = Auth::user();
+
+//        dd($this->ambito_dependencia);
+
         return view('SIAC.dependencia.dependencia.dependencia_modal',
         [
             'Titulo'          => 'Nueva',
@@ -93,6 +98,7 @@ class DependenciaController extends Controller
             'items_forms'     => 'SIAC.dependencia.dependencia.__dependencia.__dependencia_new',
             'IsNew'           => true,
             'user'            => $user,
+            'ambito'          => $this->ambito_dependencia,
             'jefes'           => $Jefes,
         ]
         );
@@ -125,12 +131,13 @@ class DependenciaController extends Controller
 
         return view('catalogos.catalogo.dependencias.dependencia.dependencia_edit',
             [
-                'user' => Auth::user(),
-                'jefes' => $Jefes,
-                'items' => $item,
-                'editItemTitle' => isset($item->dependencia) ? $item->dependencia : 'Nuevo',
-                'putEdit' => 'updateDependencia',
-                'titulo_catalogo' => "Catálogo de " . ucwords($this->tableName),
+                'user'            => Auth::user(),
+                'jefes'           => $Jefes,
+                'items'           => $item,
+                'editItemTitle'   => isset($item->dependencia) ? $item->dependencia : 'Nuevo',
+                'putEdit'         => 'updateDependencia',
+                'ambito'          => $this->ambito_dependencia,
+                'titulo_catalogo' => "Catálogo de Unidades Administrativas",
                 'titulo_header'   => 'Editando el Folio '.$Id,
             ]
         );
@@ -166,6 +173,7 @@ class DependenciaController extends Controller
                 'IsModal'         => true,
                 'items'           => $item,
                 'user'            => $user,
+                'ambito'          => $this->ambito_dependencia,
                 'jefes'           => $Jefes,
             ]
         );

@@ -1,6 +1,6 @@
 
 <div class="form-group row mb-3">
-    <label for = "dependencia" class="col-md-3 col-form-label">Dependencia</label>
+    <label for = "dependencia" class="col-md-3 col-form-label">Unidad</label>
     <div class="col-md-9">
         <input type="text" name="dependencia" id="dependencia" value="{{ old('dependencia',$items->dependencia) }}" class="form-control" />
     </div>
@@ -14,7 +14,6 @@
     </div>
     <label for = "visible_internet" class="col-md-3 col-form-label">Visible en Internet</label>
     <div class="col-md-9">
-{{--        {{ Form::select('visible_internet', array('1'=>'SI', '0'=>'NO'), $items->isVisibleInternet()==true ? 1 : 0 , ['id' => 'visible_internet','class' => 'form-control']) }}--}}
         <select class=" form-control "  name="visible_internet" id="visible_internet" size="1">
             <option value="1" @if( $items->isVisibleInternet()) selected @endif >SI</option>
             <option value="0" @if( ! $items->isVisibleInternet()) selected @endif >NO</option>
@@ -26,6 +25,14 @@
         <select class=" form-control "  name="is_areas" id="is_areas" size="1">
             <option value="1" @if( $items->isArea()) selected @endif >SI</option>
             <option value="0" @if( ! $items->isArea()) selected @endif >NO</option>
+        </select>
+    </div>
+    <label for = "ambito_dependencia" class="col-md-3 col-form-label">Categoría</label>
+    <div class="col-md-9">
+        <select class=" form-control "  name="ambito_dependencia" id="ambito_dependencia" size="1">
+                @foreach($ambito as $id => $valor)
+                    <option value="{{ $id }}" @if($id === $items->ambito_dependencia) selected @endif >{{ $valor }}</option>
+                @endforeach
         </select>
     </div>
 </div>
@@ -42,7 +49,7 @@
 </div>
 
 <div class="form-group row mb-3">
-    <label for = "dependencia_id" class="col-md-3 col-form-label">Dependencias</label>
+    <label for = "dependencia_id" class="col-md-3 col-form-label">Unidads</label>
     <div class="col-md-9">
         <ul class="list-group">
             @foreach($items->estatus as $t)

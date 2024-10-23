@@ -1,6 +1,6 @@
 
 <div class="form-group row mb-1">
-    <label for = "dependencia" class="col-md-3 col-form-label has-dependencia">Dependencia</label>
+    <label for = "dependencia" class="col-md-3 col-form-label has-dependencia">Unidad</label>
     <div class="col-md-9">
         <input type="text" name="dependencia" id="dependencia" value="{{ old('dependencia',$items->dependencia) }}" class="form-control" />
         <span class="has-dependencia">
@@ -26,25 +26,31 @@
 <div class="form-group row mb-1">
     <label for = "visible_internet" class="col-md-3 col-form-label">Visible en Internet</label>
     <div class="col-md-9">
-{{--        {{ Form::select('visible_internet', array('1'=>'SI', '0'=>'NO'), $items->isVisibleInternet()==true ? 1 : 0 , ['id' => 'visible_internet','class' => 'form-control']) }}--}}
         <select class="visible_internet form-control select2" data-toggle="select2"  name="visible_internet" id="visible_internet" size="1">
             <option value="1" @if($items->isVisibleInternet()==true) selected @endif>SI</option>
             <option value="0" @if($items->isVisibleInternet()!==true) selected @endif>NO</option>
         </select>
-
     </div>
 </div>
 <div class="form-group row mb-1">
     <label for = "is_areas" class="col-md-3 col-form-label">Es un Área</label>
     <div class="col-md-9">
-{{--        {{ Form::select('is_areas', array('1'=>'SI', '0'=>'NO'), $items->isArea()==true ? 1 : 0, ['id' => 'is_areas','class' => 'form-control']) }}--}}
         <select class="is_areas form-control select2" data-toggle="select2"  name="is_areas" id="is_areas" size="1">
             <option value="1" @if($items->isArea()==true) selected @endif>SI</option>
             <option value="0" @if($items->isArea()!==true) selected @endif>NO</option>
         </select>
     </div>
 </div>
-
+<div class="form-group row mb-1">
+    <label for = "ambito_dependencia" class="col-md-3 col-form-label">Categoría</label>
+    <div class="col-md-9">
+        <select class=" form-control "  name="ambito_dependencia" id="ambito_dependencia" size="1">
+            @foreach($ambito as $id => $valor)
+                <option value="{{ $id }}" @if($id === $items->ambito_dependencia) selected @endif>{{ $valor }}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
 <div class="form-group row mb-3">
     <label for = "jefe_id" class="col-md-3 col-form-label">Jefe</label>
     <div class="col-md-9">
@@ -57,7 +63,7 @@
 </div>
 
 <div class="form-group row mb-3">
-    <label for = "dependencia_id" class="col-md-3 col-form-label">Dependencias</label>
+    <label for = "dependencia_id" class="col-md-3 col-form-label">Unidades</label>
     <div class="col-md-9">
         <ul class="list-group">
             @foreach($items->estatus as $t)
