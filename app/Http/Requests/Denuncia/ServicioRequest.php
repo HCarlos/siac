@@ -58,16 +58,21 @@ class ServicioRequest extends FormRequest
 //        dd( $this->file('url_image_mobile') );
 
         $Item = [
-            'servicio'           => strtoupper($this->servicio),
-            'class_css'          => $this->class_css??'',
-            'habilitado'         => $this->habilitado==1?true:false,
-            'medida_id'          => $this->medida_id,
-            'subarea_id'         => $this->subarea_id,
-            'is_visible_mobile'  => $this->is_visible_mobile==1?true:false,
-            'nombre_mobile'      => $this->nombre_mobile,
-            'url_image_mobile'   => $this->url_image_mobile??'',
-            'orden_image_mobile' => $this->orden_image_mobile,
-            'ambito_servicio'    => trim($this->ambito_servicio),
+            'servicio'                   => strtoupper($this->servicio),
+            'class_css'                  => $this->class_css??'',
+            'habilitado'                 => $this->habilitado==1?true:false,
+            'medida_id'                  => $this->medida_id,
+            'subarea_id'                 => $this->subarea_id,
+            'is_visible_mobile'          => $this->is_visible_mobile==1?true:false,
+            'nombre_mobile'              => $this->nombre_mobile,
+            'url_image_mobile'           => $this->url_image_mobile??'',
+            'orden_image_mobile'         => $this->orden_image_mobile,
+            'ambito_servicio'            => trim($this->ambito_servicio),
+            'nombre_corto_ss'            => trim($this->nombre_corto_ss),
+            'nombre_corto_orden_ss'      => trim($this->nombre_corto_orden_ss),
+            'is_visible_nombre_corto_ss' => $this->is_visible_nombre_corto_ss==1,
+            'dias_ejecucion'             => (int) $this->dias_ejecucion,
+            'dias_maximos_ejecucion'     => (int) $this->dias_maximos_ejecucion,
         ];
 
 //        dd($Item);
@@ -87,7 +92,7 @@ class ServicioRequest extends FormRequest
 
         }catch (QueryException $e){
             $Msg = new MessageAlertClass();
-            throw new HttpResponseException(response()->json( $Msg->Message($e), 422));
+//            throw new HttpResponseException(response()->json( $Msg->Message($e), 422));
         }
         return $item;
     }

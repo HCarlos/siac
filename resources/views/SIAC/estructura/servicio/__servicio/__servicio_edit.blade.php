@@ -22,9 +22,9 @@
             <strong class="text-danger"></strong>
         </span>
     </div>
-    <label for = "nombre_corto_ss" class="col-md-2 col-form-label has-nombre_corto_ss text-right">Nombre Mob.</label>
+    <label for = "nombre_corto_ss" class="col-md-2 col-form-label has-nombre_corto_ss text-right">Nombre Serv.</label>
     <div class="col-md-2">
-        <input type="text" name="nombre_mobile" id="nombre_corto_ss" value="{{ old('nombre_corto_ss',$items->nombre_corto_ss) }}" class="form-control" />
+        <input type="text" name="nombre_corto_ss" id="nombre_corto_ss" value="{{ old('nombre_corto_ss',$items->nombre_corto_ss) }}" class="form-control" />
         <span class="has-nombre_corto_ss">
             <strong class="text-danger"></strong>
         </span>

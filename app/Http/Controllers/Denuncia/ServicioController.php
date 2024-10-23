@@ -40,18 +40,9 @@ class ServicioController extends Controller
             ->paginate(10000);
         $items->appends($filters)->fragment('table');
 
-//          $items = DB::table('_viservicios')
-//            ->filterBy($filters)
-//            ->orderByDesc('id')
-//            ->paginate(10000);
-//        $items->appends($filters)->fragment('table');
-
         $user = Auth::User();
 
-//        ->filterBy($filters)
-//        ->search($tsString)
-
-//        dd($items);
+        //        dd($items);
 
         return view('SIAC.estructura.servicio.servicio_list',
             [

@@ -25,17 +25,17 @@
 
                     <div class="input-group btn-group-xs mb-1 border-bottom">
                         <span class="input-group-append">
-                            <i class="mdi mdi-cellphone-iphone font-18 pr-1"></i> <span class="pt-1" id="lblCelulares">[]</span>
+                            <i class="mdi mdi-cellphone-iphone font-18 pr-1"></i> <span class="pt-1" id="lblCelulares"></span>
                         </span>
                     </div>
                     <div class="input-group btn-group-xs mb-1 border-bottom">
                         <span class="input-group-append">
-                            <i class="mdi mdi-phone font-18 pr-1"></i> <span class="pt-1" id="lblTelefonos">[]</span>
+                            <i class="mdi mdi-phone font-18 pr-1"></i> <span class="pt-1" id="lblTelefonos"></span>
                         </span>
                     </div>
                     <div class="input-group btn-group-xs mb-1 border-bottom">
                         <span class="input-group-append">
-                            <i class="mdi mdi-email font-18 pr-1"></i> <span class="pt-1" id="lblEMails">@</span>
+                            <i class="mdi mdi-email font-18 pr-1"></i> <span class="pt-1" id="lblEMails"></span>
                         </span>
                     </div>
 

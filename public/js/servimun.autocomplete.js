@@ -69,7 +69,13 @@ jQuery(function($) {
                 case 1:
                     if ( $("#usuario") )            $("#usuario").val('('+d.id+') '+d.nombre_completo);
                     if ( $("#usuario_domicilio") )  $("#usuario_domicilio").val(d.domicilio);
-                    if ( $("#usuario_telefonos") )  $("#usuario_telefonos").val(d.telefonos);
+                    if ( $("#usuario_telefonos") )  {
+                        $("#usuario_telefonos").val(d.telefonos);
+                        var dd = d.telefonos.split(';');
+                        $("#lblCelulares").html(dd[0]);
+                        $("#lblTelefonos").html(dd[1]);
+                        $("#lblEMails").html(dd[2]);
+                    }
                     if ( $("#usuario_id") )         $("#usuario_id").val(d.id);
                     if ( $("#ubicacion_id") )       $("#ubicacion_id").val(d.ubicacion_id);
                     if ( $("#ubicacion_id_span") )  $("#ubicacion_id_span").html(d.ubicacion_id);
@@ -77,6 +83,7 @@ jQuery(function($) {
                     if ( $("#ubicacion_nueva_id") ) $("#ubicacion_nueva_id").val(d.ubicacion_id);
                     if ( $("#editUser") ) $("#editUser").prop('disabled',false);
                     if ( $("#editUser") ) $("#editUser").attr('href','/editUser/'+d.id);
+
                     $("#btnRefreshButtonUser").prop('disabled',false);
                     break;
                 case 2:

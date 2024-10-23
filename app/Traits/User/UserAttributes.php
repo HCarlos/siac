@@ -196,7 +196,7 @@ trait UserAttributes
     }
 
     public function getTelefonosCelularesEmailsAttribute(){
-        return trim($this->celulares)."; ".trim($this->telefonos)."; ".trim($this->emails);
+        return trim($this->celulares).";".trim($this->telefonos).";".trim($this->emails);
     }
 
 
