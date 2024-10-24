@@ -4,14 +4,14 @@
             <table  id="tblCat" class="table table-bordered table-striped dt-responsive nowrap dataTable " role="grid" aria-describedby="datatable-buttons_info" style="width: 100%; position: relative; z-index:0;" width="100%">
                 <thead>
                     <tr role="row">
-                        <th class="sorting_asc" aria-sort="ascending" aria-label="Name: activate to sort column descending">ID</th>
-                        <th class="sorting" >Status</th>
-                        <th class="sorting" >Abreviatura</th>
-                        <th class="sorting" >Orden de Impresión</th>
-                        <th class="sorting" >Dependencia</th>
-                        <th class="sorting" >Predeterminado</th>
-                        <th class="sorting" >Eval Resuelto</th>
-                        <th style="width: 100vw"></th>
+                        <th class="sorting_asc w-5-percent" aria-sort="ascending" aria-label="Name: activate to sort column descending">ID</th>
+                        <th class="sorting w-35-percent" >Status</th>
+                        <th class="sorting w-10-percent" >Abrev</th>
+                        <th class="sorting w-5-percent" >Ord. Imp.</th>
+                        <th class="sorting w-25-percent" >U.A.</th>
+                        <th class="sorting w-5-percent" >Default</th>
+                        <th class="sorting w-5-percent" >Resuelto?</th>
+                        <th class="w-10-percent"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,7 +32,7 @@
                         <td class="text-center">
                             @if ($item->isResuelto()) <i class="fas fa-check-circle text-primary fa-2x"></i> @endif
                         </td>
-                        <td class="table-action w-100">
+                        <td class="table-action w-100 nowrap">
                             <div class="button-list">
                                 @if( strtoupper(trim($item->estatus)) != 'CERRADO' || Auth::user()->isRole('Administrator') )
                                     @include('shared.ui_kit.__edit_item')

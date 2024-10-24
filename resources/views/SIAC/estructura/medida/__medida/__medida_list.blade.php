@@ -4,9 +4,9 @@
             <table  id="tblCat" class="table table-bordered table-striped dt-responsive nowrap dataTable " role="grid" aria-describedby="datatable-buttons_info" style="width: 100%; position: relative; z-index:0;" width="100%">
                 <thead>
                     <tr role="row">
-                        <th class="sorting_asc" aria-sort="ascending" aria-label="Name: activate to sort column descending">ID</th>
-                        <th class="sorting" >Medidas</th>
-                        <th style="width: 100vw"></th>
+                        <th class="sorting_asc w-10-percent" aria-sort="ascending" aria-label="Name: activate to sort column descending">ID</th>
+                        <th class="sorting w-80-percent" >Medidas</th>
+                        <th class="w-10-percent"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -14,7 +14,7 @@
                     <tr>
                         <td class="table-user">{{$item->id}}</td>
                         <td>{{$item->medida}}</td>
-                        <td class="table-action w-100">
+                        <td class="table-action w-100 nowrap">
                             <div class="button-list">
                                 @include('shared.ui_kit.__edit_item')
                                 @include('shared.ui_kit.__remove_item')
