@@ -47,17 +47,18 @@
             <div class="card rounded-bottom rounded-top card-force-1" style="height: 500px !important;" >
                 <div class="card-body rounde-bottom rounded-top " style="padding: 0 !important;">
                     <ul class="charts-1  text-center align-items-center ">
+{{--                        <li>--}}
+{{--                            <div class="mt-3" >--}}
+{{--                                <div id="apex-chart-bar-1" ></div>--}}
+{{--                            </div>--}}
+{{--                            <strong class="font-bold font-18">Solicitud por tipo de servicio</strong>--}}
+{{--                        </li>--}}
                         <li>
-                            <div class="mt-3" >
-                                <div id="apex-chart-bar-1" ></div>
-                            </div>
-                            <strong class="font-bold font-18">Solicitud por tipo de servicio</strong>
-                        </li>
-                        <li>
-                            <div class="mt-3" >
+                            <div class="mt-3"  >
                                 <div id="apex-chart-radialbar-1" ></div>
+                                <strong class="font-bold font-18">Estatus de solicitudes atendidas</strong><br>
+                                <small>{{ $selServ }}</small>
                             </div>
-                            <strong class="font-bold font-18">Estatus de solicitudes atendidas</strong>
                         </li>
                     </ul>
                 </div>
@@ -89,9 +90,16 @@
                     <ul class="charts-2  text-center align-items-center ">
                         <li>
                             <div class="w-100 h-100 mb-3" >
-                                <div id="map"></div>
+{{--                                <div id="map"></div>--}}
+                                <div>
+                                    <div class="mt-3" >
+                                        <div id="apex-chart-bar-1" ></div>
+                                    </div>
+                                    <strong class="font-bold font-18">Solicitud por tipo de servicio</strong>
+                                </div>
+
                             </div>
-                            <strong class="font-bold font-18">Ubicaciones</strong>
+{{--                            <strong class="font-bold font-18">Ubicaciones</strong>--}}
                         </li>
                     </ul>
                 </div>
@@ -101,25 +109,18 @@
         <div class="col-lg-4">
             <div class="card rounded-bottom rounded-top  card-force-1" >
                 <div class="card-body rounde-bottom rounded-top " style="padding: 0 !important;">
-                    <div class="title-bar-block title-bar-block-primary " >
-                        <button type="button" class="btn btn-secondary">
-                            Solicitudes por día
-                            <i class="fa fa-calendar-alt"></i>
-                        </button>
-                        <button type="button" class="btn btn-primary">
-                            Solicitudes por mes
-                            <i class="fa fa-calendar"></i>
-                        </button>
-                        <button type="button" class="btn btn-default">
-                            Solicitudes por año
-                            <i class="fa fa-calendar-plus"></i>
-                        </button>
+                    <div class="orm-row mb-1 col-sm-12" >
+
+                        <div class="col-sm-10 ml-1 mt-1">{{ $selServ }}</div>
+                        <div class="col-sm-1">
+                        </div>
+
                     </div>
                     <ul class="table-one text-left align-items-center w-100 p-0 mb-3">
                         <li class="w-100">
                             <div class="btn-strong-filter-1 font-bold font-14 w-100-center">Solicitudes próximas a vencer: {{ $arrSrv4->count() }}</div>
-                            <div id="table-1" class="w-100">
-                                <div class=""  style="height: 10em; overflow: auto;" >
+                            <div id="table-0" class="w-100">
+                                <div class="table-n-dashboard-statistics" >
                                     <table class=" table table-bordered table-striped dt-responsive nowrap font-14" >
                                         <thead>
                                         <tr class="">
@@ -132,7 +133,13 @@
                                         <tbody >
                                         @foreach($arrSrv4 as $item)
                                             <tr class="@if ( date('Y-m-d') > $item->fecha_ejecucion ) bgc-danger-l3 @endif">
-                                                <td><small> {{ $item->nombre_corto_ss }} </small> <small class="chikirimbita text-ble"> {{ $item->id }} </small></td>
+                                                <td><small> {{ $item->nombre_corto_ss }} </small>
+                                                    <small class="chikirimbita text-blue ">
+                                                        <a href="{{route($item->firmado == true ? 'imprimir_denuncia_archivo' . '/' : 'imprimir_denuncia_respuesta' . '/', ['uuid'=>$item->uuid])}}" target="_blank">
+                                                            {{ $item->id }}
+                                                        </a>
+                                                    </small>
+                                                </td>
                                                 <td><small> {{ $item->abreviatura }} </small></td>
                                                 <td><small> {{ $item->fecha_ejecucion }} </small></td>
                                                 <td><small> {{ $item->estatus }} </small></td>
@@ -140,19 +147,74 @@
                                         @endforeach
                                         </tbody>
                                     </table>
-                                </div> <!-- end table-responsive-->
-
-
-
+                                </div>
                             </div>
                         </li>
-                        <li>
-                            <strong class="btn-strong-filter-1 font-bold font-18">Solicitudes urgentes</strong>
-                            <div id="table-2"></div>
+                        <li class="w-100">
+                            <div class="btn-strong-filter-1 font-bold font-14 w-100-center">Solicitudes urgentes: {{ $arrSrv5->count() }}</div>
+                            <div id="table-1" class="w-100">
+                                <div class="table-n-dashboard-statistics">
+                                    <table class=" table table-bordered table-striped dt-responsive nowrap font-14" >
+                                        <thead>
+                                        <tr class="">
+                                            <th>Servicio</th>
+                                            <th>Unidad</th>
+                                            <th>F. Lim.</th>
+                                            <th>Status</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody >
+                                        @foreach($arrSrv5 as $item)
+                                            <tr class="@if ( date('Y-m-d') > $item->fecha_ejecucion ) bgc-danger-l3 @endif">
+                                                <td><small> {{ $item->nombre_corto_ss }} </small>
+                                                    <small class="chikirimbita text-blue ">
+                                                        <a href="{{route($item->firmado == true ? 'imprimir_denuncia_archivo' . '/' : 'imprimir_denuncia_respuesta' . '/', ['uuid'=>$item->uuid])}}" target="_blank">
+                                                            {{ $item->id }}
+                                                        </a>
+                                                    </small>
+                                                </td>
+                                                <td><small> {{ $item->abreviatura }} </small></td>
+                                                <td><small> {{ $item->fecha_ingreso }} </small></td>
+                                                <td><small> {{ $item->estatus }} </small></td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </li>
-                        <li>
-                            <strong class="btn-strong-filter-1 font-bold font-18">Solicitudes Prioritarias</strong>
-                            <div id="table-3"></div>
+                        <li class="w-100">
+                            <div class="btn-strong-filter-1 font-bold font-14 w-100-center">Solicitudes prioritarias: {{ $arrSrv6->count() }}</div>
+                            <div id="table-2" class="w-100">
+                                <div class="table-n-dashboard-statistics">
+                                    <table class=" table table-bordered table-striped dt-responsive nowrap font-14" >
+                                        <thead>
+                                        <tr class="">
+                                            <th>Servicio</th>
+                                            <th>Unidad</th>
+                                            <th>F. Lim.</th>
+                                            <th>Status</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody >
+                                        @foreach($arrSrv6 as $item)
+                                            <tr class="@if ( date('Y-m-d') > $item->fecha_ejecucion ) bgc-danger-l3 @endif">
+                                                <td><small> {{ $item->nombre_corto_ss }} </small>
+                                                    <small class="chikirimbita text-blue ">
+                                                        <a href="{{route($item->firmado == true ? 'imprimir_denuncia_archivo' . '/' : 'imprimir_denuncia_respuesta' . '/', ['uuid'=>$item->uuid])}}" target="_blank">
+                                                            {{ $item->id }}
+                                                        </a>
+                                                    </small>
+                                                </td>
+                                                <td><small> {{ $item->abreviatura }} </small></td>
+                                                <td><small> {{ $item->fecha_ingreso }} </small></td>
+                                                <td><small> {{ $item->estatus }} </small></td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -189,14 +251,6 @@
                             @endforeach
                         </select>
                     </div>
-
-{{--                    <div class="form-group col-12">--}}
-{{--                        <div class="d-flex align-items-center input-floating-label text-blue-m1 brc-blue-m2">--}}
-{{--                            <input placeholder="Password" type="password" class="form-control pr-4 shadow-none radius-1" id="id-login-password" />--}}
-{{--                            <i class="fa fa-key text-grey-m2 ml-n4"></i>--}}
-{{--                            <label class="floating-label text-grey-l1 text-95 ml-n3" for="id-login-password">Password</label>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
 
                     <div class="form-group col-12">
                         <button type="submit" class="btn btn-sm btn-primary btn-block px-4 text-600 radius-1 ">
@@ -250,10 +304,9 @@
     /* Estatus de solicitud */
     var optionsRadialBar = {
         series: [ {{ $atendidas }} ],
-        height:400,
         chart: {
             type: 'radialBar',
-            offsetY: -20,
+            offsetY: 140,
             sparkline: {
                 enabled: false
             },
@@ -289,7 +342,7 @@
         grid: {
             padding: {
                 top: -10
-            }
+            },
         },
         fill: {
             type: 'solid',
@@ -318,7 +371,7 @@
         },
         tooltip: {
             enabled: false,
-        }
+        },
     };
     var chart = new ApexCharts(document.querySelector("#apex-chart-radialbar-1"), optionsRadialBar);
     chart.render();
@@ -370,7 +423,7 @@
 
         },
         xaxis: {
-            categories: ["Atendidas", "En Proceso", "Pendientes"],
+            categories: ["Atendidas: "+{{$arrPorStatus[0]['atendidas']}}, "En Proceso: "+{{$arrPorStatus[1]['en_proceso']}}, "Pendientes: "+{{$arrPorStatus[2]['pendientes']}}],
             position: 'bottom',
             axisBorder: {
                 show: false

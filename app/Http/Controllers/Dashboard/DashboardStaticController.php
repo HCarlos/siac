@@ -94,31 +94,6 @@ class DashboardStaticController extends Controller{
             ->orderBy('servicio')
             ->get();
 
-        // Gráfico de Solicitud por tipo de servicio
-        $srv1 = DB::table("_viddss")
-            ->select('nombre_corto_ss as name', DB::raw('count(servicio_id) as data'))
-            ->where('ambito_dependencia',2)
-            ->where('is_visible_nombre_corto_ss',true)
-            ->whereBetween('fecha_ingreso',[$inicioMes,$finMes])
-            ->groupBy('nombre_corto_ss')
-            ->get();
-
-//        dd($srv1);
-
-//        dd($finMes);
-        // Grááfico de Estatus de solicitudes atendidas
-        $srv2 = DB::table("_viddss")
-            ->select("ultimo_estatus_resuelto as name", DB::raw("count(estatus_id) as data"))
-            ->where("ambito_dependencia",2)
-            ->where('is_visible_nombre_corto_ss',true)
-            ->whereBetween("fecha_ingreso", [$inicioMes,$finMes])
-            ->groupBy("ultimo_estatus_resuelto")
-            ->get();
-
-        dd($srv2);
-
-        $totalRes = $srv2[0]->data + $srv2[1]->data;
-        $porcentajeAtendidos = number_format((($srv2[1]->data/$totalRes) * 100), 0, '.',',');
 
         // Grááfico de Estatus de solicitudes Por servicio
         $selServ = "";
@@ -133,7 +108,6 @@ class DashboardStaticController extends Controller{
             }
             $selServ = "Todos los servicios";
         }
-        dd($arrIntoServicios);
         $srv3 = DB::table("_viddss")
             ->select('estatus_id','estatus as name', DB::raw('count(estatus_id) as data'))
             ->whereBetween('fecha_ingreso',[$inicioMes,$finMes])
@@ -143,7 +117,6 @@ class DashboardStaticController extends Controller{
             ->groupBy('estatus_id','estatus')
             ->get();
 
-//        dd($srv3);
         $totalReg = 0;
         foreach ($srv3 as $d) {
             switch ($d->estatus_id) {
@@ -173,13 +146,49 @@ class DashboardStaticController extends Controller{
 //        $inicioMes = $f->fechaEspanol($inicioMes);
 //        $finMes    = $f->fechaEspanol($finMes);
 
-        $arrPorStatus[0]["porcentaje"] = $arrPorStatus[0]["atendidas"] > 0 ? number_format(($arrPorStatus[0]["atendidas"] / $totalReg) * 100, 0, '.',',') : 0;
-        $arrPorStatus[1]["porcentaje"] = $arrPorStatus[1]["en_proceso"] > 0 ? number_format(($arrPorStatus[1]["en_proceso"] / $totalReg) * 100, 0, '.',',') : 0;
-        $arrPorStatus[2]["porcentaje"] = $arrPorStatus[2]["pendientes"] > 0 ? number_format(($arrPorStatus[2]["pendientes"] / $totalReg) * 100, 0, '.',',') : 0;
+        $arrPorStatus[0]["porcentaje"] = $arrPorStatus[0]["atendidas"] > 0 ? number_format(($arrPorStatus[0]["atendidas"] / $totalReg) * 100, 2, '.',',') : 0;
+        $arrPorStatus[1]["porcentaje"] = $arrPorStatus[1]["en_proceso"] > 0 ? number_format(($arrPorStatus[1]["en_proceso"] / $totalReg) * 100, 2, '.',',') : 0;
+        $arrPorStatus[2]["porcentaje"] = $arrPorStatus[2]["pendientes"] > 0 ? number_format(($arrPorStatus[2]["pendientes"] / $totalReg) * 100, 2, '.',',') : 0;
 
 
 //        ->where('fecha_limite','>=',now()->format('Y-m-d'))
 
+
+
+
+
+        // Gráfico de Solicitud por tipo de servicio
+        $srv1 = DB::table("_viddss")
+            ->select('nombre_corto_ss as name', DB::raw('count(servicio_id) as data'))
+            ->where('ambito_dependencia',2)
+            ->where('is_visible_nombre_corto_ss',true)
+            ->whereBetween('fecha_ingreso',[$inicioMes,$finMes])
+            ->groupBy('nombre_corto_ss')
+            ->get();
+
+//        dd($srv1);
+
+//        dd($finMes);
+        // Grááfico de Estatus de solicitudes atendidas
+        $srv2 = DB::table("_viddss")
+            ->select("ultimo_estatus_resuelto as name", DB::raw("count(estatus_id) as data"))
+            ->where("ambito_dependencia",2)
+            ->where('is_visible_nombre_corto_ss',true)
+            ->whereBetween("fecha_ingreso", [$inicioMes,$finMes])
+            ->whereIn('servicio_id',$arrIntoServicios)
+            ->groupBy("ultimo_estatus_resuelto")
+            ->get();
+
+//        dd($srv2);
+
+        $r0 = isset($srv2[0]) ? $srv2[0]->data :0;
+        $r1 = isset($srv2[1]) ? $srv2[1]->data : 0;
+
+        $totalRes =  $r0 + $r1;
+        //$srv2[0]->data ?? 0 + $srv2[1]->data ?? 0;
+        $porcentajeAtendidos = number_format((($r1/$totalRes) * 100), 2, '.',',');
+
+        // Tabla de Servicios Vencidos
         $srv4 = DB::table("_viddss")
             ->select('*')
             ->whereBetween('fecha_ingreso',[$inicioMes,$finMes])
@@ -187,10 +196,39 @@ class DashboardStaticController extends Controller{
             ->where("ambito_dependencia",2)
             ->where('is_visible_nombre_corto_ss',true)
             ->where('estatus_id',8)
+            ->whereIn('servicio_id',$arrIntoServicios)
             ->orderBy('fecha_ejecucion')
             ->get();
 
 //        dd($srv4);
+
+        // Tabla de Servicios Urgentes
+        $srv5 = DB::table("_viddss")
+            ->select('*')
+            ->whereBetween('fecha_ingreso',[$inicioMes,$finMes])
+            ->where("ambito_dependencia",2)
+            ->where('is_visible_nombre_corto_ss',true)
+            ->where('prioridad_id',1)
+            ->where("ultimo_estatus_resuelto",0)
+            ->whereIn('servicio_id',$arrIntoServicios)
+            ->orderBy('fecha_ingreso')
+            ->get();
+
+//        dd($srv5);
+
+        // Tabla de Servicios Prioritarios
+        $srv6 = DB::table("_viddss")
+            ->select('*')
+            ->whereBetween('fecha_ingreso',[$inicioMes,$finMes])
+            ->where("ambito_dependencia",2)
+            ->where('is_visible_nombre_corto_ss',true)
+            ->whereIn('prioridad_id',[1,3])
+            ->where("ultimo_estatus_resuelto",0)
+            ->whereIn('servicio_id',$arrIntoServicios)
+            ->orderBy('fecha_ingreso')
+            ->get();
+
+//        dd($srv6);
 
         return view('dashboard.static.dashboard_static',
             [
@@ -202,6 +240,8 @@ class DashboardStaticController extends Controller{
                 'selServ' => $selServ,
                 'arrSrv1' => $srv1,
                 'arrSrv4' => $srv4,
+                'arrSrv5' => $srv5,
+                'arrSrv6' => $srv6,
                 'atendidas' => $porcentajeAtendidos,
                 'arrPorStatus' => $arrPorStatus,
                 'rango_de_consulta' => $f->fechaEspanol($inicioMes).' - '.$f->fechaEspanol($finMes),

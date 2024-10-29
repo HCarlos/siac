@@ -803,7 +803,7 @@ ul.charts-1 {
 
 ul.charts-1 > li {
     display: inline-block;
-    width: 48% !important;
+    width: 96% !important;
     padding: 1em !important;
     margin: 0px !important;
 }
@@ -919,4 +919,9 @@ gmp-map {
 
 .table-1 > thead{
     padding: 0.5em 0.5em 0.5em !important;
+}
+
+.table-n-dashboard-statistics {
+    height: 15em;
+    overflow: auto;
 }
