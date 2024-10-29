@@ -1,12 +1,11 @@
 <div class="col-lg-12">
     <div class="row">
         <div class="col-lg-4" style="padding: 0 !important;">
-
             <div class="card rounded-bottom rounded-top  card-force-1" style="height: 400px !important;">
                 <div class="card-body rounde-bottom rounded-top " style="padding: 0 !important;">
                     <div class="title-bar-block title-bar-block-primary " >
-                        <h4 class="float-left text-white">Solicitudes:</h4>
-                        <h4 class="float-right text-white text-80">179</h4>
+                        <h5 class="float-left text-white mt-2">Solicitudes: <small class="ml-1">{{ $rango_de_consulta }}</small></h5>
+                        <h5 class="float-right text-white text-150 mt-1 ">{{ $srvTotal }}</h5>
                     </div>
                     <div class="title-bar-block title-bar-block-lightgray " >
                         <strong class="float-left">Solicitudes por área</strong>
@@ -14,22 +13,32 @@
                     <ul class="circle-fill radius-round text-center align-items-center w-100 p-0 mb-3">
                         <li>
                             <div>
-                                <div class=" rounded-circle bg-primary border-4 "></div>
-                                <h4 class="rounded-circle flexbox-100">12</h4>
+{{--                                <div class=" rounded-circle bg-primary border-4 "></div>--}}
+{{--                                <h4 class="rounded-circle flexbox-100">12</h4>--}}
+
+                                <div>
+                                    <span class="d-inline-block bgc-primary p-3 w-100 radius-round text-center border-4 brc-primary-l2">
+                                         <span class="text-white text-170 w-10">{{ $srvLimpia }}</span>
+                                     </span>
+                                </div>
                             </div>
-                            <strong class="font-bold font-18">Solicitudes <br>de limpia</strong>
+                            <strong>Solicitudes <br>de limpia</strong>
                         </li>
                         <li>
-                            <div class=" rounded-circle bg-primary ml-2 border-4 brc-blue-l2">
-                                <h4 class="rounded-circle flexbox-100">65</h4>
+                            <div class="d-inline-block w-60-percent">
+                                <span class="d-inline-block bgc-orange p-3 radius-round text-center border-4 brc-orange-l2">
+                                     <span class="text-white text-170 ">{{ $srvOP }}</span>
+                                </span>
                             </div>
-                            <strong class="font-bold font-18">Solicitudes <br>de Obras</strong>
+                            <strong>Solicitudes <br>de Obras</strong>
                         </li>
                         <li>
-                            <div class=" rounded-circle bg-primary ml-2">
-                                <h4 class="rounded-circle flexbox-100">102</h4>
+                            <div>
+                                <span class="d-inline-block bgc-green p-3 radius-round text-center border-4 brc-green-l2">
+                                     <span class="text-white text-170 w-10">{{ $srvSAS }}</span>
+                                </span>
                             </div>
-                            <strong class="font-bold font-18">Solicitudes <br>del SAS</strong>
+                            <strong>Solicitudes <br>del SAS</strong>
                         </li>
                     </ul>
                 </div>
@@ -58,9 +67,13 @@
         <div class="col-lg-4">
             <div class="card rounded-bottom rounded-top  card-force-1" >
                 <div class="card-body rounde-bottom rounded-top " style="padding: 0 !important;">
-                    <div class="title-bar-block title-bar-block-primary " >
-                        <h4 class="float-left text-white">Solicitudes:</h4>
-                        <h4 class="float-right text-white text-80">179</h4>
+                    <div class="form-row mb-1 col-sm-12">
+                        <div class="col-sm-10 ml-1 mt-1">{{ $selServ }}</div>
+                        <div class="col-sm-1">
+                            <button type="button" class="btn btn-xs px-2 btn-green mb-1 btnFullModal float-right mr-1" data-toggle="modal" data-target="#optionsModal">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
                     </div>
                     <ul class="charts-2 text-center align-items-center w-100 p-0 mb-3">
                         <li>
@@ -104,61 +117,27 @@
                     </div>
                     <ul class="table-one text-left align-items-center w-100 p-0 mb-3">
                         <li class="w-100">
-                            <strong class="btn-strong-filter-1 font-bold font-18 w-100">Solicitudes próximas a vencer</strong>
+                            <div class="btn-strong-filter-1 font-bold font-14 w-100-center">Solicitudes próximas a vencer: {{ $arrSrv4->count() }}</div>
                             <div id="table-1" class="w-100">
-
-
-                                <div class="table-responsive-sm">
-                                    <table class="table table-condensed table-centered mb-0">
+                                <div class=""  style="height: 10em; overflow: auto;" >
+                                    <table class=" table table-bordered table-striped dt-responsive nowrap font-14" >
                                         <thead>
-                                        <tr>
+                                        <tr class="">
                                             <th>Servicio</th>
                                             <th>Unidad</th>
-                                            <th>Proceso</th>
+                                            <th>F. Lim.</th>
                                             <th>Status</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <tr class="bg-danger text-white">
-                                            <td>Fuga de agua</td>
-                                            <td>SAS</td>
-                                            <td>
-                                                <div class="progress progress-sm">
-                                                    <div class="progress-bar progress-lg bg-dark" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </td>
-                                            <td><i class="mdi mdi-circle text-gris-oscuro-1"></i> Vencidas</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Reparación de baches</td>
-                                            <td>DOOTSM</td>
-                                            <td>
-                                                <div class="progress progress-sm">
-                                                    <div class="progress-bar progress-lg bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </td>
-                                            <td><i class="mdi mdi-circle text-warning"></i> Resuelto</td>
-                                        </tr>
-                                        <tr class="bg-success text-white">
-                                            <td>Recoleción de basura</td>
-                                            <td>CLRRS</td>
-                                            <td>
-                                                <div class="progress progress-sm">
-                                                    <div class="progress-bar progress-lg bg-danger" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </td>
-                                            <td><i class="mdi mdi-circle text-info"></i> En proceso</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Reparación de luminarias</td>
-                                            <td>SAPYE</td>
-                                            <td>
-                                                <div class="progress progress-sm">
-                                                    <div class="progress-bar progress-lg bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </td>
-                                            <td><i class="mdi mdi-circle text-success"></i> Resuelto</td>
-                                        </tr>
+                                        <tbody >
+                                        @foreach($arrSrv4 as $item)
+                                            <tr class="@if ( date('Y-m-d') > $item->fecha_ejecucion ) bgc-danger-l3 @endif">
+                                                <td><small> {{ $item->nombre_corto_ss }} </small> <small class="chikirimbita text-ble"> {{ $item->id }} </small></td>
+                                                <td><small> {{ $item->abreviatura }} </small></td>
+                                                <td><small> {{ $item->fecha_ejecucion }} </small></td>
+                                                <td><small> {{ $item->estatus }} </small></td>
+                                            </tr>
+                                        @endforeach
                                         </tbody>
                                     </table>
                                 </div> <!-- end table-responsive-->
@@ -183,13 +162,65 @@
     </div>
 </div>
 
+<!-- Modal de Opciones -->
+<div class="modal fade m-0 p-0" id="optionsModal" tabindex="-1" role="dialog" aria-labelledby="optionsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 640px; padding: 0px !important;">
+        <div class="modal-content shadow border-none radius-2 ">
+            <div class="modal-header modal-colored-header bg-info m">
+                <h4 class="modal-title" id="modalHeaderFull">Opciones de Consulta</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body col-sm-12">
+                <form method="POST" action="dashboard-statistics" id="formFullModal" class="row">
+                    {{ csrf_field() }}
+                    <div class="form-group row col-sm-12">
+                        <label for = "fecha_inicial" class="col-form-label col-sm-2">F. Inicial</label>
+                        <input type="date" class="form-control col-sm-4" name="fecha_inicial" id="fecha_inicial" value="{{ $inicio_mes }}" />
+                        <label for = "fecha_final" class="col-form-label col-sm-2">F. Final</label>
+                        <input type="date" class="form-control col-sm-4" name="fecha_final" id="fecha_final" value="{{ $fin_mes }}" />
+                    </div>
+
+                    <div class="form-group row col-sm-12">
+                        <label for = "servicio_id" class="col-form-label col-sm-2">Servicio</label>
+                        <select id="servicio_id" name="servicio_id" class="form-control col-sm-10" size="1">
+                            <option value="0" selected >Todos los servicio</option>
+                            @foreach($servicios as $t)
+                                <option value="{{$t->id}}" >{{ $t->nombre_corto_ss.' ('.$t->abreviatura_dependencia.')'  }} </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+{{--                    <div class="form-group col-12">--}}
+{{--                        <div class="d-flex align-items-center input-floating-label text-blue-m1 brc-blue-m2">--}}
+{{--                            <input placeholder="Password" type="password" class="form-control pr-4 shadow-none radius-1" id="id-login-password" />--}}
+{{--                            <i class="fa fa-key text-grey-m2 ml-n4"></i>--}}
+{{--                            <label class="floating-label text-grey-l1 text-95 ml-n3" for="id-login-password">Password</label>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+
+                    <div class="form-group col-12">
+                        <button type="submit" class="btn btn-sm btn-primary btn-block px-4 text-600 radius-1 ">
+                            Consultar
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script type="text/javascript" >
 
     /* Solicitudes por tipo de Servicio */
+
+    var sts1data = [@foreach($arrSrv1 as $d){{ $d->data }},@endforeach];
+    var sts1cate = [@foreach($arrSrv1 as $d)"{{ $d->name }}",@endforeach];
     var optionsHorizontalBars = {
         series: [{
             name: 'Solicitudes',
-            data: [1, 3, 8, 3, 2, 4, 9]
+            data: sts1data
         }],
         chart: {
             type: 'bar',
@@ -210,7 +241,7 @@
             enabled: false
         },
         xaxis: {
-            categories: ['Poda de árboles', 'Reparacionde alcantarillas', 'Fuga de agua', 'Baches', 'Luminarias', 'Limpieza de drenajes', 'Recolecion de basura'],
+            categories: sts1cate,
         }
     };
     var chart = new ApexCharts(document.querySelector("#apex-chart-bar-1"), optionsHorizontalBars);
@@ -218,7 +249,7 @@
 
     /* Estatus de solicitud */
     var optionsRadialBar = {
-        series: [76],
+        series: [ {{ $atendidas }} ],
         height:400,
         chart: {
             type: 'radialBar',
@@ -297,7 +328,7 @@
     var optionsBarColumn1 = {
         series: [{
             name: 'Solicitudes',
-            data: [43, 15, 7]
+            data: [{{$arrPorStatus[0]['porcentaje']}}, {{$arrPorStatus[1]['porcentaje']}}, {{$arrPorStatus[2]['porcentaje']}}],
         }],
         chart: {
             height: 250,
@@ -360,7 +391,7 @@
                 }
             },
             tooltip: {
-                enabled: true,
+                enabled: false,
             }
         },
         yaxis: {

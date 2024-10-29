@@ -57,8 +57,7 @@ class DenunciaCiudadanaController extends Controller{
         );
     }
 
-    protected function newItem()
-    {
+    protected function newItem(){
         $Servicios = DB::table("_viservicios")->select('*')->where('is_visible_mobile',true)->orderBy('orden_image_mobile')->get();
         $this->msg    = "";
 

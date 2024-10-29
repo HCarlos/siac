@@ -18,11 +18,11 @@
         <ul class="metismenu side-nav mb-0">
             @if (Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_SAS_CAP|USER_SAS_ADMIN|USER_DIF_CAP|USER_DIF_ADMIN|ENLACE') )
                 <li class="side-nav-item">
-{{--                    @if (Auth::user()->hasRole('ENLACE') )--}}
+                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') )
+                        <a href="{{ url('dashboard-statistics') }}" class="side-nav-link">
+                    @else
                         <a href="{{ url(Auth::user()->hasRole('ENLACE') ? 'dashboard_enlace' : 'dashboard_enlace') }}" class="side-nav-link">
-{{--                    @else--}}
-{{--                        <a href="{{ url('dashboard_enlace') }}" class="side-nav-link">--}}
-{{--                    @endif--}}
+                    @endif
                         <i class="mdi dripicons-meter"></i>
                         <span class="badge badge-light float-right"></span>
                         <span>Dashboard</span>

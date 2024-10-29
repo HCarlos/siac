@@ -72,6 +72,7 @@
                 <input type="text" name="ubicacion" id="ubicacion" value="{{ old('ubicacion') }}" class="form-control" disabled/>
             </div>
             <hr>
+            
 {{--            <div class="form-row mb-1 ">--}}
 {{--                <label for = "fecha_ingreso" class="col-lg-2 col-form-label text-right">Fecha </label>--}}
 {{--                <div class="col-lg-4">--}}

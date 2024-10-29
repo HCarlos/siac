@@ -20,6 +20,7 @@
     <link href="{{ asset('images/favicon/favicon-180-180.png') }}" rel="apple-touch-icon" sizes="180x180">
     <link href="{{ asset('images/favicon/favicon-192-192.png') }}" rel="apple-touch-icon" sizes="192x192">
     <link href="{{ asset('images/favicon/favicon-270-270.png') }}" rel="apple-touch-icon" sizes="270x270">
+
     <link href="https://fonts.googleapis.com/css?family=Raleway|PT+Sans+Narrow|Roboto:400,400i,500,500i|Roboto+Mono|Roboto+Condensed|Kaushan+Script&effect=3d-float" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous"><!-- third party css -->
     <link href="{{ asset('css/jquery-jvectormap-1.2.2.css')}}" rel="stylesheet" type="text/css" />
@@ -31,7 +32,8 @@
     <link href="{{ asset('css/jquery.dataTables.css') }}" rel="stylesheet">
     <link href="{{ asset('css/responsive.dataTables.css') }}" rel="stylesheet">
 
-    <link href="{{ asset('css/ace-fonts.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('css/ace-themes.css') }}?timestamp()" rel="stylesheet" type="text/css"/>
     <link href="{{ asset('css/basic.css') }}" rel="stylesheet">
 
     <link href="{{ asset('css/jquery-jvectormap-1.2.2.css') }}" rel="stylesheet">
@@ -41,8 +43,13 @@
     <link href="{{ asset('css/dropzone.css') }}" rel="stylesheet">
     <link href="{{ asset('css/jquery.toast.min.css') }}" rel="stylesheet">
 
+    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('css/ace-fonts.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/ace.css') }}?timestamp()" rel="stylesheet" type="text/css"/>
     <link href="{{ asset('css/atemun.css') }}?timestamp()" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/servimun.css') }}?timestamp()" rel="stylesheet" type="text/css"/>
+
 
 {{--    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUl6Jk2_5yVYdnwidOuU9c8_ZBk7gGnfo&callback=console.debug&libraries=maps,marker&v=beta"></script>--}}
 
@@ -72,6 +79,29 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="{{ asset('js/ace.js') }}"></script>
+    <link href="{{ asset('js/bootstrap.js') }}" rel="stylesheet">
+
+    <script src="{{asset('js/app.min.js')}}"></script>
+    <script src="{{asset('js/fontawesome.min.js')}}"></script>
+    <script src="{{asset('js/bootbox.min.js')}}"></script>
+
+    <script src="{{asset('js/bootbox.min.js')}}"></script>
+    <script src="{{asset('js/bootstrap-dialog.js')}}"></script>
+    <script src="{{asset('js/chart.bundle.min.js')}}"></script>
+
+    <script src="{{asset('js/component.dragula.js')}}"></script>
+
+    <script src="{{asset('js/jquery.dataTables.js')}}"></script>
+    <script src="{{asset('js/jquery-jvectormap.min.js')}}"></script>
+    <script src="{{asset('js/jquery-jvectormap-world-mill-en.js')}}"></script>
+
+    <script src="{{asset('js/dataTables.responsive.min.js')}}"></script>
+    <script src="{{asset('js/responsive.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('js/jquery.toast.min.js')}}"></script>
+
+    <script src="{{ asset('js/statistics.js') }}?timestamp()" rel="stylesheet" type="text/css"></script>
+
 </head>
 <body>
 
