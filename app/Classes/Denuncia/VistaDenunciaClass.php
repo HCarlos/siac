@@ -116,7 +116,7 @@ class VistaDenunciaClass{
                 'creadopor_id' => $den->creadopor_id,
                 'creado_por' => $den->creadopor->FullName,
             );
-            $den->estatus_general = json_encode($estatus_general,JSON_UNESCAPED_UNICODE);
+            $den->estatus_general = json_encode($estatus_general, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
             $den->favorable = false;
             $den->ue_id =  $den->estatus_id;
             $den->due_id = $den->dependencia_id;

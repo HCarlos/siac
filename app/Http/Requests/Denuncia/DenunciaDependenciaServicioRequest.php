@@ -5,6 +5,7 @@
 
 namespace App\Http\Requests\Denuncia;
 
+use App\Classes\Denuncia\VistaDenunciaClass;
 use App\Classes\MessageAlertClass;
 use App\Classes\NotificationsMobile\SendNotificationFCM;
 use App\Models\Denuncias\Denuncia;
@@ -36,13 +37,9 @@ class DenunciaDependenciaServicioRequest extends FormRequest
     }
 
 
-    public function manage()
-    {
+    public function manage(){
         try {
-
             if ( $this->id <= 0 ){
-
-               //dd( $this->denuncia_id );
                 $item = Denuncia::find($this->denuncia_id);
                 $this->attaches($item);
             }else{
@@ -58,7 +55,10 @@ class DenunciaDependenciaServicioRequest extends FormRequest
                 ];
                 $item = Denuncia_Dependencia_Servicio::findOrFail($this->id);
                 $item->update($Item);
-                //$item = Denuncia::find($this->denuncia_id);
+
+                $vid = new VistaDenunciaClass();
+                $vid->vistaDenuncia($this->denuncia_id);
+
             }
         }catch (QueryException $e){
             $Msg = new MessageAlertClass();
@@ -90,11 +90,9 @@ class DenunciaDependenciaServicioRequest extends FormRequest
         $cfm = new SendNotificationFCM();
         $cfm->sendNotificationMobile($item,3);
 
-//        $this->id = Denuncia_Dependencia_Servicio::orderBy('id', 'DESC')->first()->id;
+        $vid = new VistaDenunciaClass();
+        $vid->vistaDenuncia($this->denuncia_id);
 
-//        $this->id = $It;
-
-//        return $this->id;
         return Denuncia_Dependencia_Servicio::orderBy('id', 'DESC')->first()->id;
 
     }

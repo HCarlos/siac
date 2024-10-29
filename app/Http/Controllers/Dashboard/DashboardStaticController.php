@@ -73,16 +73,6 @@ class DashboardStaticController extends Controller{
             ->whereBetween('fecha_ingreso',[$inicioMes,$finMes])
             ->where('is_visible_nombre_corto_ss',true)
             ->count();
-        $sumItem = 0;
-//        dd($srvOp);
-//        foreach ($srvOp as $d) {
-//            $sumItem += $d->count();
-//        }
-//        $srvOp = $sumItem;
-
-
-//        dd($inicioMes);
-//        dd($finMes);
 
         $srvSAS = _viDDSs::query()
             ->select('dependencia_id')
@@ -104,12 +94,6 @@ class DashboardStaticController extends Controller{
             ->orderBy('servicio')
             ->get();
 
-//        $srvLimpia = _viDDSs::query()
-//            ->select('servicio_id')
-//            ->where('dependencia_id',13)
-//            ->whereBetween('fecha_ingreso',[$inicioMes,$finMes])
-//            ->count();
-
         // Gráfico de Solicitud por tipo de servicio
         $srv1 = DB::table("_viddss")
             ->select('nombre_corto_ss as name', DB::raw('count(servicio_id) as data'))
@@ -126,13 +110,12 @@ class DashboardStaticController extends Controller{
         $srv2 = DB::table("_viddss")
             ->select("ultimo_estatus_resuelto as name", DB::raw("count(estatus_id) as data"))
             ->where("ambito_dependencia",2)
+            ->where('is_visible_nombre_corto_ss',true)
             ->whereBetween("fecha_ingreso", [$inicioMes,$finMes])
             ->groupBy("ultimo_estatus_resuelto")
             ->get();
 
-
-
-//        dd($srv2);
+        dd($srv2);
 
         $totalRes = $srv2[0]->data + $srv2[1]->data;
         $porcentajeAtendidos = number_format((($srv2[1]->data/$totalRes) * 100), 0, '.',',');
@@ -150,6 +133,7 @@ class DashboardStaticController extends Controller{
             }
             $selServ = "Todos los servicios";
         }
+        dd($arrIntoServicios);
         $srv3 = DB::table("_viddss")
             ->select('estatus_id','estatus as name', DB::raw('count(estatus_id) as data'))
             ->whereBetween('fecha_ingreso',[$inicioMes,$finMes])

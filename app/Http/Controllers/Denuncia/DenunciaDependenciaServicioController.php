@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Denuncia;
 
+use App\Classes\Denuncia\VistaDenunciaClass;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Denuncia\DenunciaDependenciaServicioRequest;
 use App\Models\Catalogos\Dependencia;
@@ -79,7 +80,7 @@ class DenunciaDependenciaServicioController extends Controller
 
         $IsEnlace = Auth::user()->isRole('ENLACE');
         if($IsEnlace){
-            $dep_id = intval(Auth::user()->IsEnlaceDependencia);
+            $dep_id = (int)Auth::user()->IsEnlaceDependencia;
             $Dependencias = Dependencia::all()->whereIn('id',$dep_id);
             $Servicios    = Servicio::getQueryServiciosFromDependencias($items->dependencia_id);
         }else{
@@ -112,7 +113,6 @@ class DenunciaDependenciaServicioController extends Controller
 // ***************** GUARDA LOS CAMBIOS ++++++++++++++++++++ //
     protected function putEdit(DenunciaDependenciaServicioRequest $request){
         $denuncia_id = $request["denuncia_id"];
-//        dd( $denuncia_id );
         $Id = $request->manage();
         if  (!isset($Id)) {
             return '<script type="text/javascript">alert("'.$Id.'");</script>';
@@ -189,12 +189,15 @@ class DenunciaDependenciaServicioController extends Controller
         protected function removeItem($id = 0)
         {
             $item = Denuncia_Dependencia_Servicio::withTrashed()->findOrFail($id);
+            $denuncia_id = $item->denuncia_id;
             if (isset($item)) {
                 if (!$item->trashed()) {
                     $item->forceDelete();
                 } else {
                     $item->forceDelete();
                 }
+                $vid = new VistaDenunciaClass();
+                $vid->vistaDenuncia($denuncia_id);
                 return Response::json(['mensaje' => 'Registro eliminado con éxito', 'data' => 'OK', 'status' => '200'], 200);
             } else {
                 return Response::json(['mensaje' => 'Se ha producido un error.', 'data' => 'Error', 'status' => '200'], 200);
