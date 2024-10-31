@@ -57,7 +57,7 @@
                             <div class="mt-3"  >
                                 <div id="apex-chart-radialbar-1" ></div>
                                 <strong class="font-bold font-18">Estatus de solicitudes atendidas</strong><br>
-                                <small>{{ $selServ }}</small>
+                                <small>{{ $selServ }} : <strong>{{ $srvTotal }}</strong></small>
                             </div>
                         </li>
                     </ul>
@@ -79,7 +79,7 @@
                     <ul class="charts-2 text-center align-items-center w-100 p-0 mb-3">
                         <li>
                             <div id="apex-chart-bar-column-1"></div>
-                            <strong class="font-bold font-18">Estatus de solicitudes por mes</strong>
+                            <strong class="font-bold font-18">Estatus de solicitudes : <strong>{{ $srvTotal }}</strong></strong>
                         </li>
                     </ul>
                 </div>
@@ -90,14 +90,13 @@
                     <ul class="charts-2  text-center align-items-center ">
                         <li>
                             <div class="w-100 h-100 mb-3" >
-{{--                                <div id="map"></div>--}}
                                 <div>
                                     <div class="mt-3" >
                                         <div id="apex-chart-bar-1" ></div>
                                     </div>
-                                    <strong class="font-bold font-18">Solicitud por tipo de servicio</strong>
+                                    <strong class="font-bold font-18">Solicitud por tipo de servicio : <strong>{{ $srvTotal }}</strong></strong>
                                 </div>
-
+{{--                                <div id="map"></div>--}}
                             </div>
 {{--                            <strong class="font-bold font-18">Ubicaciones</strong>--}}
                         </li>
@@ -292,7 +291,12 @@
         },
         colors: ['#EFB9A5D8', '#E91E63'],
         dataLabels: {
-            enabled: false
+            enabled: true,
+            textAnchor: 'middle',
+            style: {
+                colors: ['#737171']
+            },
+            distributed: false,
         },
         xaxis: {
             categories: sts1cate,
@@ -305,8 +309,9 @@
     var optionsRadialBar = {
         series: [ {{ $atendidas }} ],
         chart: {
+            height: 300,
             type: 'radialBar',
-            offsetY: 140,
+            offsetY: -20,
             sparkline: {
                 enabled: false
             },
@@ -346,7 +351,7 @@
         },
         fill: {
             type: 'solid',
-            colors: ['#B32824', '#EFB9A5D8'],
+            colors: ['#35b324'],
             gradient: {
                 shade: 'dark',
                 shadeIntensity: 0.4,
@@ -487,7 +492,7 @@
         const map = new Map(document.getElementById("map"), {
             zoom: 18.5,
             center: Data[0][0],
-            mapId: "AIzaSyBUl6Jk2_5yVYdnwidOuU9c8_ZBk7gGnfo",
+            mapId: "{{ env('GOOGLE_MAPS_KEY') }}",
         });
         const infoWindow = new InfoWindow();
 
@@ -502,6 +507,7 @@
                 title: "<h3>"+id+" "+title+"</h3><br><h4>"+apoyo+"</h4>",
                 content:pin.element,
                 gmpClickable: true,
+                draggable: true,
             });
             marker.addListener("click", ({ domEvent, latLng }) => {
                 const { target } = domEvent;
@@ -513,7 +519,9 @@
 
         });
     }
-    initMap();
+    if (document.getElementById("map")){
+        initMap();
+    }
     /* Finaliza mapa */
 
 
