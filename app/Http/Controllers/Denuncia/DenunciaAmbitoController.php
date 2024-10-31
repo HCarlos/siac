@@ -573,7 +573,7 @@ class DenunciaAmbitoController extends Controller{
                 'showAddUser'                         => 'addUserDenunciaAmbito',
                 'newItem'                             => 'newDenunciaAmbito',
                 'removeItem'                          => 'removeDenunciaAmbito',
-                'showProcess1'                        => 'showDataListDenunciaremoveImageneExcel1A',
+                'showProcess1'                        => 'showDataListDenunciaAmbitoExcel1A',
                 'searchAdressDenuncia'                => 'listDenunciasAmbito'.$this->ambito_dependencia,
                 'showModalSearchDenuncia'             => 'showModalSearchDenunciaAmbito',
                 'findDataInDenunciaAmbito'            => 'findDataInDenunciaAmbito',

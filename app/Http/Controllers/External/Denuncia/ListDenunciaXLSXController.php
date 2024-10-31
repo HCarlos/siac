@@ -192,8 +192,8 @@ class ListDenunciaXLSXController extends Controller
             $estatus     = Estatu::find($item->estatus_id);
             $creadopor   = User::find($item->creadopor_id);
 
-//                $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
-            $fechaIngreso   = !is_null($item->fecha_ingreso) ? date_format($item->fecha_ingreso,'d-m-Y') : '';
+            $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
+            $fechaIngreso   = isset($item->fecha_ingreso) ? $fechaIngreso : '';
             $fechaLimite    = Carbon::parse($item->fecha_limite)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
             $fechaEjecucion = Carbon::parse($item->fecha_ejecucion)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
 
