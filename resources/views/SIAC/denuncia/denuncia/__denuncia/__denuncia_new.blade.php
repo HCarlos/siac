@@ -65,11 +65,11 @@
             <div class="form-row mb-1">
                 <label for = "fecha_ejecucion" class="col-lg-2 col-form-label text-right">F. Ejec. </label>
                 <div class="col-lg-4">
-                    <input type="date" name="fecha_ejecucion" id="fecha_ejecucion" class="form-control" value="{{ \Carbon\Carbon::now()->addDay(3)->format('Y-m-d') }}" >
+                    <input type="date" name="fecha_ejecucion" id="fecha_ejecucion" class="form-control" value="{{ \Carbon\Carbon::now()->addDay(8)->format('Y-m-d') }}" >
                 </div>
                 <label for = "fecha_limite" class="col-lg-2 col-form-label text-right">F. Límite </label>
                 <div class="col-lg-4">
-                    <input type="date" name="fecha_limite" id="fecha_limite" class="form-control" value="{{ \Carbon\Carbon::now()->addDay(5)->format('Y-m-d') }}" >
+                    <input type="date" name="fecha_limite" id="fecha_limite" class="form-control" value="{{ \Carbon\Carbon::now()->addDay(10)->format('Y-m-d') }}" >
                 </div>
             </div>
             <hr>
@@ -91,7 +91,7 @@
 
         <div class="grid-container">
             <div class="form-group row mb-1">
-                <label for = "descripcion" class="col-lg-3 col-form-label has-descripcion labelDenuncia text-right">Solicitud </label>
+                <label for = "descripcion" class="col-lg-3 col-form-label has-descripcion labelDenuncia text-right">Descripción </label>
                 <div class="col-lg-9">
                     <textarea name="descripcion" id="descripcion" class="form-control">{{ old('descripcion') }}</textarea>
                     <span class="has-descripcion">
@@ -144,7 +144,7 @@
             </div>
 
             <div class="form-group row mb-1">
-                <label for = "dependencia_id" class="col-lg-3 col-form-label labelDenuncia text-right">Dependencia</label>
+                <label for = "dependencia_id" class="col-lg-3 col-form-label labelDenuncia text-right">Unidad Adm.</label>
                 <div class="col-lg-9">
                     <select id="dependencia_id" name="dependencia_id" class="form-control" size="1">
                         <option value="0" selected>Seleccione una Dependencia</option>
@@ -274,3 +274,15 @@
 <input type="hidden" name="modificadopor_id" id="modificadopor_id" value="{{$user->id}}" >
 <input type="hidden" name="usuario_id" id="usuario_id" value="0" >
 <input type="hidden" name="isFechaIngresoView" id="isFechaIngresoView" value="{{ config('atemun.modificar_fecha_ingreso') }}" >
+
+{{--<input type="hidden" name="g_calle" id="g_calle" value="{{ old('g_calle') }}" >--}}
+{{--<input type="hidden" name="g_num_ext" id="g_num_ext" value="{{ old('g_num_ext') }}" >--}}
+{{--<input type="hidden" name="g_num_int" id="g_num_int" value="{{ old('g_num_int') }}" >--}}
+{{--<input type="hidden" name="g_colonia" id="g_colonia" value="{{ old('g_colonia') }}" >--}}
+{{--<input type="hidden" name="g_comunidad" id="g_comunidad" value="{{ old('g_comunidad') }}" >--}}
+{{--<input type="hidden" name="g_municipio" id="g_municipio" value="{{ old('g_municipio') }}" >--}}
+{{--<input type="hidden" name="g_estado" id="g_estado" value="{{ old('g_estado') }}" >--}}
+{{--<input type="hidden" name="g_cp" id="g_cp" value="{{ old('g_cp') }}" >--}}
+{{--<input type="hidden" name="g_altitud" id="g_altitud" value="{{ old('g_altitud') }}" >--}}
+{{--<input type="hidden" name="g_ubicacion" id="g_ubicacion" value="{{ old('gd_ubicacion') }}" >--}}
+

@@ -23,3 +23,5 @@
 @endcomponent
 
 @endsection
+
+@include('partials.script_google_maps')

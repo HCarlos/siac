@@ -322,14 +322,29 @@ class UserDataController extends Controller
     }
 
 // ***************** MAUTOCOMPLETE DE UBICACIONES ++++++++++++++++++++ //
-    protected function getUser($Id=0)
-    {
+    protected function getUser($Id=0){
+
+        $F = new FuncionesController();
+        $sl = "";
+
         $items = User::find($Id);
+        if ( $items->ubicaciones()->first()->Ubicacion ){
+            $sl = strtolower(
+                $items->ubicaciones()->first()->calle.' '.
+                $items->ubicaciones()->first()->num_ext.' '.
+                $items->ubicaciones()->first()->num_int.' '.
+                $items->ubicaciones()->first()->colonia.' '.
+                $items->ubicaciones()->first()->municipio
+            );
+            $sl = $F->str_sanitizer($sl);
+        }
+
         $items->domicilio = $items->ubicaciones()->first()->Ubicacion;
         $items->ubicacion_id = $items->ubicaciones()->first()->id;
         $items->nombre_completo = $items->FullName;
         $items->telefonos_casa = $items->telefonos;
         $items->telefonos = $items->TelefonosCelularesEmails;
+        $items->sanitizer_location = $sl;
         //dd($items);
         return Response::json(['mensaje' => 'OK', 'data' => json_decode($items), 'status' => '200'], 200);
 

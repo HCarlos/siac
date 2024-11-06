@@ -58,17 +58,11 @@ class DenunciaAmbitoController extends Controller{
 
         $this->ambito_dependencia = $ambito_dependencia;
 
-        // dd($this->ambito_dependencia);
-
-//         dd( $filters );
-
         $items = _viDDSs::query()
             ->GetDenunciasAmbitoItemCustomFilter($filters)
             ->orderByDesc('id')
             ->paginate($this->max_item_for_query);
         $items->appends($filters)->fragment('table');
-
-        // dd($items);
 
         $request->session()->put('items', $items);
 
@@ -114,7 +108,7 @@ class DenunciaAmbitoController extends Controller{
 
     protected function newItem1($ambito_dependencia){
         $Prioridades  = Prioridad::all()->sortBy('prioridad');
-        $Origenes     = Origen::all()->sortBy('origen');
+        $Origenes     = Origen::query()->orderBy('origen')->get();
 
         $IsEnlace = Session::get('IsEnlace');
         $this->ambito_dependencia = $ambito_dependencia;
@@ -187,7 +181,7 @@ class DenunciaAmbitoController extends Controller{
             ->orderBy('servicio')
             ->get();
 
-//        dd($Servicios);
+        $Origenes     = Origen::query()->orderBy('origen')->get();
 
         $this->msg = "";
         $th = $this->ambito_dependencia == 1 ? "Apoyos Sociales" : "Servicios Municipales";
@@ -200,6 +194,7 @@ class DenunciaAmbitoController extends Controller{
                 'titulo_catalogo'      => ucwords($this->tableName) . " de " . $th,
                 'titulo_header'        => 'Folio Nuevo',
                 'createDenunciaAmbito' => 'createDenunciaAmbito2',
+                'origenes'             => $Origenes,
                 'exportModel'          => 23,
                 'msg'                  => $this->msg,
             ]
@@ -245,7 +240,7 @@ class DenunciaAmbitoController extends Controller{
 
         $item         = Denuncia::find($Id);
         $Prioridades  = Prioridad::all()->sortBy('prioridad');
-        $Origenes     = Origen::all()->sortBy('origen');
+        $Origenes     = Origen::query()->orderBy('origen')->get();
 
         $IsEnlace = Session::get('IsEnlace');
         $this->ambito_dependencia = $ambito_dependencia;
@@ -335,7 +330,7 @@ class DenunciaAmbitoController extends Controller{
             ->orderBy('servicio')
             ->get();
 
-//        dd($Servicios);
+        $Origenes     = Origen::query()->orderBy('origen')->get();
 
         $user_ubicacion = $item->Ciudadano->ubicaciones->first->id->id;
 
@@ -358,6 +353,7 @@ class DenunciaAmbitoController extends Controller{
                 'updateDenunciaAmbito' => 'updateDenunciaAmbito2',
                 'titulo_catalogo'      => ucwords($this->tableName) . " de " . $th,
                 'titulo_header'        => 'Editando el Folio: '.$Id,
+                'origenes'             => $Origenes,
                 'msg'                  => $this->msg,
                 'pregunta1'            => $pregunta1,
             ]
@@ -446,22 +442,24 @@ class DenunciaAmbitoController extends Controller{
         $data=array();
 
         foreach ($items as $item) {
-//            $data[]=array('value'=>$item->id.' '.$item->calle.' '.$item->colonia.' '.$item->comunidad,' '.$item->ciudad,'id'=>$item->id);
             $data[]=array('value'=>$item->calle.' '.$item->num_ext.' '.$item->num_int.' '.$item->colonia.' '.$item->comunidad,' '.$item->ciudad,'id'=>$item->id);
         }
         if(count($data))
             return $data;
         else
             return ['value'=>'No se encontraron resultados','id'=>0];
-//        return Response::json(['mensaje' => 'OK', 'data' => json_decode($data), 'status' => '200'], 200);
-
     }
 
 // ***************** MAUTOCOMPLETE DE UBICACIONES ++++++++++++++++++++ //
-    protected function getUbi($IdUbi=0)
-    {
-        $items = Ubicacion::find($IdUbi);
-        return Response::json(['mensaje' => 'OK', 'data' => json_decode($items), 'status' => '200'], 200);
+    protected function getUbi($IdUbi=0){
+
+        $F = new FuncionesController();
+        $item = Ubicacion::find($IdUbi);
+        $sl = strtolower($item->calle.' '.$item->num_ext.' '.$item->num_int.' '.$item->colonia.' '.$item->municipio);
+        $sl = $F->str_sanitizer($sl);
+        $item->sanitizer_location = $sl;
+        return Response::json(['mensaje' => 'OK', 'data' => json_decode($item), 'status' => '200'], 200);
+
     }
 
     protected function showModalSearchDenuncia(){

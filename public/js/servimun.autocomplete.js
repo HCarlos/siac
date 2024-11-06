@@ -65,10 +65,13 @@ jQuery(function($) {
                     $("#ubicacion_id_span").html(d.id);
                     $("#ubicacion").val(d.id+' '+d.calle+' '+d.colonia+' '+d.comunidad+' '+d.ciudad+' '+d.municipio+' '+d.estado+' '+d.cp);
                     $("#ubicacion_nueva_id").val(d.id);
+                    $("#searchGoogle").val(d.sanitizer_location);
                     break;
                 case 1:
                     if ( $("#usuario") )            $("#usuario").val('('+d.id+') '+d.nombre_completo);
                     if ( $("#usuario_domicilio") )  $("#usuario_domicilio").val(d.domicilio);
+                    if ( $("#searchGoogle") )       $("#searchGoogle").val(d.sanitizer_location);
+
                     if ( $("#usuario_telefonos") )  {
                         $("#usuario_telefonos").val(d.telefonos);
                         var dd = d.telefonos.split(';');
@@ -76,6 +79,7 @@ jQuery(function($) {
                         $("#lblTelefonos").html(dd[1]);
                         $("#lblEMails").html(dd[2]);
                     }
+
                     if ( $("#usuario_id") )         $("#usuario_id").val(d.id);
                     if ( $("#ubicacion_id") )       $("#ubicacion_id").val(d.ubicacion_id);
                     if ( $("#ubicacion_id_span") )  $("#ubicacion_id_span").html(d.ubicacion_id);

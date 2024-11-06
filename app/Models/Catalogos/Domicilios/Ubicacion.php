@@ -22,8 +22,9 @@ class Ubicacion extends Model
 
     protected $fillable = [
         'id', 'calle','num_ext','num_int','colonia', 'comunidad','ciudad','municipio','estado','pais', 'cp',
-        'latitud','longitud','searchtext',
+        'latitud','longitud','searchtext','altitud',
         'calle_id', 'colonia_id','comunidad_id','ciudad_id', 'municipio_id','estado_id', 'codigopostal_id',
+        'searchGoogle','g_ubicacion',
     ];
     protected $hidden = ['deleted_at','created_at','updated_at'];
 

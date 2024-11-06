@@ -38,7 +38,6 @@
                 </a>
             </li>
 
-{{--
             @if (Auth::user()->hasRole('Administrator|SysOp|test_admin'))
             <li class="side-nav-item">
                 <a href="{{route('listDenunciasAmbito1')}}" class="side-nav-link">
@@ -60,7 +59,6 @@
                     </a>
                 </li>
             @endif
---}}
 
             @if (Auth::user()->hasRole('Administrator|SysOp|test_admin'))
             <li class="side-nav-item">
@@ -273,7 +271,7 @@
                 </ul>
             </li>
 
-{{--            @if(Gate::check('all') || Gate::check('unificar'))
+            @if(Gate::check('all') || Gate::check('unificar'))
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
                     <i class="fa fa-folder"></i>
@@ -281,7 +279,7 @@
                     <span class="menu-arrow"></span>
                 </a>
                 <ul class="side-nav-second-level" aria-expanded="false">
---}}{{--                    @if (Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN'))--}}{{--
+                    @if (Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN'))
                         <li>
                             <a href="{{route('unicomunidad')}}">
                                 <i class="fas fa-money-check-alt"></i>
@@ -289,8 +287,8 @@
                                 <span>Comunidad</span>
                             </a>
                         </li>
---}}{{--                    @endif--}}{{--
---}}{{--                    @if (Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN'))--}}{{--
+                    @endif
+                    @if (Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN'))
                         <li>
                             <a href="{{route('unicolonia')}}">
                                 <i class="fas fa-money-check-alt"></i>
@@ -298,8 +296,8 @@
                                 <span>Colonia</span>
                             </a>
                         </li>
---}}{{--                    @endif--}}{{--
-                    --}}{{--                    @if (Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN'))--}}{{--
+                    @endif
+                                        @if (Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN'))
                     <li>
                         <a href="{{route('unicolcom')}}">
                             <i class="fas fa-money-check-alt"></i>
@@ -307,10 +305,10 @@
                             <span>Colonias a Comunidad </span>
                         </a>
                     </li>
-                    --}}{{--                    @endif--}}{{--
+                                        @endif
                 </ul>
             </li>
-            @endif--}}
+            @endif
 
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
@@ -377,7 +375,6 @@
 
             </li>
 
-{{--
             @if (Auth::user()->hasRole('Administrator|SysOp|USER_MOBILE_BASIC|USER_MOBILE_ADMIN') )
                 <li class="side-nav-item">
                     <a href="{{ url('listDenunciasMobile') }}" class="side-nav-link">
@@ -387,7 +384,6 @@
                     </a>
                 </li>
             @endif
---}}
 
 
 

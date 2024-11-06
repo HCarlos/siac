@@ -105,6 +105,9 @@ class DenunciaAmbitoRequest extends FormRequest
                 'cp'                           => strtoupper($Ubicacion->cp),
                 'latitud'                      => $this->latitud ?? 0.0000,
                 'longitud'                     => $this->longitud ?? 0.0000,
+                'altitud'                      => $this->altitud ?? 0.0000,
+                'searchGoogle'                 => $this->searchGoogle ?? '',
+                'gd_ubicacion'                 => $this->gd_ubicacion ?? '',
                 'prioridad_id'                 => $this->prioridad_id ?? 2,
                 'origen_id'                    => $this->origen_id ?? 1,
                 'dependencia_id'               => $Servicio->dependencia_id,
@@ -205,8 +208,14 @@ class DenunciaAmbitoRequest extends FormRequest
                 ->where('denuncia_id','=',$Item->id)
                 ->where('ubicacion_id','=',$Item->ubicacion_id)
                 ->get();
-            if ($Obj->count() <= 0 )
+            if ( $Obj->count() <= 0 ) {
                 $Obj = $Item->ubicaciones()->attach($Item->ubicacion_id);
+                $ubic = Ubicacion::find($Item->ubicacion_id);
+                $ubic->update([
+                    'altitud' => $Item->altitud ?? 0.00,
+                    'searchGoogle' => $Item->searchGoogle ?? '',
+                    'g_ubicacion' => $Item->gd_ubicacion] ?? '');
+            }
 
             // Buscamos en denuncia_servicio
             $Obj = DB::table('denuncia_servicio')

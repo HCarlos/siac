@@ -286,7 +286,7 @@ class HojaDenunciaController extends Controller
             $pdf->SetFont(FONT_FREEMONO,'B',8);
 
             $obs = trim($res->observaciones);
-            $pdf->WriteHTMLCell(200,$pdf->alto,8,$y+7,$obs==""?'NO HUBO RESPUESTA':$obs,'0',1);
+            $pdf->WriteHTMLCell(200,$pdf->alto,8,$y+7,$obs==""?'SE RECIBE LA SOLICITUD':$obs,'0',1);
 
             $y = $y + 30;
 

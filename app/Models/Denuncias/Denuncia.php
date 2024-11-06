@@ -32,7 +32,7 @@ class Denuncia extends Model
         'id','cantidad', 'oficio_envio',
         'descripcion', 'referencia', 'clave_identificadora', 'domicilio_ciudadano_internet', 'observaciones',
         'calle','num_ext','num_int','colonia', 'comunidad','ciudad','municipio','estado','pais', 'cp',
-        'latitud','longitud',
+        'latitud','longitud','altitud',
         'prioridad_id','origen_id','dependencia_id','ubicacion_id','servicio_id','estatus_id',
         'fecha_ingreso', 'fecha_oficio_dependencia', 'fecha_limite', 'fecha_ejecucion',
         'ciudadano_id','creadopor_id','created_at','modificadopor_id','updated_at','deleted_at',
@@ -41,6 +41,7 @@ class Denuncia extends Model
         'cerrado','fecha_cerrado','cerradopor_id','firmado','uuid',
         'ip', 'host','ambito',
         'ue_id','due_id','sue_id','fecha_ultimo_estatus',
+        'searchGoogle','gd_ubicacion'
     ];
 //    protected $hidden = ['deleted_at','created_at','updated_at'];
     protected $dates = ['fecha_ingreso', 'fecha_oficio_dependencia' => 'datetime:d-m-Y', 'fecha_limite' => 'datetime:d-m-Y', 'fecha_ejecucion' => 'datetime:d-m-Y', 'created_at' => 'datetime:d-m-Y H:mm:ss', 'updated_at' => 'datetime:d-m-Y H:mm:ss','fecha_cerrado'];

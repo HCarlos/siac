@@ -507,7 +507,7 @@
                 title: "<h3>"+id+" "+title+"</h3><br><h4>"+apoyo+"</h4>",
                 content:pin.element,
                 gmpClickable: true,
-                draggable: true,
+                gmpDraggable: true,
             });
             marker.addListener("click", ({ domEvent, latLng }) => {
                 const { target } = domEvent;

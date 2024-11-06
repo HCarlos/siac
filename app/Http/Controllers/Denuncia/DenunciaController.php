@@ -97,8 +97,8 @@ class DenunciaController extends Controller{
     }
 
     protected function newItem(){
-        $Prioridades  = Prioridad::all()->sortBy('prioridad');
-        $Origenes     = Origen::all()->sortBy('origen');
+        $Prioridades  = Prioridad::query()->orderBy('prioridad')->get();
+        $Origenes     = Origen::query()->orderBy('origen')->get();
 
         $IsEnlace = Session::get('IsEnlace');
         if($IsEnlace){
@@ -156,8 +156,8 @@ class DenunciaController extends Controller{
     protected function editItem($Id){
 
         $item         = Denuncia::find($Id);
-        $Prioridades  = Prioridad::all()->sortBy('prioridad');
-        $Origenes     = Origen::all()->sortBy('origen');
+        $Prioridades  = Prioridad::query()->orderBy('prioridad')->get();
+        $Origenes     = Origen::query()->orderBy('origen')->get();
 
         $IsEnlace = Session::get('IsEnlace');
         if($IsEnlace){
@@ -220,7 +220,6 @@ class DenunciaController extends Controller{
         }
         $this->msg = "Registro Guardado con éxito!";
         session(['msg' => $this->msg]);
-
         return Redirect::to('editDenuncia/'.$item->id);
     }
 
@@ -273,7 +272,6 @@ class DenunciaController extends Controller{
         $data=array();
 
         foreach ($items as $item) {
-//            $data[]=array('value'=>$item->id.' '.$item->calle.' '.$item->colonia.' '.$item->comunidad,' '.$item->ciudad,'id'=>$item->id);
             $data[]=array('value'=>$item->calle.' '.$item->num_ext.' '.$item->num_int.' '.$item->colonia.' '.$item->comunidad,' '.$item->ciudad,'id'=>$item->id);
         }
         if(count($data))
@@ -285,10 +283,16 @@ class DenunciaController extends Controller{
     }
 
 // ***************** MAUTOCOMPLETE DE UBICACIONES ++++++++++++++++++++ //
-    protected function getUbi($IdUbi=0)
-    {
-        $items = Ubicacion::find($IdUbi);
-        return Response::json(['mensaje' => 'OK', 'data' => json_decode($items), 'status' => '200'], 200);
+    protected function getUbi($IdUbi=0){
+
+        $F = new FuncionesController();
+        $item = Ubicacion::find($IdUbi);
+        $sl = strtolower($item->calle.' '.$item->num_ext.' '.$item->num_int.' '.$item->colonia.' '.$item->municipio);
+        $sl = $F->str_sanitizer($sl);
+        $item->sanitizer_location = $sl;
+
+        return Response::json(['mensaje' => 'OK', 'data' => json_decode($item), 'status' => '200'], 200);
+
     }
 
     protected function showModalSearchDenuncia(){
