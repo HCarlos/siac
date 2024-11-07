@@ -764,6 +764,11 @@ input[readonly] {
 .bgc-coral-d1 {
     background-color: coral !important;
 }
+
+.bgc-coral-l2 {
+    background-color: rgba(239, 185, 165, 0.85) !important;
+}
+
 .brc-coral-l2 {
     border-color: rgba(239, 185, 165, 0.85) !important;
 }

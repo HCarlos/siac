@@ -40,7 +40,7 @@ async function initMap(lat, lon, siExiste) {
 
         const request = {
             query: searchGoogle,
-            fields: ["name", "geometry"],
+            fields: ["name", "formatted_address", "geometry"],
         };
 
         service = new google.maps.places.PlacesService(map);

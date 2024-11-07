@@ -7,6 +7,7 @@ namespace App\Filters\Denuncia;
 
 use App\Filters\Common\QueryFilter;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class GetDenunciasAmbitoItemCustomFilter extends QueryFilter{
 
@@ -29,29 +30,30 @@ class GetDenunciasAmbitoItemCustomFilter extends QueryFilter{
     public function filterdata($query, $search){
         $search = isset($search['search']) ? $search['search'] : '';
         $search = strtoupper($search);
-        $IsEnlace =Auth::user()->isRole('ENLACE');
-        $IsAdminArchivo =Auth::user()->isRole('USER_ARCHIVO_ADMIN');
-        $DependenciaArray = '';
-        $DependenciaIdArray = [];
-        IF ($IsEnlace) {
-            $DependenciaIdArray = Auth::user()->DependenciaIdArray;
-            $filters['dependencia_id'] = $DependenciaIdArray;
-            $filters['search'] = $search;
-        }elseif ($IsAdminArchivo){
-                $filters['cerrado'] = 'true';
-//        }elseif ($IsEnlace && Auth::user()->isRole('USER_SAS_CAP|USER_SAS_ADMIN') && !Auth::user()->isRole('Administrator|SysOp') ){
+//        $IsEnlace =Auth::user()->isRole('ENLACE');
+//        $IsAdminArchivo =Auth::user()->isRole('USER_ARCHIVO_ADMIN');
+//        $DependenciaArray = '';
+//        $DependenciaIdArray = [];
+//        IF ($IsEnlace) {
+//            $DependenciaIdArray = Auth::user()->DependenciaIdArray;
+//            $filters['dependencia_id'] = $DependenciaIdArray;
 //            $filters['search'] = $search;
-        }elseif ( Auth::user()->isRole('CIUDADANO|DELEGADO') && !Auth::user()->isRole('Administrator|SysOp') ){
-            $filters['ciudadano_id'] = Auth::user()->id;
-            //dd("2");
-        }else{
-            $filters['search'] = $search;
-            //dd("3");
-        }
-        session(['IsEnlace' => $IsEnlace]);
-        session(['IsAdminArchivo' => $IsAdminArchivo]);
-        session(['DependenciaArray' => $DependenciaArray]);
-        session(['DependenciaIdArray' => $DependenciaIdArray]);
+//        }elseif ($IsAdminArchivo){
+//                $filters['cerrado'] = 'true';
+//        }elseif ( Auth::user()->isRole('CIUDADANO|DELEGADO') && !Auth::user()->isRole('Administrator|SysOp') ){
+//            $filters['ciudadano_id'] = Auth::user()->id;
+//            //dd("2");
+//        }else{
+//            $filters['search'] = $search;
+//            //dd("3");
+//        }
+//        session(['IsEnlace' => $IsEnlace]);
+//        session(['IsAdminArchivo' => $IsAdminArchivo]);
+//        session(['DependenciaArray' => $DependenciaArray]);
+//        session(['DependenciaIdArray' => $DependenciaIdArray]);
+
+        $filters['search'] = $search;
+        $filters['ambito_dependencia'] = Session::get('ambito_dependencia');
 
 //        dd( $filters );
 

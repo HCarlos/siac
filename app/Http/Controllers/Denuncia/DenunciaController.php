@@ -102,20 +102,25 @@ class DenunciaController extends Controller{
 
         $IsEnlace = Session::get('IsEnlace');
         if($IsEnlace){
-//            $DependenciaIdArray = explode('|',Session::get('DependenciaIdArray'));
             $DependenciaIdArray = Session::get('DependenciaIdArray');
-            //dd($DependenciaArray);
-            $Dependencias = Dependencia::all()->whereIn('id',$DependenciaIdArray,false)->sortBy('dependencia');
+
+            $Dependencias = Dependencia::query()
+                ->whereIn('id',$DependenciaIdArray)
+                ->orderBy('dependencia')
+                ->get();
+
             //dd($Dependencias);
 
         }else{
-            $Dependencias = Dependencia::all()->sortBy('dependencia');
+            $Dependencias = Dependencia::query()
+                ->orderBy('dependencia')
+                ->get();
         }
 
         if (Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN') ) {
-            $Estatus      = Estatu::all()->sortBy('estatus');
+            $Estatus      = Estatu::query()->orderBy('estatus')->get();
         }else{
-            $Estatus      = Estatu::all()->where('estatus_cve',1)->sortBy('estatus');
+            $Estatus      = Estatu::query()->where('estatus_cve',1)->orderBy('estatus')->get();
         }
 
         $hashtag = Denuncia::select('clave_identificadora')->distinct('clave_identificadora')->orderBy('clave_identificadora')->pluck('clave_identificadora','clave_identificadora');
@@ -163,10 +168,13 @@ class DenunciaController extends Controller{
         if($IsEnlace){
 //            $DependenciaIdArray = explode('|',Session::get('DependenciaIdArray'));
             $DependenciaIdArray = Session::get('DependenciaIdArray');
-            $Dependencias = Dependencia::all()->whereIn('id',$DependenciaIdArray,false)->sortBy('dependencia');
+            $Dependencias = Dependencia::query()
+                ->whereIn('id',$DependenciaIdArray)
+                ->orderBy('dependencia')
+                ->get();
 
         }else{
-            $Dependencias = Dependencia::all()->sortBy('dependencia');
+            $Dependencias = Dependencia::query()->orderBy('dependencia')->get();
         }
 
         $Servicios = Servicio::getQueryServiciosFromDependencias($item->dependencia_id);
@@ -180,9 +188,9 @@ class DenunciaController extends Controller{
         }
 
         if (Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN') ) {
-            $Estatus      = Estatu::all()->sortBy('estatus');
+            $Estatus      = Estatu::query()->orderBy('estatus')->get();
         }else{
-            $Estatus      = Estatu::all()->where('estatus_cve',1)->sortBy('estatus');
+            $Estatus      = Estatu::query()->where('estatus_cve',1)->orderBy('estatus')->get();
         }
 
         $hashtag = Denuncia::select('clave_identificadora')->distinct('clave_identificadora')->orderBy('clave_identificadora')->pluck('clave_identificadora','clave_identificadora');
@@ -269,6 +277,7 @@ class DenunciaController extends Controller{
             ->search($tsString)
             ->orderBy('id')
             ->get();
+
         $data=array();
 
         foreach ($items as $item) {
@@ -299,11 +308,14 @@ class DenunciaController extends Controller{
 
         if (Auth::user()->isRole('ENLACE')){
 
-//            $dep_id = intval(Auth::user()->IsEnlaceDependencia);
             $DependenciaIdArray = Auth::user()->DependenciaIdArray;
-//            $dependencia_id_array = explode('|',$DependenciaIdArray);
             $dependencia_id_array = $DependenciaIdArray;
-            $Dependencias = Dependencia::all()->whereIn('id',$dependencia_id_array)->sortBy('dependencia')->pluck('dependencia','id');
+
+            $Dependencias = Dependencia::query()
+                ->whereIn('id',$dependencia_id_array)
+                ->orderBy('dependencia')
+                ->pluck('dependencia','id');
+
             $dep_id = $dependencia_id_array[0];
             $Servicios = Servicio::whereHas('subareas', function($p) use ($dep_id) {
                 $p->whereHas("areas", function($q) use ($dep_id){
@@ -312,24 +324,24 @@ class DenunciaController extends Controller{
             })->orderBy('servicio')->get()->pluck('servicio','id');
 
         }else{
-            $Dependencias = Dependencia::all()->sortBy('dependencia')->pluck('dependencia','id');
-            $Servicios    = Servicio::all()->where('')->sortBy('servicio')->pluck('servicio','id');
+            $Dependencias = Dependencia::query()->orderBy('dependencia')->pluck('dependencia','id');
+            $Servicios    = Servicio::query()->where('')->orderBy('servicio')->pluck('servicio','id');
         }
 
         if(Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN')){
-            $Estatus      = Estatu::all()->sortBy('estatus');
+            $Estatus      = Estatu::query()->orderBy('estatus')->get();
         }else{
-            $Estatus      = Estatu::all()->where('estatus_cve',1)->sortBy('estatus');
+            $Estatus      = Estatu::query()->where('estatus_cve',1)->orderBy('estatus')->get();
         }
 
-        $Origenes     = Origen::all()->sortBy('origen');
+        $Origenes     = Origen::query()->orderBy('origen')->get();
 
         $Capturistas  = User::query()->whereHas('roles', function ($q) {
-            return $q->whereIn('name',array('ENLACE','USER_OPERATOR_SIAC','USER_OPERATOR_ADMIN') );
-        } )
-            ->get()
-            ->sortBy('full_name_with_username_dependencia')
-            ->pluck('full_name_with_username_dependencia','id');
+                            return $q->whereIn('name',array('ENLACE','USER_OPERATOR_SIAC','USER_OPERATOR_ADMIN') );
+                        })
+                        ->get()
+                        ->sortBy('full_name_with_username_dependencia')
+                        ->pluck('full_name_with_username_dependencia','id');
 
         // $hashtag = Denuncia::query()->select('clave_identificadora')->distinct()->get();
         $hashtag = Denuncia::select('clave_identificadora')->distinct('clave_identificadora')->orderBy('clave_identificadora')->pluck('clave_identificadora','clave_identificadora');
@@ -368,7 +380,6 @@ class DenunciaController extends Controller{
             ->filterBy($queryFilters)
             ->orderByDesc('id')
             ->paginate($this->max_item_for_query);
-
         $items->appends($queryFilters)->fragment('table');
 
         $user = Auth::User();
@@ -415,7 +426,7 @@ class DenunciaController extends Controller{
 
     protected function closeItem($id){
         $item    = Denuncia::find($id);
-        $estatus = Estatu::all()->where('estatus','CERRADO')->first();
+        $estatus = Estatu::query()->where('estatus','CERRADO')->first();
         if (isset($item)) {
             $item->estatus_id = $estatus->id;
             $item->cerrado = true;

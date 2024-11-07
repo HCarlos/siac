@@ -65,7 +65,7 @@ class DenunciaAmbitoFilter extends QueryFilter
         $tsString     = $F->string_to_tsQuery( strtoupper($filters),' & ');
 
         return $query->whereRaw("searchtextdenuncia @@ to_tsquery('spanish', ?)", [$tsString])
-            ->orderByRaw("calle, num_ext, num_int, colonia, descripcion, referencia ASC");
+            ->orderByRaw("calle, num_ext, num_int, colonia, denuncia, referencia ASC");
 
     }
 

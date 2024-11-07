@@ -12,6 +12,7 @@
         <!-- App css -->
         <link href="{{ asset( 'css/icons.min.css' ) }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset( 'css/app.min.css' ) }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset( 'css/atemun.css' ) }}" rel="stylesheet" type="text/css" />
 
     </head>
 
@@ -23,9 +24,9 @@
                     <div class="col-lg-5">
                         <div class="card">
                             <!-- Logo -->
-                            <div class="card-header pt-4 pb-4 text-center bg-primary">
+                            <div class="card-header pt-4 pb-4 text-center bgc-coral-l2">
                                 <a href="index.html">
-                                    <span><img src="assets/images/logo.png" alt="" height="18"></span>
+                                    <span><img src="/images/web/logo-0.png" alt="" /></span>
                                 </a>
                             </div>
 

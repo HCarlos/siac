@@ -149,7 +149,7 @@
                     <select id="dependencia_id" name="dependencia_id" class="form-control" size="1">
                         <option value="0" selected>Seleccione una Dependencia</option>
                         @foreach($dependencias as $t)
-                            <option value="{{$t->id}}" >{{ old('dependencia_id',$t->dependencia) }} </option>
+                            <option value="{{$t->id}}" >{{ $t->dependencia }} </option>
                         @endforeach
 
                     </select>
