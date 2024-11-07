@@ -325,7 +325,7 @@ class DenunciaController extends Controller{
 
         }else{
             $Dependencias = Dependencia::query()->orderBy('dependencia')->pluck('dependencia','id');
-            $Servicios    = Servicio::query()->where('')->orderBy('servicio')->pluck('servicio','id');
+            $Servicios    = Servicio::query()->orderBy('servicio')->pluck('servicio','id');
         }
 
         if(Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN')){
