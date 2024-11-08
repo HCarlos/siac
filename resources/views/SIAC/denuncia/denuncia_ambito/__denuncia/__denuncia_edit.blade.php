@@ -186,9 +186,9 @@
         </div>
     @if ( Auth::user()->hasRole('Administrator') )
         <button type="button" class="btn btn-sm btn-default float-left" id="addImage"  onclick="scanWithoutAspriseDialog();">Scanear Imagen</button>
-        <div id="images" name="scannerImages"></div><br><br>
-        <input type="text" name="scannerInput" id="imagesInput" class="col-lg-12">
-        <input type="text" name="scannerInputs[]" id="imagesInputs" class="col-lg-12">
+        <div id="scannerImages" name="scannerImages"></div><br><br>
+        <input type="text" name="scannerInput" id="scannerInput" class="col-lg-12">
+        <input type="text" name="scannerInputs[]" id="scannerInputs" class="col-lg-12">
     @endif
 
 </div>

@@ -29,8 +29,9 @@ function displayImagesOnPage(successful, mesg, response) {
         processScannedImage(scannedImage);
     }
     var data = JSON.stringify(scannedImages[0]);
-    console.log(data.src);
-    var imageData = data.src;
+    console.log(data);
+    console.log(scannedImages[0].src);
+    var imageData = scannedImages[0].src;
     document.getElementsByName("scannerInput")[0].setAttribute("value", imageData);
     document.getElementsByName("scannerInputs[]")[0].setAttribute("value", imageData);
 
