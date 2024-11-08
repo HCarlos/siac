@@ -172,10 +172,8 @@
                         @for($it=$items->imagenes->count()+1;$it<=1;$it++)
                             <tr>
                                 <td colspan="2">
-{{--                                    <div class="form-group mb-1 col-lg-3">--}}
-                                        <label for="file{{$it}}"><strong>Archivo {{$it}}</strong>: Subir archivo</label>
-                                        <input type="file" id="file{{$it}}" name="file{{$it}}" class="form-control-file">
-{{--                                    </div>--}}
+                                    <label for="file{{$it}}"><strong>Archivo {{$it}}</strong>: Subir archivo</label>
+                                    <input type="file" id="file{{$it}}" name="file{{$it}}" class="form-control-file">
                                 </td>
                             </tr>
                         @endfor
