@@ -1,5 +1,6 @@
 @section("google_maps")
 <script src="/js/scannerjs/scanner.js" type="text/javascript"></script>
+{{--<script src="/bower_components/scanner.js/dist/scanner.js"></script>--}}
 <script src="/js/scanner.solicitud.js" type="text/javascript"></script>
 
 
