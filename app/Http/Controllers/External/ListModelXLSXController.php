@@ -24,6 +24,7 @@ use App\Models\Catalogos\Origen;
 use App\Models\Catalogos\Prioridad;
 use App\Models\Catalogos\Servicio;
 use App\Models\Catalogos\Subarea;
+use App\Models\Denuncias\_viServicios;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Imagene;
 use App\Models\Denuncias\Respuesta;
@@ -49,7 +50,7 @@ class ListModelXLSXController extends Controller
                 $Model = Ubicacion::all();
                 break;
             case 2:
-                $Model = Servicio::all();
+                $Model = _viServicios::all();
                 break;
             case 3:
                 $Model = Dependencia::all();

@@ -249,7 +249,7 @@
                                     <td>{{ asset("/storage/denuncia/".$item->image) }}</td>
                                 @endif
                                 <td>
-                                    @include('shared.ui_kit.__remove_item')
+                                    @include('shared.ui_kit.__remove_item_image_docto')
                                 </td>
                             </tr>
                             @endforeach

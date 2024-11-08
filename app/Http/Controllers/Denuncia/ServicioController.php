@@ -26,12 +26,6 @@ class ServicioController extends Controller
         ini_set('max_execution_time', 300);
 
         $filters = $request->all(['search']);
-//        $search = $filters['search'];
-
-//        $filters =$request->input('search');
-//        $F           = new FuncionesController();
-//        $tsString    = $F->string_to_tsQuery( strtoupper($filters),' & ');
-//        dd($filters);
 
 
         $items = _viServicios::query()

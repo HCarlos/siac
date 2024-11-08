@@ -45,7 +45,7 @@
 {{--                            @if( (int) $item->is_visible_mobile == 0 )--}}
                                 <div class="button-list nowrap">
                                     @include('shared.ui_kit.__edit_item')
-                                    @include('shared.ui_kit.__remove_item')
+                                    @include('shared.ui_kit.__remove_item_catalogos')
                                 </div>
 {{--                            @endif--}}
                         </td>

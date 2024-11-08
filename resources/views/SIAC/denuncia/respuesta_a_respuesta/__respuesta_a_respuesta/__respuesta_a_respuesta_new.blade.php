@@ -29,17 +29,6 @@
 </div>
 
 @if(Auth::user()->isRole('Administrator|SysOp'))
-
-{{--    <div class="form-group row mb-1">--}}
-{{--    <label for = "user__id" class="col-md-2 col-form-label">Ciudadano</label>--}}
-{{--    <div class="col-md-10">--}}
-{{--        <select id="user__id" name="user__id" class="form-control select2" data-toggle="select2" size="1">--}}
-{{--            @foreach($ciudadanos as $t)--}}
-{{--                <option value="{{$t->id}}" {{ $t->id == $user->id ? 'selected': '' }}  >{{$t->fullname}}</option>--}}
-{{--            @endforeach--}}
-{{--        </select>--}}
-{{--    </div>--}}
-{{--    </div>--}}
     <input type="hidden" id="user__id" name="user__id" value="{{ Auth::user()->id }}"/>
 @else
     <input type="hidden" id="user__id" name="user__id" value="{{ $user->id }}"/>

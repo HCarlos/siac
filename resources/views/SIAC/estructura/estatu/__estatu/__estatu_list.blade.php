@@ -36,7 +36,7 @@
                             <div class="button-list">
                                 @if( strtoupper(trim($item->estatus)) != 'CERRADO' || Auth::user()->isRole('Administrator') )
                                     @include('shared.ui_kit.__edit_item')
-                                    @include('shared.ui_kit.__remove_item')
+                                    @include('shared.ui_kit.__remove_item_catalogos')
                                 @endif
                             </div>
                         </td>

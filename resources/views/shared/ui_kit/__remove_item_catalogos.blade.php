@@ -1,4 +1,4 @@
-@if (Auth::user()->hasAnyPermission(['all', 'eliminar_expediente', 'test_admin']) )
+@if (Auth::user()->hasAnyPermission(['all', 'eliminar_catalogos', 'test_admin']) )
 
 {{--@can('eliminar')--}}
 @if(Auth::user()->getAuthIdentifier() == $user->id)
