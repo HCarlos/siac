@@ -11,12 +11,12 @@
         @endisset
     @endisset
     @isset($showProcess1)
-        @if(\Illuminate\Support\Facades\Auth::user()->hasRole('Administrator|SysOp|test_admin'))
+        @if(\Illuminate\Support\Facades\Auth::user()->hasRole('Administrator|test_admin'))
             <a href="{{route($showProcess1)}}" @isset($newWindow)  @endisset class="btn btn-icon btn-rounded btn-outline-success btnFilters"> <i class="fas fa-file-excel text-white"></i> Exportar a Excel</a>
         @endif
     @endisset
     @isset($exportModel)
-        @if(\Illuminate\Support\Facades\Auth::user()->hasRole('Administrator'))
+        @if(\Illuminate\Support\Facades\Auth::user()->hasRole('Administrator|test_admin'))
             <a href="{{route('getModelListXlS',['model'=>$exportModel])}}" @isset($newWindow) @endisset class="btn btn-icon btn-rounded btn-outline-info btnFilters"> <i class="fas fa-file-excel text-white"></i> Exportar Modelo a Excel</a>
         @endif
     @endisset
