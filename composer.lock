@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "45f260b43e899ce0ded23e846f5f93f6",
+    "content-hash": "3de23e0ec96f885a9891a5100fb80ac8",
     "packages": [
         {
             "name": "brick/math",
@@ -5493,6 +5493,63 @@
                 "source": "https://github.com/reactphp/stream/tree/v0.4.6"
             },
             "time": "2017-01-25T14:44:14+00:00"
+        },
+        {
+            "name": "scannerjs/scanner.js",
+            "version": "2.10.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Asprise/scannerjs.javascript-scanner-web-twain-wia-browsers-scanner.js.git",
+                "reference": "cd93e550db1124ad0775bab3d1e4ef4204a9eb69"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Asprise/scannerjs.javascript-scanner-web-twain-wia-browsers-scanner.js/zipball/cd93e550db1124ad0775bab3d1e4ef4204a9eb69",
+                "reference": "cd93e550db1124ad0775bab3d1e4ef4204a9eb69",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Asprise Scan and OCR",
+                    "homepage": "http://asprise.com"
+                }
+            ],
+            "description": "ScannerJS: JavaScript web scan JPG PDF images from TWAIN WIA scanners in browser (Chrome, Edge, Firefox or IE)",
+            "homepage": "http://asprise.com/document-scan-upload-image-browser/direct-to-server-php-asp.net-overview.html",
+            "keywords": [
+                "Scanner.js",
+                "ScannerJS",
+                "Twain",
+                "WIA",
+                "acquire",
+                "and",
+                "browser",
+                "cameras",
+                "document",
+                "from",
+                "html",
+                "images",
+                "javascript",
+                "jpg",
+                "pdf",
+                "scan",
+                "scanner",
+                "scanners",
+                "scanning",
+                "to",
+                "web",
+                "webcam"
+            ],
+            "support": {
+                "issues": "http://asprise.com/ocr-document-scanning-java.net/library-api-contact.html?product=scannerjs",
+                "source": "https://github.com/Asprise/scannerjs.javascript-scanner-web-twain-wia-browsers-scanner.js/tree/master"
+            },
+            "time": "2018-01-03T03:18:29+00:00"
         },
         {
             "name": "setasign/fpdf",
@@ -11508,9 +11565,9 @@
     "prefer-lowest": false,
     "platform": {
         "php": "^7.3",
-        "ext-openssl": "*",
         "ext-curl": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-openssl": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"

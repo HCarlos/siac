@@ -14,7 +14,7 @@
         <h4 class="media-heading">{{$item->titulo}} <small>{{$item->fecha}}</small>
             <span class=" table-action button-list pl-2 ">
                 @include('shared.ui_kit.__edit_item_modal')
-                @include('shared.ui_kit.__remove_item')
+                @include('shared.ui_kit.__remove_item_image_docto')
                 @include('shared.ui_kit.__imagen_a_imagen_item')
             </span>
         </h4>

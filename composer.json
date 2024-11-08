@@ -6,6 +6,8 @@
     "type": "project",
     "require": {
         "php": "^7.3",
+        "ext-curl": "*",
+        "ext-json": "*",
         "ext-openssl": "*",
         "doctrine/dbal": "^2.13.9",
         "elibyy/tcpdf-laravel": "11.1.0",
@@ -28,6 +30,7 @@
         "picqer/php-barcode-generator": "^2.3.3",
         "predis/predis": "^2.2.1",
         "rapidapi/rapidapi-connect": "^0.0.2",
+        "scannerjs/scanner.js": "^2.10",
         "setasign/fpdf": "^1.8.6",
         "sngrl/php-firebase-cloud-messaging": "dev-master",
         "spatie/laravel-backup": "^6.16.5",
@@ -35,9 +38,7 @@
         "spatie/laravel-permission": "^3.18.0",
         "spatie/ssh": "^1.9.2",
         "tecnickcom/tc-lib-pdf-font": "^1.11.6",
-        "yajra/laravel-datatables-oracle": "^9.21.2",
-        "ext-curl": "*",
-        "ext-json": "*"
+        "yajra/laravel-datatables-oracle": "^9.21.2"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",

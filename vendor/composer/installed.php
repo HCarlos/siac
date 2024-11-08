@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '4def1023b907f5499943b89e1534b7334c727dad',
+        'reference' => '45421eb20d2f60e6f0360e05107e39d94eacbc0c',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -487,7 +487,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '4def1023b907f5499943b89e1534b7334c727dad',
+            'reference' => '45421eb20d2f60e6f0360e05107e39d94eacbc0c',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -1068,6 +1068,15 @@
                 0 => '9999999-dev',
             ),
             'dev_requirement' => true,
+        ),
+        'scannerjs/scanner.js' => array(
+            'pretty_version' => '2.10.3',
+            'version' => '2.10.3.0',
+            'reference' => 'cd93e550db1124ad0775bab3d1e4ef4204a9eb69',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../scannerjs/scanner.js',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'sebastian/cli-parser' => array(
             'pretty_version' => '1.0.2',

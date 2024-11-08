@@ -184,7 +184,14 @@
                 </div> <!-- end table-responsive-->
             </div>
         </div>
-    </div>
+    @if ( Auth::user()->hasRole('Administrator') )
+        <button type="button" class="btn btn-sm btn-default float-left" id="addImage"  onclick="scanWithoutAspriseDialog();">Scanear Imagen</button>
+        <div id="images" name="scannerImages"></div><br><br>
+        <input type="text" name="scannerInput" id="imagesInput" class="col-lg-12">
+        <input type="text" name="scannerInputs[]" id="imagesInputs" class="col-lg-12">
+    @endif
+
+</div>
 
 </div>
 
@@ -193,31 +200,31 @@
 
 
 <div class="row mt-4">
-    <div class="col-sm-3">
-        <h6>CREADO</h6>
-        <address>
-            <strong class="orange">POR:</strong>  {{ $items->creadopor->Fullname }}<br>
-            <strong class="purple">FECHA:</strong>  {{ date('d-m-Y H:i:s', strtotime($items->created_at)) }}<br>
-        </address>
-    </div> <!-- end col-->
-    <div class="col-sm-3">
-        <h6>MODIFICADO</h6>
-        <address>
-            <strong class="orange">POR:</strong>  {{ $items->modificadopor->Fullname }}<br>
-            <strong class="purple">FECHA:</strong>  {{ date('d-m-Y H:i:s', strtotime($items->updated_at)) }}<br>
-        </address>
-    </div> <!-- end col-->
-    <div class="col-sm-6">
-        <h6>ÚLTIMA RESPUESTA</h6>
-        <address>
-            <strong class="orange">POR:</strong>  {{ $items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->dependencia->dependencia }}<br>
-            <strong class="info">SERVICIO:</strong>  {{ $items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->servicio->servicio }}<br>
-            <strong class="seagreen">ESTATUS:</strong>  {{ $items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->estatu->estatus }}<br>
-            <strong class="red">FAVORABLE:</strong>  {{ $items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->favorable == true ? 'SI' : 'NO' }}<br>
-            <strong class="purple">FECHA:</strong>  {{ date('d-m-Y H:i:s', strtotime($items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->fecha_movimiento)) }}<br>
-            <strong class="coral">RESPUESTA:</strong> <small> {{ $items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->observaciones }} </small><br>
-        </address>
-    </div> <!-- end col-->
+<div class="col-sm-3">
+<h6>CREADO</h6>
+<address>
+    <strong class="orange">POR:</strong>  {{ $items->creadopor->Fullname }}<br>
+    <strong class="purple">FECHA:</strong>  {{ date('d-m-Y H:i:s', strtotime($items->created_at)) }}<br>
+</address>
+</div> <!-- end col-->
+<div class="col-sm-3">
+<h6>MODIFICADO</h6>
+<address>
+    <strong class="orange">POR:</strong>  {{ $items->modificadopor->Fullname }}<br>
+    <strong class="purple">FECHA:</strong>  {{ date('d-m-Y H:i:s', strtotime($items->updated_at)) }}<br>
+</address>
+</div> <!-- end col-->
+<div class="col-sm-6">
+<h6>ÚLTIMA RESPUESTA</h6>
+<address>
+    <strong class="orange">POR:</strong>  {{ $items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->dependencia->dependencia }}<br>
+    <strong class="info">SERVICIO:</strong>  {{ $items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->servicio->servicio }}<br>
+    <strong class="seagreen">ESTATUS:</strong>  {{ $items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->estatu->estatus }}<br>
+    <strong class="red">FAVORABLE:</strong>  {{ $items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->favorable == true ? 'SI' : 'NO' }}<br>
+    <strong class="purple">FECHA:</strong>  {{ date('d-m-Y H:i:s', strtotime($items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->fecha_movimiento)) }}<br>
+    <strong class="coral">RESPUESTA:</strong> <small> {{ $items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->observaciones }} </small><br>
+</address>
+</div> <!-- end col-->
 </div>
 
 
