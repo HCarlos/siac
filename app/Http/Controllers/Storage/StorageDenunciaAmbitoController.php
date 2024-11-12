@@ -125,26 +125,27 @@ class StorageDenunciaAmbitoController extends Controller{
         $idemp  = 1;
         $data    = $request->all();
 
-        dd($data);
+//        dd($data);
 
         $user = Auth::User();
 //        $arrFiles =$request->files->keys();
-        $arrFiles = $request['scannerInputs']; // $request->files->keys();
         try {
-            foreach ($arrFiles as $fileDataName){
-                if ( $fileDataName !== null ){
-                    $fechaActual = Carbon::now()->format('Y-m-d h:m:s');
-                    $Item = [
-                        'fecha'         => $DenunciaObject->fecha_ingreso,
-                        'user__id'      => $DenunciaObject->ciudadano_id,
-                        'denuncia__id'  => $DenunciaObject->id,
-                    ];
-                    $item = Imagene::create($Item);
-                    $this->attaches($item,$DenunciaObject);
-                    $this->saveFileAmbitoBase64($item,$fileDataName,$DenunciaObject);
+            if ( $request['scannerInputs'] ){
+                $arrFiles = $request['scannerInputs']; // $request->files->keys();
+                foreach ($arrFiles as $fileDataName){
+                    if ( $fileDataName !== null ){
+                        $fechaActual = Carbon::now()->format('Y-m-d h:m:s');
+                        $Item = [
+                            'fecha'         => $DenunciaObject->fecha_ingreso,
+                            'user__id'      => $DenunciaObject->ciudadano_id,
+                            'denuncia__id'  => $DenunciaObject->id,
+                        ];
+                        $item = Imagene::create($Item);
+                        $this->attaches($item,$DenunciaObject);
+                        $this->saveFileAmbitoBase64($item,$fileDataName,$DenunciaObject);
+                    }
                 }
             }
-
         }catch (\Exception $e){
             dd($e->getMessage());
         }

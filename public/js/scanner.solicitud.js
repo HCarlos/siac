@@ -60,8 +60,8 @@ function displayImagesOnPage(successful, mesg, response) {
     }
 
     var data = JSON.stringify(scannedImages[0]);
-    console.log(data);
-    console.log(scannedImages[0].src);
+    // console.log(data);
+    // console.log(scannedImages[0].src);
     var imageData = scannedImages[0].src;
 
     // document.getElementsByName("scannerInputs[]")[0].setAttribute("value", imageData);
@@ -73,7 +73,7 @@ function displayImagesOnPage(successful, mesg, response) {
     var parent = document.getElementById("formData");
     parent.appendChild(input);
 
-    }
+}
 
 /** Images scanned so far. */
 var imagesScanned = [];
