@@ -166,8 +166,7 @@ class FuncionesController extends Controller
 
     public function fitImage($imagePath, $filename, $W, $H, $IsRounded, $disk="profile", $profile_root="PROFILE_ROOT", $extension="png"){
         try{
-            $image = Image::make($imagePath)
-                ->fit($W,$H);
+            $image = Image::make($imagePath)->fit($W,$H);
             if ($IsRounded){
                 $image->encode($extension);
                 $width = $image->getWidth();

@@ -12,7 +12,7 @@
 //     });
 // }
 
-function scanToWebPageAndUpload() {
+function scanWithoutAspriseDialog() {
     scanner.scan(displayImagesOnPage, {
         "twain_cap_setting" : {
             "ICAP_PIXELTYPE" : "TWPT_RGB",

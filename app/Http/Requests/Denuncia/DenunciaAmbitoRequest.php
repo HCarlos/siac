@@ -9,6 +9,7 @@ use App\Classes\MessageAlertClass;
 use App\Events\DenunciaUpdateStatusGeneralEvent;
 use App\Events\IUQDenunciaEvent;
 use App\Http\Controllers\Funciones\FuncionesController;
+use App\Http\Controllers\Storage\StorageDenunciaAmbitoController;
 use App\Http\Controllers\Storage\StorageDenunciaController;
 use App\Models\Catalogos\Domicilios\Ubicacion;
 use App\Models\Denuncias\_viServicios;
@@ -160,8 +161,8 @@ class DenunciaAmbitoRequest extends FormRequest
             }
         }
         if ($item->cerrado == false) {
-            $Storage = new StorageDenunciaController();
-            $Storage->subirArchivoDenuncia($this, $item);
+            $Storage = new StorageDenunciaAmbitoController();
+            $Storage->subirArchivoDenunciaAmbitoBase64($this, $item);
         }
         event(new IUQDenunciaEvent($item->id,Auth::user()->id,$trigger_type));
         return $item;
