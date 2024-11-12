@@ -1,4 +1,12 @@
 
+// var input = document.createElement("input");
+// input.setAttribute('type', 'hidden');
+// input.setAttribute('name', 'scannerInputs[]');
+// input.setAttribute('value', '');
+// var parent = document.getElementById("formData");
+// parent.appendChild(input);
+
+
 
 // function scanWithoutAspriseDialog() {
 //     scanner.scan(displayImagesOnPage, {
@@ -11,6 +19,7 @@
 //         ]
 //     });
 // }
+
 
 function scanWithoutAspriseDialog() {
     scanner.scan(displayImagesOnPage, {
@@ -54,10 +63,17 @@ function displayImagesOnPage(successful, mesg, response) {
     console.log(data);
     console.log(scannedImages[0].src);
     var imageData = scannedImages[0].src;
-    // document.getElementsByName("scannerInput")[0].setAttribute("value", imageData);
-    document.getElementsByName("scannerInputs[]")[0].setAttribute("value", imageData);
 
-}
+    // document.getElementsByName("scannerInputs[]")[0].setAttribute("value", imageData);
+
+    var input = document.createElement("input");
+    input.setAttribute('type', 'hidden');
+    input.setAttribute('name', 'scannerInputs[]');
+    input.setAttribute('value', imageData);
+    var parent = document.getElementById("formData");
+    parent.appendChild(input);
+
+    }
 
 /** Images scanned so far. */
 var imagesScanned = [];

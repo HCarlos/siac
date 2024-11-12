@@ -125,7 +125,7 @@ class StorageDenunciaAmbitoController extends Controller{
         $idemp  = 1;
         $data    = $request->all();
 
-//        dd($data);
+        dd($data);
 
         $user = Auth::User();
 //        $arrFiles =$request->files->keys();

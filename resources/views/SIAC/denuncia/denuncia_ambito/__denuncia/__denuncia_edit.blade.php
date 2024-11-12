@@ -186,7 +186,9 @@
         <button type="button" class="btn btn-sm btn-default float-left" id="addImage"  onclick="scanWithoutAspriseDialog();">Scanear Imagen</button>
         <div id="scannerImages" name="scannerImages"></div><br><br>
 {{--        <input type="text" name="scannerInput" id="scannerInput" class="col-lg-12">--}}
-        <input type="text" name="scannerInputs[]" id="scannerInputs" class="col-lg-12">
+{{--        <input type="hidden" name="scannerInputs[]" id="scannerInputs0" class="col-lg-12" value="">--}}
+{{--        <input type="hidden" name="scannerInputs[]" id="scannerInputs1" class="col-lg-12" value="">--}}
+{{--        <input type="hidden" name="scannerInputs[]" id="scannerInputs2" class="col-lg-12" value="">--}}
     @endif
 
 </div>
