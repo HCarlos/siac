@@ -105,7 +105,7 @@
 
         <div class="grid-container">
             <div class="form-group row mb-1">
-                <label for = "origen_id" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Origen:</label>
+                <label for = "origen_id" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Fuente:</label>
                 <div class="col-lg-10">
                     <select id="origen_id" name="origen_id" class="form-control" size="1">
                         @foreach($origenes as $t)
@@ -185,8 +185,8 @@
     @if ( Auth::user()->hasRole('Administrator') )
         <button type="button" class="btn btn-sm btn-default float-left" id="addImage"  onclick="scanWithoutAspriseDialog();">Scanear Imagen</button>
         <div id="scannerImages" name="scannerImages"></div><br><br>
-        <input type="text" name="scannerInput" id="scannerInput" class="col-lg-12">
-        <input type="hidden" name="scannerInputs[]" id="scannerInputs" class="col-lg-12">
+{{--        <input type="text" name="scannerInput" id="scannerInput" class="col-lg-12">--}}
+        <input type="text" name="scannerInputs[]" id="scannerInputs" class="col-lg-12">
     @endif
 
 </div>

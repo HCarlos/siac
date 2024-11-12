@@ -124,11 +124,15 @@ class StorageDenunciaAmbitoController extends Controller{
         $host   = gethostbyaddr($_SERVER['REMOTE_ADDR']);
         $idemp  = 1;
         $data    = $request->all();
+
+//        dd($data);
+
         $user = Auth::User();
 //        $arrFiles =$request->files->keys();
-//        try {
-//            foreach ($arrFiles as $fileDataName){
-//                if ( $fileDataName !== null ){
+        $arrFiles = $request['scannerInputs']; // $request->files->keys();
+        try {
+            foreach ($arrFiles as $fileDataName){
+                if ( $fileDataName !== null ){
                     $fechaActual = Carbon::now()->format('Y-m-d h:m:s');
                     $Item = [
                         'fecha'         => $DenunciaObject->fecha_ingreso,
@@ -137,47 +141,38 @@ class StorageDenunciaAmbitoController extends Controller{
                     ];
                     $item = Imagene::create($Item);
                     $this->attaches($item,$DenunciaObject);
-                    $this->saveFileAmbitoBase64($item,$request,$DenunciaObject);
-//                }
-//            }
+                    $this->saveFileAmbitoBase64($item,$fileDataName,$DenunciaObject);
+                }
+            }
 
-//        }catch (\Exception $e){
-//            dd($e);
-//        }
+        }catch (\Exception $e){
+            dd($e->getMessage());
+        }
         return redirect($this->redirectTo);
     }
 
-    public function saveFileAmbitoBase64($Item,$request,$DenunciaObject){
+    public function saveFileAmbitoBase64($Item,$data,$DenunciaObject){
 
-        $data = $request['scannerInput'];
+//        $data = $fileDataName; //$request['scannerInput'];
         $ext = 'jpg';
-        $png_url = "file_temp_".time().".".$ext;
-        $pathTemp = public_path().'/' . $png_url;
-        $file = Image::make(file_get_contents($data))->save($pathTemp);
-        if ( $file ) {
 
+        $name = sha1(date('YmdHis') . time()).'-'.$Item->user__id.'-'.$DenunciaObject->id;
+        $fileName = $name.'.' . $ext;
+        $fileName2 = '_'.$name.'.png';
+        $thumbnail = '_thumb_'.$name.'.png';
+        $Item->update([
+            'root'          => config('atemun.public_url'),
+            'image'         => $fileName,
+            'image_thumb'   => $thumbnail,
+        ]);
+        Storage::disk($this->disk)->put($fileName, file_get_contents($data));
+        $file = Storage::disk($this->disk)->get($fileName);
 
-//            $path = public_path().'/' . $png_url;
-//            Image::make(file_get_contents($data))->save($path);
-
-
-            $name = sha1(date('YmdHis') . time()).'-'.$Item->user__id.'-'.$DenunciaObject->id;
-            $fileName = $name.'.' . $ext;
-            $fileName2 = '_'.$name.'.png';
-            $thumbnail = '_thumb_'.$name.'.png';
-            $Item->update([
-                'root'          => config('atemun.public_url'),
-                'image'         => $fileName,
-                'image_thumb'   => $thumbnail,
-            ]);
-            Storage::disk($this->disk)->put($fileName, $file);
-            if ( !in_array($ext, config('atemun.document_type_extension')) ) {
-                $this->F->fitImage($file, $thumbnail, 128, 128, true, $this->disk, "DENUNCIA_ROOT");
-                $this->F->fitImage($file, $fileName2, 300, 300, true, $this->disk, "DENUNCIA_ROOT");
-            }
-            unlink($pathTemp);
-
+        if ( !in_array($ext, config('atemun.document_type_extension'), true)) {
+            $this->F->fitImage($file, $thumbnail, 128, 128, true, $this->disk, "DENUNCIA_ROOT");
+            $this->F->fitImage($file, $fileName2, 300, 300, true, $this->disk, "DENUNCIA_ROOT");
         }
+
         return true;
     }
 

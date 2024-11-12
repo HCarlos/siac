@@ -54,7 +54,7 @@ function displayImagesOnPage(successful, mesg, response) {
     console.log(data);
     console.log(scannedImages[0].src);
     var imageData = scannedImages[0].src;
-    document.getElementsByName("scannerInput")[0].setAttribute("value", imageData);
+    // document.getElementsByName("scannerInput")[0].setAttribute("value", imageData);
     document.getElementsByName("scannerInputs[]")[0].setAttribute("value", imageData);
 
 }
