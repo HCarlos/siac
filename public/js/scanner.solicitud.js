@@ -62,16 +62,6 @@ function displayImagesOnPage(successful, mesg, response) {
     var data = JSON.stringify(scannedImages[0]);
     // console.log(data);
     // console.log(scannedImages[0].src);
-    var imageData = scannedImages[0].src;
-
-    // document.getElementsByName("scannerInputs[]")[0].setAttribute("value", imageData);
-
-    var input = document.createElement("input");
-    input.setAttribute('type', 'hidden');
-    input.setAttribute('name', 'scannerInputs[]');
-    input.setAttribute('value', imageData);
-    var parent = document.getElementById("formData");
-    parent.appendChild(input);
 
 }
 
@@ -88,8 +78,18 @@ function processScannedImage(scannedImage) {
             'src': scannedImage.src
         }
     });
-    // document.getElementById('scannerImages').appendChild(elementImg);
     (document.getElementById('scannerImages') ? document.getElementById('scannerImages') : document.body).appendChild(elementImg);
+
+    var imageData = scannedImage.src;
+
+    var input = document.createElement("input");
+    input.setAttribute('type', 'hidden');
+    input.setAttribute('name', 'scannerInputs[]');
+    input.setAttribute('value', imageData);
+    var parent = document.getElementById("formData");
+    parent.appendChild(input);
+
+
 }
 
 

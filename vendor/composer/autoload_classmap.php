@@ -122,6 +122,7 @@ return array(
     'App\\Http\\Controllers\\HomeController' => $baseDir . '/app/Http/Controllers/HomeController.php',
     'App\\Http\\Controllers\\Storage\\Mobile\\StorageMobileDenunciaController' => $baseDir . '/app/Http/Controllers/Storage/Mobile/StorageMobileDenunciaController.php',
     'App\\Http\\Controllers\\Storage\\Mobile\\StorageMobileServicioController' => $baseDir . '/app/Http/Controllers/Storage/Mobile/StorageMobileServicioController.php',
+    'App\\Http\\Controllers\\Storage\\StorageDenunciaAmbitoController' => $baseDir . '/app/Http/Controllers/Storage/StorageDenunciaAmbitoController.php',
     'App\\Http\\Controllers\\Storage\\StorageDenunciaController' => $baseDir . '/app/Http/Controllers/Storage/StorageDenunciaController.php',
     'App\\Http\\Controllers\\Storage\\StorageExternalFilesController' => $baseDir . '/app/Http/Controllers/Storage/StorageExternalFilesController.php',
     'App\\Http\\Controllers\\Storage\\StorageMobileProfileController' => $baseDir . '/app/Http/Controllers/Storage/StorageMobileProfileController.php',

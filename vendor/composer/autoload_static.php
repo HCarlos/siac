@@ -849,6 +849,7 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Controllers\\Storage\\Mobile\\StorageMobileDenunciaController' => __DIR__ . '/../..' . '/app/Http/Controllers/Storage/Mobile/StorageMobileDenunciaController.php',
         'App\\Http\\Controllers\\Storage\\Mobile\\StorageMobileServicioController' => __DIR__ . '/../..' . '/app/Http/Controllers/Storage/Mobile/StorageMobileServicioController.php',
+        'App\\Http\\Controllers\\Storage\\StorageDenunciaAmbitoController' => __DIR__ . '/../..' . '/app/Http/Controllers/Storage/StorageDenunciaAmbitoController.php',
         'App\\Http\\Controllers\\Storage\\StorageDenunciaController' => __DIR__ . '/../..' . '/app/Http/Controllers/Storage/StorageDenunciaController.php',
         'App\\Http\\Controllers\\Storage\\StorageExternalFilesController' => __DIR__ . '/../..' . '/app/Http/Controllers/Storage/StorageExternalFilesController.php',
         'App\\Http\\Controllers\\Storage\\StorageMobileProfileController' => __DIR__ . '/../..' . '/app/Http/Controllers/Storage/StorageMobileProfileController.php',
