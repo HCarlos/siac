@@ -8,6 +8,7 @@ use App\Models\Catalogos\Estatu;
 use App\Models\Catalogos\Origen;
 use App\Models\Catalogos\Prioridad;
 use App\Models\Catalogos\Servicio;
+use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use Illuminate\Http\Request;
@@ -72,19 +73,20 @@ class ListDenunciaXLSXController extends Controller
     public function denunciaGeneral01($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
 
         $sh->setCellValue('S1', Carbon::now()->format('d-m-Y h:m:s'));
+//        dd($Items);
         foreach ($Items as $item){
-//            $item = Denuncia::find($it->id);
+//            $item = _viDDSs::find($it->id);
 
             //dd($item);
 
-            $ciudadano   = User::find($item->ciudadano_id);
-            $prioridad   = Prioridad::find($item->prioridad_id);
-            $origen      = Origen::find($item->origen_id);
-            $dependencia = Dependencia::find($item->dependencia_id);
-            $servicio    = Servicio::find($item->servicio_id);
-            $ubicacion   = Ubicacion::find($item->ubicacion_id);
-            $estatus     = Estatu::find($item->estatus_id);
-            $creadopor   = User::find($item->creadopor_id);
+//            $ciudadano   = User::find($item->ciudadano_id);
+//            $prioridad   = Prioridad::find($item->prioridad_id);
+//            $origen      = Origen::find($item->origen_id);
+//            $dependencia = Dependencia::find($item->dependencia_id);
+//            $servicio    = Servicio::find($item->servicio_id);
+//            $ubicacion   = Ubicacion::find($item->ubicacion_id);
+//            $estatus     = Estatu::find($item->estatus_id);
+//            $creadopor   = User::find($item->creadopor_id);
 
 //                $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
 
@@ -95,7 +97,7 @@ class ListDenunciaXLSXController extends Controller
             $fechaLimite    = Carbon::parse($item->fecha_limite)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
             $fechaEjecucion = Carbon::parse($item->fecha_ejecucion)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
 
-            $resp = Denuncia_Dependencia_Servicio::query()->where('denuncia_id',$item->id)->orderByDesc('id')->get();
+            $resp = Denuncia_Dependencia_Servicio::query()->where('denuncia_id',$item->denuncia_id)->orderByDesc('id')->get();
             $respuesta = "";
             $favorable = false;
             foreach ($resp as $r){
@@ -107,36 +109,47 @@ class ListDenunciaXLSXController extends Controller
                 }
             }
 
+//            [{"denuncia_id":97415,"dependencia_id":12,"abrevi...
+
+//            dd(last(json_decode($item->estatus_general)));
+
+            if (json_decode($item->estatus_general) == null){
+                $fechaUntiloEstatus = "";
+            }else{
+                $arrUltimoEstatus = last(json_decode($item->estatus_general));
+                $fechaUntiloEstatus   = Carbon::parse($arrUltimoEstatus->fecha)->format('d-m-Y');
+            }
+
             $sh
                 ->setCellValue('A'.$C, $item->id ?? 0)
-                ->setCellValue('B'.$C, trim($ciudadano->curp ?? ''))
-                ->setCellValue('C'.$C, trim($ciudadano->ap_paterno ?? ''))
-                ->setCellValue('D'.$C, trim($ciudadano->ap_materno ?? ''))
-                ->setCellValue('E'.$C, trim($ciudadano->nombre ?? ''))
+                ->setCellValue('B'.$C, trim($item->curp_ciudadano ?? ''))
+                ->setCellValue('C'.$C, trim($item->ap_paterno_ciudadano ?? ''))
+                ->setCellValue('D'.$C, trim($item->ap_materno_ciudadano ?? ''))
+                ->setCellValue('E'.$C, trim($item->nombre_ciudadano ?? ''))
 
-                ->setCellValue('F'.$C, trim($ubicacion->calle ?? ''))
-                ->setCellValue('G'.$C, trim($ubicacion->num_ext ?? ''))
-                ->setCellValue('H'.$C, trim($ubicacion->num_int ?? ''))
-                ->setCellValue('I'.$C, trim($ubicacion->colonia ?? ''))
-                ->setCellValue('J'.$C, trim($ubicacion->cp ?? ''))
+                ->setCellValue('F'.$C, trim($item->calle ?? ''))
+                ->setCellValue('G'.$C, trim($item->num_ext ?? ''))
+                ->setCellValue('H'.$C, trim($item->num_int ?? ''))
+                ->setCellValue('I'.$C, trim($item->colonia ?? ''))
+                ->setCellValue('J'.$C, trim($item->cp ?? ''))
 
-                ->setCellValue('K'.$C, $ubicacion->Ubicacion ?? '')
-                ->setCellValue('L'.$C, $ciudadano->TelefonosCelularesEmails ?? '')
+                ->setCellValue('K'.$C, $item->ubicacion ?? '')
+                ->setCellValue('L'.$C, $item->telefonoscelularesemails ?? '')
                 ->setCellValue('M'.$C, $fechaIngreso ?? '')
-                ->setCellValue('N'.$C, $item->ultima_dependencia ?? '')
-                ->setCellValue('O'.$C, $servicio->subarea->area->area ?? '')
-                ->setCellValue('P'.$C, $servicio->subarea->subarea ?? '')
-                ->setCellValue('Q'.$C, $item->ultimo_servicio ?? '')
-                ->setCellValue('R'.$C, $item->descripcion ?? '')
+                ->setCellValue('N'.$C, $item->dependencia_ultimo_estatus ?? '')
+                ->setCellValue('O'.$C, $item->area ?? '')
+                ->setCellValue('P'.$C, $item->subarea ?? '')
+                ->setCellValue('Q'.$C, $item->servicio_ultimo_estatus ?? '')
+                ->setCellValue('R'.$C, $item->denuncia ?? '')
                 ->setCellValue('S'.$C, $item->referencia ?? '')
-                ->setCellValue('T'.$C, $prioridad->prioridad ?? '')
-                ->setCellValue('U'.$C, $origen->origen ?? '')
-                ->setCellValue('V'.$C, $item->ultimo_estatus ?? '')
-                ->setCellValue('W'.$C, $item->ultima_fecha_estatus ?? '')
-                ->setCellValue('X'.$C, $item->ultima_respuesta )
+                ->setCellValue('T'.$C, $item->prioridad ?? '')
+                ->setCellValue('U'.$C, $item->origen ?? '')
+                ->setCellValue('V'.$C, $arrUltimoEstatus->estatus ?? '')
+                ->setCellValue('W'.$C, $fechaUntiloEstatus ?? '')
+                ->setCellValue('X'.$C, $respuesta )
                 ->setCellValue('Y'.$C, $item->observaciones )
-                ->setCellValue('Z'.$C, $item->creadopor_curp ?? '')
-                ->setCellValue('AA'.$C, $item->uuid )
+                ->setCellValue('Z'.$C, '')
+                ->setCellValue('AA'.$C, '' )
                 ->setCellValue('AB'.$C, $favorable ? "SI" : "NO" )
                 ->setCellValue('AC'.$C, $item->clave_identificadora )
                 ->setCellValue('AD'.$C, trim($ciudadano->StrGenero ?? ''))

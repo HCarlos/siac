@@ -26,6 +26,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
+use function PHPUnit\Framework\isEmpty;
+use function PHPUnit\Framework\isNull;
 
 
 class DenunciaAmbitoController extends Controller{
@@ -52,15 +54,35 @@ class DenunciaAmbitoController extends Controller{
         $search = $request->only(['search']);
 
         $filters['filterdata'] = $search;
-//        $filters['ambito_dependencia'] = $ambito_dependencia;
         session(['ambito_dependencia' => $ambito_dependencia]);
+        session(['is_pagination' => true]);
         $this->ambito_dependencia = $ambito_dependencia;
 
-        $items = _viDDSs::query()
-            ->GetDenunciasAmbitoItemCustomFilter($filters)
-            ->orderByDesc('id')
-            ->paginate($this->max_item_for_query);
-        $items->appends($search)->fragment('table');
+
+        if ( $search !== [] && isEmpty($search) !== null && $search !== "" ) {
+            $items = _viDDSs::query()
+                ->select([
+                    'id', 'uuid', 'ciudadano', 'curp_ciudadano', 'fecha_ingreso', 'dependencia_ultimo_estatus',
+                    'servicio_ultimo_estatus', 'calle', 'num_ext', 'num_int','colonia', 'ubicacion',
+                    'ambito_dependencia', 'status_denuncia',
+                ])
+                ->GetDenunciasAmbitoItemCustomFilter($filters)
+                ->orderByDesc('id')
+                ->get();
+            session(['is_pagination' => false]);
+        }else{
+            $items = _viDDSs::query()
+                ->select([
+                    'id', 'uuid', 'ciudadano', 'curp_ciudadano', 'fecha_ingreso', 'dependencia_ultimo_estatus',
+                    'servicio_ultimo_estatus', 'calle', 'num_ext', 'num_int','colonia', 'ubicacion',
+                    'ambito_dependencia', 'status_denuncia',
+                ])
+                ->GetDenunciasAmbitoItemCustomFilter($filters)
+                ->orderByDesc('id')
+                ->paginate($this->max_item_for_query);
+            $items->appends($search)->fragment('table');
+        }
+
 
         $request->session()->put('items', $items);
 
@@ -92,6 +114,7 @@ class DenunciaAmbitoController extends Controller{
                 'imprimirDenuncia'                    => "imprimir_denuncia_archivo/",
                 'IsEnlace'                            => session('IsEnlace'),
                 'DependenciaArray'                    => session('DependenciaArray'),
+                'is_pagination'                       => session('is_pagination'),
             ]
         );
     }
@@ -523,34 +546,46 @@ class DenunciaAmbitoController extends Controller{
         $this->ambito_dependencia = Session::get('ambito_dependencia');
         if (Auth::user()->isRole('ENLACE')){
 
-//            $dep_id = intval(Auth::user()->IsEnlaceDependencia);
             $DependenciaIdArray = Auth::user()->DependenciaIdArray;
-//            $dependencia_id_array = explode('|',$DependenciaIdArray);
             $dependencia_id_array = $DependenciaIdArray;
+
             $Dependencias = Dependencia::query()
                 ->where("estatus_cve", 1)
                 ->whereIn('id',$dependencia_id_array)
                 ->orderBy('dependencia')->pluck('dependencia','id');
             $dep_id = $dependencia_id_array[0];
-            $Servicios = Servicio::where("estatus_cve", 1)
-                        ->whereHas('subareas', function($p) use ($dep_id) {
-                            $p->whereHas("areas", function($q) use ($dep_id){
-                                return $q->where("dependencia_id",$dep_id);
-                            });
-                        })
-                        ->where("estatus_cve", 1)
-                        ->orderBy('servicio')
-                        ->get()
-                        ->pluck('servicio','id');
+
+//            $Servicios = Servicio::where("estatus_cve", 1)
+//                        ->whereHas('subareas', function($p) use ($dep_id) {
+//                            $p->whereHas("areas", function($q) use ($dep_id){
+//                                return $q->where("dependencia_id",$dep_id);
+//                            });
+//                        })
+//                        ->where("estatus_cve", 1)
+//                        ->orderBy('servicio')
+//                        ->get()
+//                        ->pluck('servicio','id');
+
+            $Servicios = _viServicios::select(['servicio', 'id', 'servicio_habilitado'])
+                ->where("servicio_habilitado", 1)
+                ->where("dependencia_id",$dep_id)
+                ->orderBy('servicio')
+                ->get()
+                ->pluck('servicio','id');
+
 
         }else{
             $Dependencias = Dependencia::query()
                             ->where("estatus_cve", 1)
                             ->where('ambito_dependencia',$this->ambito_dependencia)
-                            ->orderBy('dependencia')->pluck('dependencia','id');
-            $Servicios    = Servicio::query()
-                            ->where("estatus_cve", 1)
-                            ->orderBy('servicio')->pluck('servicio','id');
+                            ->orderBy('dependencia')
+                            ->pluck('dependencia','id');
+
+            $Servicios    = _viServicios::query()
+                            ->select(['servicio', 'id', 'servicio_habilitado'])
+                            ->where("servicio_habilitado", 1)
+                            ->orderBy('servicio')
+                            ->pluck('servicio','id');
         }
 
         if(Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN')){
@@ -572,7 +607,7 @@ class DenunciaAmbitoController extends Controller{
                         ->get();
 
         $Capturistas  = User::query()
-                        ->where("estatus_cve", 1)
+                        ->where("status_user", 1)
                         ->whereHas('roles', function ($q) {
                             return $q->whereIn('name',array('ENLACE','USER_OPERATOR_SIAC','USER_OPERATOR_ADMIN') );
                         })
@@ -621,7 +656,11 @@ class DenunciaAmbitoController extends Controller{
         }
 
         $items = _viDDSs::query()
-            ->filterBy($queryFilters)
+            ->select([
+                'id', 'uuid', 'ciudadano', 'curp_ciudadano', 'fecha_ingreso', 'dependencia_ultimo_estatus',
+                'servicio_ultimo_estatus', 'calle', 'num_ext', 'num_int','colonia', 'ubicacion',
+            ])
+            ->ambitoFilterBy($queryFilters)
             ->orderByDesc('id')
             ->paginate($this->max_item_for_query);
 
@@ -652,6 +691,7 @@ class DenunciaAmbitoController extends Controller{
                 'findDataInDenunciaAmbito'            => 'findDataInDenunciaAmbito',
                 'showEditDenunciaDependenciaServicio' => 'listDenunciaDependenciaServicio',
                 'imagenesDenunciaItem'                => 'listImagenes',
+                'is_pagination'                       => true,
             ]
         );
 

@@ -28,15 +28,26 @@ class _viDDSs extends Model{
     protected $guard_name = 'web';
     protected $table = '_viddss';
 
+    protected $fillable = [
+        'id','uuid','ciudadano','curp_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano',
+        'fecha_ingreso','dependencia_ultimo_estatus','area','subarea','servicio_ultimo_estatus','cp',
+        'telefonoscelularesemails', 'calle','num_ext','num_int','colonia','ubicacion','ambito_dependencia',
+        'denuncia','referencia', 'status_denuncia','prioridad','origen','observaciones','genero',
+    ];
+
     public function scopeFilterBy($query, $filters){
+        return (new DenunciaFilter())->applyTo($query, $filters);
+    }
+    public function scopeGetDenunciasItemCustomFilter($query, $filters){
+        return (new GetDenunciasItemCustomFilter())->applyTo($query, $filters);
+    }
+
+    public function scopeAmbitoFilterBy($query, $filters){
         return (new DenunciaAmbitoFilter())->applyTo($query, $filters);
     }
     public function scopeGetDenunciasAmbitoItemCustomFilter($query, $filters){
         return (new GetDenunciasAmbitoItemCustomFilter())->applyTo($query, $filters);
     }
-
-
-
 
     public function prioridad(){
         return $this->hasOne(Prioridad::class,'id','prioridad_id');
@@ -174,6 +185,15 @@ class _viDDSs extends Model{
         return $this->hasOne(Servicio::class,'id','due_id');
     }
 
+
+//    public function getFullUbicationAttribute(){
+//        $miLoc = trim($this->colonia) == trim($this->comunidad) ? trim($this->colonia) : trim($this->colonia).' '.trim($this->comunidad);
+//        return $this->calle.' '.
+//            $this->num_ext.' '.
+//            $this->num_int.' '.
+//            $miLoc.' '.
+//            $this->ciudad;
+//    }
 
 
 

@@ -59,35 +59,49 @@ class DenunciaFilter extends QueryFilter
         $search = strtoupper($search);
         $filters  = $search;
         $F        = new FuncionesController();
-
         $filters      = strtolower($filters);
         $filters      = $F->str_sanitizer($filters);
         $tsString     = $F->string_to_tsQuery( strtoupper($filters),' & ');
 
         return $query->whereRaw("searchtextdenuncia @@ to_tsquery('spanish', ?)", [$tsString])
-            ->orderByRaw("calle, num_ext, num_int, colonia, descripcion, referencia ASC");
+            ->orderByRaw("calle, num_ext, num_int, colonia, denuncia, referencia ASC");
 
     }
+
+//    public function curp($query, $search){
+//        if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
+//        $search = strtoupper($search);
+//        return $query->orWhereHas('ciudadanos', function ($q) use ($search) {
+//            return $q->where("curp",strtoupper(trim($search)));
+//        });
+//    }
 
     public function curp($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
         $search = strtoupper($search);
-        return $query->orWhereHas('ciudadanos', function ($q) use ($search) {
-//            dd($search);
-            return $q->where("curp",strtoupper(trim($search)));
-        });
+        return $query->where("curp_ciudadano",strtoupper(trim($search)));
+
     }
 
+//    public function ciudadano($query, $search){
+//        if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
+//        $search = strtoupper($search);
+//        return $query->orWhereHas('ciudadanos', function ($q) use ($search) {
+//            $filters  = $search;
+//            $F        = new FuncionesController();
+//            $tsString = $F->string_to_tsQuery( strtolower($filters),' & ');
+//            return $q->whereRaw("searchtext @@ to_tsquery('spanish', ?)", [$tsString]);
+//
+//        });
+//    }
+//
     public function ciudadano($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
         $search = strtoupper($search);
-        return $query->orWhereHas('ciudadanos', function ($q) use ($search) {
-            $filters  = $search;
-            $F        = new FuncionesController();
-            $tsString = $F->string_to_tsQuery( strtoupper($filters),' & ');
-            return $q->whereRaw("searchtext @@ to_tsquery('spanish', ?)", [$tsString]);
-
-        });
+        $filters  = $search;
+        $F        = new FuncionesController();
+        $tsString = $F->string_to_tsQuery( strtolower($filters),' & ');
+        return $query->whereRaw("searchtext_ciudadano @@ to_tsquery('spanish', ?)", [$tsString]);
     }
 
     public function id($query, $search){

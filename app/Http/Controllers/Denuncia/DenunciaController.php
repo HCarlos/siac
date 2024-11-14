@@ -16,6 +16,7 @@ use App\Models\Catalogos\Estatu;
 use App\Models\Catalogos\Origen;
 use App\Models\Catalogos\Prioridad;
 use App\Models\Catalogos\Servicio;
+use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use App\Models\Denuncias\Firma;
@@ -25,6 +26,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
+use function PHPUnit\Framework\isEmpty;
 
 
 class DenunciaController extends Controller{
@@ -49,17 +51,50 @@ class DenunciaController extends Controller{
         ini_set('max_execution_time', 300);
         session::forget('ambito_dependencia');
 
-        $search = $request->all(['search']);
-        $filters['filterdata'] = $search;
+        $search = $request->only(['search']);
 
-        $items = Denuncia::query()
-            ->getDenunciasItemCustomFilter($filters)
-            ->orderByDesc('id')
-            ->paginate($this->max_item_for_query);
-        $items->appends($search)->fragment('table');
+        $filters['filterdata'] = $search;
+        session(['is_pagination' => true]);
+
+
+        if ( $search !== [] && isEmpty($search) !== null && $search !== "" ) {
+            $items = _viDDSs::query()
+                ->select([
+                    'id','uuid','ciudadano','curp_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano',
+                    'fecha_ingreso','dependencia_ultimo_estatus','area','subarea','servicio_ultimo_estatus','cp',
+                    'telefonoscelularesemails', 'calle','num_ext','num_int','colonia','ubicacion','ambito_dependencia',
+                    'denuncia','referencia', 'status_denuncia','prioridad','origen','observaciones','genero',
+                ])
+                ->GetDenunciasItemCustomFilter($filters)
+                ->orderByDesc('id')
+                ->get();
+            session(['is_pagination' => false]);
+        }else{
+            $items = _viDDSs::query()
+                ->select([
+                    'id','uuid','ciudadano','curp_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano',
+                    'fecha_ingreso','dependencia_ultimo_estatus','area','subarea','servicio_ultimo_estatus','cp',
+                    'telefonoscelularesemails', 'calle','num_ext','num_int','colonia','ubicacion','ambito_dependencia',
+                    'denuncia','referencia', 'status_denuncia','prioridad','origen','observaciones','genero',
+                ])
+                ->GetDenunciasItemCustomFilter($filters)
+                ->orderByDesc('id')
+                ->paginate($this->max_item_for_query);
+            $items->appends($search)->fragment('table');
+        }
+
+
+
+//        $items = _::query()
+//            ->getDenunciasItemCustomFilter($filters)
+//            ->orderByDesc('id')
+//            ->paginate($this->max_item_for_query);
+//        $items->appends($search)->fragment('table');
+//        $request->session()->put('items', $items);
 
 
         $request->session()->put('items', $items);
+
 
         session(['msg' => '']);
 
@@ -88,6 +123,7 @@ class DenunciaController extends Controller{
                 'imprimirDenuncia'                    => "imprimir_denuncia_archivo/",
                 'IsEnlace'                            => session('IsEnlace'),
                 'DependenciaArray'                    => session('DependenciaArray'),
+                'is_pagination'                       => session('is_pagination'),
             ]
         );
     }
@@ -372,7 +408,7 @@ class DenunciaController extends Controller{
             $this->max_item_for_query = session::get('items_for_query');
         }
 
-        $items = Denuncia::query()
+        $items = _viDDSs::query()
             ->filterBy($queryFilters)
             ->orderByDesc('id')
             ->paginate($this->max_item_for_query);
@@ -402,6 +438,7 @@ class DenunciaController extends Controller{
                 'findDataInDenuncia'                  => 'findDataInDenuncia',
                 'showEditDenunciaDependenciaServicio' => 'listDenunciaDependenciaServicio',
                 'imagenesDenunciaItem'                => 'listImagenes',
+                'is_pagination'                       => true,
             ]
         );
 

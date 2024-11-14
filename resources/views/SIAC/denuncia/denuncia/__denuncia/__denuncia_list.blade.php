@@ -16,24 +16,24 @@
             <tbody>
 
             @foreach($items as $item)
-                <tr class="@if($item->cerrado) bg-coral-denuncia-cerrada @endif">
+                <tr class="@if($item->cerrado) bg-coral-denuncia-cerrada @endif" id="tr_{{$item->id}}">
                     <td class="table-user @if($item->origen_id == config('atemun.pagina_web_id')) text-danger @endif">{{$item->id}}</td>
                     <td class="w-25">
-                        {{$item->ciudadano->FullName}} <br>
-                        <small>{{$item->ciudadano->curp}}</small>
+                        {{$item->ciudadano}} <br>
+                        <small>{{$item->curp_ciudadano}}</small>
                     </td>
                     <td  class="w-15">{{($item->fecha_ingreso)}}</td>
-                    <td><a title="{{($item->ultima_dependencia)}}">{{($item->ultima_dependencia)}}</a></td>
+                    <td><a title="{{($item->dependencia_ultimo_estatus)}}">{{($item->dependencia_ultimo_estatus)}}</a></td>
 
                     <td class="w-25">
-                        {{($item->ultimo_servicio)}}<br>
-                        <small class="text-gray-lighter">{{( $item->ultimo_estatus )}}</small>
+                        {{($item->servicio_ultimo_estatus)}}<br>
+                        <small class="text-gray-lighter">{{( $item->servicio_ultimo_estatus )}}</small>
                         @if( $item->TotalRespuestas>0 )
                             > <small class="text-danger"><strong> {{( $item->TotalRespuestas )}}</strong></small>
                         @endif
                     </td>
 
-                    <td class="w-25">{{$item->fullUbication}} @if($item->ciudadanos->count() > 1)<span class="text-danger">( <i class="fas fa-users"></i> <strong>  {{$item->ciudadanos->count()}} </strong> )</span> @endif
+                    <td class="w-25">{{$item->ubicacion}} @if($item->ciudadanos->count() > 1)<span class="text-danger">( <i class="fas fa-users"></i> <strong>  {{$item->ciudadanos->count()}} </strong> )</span> @endif
                     </td>
                     <td class="table-action w-15">
                         <div class="button-list">

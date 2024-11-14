@@ -53,8 +53,20 @@ class FiltersRules
         if ($data['incluirFechaMovto'] != null){
             $filters = array_merge($filters, ['fecha_movimiento' => $data['desde'].'|'.$data['hasta'].'|'.$data['estatus_id'].'|'.$data['dependencia_id'] ] );
         }
+
+        if ($data['dependencia_id'] === ""){
+            $IsEnlace =Auth::user()->isRole('ENLACE');
+            IF ($IsEnlace) {
+                $DependenciaIdArray = Auth::user()->DependenciaIdArray;
+                $filters = array_merge($filters, ['dependencia_id' => $DependenciaIdArray]);
+            }else{
+                $filters = array_merge($filters, ['dependencia_id' => $data['dependencia_id']]);
+            }
+        }else{
+            $filters = array_merge($filters, ['dependencia_id' => $data['dependencia_id']]);
+        }
+
         $filters = array_merge($filters, [
-            'dependencia_id'       => $data['dependencia_id'],
             'ciudadano_id'         => $data['ciudadano_id'],
             'origen_id'            => $data['origen_id'],
             'servicio_id'          => $data['servicio_id'],
@@ -64,6 +76,7 @@ class FiltersRules
             'clave_identificadora' => $data['clave_identificadora'],
             'uuid'                 => $data['uuid'],
             'incluirFecha'         => $data['incluirFecha'],
+            'incluirFechaMovto'    => $data['incluirFechaMovto'],
         ]);
 
 //        dd($filters);

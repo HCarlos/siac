@@ -1,11 +1,13 @@
 <div class="row bg-dark-lighten rounded ">
-    @if( $items->total() > 15 )
+    @if( $items->count() > 15 )
         <div class="col-md-6 mb-0" >
             @include('shared.ui_kit.__toolbar_denuncia')
         </div>
         <div class="col-md-6 ">
             <div class="mt-md-2">
-                {{ $items->onEachSide(1)->links() }}
+                @if ( $is_pagination )
+                    {{ $items->onEachSide(1)->links() }}
+                @endif
             </div>
         </div>
     @else
