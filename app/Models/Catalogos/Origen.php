@@ -14,7 +14,7 @@ class Origen extends Model
     protected $table = 'origenes';
 
     protected $fillable = [
-        'id', 'origen',
+        'id', 'origen','estatus_cve',
     ];
     protected $hidden = ['deleted_at','created_at','updated_at'];
 

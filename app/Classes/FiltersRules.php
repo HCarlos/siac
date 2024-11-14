@@ -19,6 +19,7 @@ class FiltersRules
 
     public function filterRulesDenuncia(Request $request){
         $data = $request->all(['ambito_dependencia','curp','ciudadano','id','desde','hasta','dependencia_id','servicio_id','estatus_id','creadopor_id','incluirFecha','conRespuesta','clave_identificadora','uuid','incluirFechaMovto','origen_id','ciudadano_id']);
+        $data['status_denuncia']      = '1';
         $data['ambito_dependencia']   = $data['ambito_dependencia']   == null ? "" : $data['ambito_dependencia'];
         $data['curp']                 = $data['curp']                 == null ? "" : $data['curp'];
         $data['ciudadano']            = $data['ciudadano']            == null ? "" : $data['ciudadano'];
@@ -30,16 +31,17 @@ class FiltersRules
         $data['conRespuesta']         = $data['conRespuesta']         == null ? "" : $data['conRespuesta'];
         $data['clave_identificadora'] = $data['clave_identificadora'] == null ? "" : $data['clave_identificadora'];
         $data['uuid']                 = $data['uuid']                 == null ? "" : $data['uuid'];
-        $data['ciudadano_id']         = $data['ciudadano_id']                 == null ? "" : $data['ciudadano_id'];
+        $data['ciudadano_id']         = $data['ciudadano_id']         == null ? "" : $data['ciudadano_id'];
 
-        $data['dependencia_id']       = $data['dependencia_id'] == "0" ? "" : $data['dependencia_id'];
-        $data['origen_id']            = $data['origen_id'] == "0" ? "" : $data['origen_id'];
+        $data['dependencia_id']       = $data['dependencia_id']       == "0" ? "" : $data['dependencia_id'];
+        $data['origen_id']            = $data['origen_id']            == "0" ? "" : $data['origen_id'];
 
-        $data['servicio_id']          = $data['servicio_id']    == "" || $data['servicio_id']    == "0'" ? "" : $data['servicio_id'];
-        $data['estatus_id']           = $data['estatus_id']     == "0" ? "" : $data['estatus_id'];
-        $data['creadopor_id']         = $data['creadopor_id']   == "0" ? "" : $data['creadopor_id'];
+        $data['servicio_id']          = $data['servicio_id']          == "" || $data['servicio_id']    == "0'" ? "" : $data['servicio_id'];
+        $data['estatus_id']           = $data['estatus_id']           == "0" ? "" : $data['estatus_id'];
+        $data['creadopor_id']         = $data['creadopor_id']         == "0" ? "" : $data['creadopor_id'];
 
         $filters = [
+            'status_denuncia'    => $data['status_denuncia'],
             'ambito_dependencia' => $data['ambito_dependencia'],
             'curp'               => $data['curp'],
             'ciudadano'          => $data['ciudadano'],
@@ -49,7 +51,6 @@ class FiltersRules
             $filters = array_merge($filters, ['desde' => $data['desde'], 'hasta' => $data['hasta'] ] );
         }
         if ($data['incluirFechaMovto'] != null){
-//            $filters = array_merge($filters, ['fecha_movimiento_desde' => $data['desde'], 'fecha_movimiento_hasta' => $data['hasta'] ] );
             $filters = array_merge($filters, ['fecha_movimiento' => $data['desde'].'|'.$data['hasta'].'|'.$data['estatus_id'].'|'.$data['dependencia_id'] ] );
         }
         $filters = array_merge($filters, [

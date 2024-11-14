@@ -161,8 +161,14 @@ class DenunciaAmbitoRequest extends FormRequest
             }
         }
         if ($item->cerrado == false) {
-            $Storage = new StorageDenunciaAmbitoController();
-            $Storage->subirArchivoDenunciaAmbitoBase64($this, $item);
+            if ( $this->files->keys() !== null ) {
+                $Storage = new StorageDenunciaAmbitoController();
+                $Storage->subirArchivoDenunciaAmbito($this, $item);
+            }
+            if ( $this->scannerInputs !== null ) {
+                $Storage = new StorageDenunciaAmbitoController();
+                $Storage->subirArchivoDenunciaAmbitoBase64($this, $item);
+            }
         }
         event(new IUQDenunciaEvent($item->id,Auth::user()->id,$trigger_type));
         return $item;

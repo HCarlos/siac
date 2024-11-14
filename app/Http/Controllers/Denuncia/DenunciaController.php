@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Denuncia;
 
 use App\Classes\Denuncia\VistaDenunciaClass;
 use App\Classes\FiltersRules;
+use App\Classes\FiltersRulesBySearch;
 use App\Events\IUQDenunciaEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Funciones\FuncionesController;
@@ -43,25 +44,20 @@ class DenunciaController extends Controller{
         $this->middleware('auth');
     }
 
-    protected function index(Request $request)
-    {
+    protected function index(Request $request){
+
         ini_set('max_execution_time', 300);
+        session::forget('ambito_dependencia');
 
-//        if ( Auth::user()->can('consulta_500_items_general') ){
-//            $this->max_item_for_query = config("atemun.consulta_500_items_general");
-//        }
+        $search = $request->all(['search']);
+        $filters['filterdata'] = $search;
 
-        $search = $request->only(['search']);
-
-        $filters['filterdata'] = $request->only(['search']);
-         //dd( $filter );
         $items = Denuncia::query()
             ->getDenunciasItemCustomFilter($filters)
             ->orderByDesc('id')
             ->paginate($this->max_item_for_query);
-        $items->appends($filters)->fragment('table');
+        $items->appends($search)->fragment('table');
 
-        // dd($items);
 
         $request->session()->put('items', $items);
 

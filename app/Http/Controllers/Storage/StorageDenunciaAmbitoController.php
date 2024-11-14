@@ -7,13 +7,14 @@ use App\Http\Controllers\Funciones\FuncionesController;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Imagene;
 use Carbon\Carbon;
-use http\Exception;
+//use http\Exception;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
-use Intervention\Image\Facades\Image;
+//use Illuminate\Support\Facades\Validator;
+//use Intervention\Image\Facades\Image;
 
 class StorageDenunciaAmbitoController extends Controller{
 
@@ -32,13 +33,10 @@ class StorageDenunciaAmbitoController extends Controller{
         $host   = gethostbyaddr($_SERVER['REMOTE_ADDR']);
         $idemp  = 1;
         $data    = $request->all();
-//        dd($request);
         $user = Auth::User();
         $arrFiles =$request->files->keys();
-//        dd($arrFiles);
         try {
             foreach ($arrFiles as $fileDataName){
-//                dd($fileDataName);
                 if ( $fileDataName !== null ){
                     $fechaActual = Carbon::now()->format('Y-m-d h:m:s');
                     $Item = [
@@ -49,14 +47,15 @@ class StorageDenunciaAmbitoController extends Controller{
 //                    if ( $DenunciaObject->id == 0) {
                         $item = Imagene::create($Item);
                         $this->attaches($item,$DenunciaObject);
-                        $this->saveFileAmbitoBase64($item,$request->file($fileDataName),$DenunciaObject);
+                        $this->saveFileAmbito($item,$request->file($fileDataName),$DenunciaObject);
 //                    }
                 }
 
             }
 
         }catch (\Exception $e){
-            dd($e);
+//            dd($e);
+            throw new $e->getMessage();
         }
         return redirect($this->redirectTo);
     }
@@ -77,8 +76,7 @@ class StorageDenunciaAmbitoController extends Controller{
         return $Item;
     }
 
-    public function saveFile($Item,$file,$DenunciaObject){
-
+    public function saveFileAmbito($Item,$file,$DenunciaObject){
         if ( $file ) {
             $ext = $file->extension();
             $name = sha1(date('YmdHis') . time()).'-'.$Item->user__id.'-'.$DenunciaObject->id;
@@ -95,8 +93,6 @@ class StorageDenunciaAmbitoController extends Controller{
                 $this->F->fitImage($file, $thumbnail, 128, 128, true, $this->disk, "DENUNCIA_ROOT");
                 $this->F->fitImage($file, $fileName2, 300, 300, true, $this->disk, "DENUNCIA_ROOT");
             }
-//            $this->F->fitImage( $file,$thumbnail,128,128,true,$this->disk,"DENUNCIA_ROOT");
-
         }
         return true;
     }
@@ -124,11 +120,7 @@ class StorageDenunciaAmbitoController extends Controller{
         $host   = gethostbyaddr($_SERVER['REMOTE_ADDR']);
         $idemp  = 1;
         $data    = $request->all();
-
-//        dd($data);
-
         $user = Auth::User();
-//        $arrFiles =$request->files->keys();
         try {
             if ( $request['scannerInputs'] ){
                 $arrFiles = $request['scannerInputs']; // $request->files->keys();
@@ -146,15 +138,14 @@ class StorageDenunciaAmbitoController extends Controller{
                     }
                 }
             }
-        }catch (\Exception $e){
-            dd($e->getMessage());
+        }catch (Exception $e){
+            throw new $e->getMessage();
         }
         return redirect($this->redirectTo);
     }
 
     public function saveFileAmbitoBase64($Item,$data,$DenunciaObject){
 
-//        $data = $fileDataName; //$request['scannerInput'];
         $ext = 'jpg';
 
         $name = sha1(date('YmdHis') . time()).'-'.$Item->user__id.'-'.$DenunciaObject->id;

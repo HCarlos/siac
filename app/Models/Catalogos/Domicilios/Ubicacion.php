@@ -24,7 +24,7 @@ class Ubicacion extends Model
         'id', 'calle','num_ext','num_int','colonia', 'comunidad','ciudad','municipio','estado','pais', 'cp',
         'latitud','longitud','searchtext','altitud',
         'calle_id', 'colonia_id','comunidad_id','ciudad_id', 'municipio_id','estado_id', 'codigopostal_id',
-        'searchGoogle','g_ubicacion',
+        'searchGoogle','g_ubicacion','estatus_cve',
     ];
     protected $hidden = ['deleted_at','created_at','updated_at'];
 

@@ -16,7 +16,7 @@ class Calle extends Model
     protected $table = 'calles';
 
     protected $fillable = [
-        'id', 'calle', 'calle_mig_id',
+        'id', 'calle', 'calle_mig_id','estatus_cve',
     ];
     protected $hidden = ['deleted_at','created_at','updated_at'];
 

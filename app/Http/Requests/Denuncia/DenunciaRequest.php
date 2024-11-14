@@ -19,6 +19,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class DenunciaRequest extends FormRequest
 {
@@ -311,14 +312,27 @@ class DenunciaRequest extends FormRequest
 
 
 
-    public function getRedirectUrl()
-    {
+    public function getRedirectUrl(){
+
+        $ambito_dependencia = Session::get('ambito_dependencia');
         $url = $this->redirector->getUrlGenerator();
-        if ($this->id > 0){
-            return $url->route($this->redirectRoute,['Id'=>$this->id]);
+
+        if ( isset($ambito_dependencia) ){
+            if ($this->id > 0){
+                return $url->route('editDenunciaAmbito',['Id'=>$this->id]);
+            }else{
+                return $url->route('newDenunciaAmbito');
+            }
         }else{
-            return $url->route('newDenuncia');
+            if ($this->id > 0){
+                return $url->route($this->redirectRoute,['Id'=>$this->id]);
+            }else{
+                return $url->route('newDenuncia');
+            }
+
         }
+
+
     }
 
 

@@ -13,14 +13,17 @@ class GetDenunciasItemCustomFilter extends QueryFilter{
 
     public function rules(): array{
         return [
-            'filterdata' => '',
+            'filterdata'      => '',
         ];
     }
+
+    //filterdata
+
 
     public function filterdata($query, $search){
         $search = isset($search['search']) ? $search['search'] : '';
         $search = strtoupper($search);
-//        dd( $search );
+
         $IsEnlace =Auth::user()->isRole('ENLACE');
         $IsAdminArchivo =Auth::user()->isRole('USER_ARCHIVO_ADMIN');
         $DependenciaArray = '';
@@ -37,9 +40,13 @@ class GetDenunciasItemCustomFilter extends QueryFilter{
             $filters['ciudadano_id'] = Auth::user()->id;
             //dd("2");
         }else{
+            //dd("3");
             $filters['search'] = $search;
             //dd("3");
         }
+
+
+        $filters['status_denuncia'] = '1';
         session(['IsEnlace' => $IsEnlace]);
         session(['IsAdminArchivo' => $IsAdminArchivo]);
         session(['DependenciaArray' => $DependenciaArray]);

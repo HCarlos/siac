@@ -24,6 +24,7 @@ class DenunciaAmbitoFilter extends QueryFilter
 
     public function rules(): array{
         return [
+            'status_denuncia'        => '',
             'ambito_dependencia'     => '',
             'search'                 => '',
             'curp'                   => '',
@@ -44,6 +45,11 @@ class DenunciaAmbitoFilter extends QueryFilter
             'clave_identificadora'   => '',
             'uuid'                   => '',
         ];
+    }
+
+    public function status_denuncia($query, $search){
+        if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
+        return $query->where('status_denuncia', $search);
     }
 
     public function ambito_dependencia($query, $search){

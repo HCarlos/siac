@@ -16,7 +16,7 @@ class Area extends Model
 
     protected $fillable = [
         'id',
-        'area', 'dependencia_id','jefe_id','abreviatura','orden_impresion',
+        'area', 'dependencia_id','jefe_id','abreviatura','orden_impresion','estatus_cve',
     ];
     protected $hidden = ['deleted_at','created_at','updated_at'];
 

@@ -24,6 +24,7 @@ class DenunciaFilter extends QueryFilter
 
     public function rules(): array{
         return [
+            'status_denuncia'        => '',
             'search'                 => '',
             'curp'                   => '',
             'ciudadano'              => '',
@@ -48,13 +49,16 @@ class DenunciaFilter extends QueryFilter
 //'fecha_movimiento_desde' => '',
 //'fecha_movimiento_hasta' => '',
 
+    public function status_denuncia($query, $search){
+        if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
+        return $query->where('status_denuncia', $search);
+    }
+
     public function search($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
         $search = strtoupper($search);
         $filters  = $search;
         $F        = new FuncionesController();
-
-//        $tsString = $F->string_to_tsQuery( strtoupper($filters),' & ');
 
         $filters      = strtolower($filters);
         $filters      = $F->str_sanitizer($filters);

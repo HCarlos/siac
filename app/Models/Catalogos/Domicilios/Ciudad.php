@@ -15,7 +15,7 @@ class Ciudad extends Model
     protected $table = 'ciudades';
 
     protected $fillable = [
-        'id', 'ciudad', 'ciudad_mig_id', 'municipio_id',
+        'id', 'ciudad', 'ciudad_mig_id', 'municipio_id','estatus_cve',
     ];
     protected $hidden = ['deleted_at','created_at','updated_at'];
 

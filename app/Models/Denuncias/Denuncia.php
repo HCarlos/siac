@@ -37,7 +37,7 @@ class Denuncia extends Model
         'fecha_ingreso', 'fecha_oficio_dependencia', 'fecha_limite', 'fecha_ejecucion',
         'ciudadano_id','creadopor_id','created_at','modificadopor_id','updated_at','deleted_at',
         'searchtextdenuncia', 'denunciamobile_id',
-        'folio_sas','favorable','estatus_general',
+        'folio_sas','favorable','estatus_general','status_denuncia',
         'cerrado','fecha_cerrado','cerradopor_id','firmado','uuid',
         'ip', 'host','ambito',
         'ue_id','due_id','sue_id','fecha_ultimo_estatus',
@@ -54,12 +54,15 @@ class Denuncia extends Model
             $filters  = $search;
             $F        = new FuncionesController();
             $tsString = $F->string_to_tsQuery( strtoupper($filters),' & ');
-            return $query->whereRaw("searchtextdenuncia @@ to_tsquery('spanish', ?)", [$tsString])
+            return $query
+                ->where('status_denuncia', 1)
+                ->whereRaw("searchtextdenuncia @@ to_tsquery('spanish', ?)", [$tsString])
                 ->orderByRaw("calle, num_ext, num_int, colonia, descripcion, referencia ASC");
     }
 //->orderByRaw("ts_rank(searchtextdenuncia, to_tsquery('spanish', ?)) DESC", [$search]);
 
     public function scopeFilterBy($query, $filters){
+//        DD($filters);
         return (new DenunciaFilter())->applyTo($query, $filters);
     }
 

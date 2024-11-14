@@ -13,8 +13,14 @@ class GetDenunciasFilterCount extends QueryFilter{
 
     public function rules(): array{
         return [
-            'filterdata' => ''
+            'status_denuncia' => '1',
+            'filterdata'      => ''
         ];
+    }
+
+    public function status_denuncia($query, $search){
+        if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
+        return $query->where('status_denuncia', $search);
     }
 
     public function filterdata($query, $search){

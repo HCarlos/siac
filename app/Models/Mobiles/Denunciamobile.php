@@ -37,6 +37,7 @@ class Denunciamobile extends Model{
         'megusta',
         'user_id',
         'searchtextubicacion',
+        'estatus_cve'
     ];
 
     protected $dates = ['fecha' => 'datetime:d-m-Y H:m:s'];

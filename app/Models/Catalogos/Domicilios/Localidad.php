@@ -15,7 +15,7 @@ class Localidad extends Model
     protected $table = 'localidades';
 
     protected $fillable = [
-        'id', 'localidad','localidad_mig_id',
+        'id', 'localidad','localidad_mig_id','estatus_cve',
     ];
     protected $hidden = ['deleted_at','created_at','updated_at'];
 

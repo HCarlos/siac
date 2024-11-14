@@ -19,7 +19,6 @@ use App\Models\Catalogos\Servicio;
 use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\_viServicios;
 use App\Models\Denuncias\Denuncia;
-use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use App\Models\Denuncias\Firma;
 use App\User;
 use Illuminate\Http\Request;
@@ -53,7 +52,7 @@ class DenunciaAmbitoController extends Controller{
         $search = $request->only(['search']);
 
         $filters['filterdata'] = $search;
-        $filters['ambito_dependencia'] = $ambito_dependencia;
+//        $filters['ambito_dependencia'] = $ambito_dependencia;
         session(['ambito_dependencia' => $ambito_dependencia]);
         $this->ambito_dependencia = $ambito_dependencia;
 
@@ -61,7 +60,7 @@ class DenunciaAmbitoController extends Controller{
             ->GetDenunciasAmbitoItemCustomFilter($filters)
             ->orderByDesc('id')
             ->paginate($this->max_item_for_query);
-        $items->appends($filters)->fragment('table');
+        $items->appends($search)->fragment('table');
 
         $request->session()->put('items', $items);
 
@@ -106,8 +105,15 @@ class DenunciaAmbitoController extends Controller{
     }
 
     protected function newItem1($ambito_dependencia){
-        $Prioridades  = Prioridad::query()->orderBy('prioridad')->get();
-        $Origenes     = Origen::query()->orderBy('origen')->get();
+
+        $Prioridades  = Prioridad::query()
+                        ->where("estatus_cve", 1)
+                        ->orderBy('prioridad')
+                        ->get();
+        $Origenes     = Origen::query()
+                        ->where("estatus_cve", 1)
+                        ->orderBy('origen')
+                        ->get();
 
         $IsEnlace = Session::get('IsEnlace');
         $this->ambito_dependencia = $ambito_dependencia;
@@ -115,25 +121,38 @@ class DenunciaAmbitoController extends Controller{
         if($IsEnlace){
             $DependenciaIdArray = Session::get('DependenciaIdArray');
             $Dependencias = Dependencia::query()
+                ->where("estatus_cve", 1)
                 ->where('ambito_dependencia',$this->ambito_dependencia)
                 ->whereIn('id',$DependenciaIdArray,false)
                 ->orderBy('dependencia')->get();
         }else{
             $Dependencias = Dependencia::query()
+                ->where("estatus_cve", 1)
                 ->where('ambito_dependencia',$this->ambito_dependencia)
                 ->orderBy('dependencia')->get();
         }
 
         if (Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN') ) {
-            $Estatus      = Estatu::query()->orderBy('estatus')->get();
+            $Estatus      = Estatu::query()
+                            ->where("estatus_cve", 1)
+                            ->orderBy('estatus')
+                            ->get();
         }else{
-            $Estatus      = Estatu::query()->where('estatus_cve',1)->orderBy('estatus')->get();
+            $Estatus      = Estatu::query()
+                            ->where('estatus_cve',1)
+                            ->orderBy('estatus')
+                            ->get();
         }
 
-        $hashtag = Denuncia::select('clave_identificadora')->distinct('clave_identificadora')->orderBy('clave_identificadora')->pluck('clave_identificadora','clave_identificadora');
+        $hashtag = Denuncia::select('clave_identificadora')
+            ->distinct('clave_identificadora')
+            ->where("status_denuncia", 1)
+            ->orderBy('clave_identificadora')
+            ->pluck('clave_identificadora','clave_identificadora');
 
         $this->msg = "";
         $th = $this->ambito_dependencia == 1 ? "Apoyos Sociales" : "Servicios Municipales";
+
         return view('SIAC.denuncia.denuncia.denuncia_new',
             [
                 'user'                 => Auth::user(),
@@ -143,10 +162,10 @@ class DenunciaAmbitoController extends Controller{
                 'dependencias'         => $Dependencias,
                 'estatus'              => $Estatus,
                 'hashtag'              => $hashtag,
-                'postNew'              => 'createDenunciaAmbito',
+                'postNew'              => 'createDenunciaAmbito1',
                 'titulo_catalogo'      => ucwords($this->tableName) . " de " . $th,
                 'titulo_header'        => 'Folio Nuevo',
-                'createDenunciaAmbito' => 'createDenunciaAmbito1',
+                'createDenuncia'       => 'createDenunciaAmbito1',
                 'exportModel'          => 23,
                 'msg'                  => $this->msg,
             ]
@@ -160,6 +179,7 @@ class DenunciaAmbitoController extends Controller{
         if($IsEnlace){
             $DependenciaIdArray = Session::get('DependenciaIdArray');
             $Dependencias = Dependencia::query()->select('id')
+                ->where("estatus_cve", 1)
                 ->where('ambito_dependencia',$this->ambito_dependencia)
                 ->whereIn('id',$DependenciaIdArray,false)
                 ->orderBy('dependencia')
@@ -167,6 +187,7 @@ class DenunciaAmbitoController extends Controller{
                 ->toArray();
         }else{
             $Dependencias = Dependencia::query()->select('id')
+                ->where("estatus_cve", 1)
                 ->where('ambito_dependencia',$this->ambito_dependencia)
                 ->orderBy('dependencia')
                 ->get()
@@ -174,13 +195,18 @@ class DenunciaAmbitoController extends Controller{
 
         }
 
-        $Servicios = _viServicios::query()->select('id','servicio','abreviatura_dependencia')
+        $Servicios = _viServicios::query()
+            ->select('id','servicio','abreviatura_dependencia')
+            ->where("servicio_habilitado", 1)
             ->where('ambito_dependencia',$this->ambito_dependencia)
             ->whereIn('dependencia_id',$Dependencias)
             ->orderBy('servicio')
             ->get();
 
-        $Origenes     = Origen::query()->orderBy('origen')->get();
+        $Origenes     = Origen::query()
+                        ->where("estatus_cve", 1)
+                        ->orderBy('origen')
+                        ->get();
 
         $this->msg = "";
         $th = $this->ambito_dependencia == 1 ? "Apoyos Sociales" : "Servicios Municipales";
@@ -216,7 +242,6 @@ class DenunciaAmbitoController extends Controller{
         }
         $this->msg = "Registro Guardado con éxito!";
         session(['msg' => $this->msg]);
-//        return Redirect::to('editDenunciaAmbito/'.$item->id);
         return Redirect::to('editDenunciaAmbito/'.$item->id);
 
     }
@@ -229,7 +254,6 @@ class DenunciaAmbitoController extends Controller{
         }
         $this->msg = "Registro Guardado con éxito!";
         session(['msg' => $this->msg]);
-//        return Redirect::to('editDenunciaAmbito/'.$item->id);
         return Redirect::to('editDenunciaAmbito/'.$item->id);
 
     }
@@ -238,8 +262,16 @@ class DenunciaAmbitoController extends Controller{
     protected function editItem1($Id, $ambito_dependencia){
 
         $item         = Denuncia::find($Id);
-        $Prioridades  = Prioridad::query()->orderBy('prioridad')->get();
-        $Origenes     = Origen::query()->orderBy('origen')->get();
+
+        $Prioridades  = Prioridad::query()
+                        ->where("estatus_cve", 1)
+                        ->orderBy('prioridad')
+                        ->get();
+
+        $Origenes     = Origen::query()
+                        ->where("estatus_cve", 1)
+                        ->orderBy('origen')
+                        ->get();
 
         $IsEnlace = Session::get('IsEnlace');
         $this->ambito_dependencia = $ambito_dependencia;
@@ -247,15 +279,18 @@ class DenunciaAmbitoController extends Controller{
         if($IsEnlace){
             $DependenciaIdArray = Session::get('DependenciaIdArray');
             $Dependencias = Dependencia::query()
+                ->where("estatus_cve", 1)
                 ->where('ambito_dependencia',$this->ambito_dependencia)
                 ->whereIn('id',$DependenciaIdArray,false)
                 ->orderBy('dependencia')
                 ->get();
         }else{
             $Dependencias = Dependencia::query()
+                ->where("estatus_cve", 1)
                 ->where('ambito_dependencia',$this->ambito_dependencia)
                 ->orderBy('dependencia')
                 ->get();
+
         }
 
         $Servicios = Servicio::getQueryServiciosFromDependencias($item->dependencia_id);
@@ -269,12 +304,22 @@ class DenunciaAmbitoController extends Controller{
         }
 
         if (Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN') ) {
-            $Estatus      = Estatu::query()->orderBy('estatus')->get();
+            $Estatus      = Estatu::query()
+                            ->where("estatus_cve", 1)
+                            ->orderBy('estatus')
+                            ->get();
         }else{
-            $Estatus      = Estatu::query()->where('estatus_cve',1)->orderBy('estatus')->get();
+            $Estatus      = Estatu::query()
+                            ->where('estatus_cve',1)
+                            ->orderBy('estatus')
+                            ->get();
         }
 
-        $hashtag = Denuncia::select('clave_identificadora')->distinct('clave_identificadora')->orderBy('clave_identificadora')->pluck('clave_identificadora','clave_identificadora');
+        $hashtag = Denuncia::select('clave_identificadora')
+            ->distinct('clave_identificadora')
+            ->where("status_denuncia", 1)
+            ->orderBy('clave_identificadora')
+            ->pluck('clave_identificadora','clave_identificadora');
 
         $this->msg = "";
         $th = $this->ambito_dependencia == 1 ? "Apoyos Sociales" : "Servicios Municipales";
@@ -310,14 +355,18 @@ class DenunciaAmbitoController extends Controller{
 
         if($IsEnlace){
             $DependenciaIdArray = Session::get('DependenciaIdArray');
-            $Dependencias = Dependencia::query()->select('id')
+            $Dependencias = Dependencia::query()
+                ->select('id')
+                ->where("estatus_cve", 1)
                 ->where('ambito_dependencia',$this->ambito_dependencia)
                 ->whereIn('id',$DependenciaIdArray,false)
                 ->orderBy('dependencia')
                 ->get()
                 ->toArray();
         }else{
-            $Dependencias = Dependencia::query()->select('id')
+            $Dependencias = Dependencia::query()
+                ->select('id')
+                ->where("estatus_cve", 1)
                 ->where('ambito_dependencia',$this->ambito_dependencia)
                 ->orderBy('dependencia')
                 ->get()
@@ -325,13 +374,18 @@ class DenunciaAmbitoController extends Controller{
 
         }
 
-        $Servicios = _viServicios::query()->select('id','servicio','abreviatura_dependencia')
+        $Servicios = _viServicios::query()
+            ->select('id','servicio','abreviatura_dependencia')
+            ->where("servicio_habilitado", 1)
             ->where('ambito_dependencia',$this->ambito_dependencia)
             ->whereIn('dependencia_id',$Dependencias)
             ->orderBy('servicio')
             ->get();
 
-        $Origenes     = Origen::query()->orderBy('origen')->get();
+        $Origenes     = Origen::query()
+                        ->where("estatus_cve", 1)
+                        ->orderBy('origen')
+                        ->get();
 
         $user_ubicacion = $item->Ciudadano->ubicaciones->first->id->id;
 
@@ -364,7 +418,7 @@ class DenunciaAmbitoController extends Controller{
 
     protected function editItem($Id){
         $this->ambito_dependencia = Session::get('ambito_dependencia');
-        return ($this->ambito_dependencia == 1)
+        return ($this->ambito_dependencia === 1)
             ? $this->editItem1($Id,$this->ambito_dependencia)
             : $this->editItem2($Id,$this->ambito_dependencia);
     }
@@ -437,6 +491,7 @@ class DenunciaAmbitoController extends Controller{
         $tsString     = $F->string_to_tsQuery( strtoupper($filters),' & ');
 
         $items = Ubicacion::query()
+            ->where("estatus_cve", 1)
             ->search($tsString)
             ->orderBy('id')
             ->get();
@@ -473,42 +528,65 @@ class DenunciaAmbitoController extends Controller{
 //            $dependencia_id_array = explode('|',$DependenciaIdArray);
             $dependencia_id_array = $DependenciaIdArray;
             $Dependencias = Dependencia::query()
+                ->where("estatus_cve", 1)
                 ->whereIn('id',$dependencia_id_array)
                 ->orderBy('dependencia')->pluck('dependencia','id');
             $dep_id = $dependencia_id_array[0];
-            $Servicios = Servicio::whereHas('subareas', function($p) use ($dep_id) {
-                $p->whereHas("areas", function($q) use ($dep_id){
-                    return $q->where("dependencia_id",$dep_id);
-                });
-            })->orderBy('servicio')->get()->pluck('servicio','id');
+            $Servicios = Servicio::where("estatus_cve", 1)
+                        ->whereHas('subareas', function($p) use ($dep_id) {
+                            $p->whereHas("areas", function($q) use ($dep_id){
+                                return $q->where("dependencia_id",$dep_id);
+                            });
+                        })
+                        ->where("estatus_cve", 1)
+                        ->orderBy('servicio')
+                        ->get()
+                        ->pluck('servicio','id');
 
         }else{
             $Dependencias = Dependencia::query()
+                            ->where("estatus_cve", 1)
                             ->where('ambito_dependencia',$this->ambito_dependencia)
                             ->orderBy('dependencia')->pluck('dependencia','id');
-            $Servicios    = Servicio::query()->orderBy('servicio')->pluck('servicio','id');
+            $Servicios    = Servicio::query()
+                            ->where("estatus_cve", 1)
+                            ->orderBy('servicio')->pluck('servicio','id');
         }
 
         if(Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN')){
-            $Estatus      = Estatu::query()->orderBy('estatus')->get();
+            $Estatus      = Estatu::query()
+                            ->where("estatus_cve", 1)
+                            ->orderBy('estatus')
+                            ->get();
         }else{
-            $Estatus      = Estatu::query()->where('estatus_cve',1)->orderBy('estatus')->get();
+            $Estatus      = Estatu::query()
+                            ->where("estatus_cve", 1)
+                            ->where('estatus_cve',1)
+                            ->orderBy('estatus')
+                            ->get();
         }
 
-        $Origenes     = Origen::query()->orderBy('origen')->get();
+        $Origenes     = Origen::query()
+                        ->where("estatus_cve", 1)
+                        ->orderBy('origen')
+                        ->get();
 
-        $Capturistas  = User::query()->whereHas('roles', function ($q) {
+        $Capturistas  = User::query()
+                        ->where("estatus_cve", 1)
+                        ->whereHas('roles', function ($q) {
                             return $q->whereIn('name',array('ENLACE','USER_OPERATOR_SIAC','USER_OPERATOR_ADMIN') );
                         })
                         ->get()
                         ->sortBy('full_name_with_username_dependencia')
                         ->pluck('full_name_with_username_dependencia','id');
 
-        // $hashtag = Denuncia::query()->select('clave_identificadora')->distinct()->get();
-        $hashtag = Denuncia::select('clave_identificadora')->distinct('clave_identificadora')->orderBy('clave_identificadora')->pluck('clave_identificadora','clave_identificadora');
+        $hashtag = Denuncia::select('clave_identificadora')
+                    ->distinct('clave_identificadora')
+                    ->where("status_denuncia", 1)
+                    ->orderBy('clave_identificadora')
+                    ->pluck('clave_identificadora','clave_identificadora');
 
         $this->ambito_dependencia = session::get('ambito_dependencia');
-//        dd($this->ambito_dependencia);
 
         $user = Auth::user();
         return view ('SIAC.denuncia.search_ambito.denuncia_search_panel',
@@ -529,10 +607,6 @@ class DenunciaAmbitoController extends Controller{
 
  // ***************** MUESTRA EL MENU DE BUSQUEDA ++++++++++++++++++++ //
     protected function findDataInDenuncia(Request $request){
-
-
-//        dd( $request );
-
 
         $filters = new FiltersRules();
 
@@ -598,7 +672,10 @@ class DenunciaAmbitoController extends Controller{
 
     protected function closeItem($id){
         $item    = Denuncia::find($id);
-        $estatus = Estatu::query()->where('estatus','CERRADO')->first();
+        $estatus = Estatu::query()
+                    ->where("estatus_cve", 1)
+                    ->where('estatus','CERRADO')
+                    ->first();
         if (isset($item)) {
             $item->estatus_id = $estatus->id;
             $item->cerrado = true;

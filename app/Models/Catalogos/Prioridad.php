@@ -14,7 +14,7 @@ class Prioridad extends Model
     protected $table = 'prioridades';
 
     protected $fillable = [
-        'id', 'prioridad','predeterminado', 'class_css',
+        'id', 'prioridad','predeterminado', 'class_css','estatus_cve',
     ];
     protected $hidden = ['deleted_at','created_at','updated_at'];
     protected $casts = ['predeterminado'=>'boolean',];
