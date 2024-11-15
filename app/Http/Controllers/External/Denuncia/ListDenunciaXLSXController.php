@@ -97,14 +97,14 @@ class ListDenunciaXLSXController extends Controller
             $fechaLimite    = Carbon::parse($item->fecha_limite)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
             $fechaEjecucion = Carbon::parse($item->fecha_ejecucion)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
 
-            $resp = Denuncia_Dependencia_Servicio::query()->where('denuncia_id',$item->id)->orderByDesc('id')->get();
+            $resp = Denuncia_Dependencia_Servicio::query()->where('denuncia_id',$item->id)->orderByDesc('id')->first();
             $respuesta = "";
             $favorable = false;
             foreach ($resp as $r){
                 $res = trim($r->observaciones);
                 if ( $res != ""){
                     $dep = Dependencia::find($r->dependencia_id);
-                    $respuesta.=$dep->abreviatura.' - '.$res.'. ';
+                    $respuesta = $dep->abreviatura.' - '.$res.'. ';
                     $favorable = $r->favorable;
                 }
             }
