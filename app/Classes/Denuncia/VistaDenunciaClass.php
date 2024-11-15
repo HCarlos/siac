@@ -40,6 +40,7 @@ class VistaDenunciaClass{
                 $dependencia_id = $den->dependencia_id;
                 $favorable = false;
                 $is_favorable = false;
+                $ue_id = 0;
 
                 foreach ($arr as $valor) {
                     $d1 = explode('|', $valor);
@@ -55,7 +56,6 @@ class VistaDenunciaClass{
                         $abrev = $dds->dependencia->abreviatura;
                         $estatus = $dds->estatu->estatus;
                         $servicio = $dds->servicio->servicio;
-                        //$estatus_general .= $estatus_general === "" ? "" : " | ";
                         $estatus_general[] = array(
                             'denuncia_id' => $dds->denuncia_id,
                             'dependencia_id' => $dds->dependencia_id,
@@ -87,17 +87,20 @@ class VistaDenunciaClass{
                     }
 
                 }
-                $den->estatus_general = json_encode($estatus_general,JSON_UNESCAPED_UNICODE);
-                $den->estatus_id = $estatus_id;
-                $den->servicio_id = $servicio_id;
-                $den->dependencia_id = $dependencia_id;
-                $den->favorable = $favorable;
-                $den->ue_id =  $ue_id;
-                $den->due_id = $due_id;
-                $den->sue_id = $sue_id;
-                $den->fecha_ultimo_estatus = $fecha_ultimo_estatus;
 
-                $den->save();
+                if ( $ue_id > 0){
+
+                    $den->estatus_general = json_encode($estatus_general,JSON_UNESCAPED_UNICODE);
+                    $den->estatus_id = $estatus_id;
+                    $den->servicio_id = $servicio_id;
+                    $den->dependencia_id = $dependencia_id;
+                    $den->favorable = $favorable;
+                    $den->ue_id =  $ue_id;
+                    $den->due_id = $due_id;
+                    $den->sue_id = $sue_id;
+                    $den->fecha_ultimo_estatus = $fecha_ultimo_estatus;
+                    $den->save();
+                }
 
             }else{
 
