@@ -73,45 +73,35 @@ class ListDenunciaXLSXController extends Controller
     public function denunciaGeneral01($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
 
         $sh->setCellValue('S1', Carbon::now()->format('d-m-Y h:m:s'));
-//        dd($Items);
         foreach ($Items as $item){
-//            $item = _viDDSs::find($it->id);
-
-            //dd($item);
-
-//            $ciudadano   = User::find($item->ciudadano_id);
-//            $prioridad   = Prioridad::find($item->prioridad_id);
-//            $origen      = Origen::find($item->origen_id);
-//            $dependencia = Dependencia::find($item->dependencia_id);
-//            $servicio    = Servicio::find($item->servicio_id);
-//            $ubicacion   = Ubicacion::find($item->ubicacion_id);
-//            $estatus     = Estatu::find($item->estatus_id);
-//            $creadopor   = User::find($item->creadopor_id);
-
-//                $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
-
-//            dd($item->fecha_ingreso);
-
-//            $fechaIngreso   = !is_null($item->fecha_ingreso) ? date_format($item->fecha_ingreso,'d-m-Y') : '';
             $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
-            $fechaLimite    = Carbon::parse($item->fecha_limite)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
-            $fechaEjecucion = Carbon::parse($item->fecha_ejecucion)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
+            $fechaIngreso   = isset($item->fecha_ingreso) ? $fechaIngreso : '';
 
-            $resp = Denuncia_Dependencia_Servicio::query()->where('denuncia_id',$item->id)->orderByDesc('id')->first();
+            $resp = Denuncia_Dependencia_Servicio::query()
+                    ->select(['id','observaciones','dependencia_id','favorable','denuncia_id'])
+                    ->where('denuncia_id',$item->id)
+                    ->orderByDesc('id')
+                    ->first();
+
             $respuesta = "";
             $favorable = false;
-            foreach ($resp as $r){
-                $res = trim($r->observaciones);
-                if ( $res != ""){
-                    $dep = Dependencia::find($r->dependencia_id);
-                    $respuesta = $dep->abreviatura.' - '.$res.'. ';
-                    $favorable = $r->favorable;
+            try{
+                if ( $resp->observaciones !== null){
+                    $res = trim($resp->observaciones) ?? '';
+                    if ( $res != ""){
+                        $dep = Dependencia::find($resp->dependencia_id);
+                        $respuesta = $dep->abreviatura.' - '.$res.'. ';
+                        $favorable = $resp->favorable;
+                    }
+                }else{
+                    $respuesta = '';
+                    $favorable = '';
                 }
+            }catch (Exception $e) {
+                $respuesta = '';
+                $favorable = '';
             }
 
-//            [{"denuncia_id":97415,"dependencia_id":12,"abrevi...
-
-//            dd(last(json_decode($item->estatus_general)));
 
             if (json_decode($item->estatus_general) == null){
                 $fechaUntiloEstatus = "";
@@ -190,37 +180,40 @@ class ListDenunciaXLSXController extends Controller
 
         $sh->setCellValue('I1', Carbon::now()->format('d-m-Y h:m:s'));
         foreach ($Items as $item){
-
-//            dd($item);
-
-            $ciudadano   = User::find($item->ciudadano_id);
-            $prioridad   = Prioridad::find($item->prioridad_id);
-            $origen      = Origen::find($item->origen_id);
-            $dependencia = Dependencia::find($item->dependencia_id);
-            $servicio    = Servicio::find($item->servicio_id);
-            $ubicacion   = Ubicacion::find($item->ubicacion_id);
-            $estatus     = Estatu::find($item->estatus_id);
-            $creadopor   = User::find($item->creadopor_id);
-
             $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
             $fechaIngreso   = isset($item->fecha_ingreso) ? $fechaIngreso : '';
-            $fechaLimite    = Carbon::parse($item->fecha_limite)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
-            $fechaEjecucion = Carbon::parse($item->fecha_ejecucion)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
 
-            $resp = Denuncia_Dependencia_Servicio::query()->where('denuncia_id',$item->id)->orderByDesc('id')->get();
+            $resp = Denuncia_Dependencia_Servicio::query()
+                ->select(['id','observaciones','dependencia_id','favorable','denuncia_id'])
+                ->where('denuncia_id',$item->id)
+                ->orderByDesc('id')
+                ->first();
+
             $respuesta = "";
             $favorable = false;
-//            dd($resp->denuncia_id);
-            $dr = Denuncia::find($item->id);
-//            dd($dr->Ambito());
-
-            foreach ($resp as $r){
-                $res = trim($r->observaciones);
-                if ( $res != ""){
-                    $dep = Dependencia::find($r->dependencia_id);
-                    $respuesta.=$dep->abreviatura.' - '.$res.'. ';
-                    $favorable = $r->favorable;
+            try{
+                if ( $resp->observaciones !== null){
+                    $res = trim($resp->observaciones) ?? '';
+                    if ( $res != ""){
+                        $dep = Dependencia::find($resp->dependencia_id);
+                        $respuesta = $dep->abreviatura.' - '.$res.'. ';
+                        $favorable = $resp->favorable;
+                    }
+                }else{
+                    $respuesta = '';
+                    $favorable = '';
                 }
+            }catch (Exception $e) {
+                $respuesta = '';
+                $favorable = '';
+            }
+
+
+            if (json_decode($item->estatus_general) == null){
+                $fechaUntiloEstatus = "";
+            }else{
+                $arrUltimoEstatus = last(json_decode($item->estatus_general));
+                $fechaUntiloEstatus   = Carbon::parse($arrUltimoEstatus->fecha)->format('d-m-Y');
             }
 
 
@@ -228,14 +221,14 @@ class ListDenunciaXLSXController extends Controller
                 ->setCellValue('A'.$C, $item->id ?? 0)
                 ->setCellValue('B'.$C, trim($item->ultimo_servicio ?? ''))
                 ->setCellValue('C'.$C, $fechaIngreso ?? '')
-                ->setCellValue('D'.$C, trim($ciudadano->FullName ?? ''))
-                ->setCellValue('E'.$C, trim($ciudadano->TelefonosCelularesEmails ?? ''))
-                ->setCellValue('F'.$C, trim($ubicacion->calle ?? ''))
-                ->setCellValue('G'.$C, trim($ubicacion->num_ext ?? ''))
-                ->setCellValue('H'.$C, trim($ubicacion->num_int ?? ''))
-                ->setCellValue('I'.$C, trim($ubicacion->colonia ?? ''))
+                ->setCellValue('D'.$C, trim($item->ciudadano ?? ''))
+                ->setCellValue('E'.$C, trim($item->telefonoscelularesemails ?? ''))
+                ->setCellValue('F'.$C, trim($item->calle ?? ''))
+                ->setCellValue('G'.$C, trim($item->num_ext ?? ''))
+                ->setCellValue('H'.$C, trim($item->num_int ?? ''))
+                ->setCellValue('I'.$C, trim($item->colonia ?? ''))
                 ->setCellValue('J'.$C, $item->referencia ?? '')
-                ->setCellValue('K'.$C, $dr->Ambito() ?? '')
+                ->setCellValue('K'.$C, $item->ambito_sas ?? '')
                 ->setCellValue('L'.$C, $item->ultimo_estatus ?? '')
                 ->setCellValue('M'.$C, $item->ultima_fecha_estatus ?? '');
 

@@ -32,9 +32,9 @@ class _viDDSs extends Model{
         'id','uuid','ciudadano','curp_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano',
         'fecha_ingreso','dependencia_ultimo_estatus','area','subarea','servicio_ultimo_estatus','cp',
         'telefonoscelularesemails', 'calle','num_ext','num_int','colonia','ubicacion','ambito_dependencia',
-        'denuncia','referencia', 'status_denuncia','prioridad','origen','observaciones','genero',
+        'denuncia','referencia', 'status_denuncia','prioridad','origen','observaciones','genero','genero_ciudadano',
         'cerrado','origen_id','ciudadano_id','ultimo_estatus','firmado','latitud','longitud',
-        'clave_identificadora','estatus_general',
+        'clave_identificadora','estatus_general','ambito','ambito_sas'
     ];
 
     public function scopeFilterBy($query, $filters){
@@ -188,14 +188,6 @@ class _viDDSs extends Model{
     }
 
 
-//    public function getFullUbicationAttribute(){
-//        $miLoc = trim($this->colonia) == trim($this->comunidad) ? trim($this->colonia) : trim($this->colonia).' '.trim($this->comunidad);
-//        return $this->calle.' '.
-//            $this->num_ext.' '.
-//            $this->num_int.' '.
-//            $miLoc.' '.
-//            $this->ciudad;
-//    }
 
 
 

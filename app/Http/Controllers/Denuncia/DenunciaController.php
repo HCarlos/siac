@@ -59,28 +59,14 @@ class DenunciaController extends Controller{
 
         if ( $search !== [] && isEmpty($search) !== null && $search !== "" ) {
             $items = _viDDSs::query()
-                ->select([
-                    'id','uuid','ciudadano','curp_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano',
-                    'fecha_ingreso','dependencia_ultimo_estatus','area','subarea','servicio_ultimo_estatus','cp',
-                    'telefonoscelularesemails', 'calle','num_ext','num_int','colonia','ubicacion','ambito_dependencia',
-                    'denuncia','referencia', 'status_denuncia','prioridad','origen','observaciones','genero',
-                    'cerrado','origen_id','ciudadano_id','ultimo_estatus','firmado','latitud','longitud',
-                    'clave_identificadora','estatus_general',
-                ])
+                ->select(FuncionesController::itemSelectDenuncias())
                 ->GetDenunciasItemCustomFilter($filters)
                 ->orderByDesc('id')
                 ->get();
             session(['is_pagination' => false]);
         }else{
             $items = _viDDSs::query()
-                ->select([
-                    'id','uuid','ciudadano','curp_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano',
-                    'fecha_ingreso','dependencia_ultimo_estatus','area','subarea','servicio_ultimo_estatus','cp',
-                    'telefonoscelularesemails', 'calle','num_ext','num_int','colonia','ubicacion','ambito_dependencia',
-                    'denuncia','referencia', 'status_denuncia','prioridad','origen','observaciones','genero',
-                    'cerrado','origen_id','ciudadano_id','ultimo_estatus','firmado','latitud','longitud',
-                    'clave_identificadora','estatus_general',
-                ])
+                ->select(FuncionesController::itemSelectDenuncias())
                 ->GetDenunciasItemCustomFilter($filters)
                 ->orderByDesc('id')
                 ->paginate($this->max_item_for_query);
@@ -479,14 +465,7 @@ class DenunciaController extends Controller{
             $this->max_item_for_query = session::get('items_for_query');
         }
 
-        $items = _viDDSs::query()->select([
-                'id','uuid','ciudadano','curp_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano',
-                'fecha_ingreso','dependencia_ultimo_estatus','area','subarea','servicio_ultimo_estatus','cp',
-                'telefonoscelularesemails', 'calle','num_ext','num_int','colonia','ubicacion','ambito_dependencia',
-                'denuncia','referencia', 'status_denuncia','prioridad','origen','observaciones','genero',
-                'cerrado','origen_id','ciudadano_id','ultimo_estatus','firmado','latitud','longitud',
-                'clave_identificadora','estatus_general',
-            ])
+        $items = _viDDSs::query()->select(FuncionesController::itemSelectDenuncias())
             ->filterBy($queryFilters)
             ->orderByDesc('id')
             ->paginate($this->max_item_for_query);
