@@ -17,6 +17,7 @@ class DependenciaController extends Controller
 
     protected $tableName = "dependencias";
     protected $ambito_dependencia = [1=>"Apoyos Sociales",2=>"Servicios Municipales",99=>"SM Viejitos"];
+    protected $estatus_cve = [0=>"Inactivo",1=>"Activo"];
 
 // ***************** MUESTRA EL LISTADO DE USUARIOS ++++++++++++++++++++ //
     protected function index(Request $request)
@@ -33,7 +34,7 @@ class DependenciaController extends Controller
 
 //        dd($items);
 
-        return view('catalogos.catalogo.dependencias.dependencia.dependencia_list',
+        return view('SIAC.dependencia.dependencia.dependencia_list',
             [
                 'items'           => $items,
                 'titulo_catalogo' => "Catálogo de Unidades Administrativas" ,
@@ -64,6 +65,7 @@ class DependenciaController extends Controller
                 'postNew'         => 'createDependencia',
                 'titulo_catalogo' => "Catálogo de Unidades Administrativas",
                 'ambito'          => $this->ambito_dependencia,
+                'estatus_cve'     => $this->estatus_cve,
                 'titulo_header'   => 'Nuevo registro',
             ]
         );
@@ -99,6 +101,7 @@ class DependenciaController extends Controller
             'IsNew'           => true,
             'user'            => $user,
             'ambito'          => $this->ambito_dependencia,
+            'estatus_cve'     => $this->estatus_cve,
             'jefes'           => $Jefes,
         ]
         );
@@ -137,6 +140,7 @@ class DependenciaController extends Controller
                 'editItemTitle'   => isset($item->dependencia) ? $item->dependencia : 'Nuevo',
                 'putEdit'         => 'updateDependencia',
                 'ambito'          => $this->ambito_dependencia,
+                'estatus_cve'     => $this->estatus_cve,
                 'titulo_catalogo' => "Catálogo de Unidades Administrativas",
                 'titulo_header'   => 'Editando el Folio '.$Id,
             ]
@@ -163,6 +167,7 @@ class DependenciaController extends Controller
                 ->get();
         $user = Auth::user();
 
+
         return view('SIAC.dependencia.dependencia.dependencia_modal',
             [
                 'Titulo'          => isset($item->dependencia) ? $item->dependencia : 'Nueva',
@@ -174,6 +179,7 @@ class DependenciaController extends Controller
                 'items'           => $item,
                 'user'            => $user,
                 'ambito'          => $this->ambito_dependencia,
+                'estatus_cve'     => $this->estatus_cve,
                 'jefes'           => $Jefes,
             ]
         );

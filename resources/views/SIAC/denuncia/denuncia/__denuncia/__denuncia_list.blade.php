@@ -9,7 +9,7 @@
                     <th class="sorting">FECHA</th>
                     <th class="sorting">ÁREA</th>
                     <th class="sorting">SERVICIO</th>
-                    <th class="sorting ">UBICACIÓN</th>
+                    <th class="sorting">UBICACIÓN</th>
                     <th></th>
                 </tr>
             </thead>

@@ -4,14 +4,18 @@
     <div class="col-md-9">
         <input type="text" name="dependencia" id="dependencia" value="{{ old('dependencia',$items->dependencia) }}" class="form-control" />
     </div>
-    <label for = "abreviatura" class="col-md-3 col-form-label">Abreviatura</label>
-    <div class="col-md-9">
+</div>
+<div class="form-group col-md-12 row mb-3">
+    <label for = "abreviatura" class="col-md-2 col-form-label">Abreviatura---</label>
+    <div class="col-md-4">
         <input type="text" name="abreviatura" id="abreviatura" value="{{ old('abreviatura',$items->abreviatura) }}" class="form-control" />
     </div>
-    <label for = "class_css" class="col-md-3 col-form-label">Clase CSS</label>
-    <div class="col-md-9">
+    <label for = "class_css" class="col-md-2 col-form-label">Clase CSS</label>
+    <div class="col-md-4">
         <input type="text" name="class_css" id="class_css" value="{{ old('class_css',$items->class_css) }}" class="form-control" />
     </div>
+</div>
+<div class="form-group row mb-3">
     <label for = "visible_internet" class="col-md-3 col-form-label">Visible en Internet</label>
     <div class="col-md-9">
         <select class=" form-control "  name="visible_internet" id="visible_internet" size="1">
@@ -48,21 +52,21 @@
     </div>
 </div>
 
-<div class="form-group row mb-3">
-    <label for = "dependencia_id" class="col-md-3 col-form-label">Unidads</label>
-    <div class="col-md-9">
-        <ul class="list-group">
-            @foreach($items->estatus as $t)
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    {{ $t->estatus}}
-                    {{--@if($items->hasEstatus('XXXz|RECIBIDO'))--}}
-                        {{--Ok!--}}
-                    {{--@endif--}}
-                </li>
-            @endforeach
-        </ul>
-    </div>
-</div>
+{{--<div class="form-group row mb-3">--}}
+{{--    <label for = "dependencia_id" class="col-md-3 col-form-label">Unidades</label>--}}
+{{--    <div class="col-md-9">--}}
+{{--        <ul class="list-group">--}}
+{{--            @foreach($items->estatus as $t)--}}
+{{--                <li class="list-group-item d-flex justify-content-between align-items-center">--}}
+{{--                    {{ $t->estatus}}--}}
+{{--                    @if($items->hasEstatus('RECIBIDO'))--}}
+{{--                        Ok!--}}
+{{--                    @endif--}}
+{{--                </li>--}}
+{{--            @endforeach--}}
+{{--        </ul>--}}
+{{--    </div>--}}
+{{--</div>--}}
 
 <input type="hidden" name="id" value="{{$items->id}}" >
 

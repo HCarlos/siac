@@ -135,6 +135,7 @@ class DenunciaController extends Controller{
 
             $Dependencias = Dependencia::query()
                 ->where("estatus_cve", 1)
+                ->whereIn("ambito_dependencia", FuncionesController::arrAmbitosViejitos())
                 ->whereIn('id',$DependenciaIdArray)
                 ->orderBy('dependencia')
                 ->get();
@@ -143,6 +144,7 @@ class DenunciaController extends Controller{
 
         }else{
             $Dependencias = Dependencia::query()
+                ->whereIn("ambito_dependencia", FuncionesController::arrAmbitosViejitos())
                 ->where("estatus_cve", 1)
                 ->orderBy('dependencia')
                 ->get();
@@ -219,6 +221,7 @@ class DenunciaController extends Controller{
             $DependenciaIdArray = Session::get('DependenciaIdArray');
             $Dependencias = Dependencia::query()
                 ->where("estatus_cve", 1)
+                ->whereIn("ambito_dependencia", FuncionesController::arrAmbitosViejitos())
                 ->whereIn('id',$DependenciaIdArray)
                 ->orderBy('dependencia')
                 ->get();
@@ -226,6 +229,7 @@ class DenunciaController extends Controller{
         }else{
             $Dependencias = Dependencia::query()
                 ->where("estatus_cve", 1)
+                ->whereIn("ambito_dependencia", FuncionesController::arrAmbitosViejitos())
                 ->orderBy('dependencia')
                 ->get();
         }
@@ -379,6 +383,7 @@ class DenunciaController extends Controller{
 
             $Dependencias = Dependencia::query()
                 ->where("estatus_cve", 1)
+                ->whereIn("ambito_dependencia", FuncionesController::arrAmbitosViejitos())
                 ->whereIn('id',$dependencia_id_array)
                 ->orderBy('dependencia')
                 ->pluck('dependencia','id');
@@ -396,6 +401,7 @@ class DenunciaController extends Controller{
         }else{
             $Dependencias = Dependencia::query()
                                 ->where("estatus_cve", 1)
+                                ->whereIn("ambito_dependencia", FuncionesController::arrAmbitosViejitos())
                                 ->orderBy('dependencia')
                                 ->pluck('dependencia','id');
             $Servicios    = Servicio::query()

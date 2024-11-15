@@ -14,10 +14,6 @@
     <div class="col-md-4">
         <input type="text" name="ciudadano" id="ciudadano" value="{{ old('ciudadano') }}" class="form-control" />
     </div>
-{{--    <label for = "uuid" class="col-md-1 col-form-label text-right">UUID</label>--}}
-{{--    <div class="col-md-5">--}}
-{{--        <input type="text" name="uuid" id="uuid" value="{{ old('uuid') }}" class="form-control" />--}}
-{{--    </div>--}}
     <label for = "ciudadano_id" class="col-md-1 col-form-label text-right">Usuario ID</label>
     <div class="col-md-5">
         <input type="text" name="ciudadano_id" id="ciudadano_id" value="{{ old('ciudadano_id') }}" class="form-control" />
@@ -27,12 +23,10 @@
 <div class="form-row mb-1">
         <label for="desde" class="col-md-2 col-form-label">Desde</label>
         <div class="col-md-4">
-{{--            {{ Form::date('desde', \Carbon\Carbon::now(), ['id'=>'desde','class'=>'form-control']) }}--}}
             <input type="date" name="desde" id="desde" value="{{ Carbon\Carbon::now()->format('Y-m-d') }}" class="form-control">
         </div>
         <label for="hasta" class="col-md-1 col-form-label text-right">Hasta</label>
         <div class="col-md-3">
-{{--            {{ Form::date('hasta', \Carbon\Carbon::now(), ['id'=>'hasta','class'=>'form-control']) }}--}}
             <input type="date" name="hasta" id="hasta" value="{{ Carbon\Carbon::now()->format('Y-m-d') }}" class="form-control">
         </div>
         <div class="col-md-1 ">
@@ -47,9 +41,7 @@
     <label for = "dependencia_id" class="col-md-2 col-form-label">Dependencia</label>
     <div class="col-md-8">
         <select id="dependencia_id" name="dependencia_id" class="form-control" size="1">
-{{--            @if ( !Auth::user()->isRole('ENLACE') )--}}
                 <option value="0" selected >Seleccione una Dependencia</option>
-{{--            @endif--}}
             @foreach($dependencias as $id => $valor)
                 <option value="{{ $id }}">{{ $valor }}</option>
             @endforeach
@@ -106,10 +98,6 @@
             @endforeach
         </select>
     </div>
-{{--    <label for = "id" class="col-md-2 col-form-label text-right">ID </label>--}}
-{{--    <div class="col-md-2">--}}
-{{--        <input type="text" name="id" id="id" value="{{ old('id') }}" class="form-control" />--}}
-{{--    </div>--}}
 </div>
 
 <div class="form-row mb-1">
@@ -159,15 +147,9 @@
         </select>
         <small class="text-muted">La cantidad de registros, es directamente proporcional al tiempo que tarda la consulta.</small>
     </div>
-{{--    <label for = "formato" class="col-md-2 col-form-label">Formato de Salida</label>--}}
-{{--    <div class="col-md-4">--}}
-{{--        <select id="formato" name="formato" class="form-control " size="1">--}}
-{{--            @foreach(config("atemun.menu_archivos") as $id => $valor)--}}
-{{--                <option value="{{ $valor }}">{{ $id }}</option>--}}
-{{--            @endforeach--}}
-{{--        </select>--}}
-{{--    </div>--}}
 </div>
+
+<input type="hidden" name="ambito_dependencia" id="ambito_dependencia" value="99" />
 
 @section("script_extra")
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -177,21 +159,6 @@
         jQuery(function($) {
             $(document).ready(function () {
 
-                // $("#dependencia_id").on("change",function (event) {
-                //     var Id = event.currentTarget.value;
-                //     $("#servicio_id").empty();
-                //     $.get( "/getServiciosFromDependencias/"+Id, function( data ) {
-                //         $("#servicio_id").empty();
-                //         if ( data.data.length > 0 ){
-                //             $.each(data.data, function(i, item) {
-                //                 $("#servicio_id").append('<option value="'+item.id+'" > '+item.servicio+'</option>');
-                //             });
-                //         }
-                //     }, "json" );
-                // });
-
-
-                // alert("Hola le Monde");
 
 
             });

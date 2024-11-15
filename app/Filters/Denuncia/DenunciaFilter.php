@@ -25,6 +25,7 @@ class DenunciaFilter extends QueryFilter
     public function rules(): array{
         return [
             'status_denuncia'        => '',
+            'ambito_dependencia'     => '',
             'search'                 => '',
             'curp'                   => '',
             'ciudadano'              => '',
@@ -54,6 +55,11 @@ class DenunciaFilter extends QueryFilter
         return $query->where('status_denuncia', $search);
     }
 
+    public function ambito_dependencia($query, $search){
+        if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
+        return $query->whereIn('ambito_dependencia', FuncionesController::arrAmbitosViejitos());
+    }
+
     public function search($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
         $search = strtoupper($search);
@@ -68,14 +74,6 @@ class DenunciaFilter extends QueryFilter
 
     }
 
-//    public function curp($query, $search){
-//        if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
-//        $search = strtoupper($search);
-//        return $query->orWhereHas('ciudadanos', function ($q) use ($search) {
-//            return $q->where("curp",strtoupper(trim($search)));
-//        });
-//    }
-
     public function curp($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
         $search = strtoupper($search);
@@ -83,18 +81,6 @@ class DenunciaFilter extends QueryFilter
 
     }
 
-//    public function ciudadano($query, $search){
-//        if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
-//        $search = strtoupper($search);
-//        return $query->orWhereHas('ciudadanos', function ($q) use ($search) {
-//            $filters  = $search;
-//            $F        = new FuncionesController();
-//            $tsString = $F->string_to_tsQuery( strtolower($filters),' & ');
-//            return $q->whereRaw("searchtext @@ to_tsquery('spanish', ?)", [$tsString]);
-//
-//        });
-//    }
-//
     public function ciudadano($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
         $search = strtoupper($search);

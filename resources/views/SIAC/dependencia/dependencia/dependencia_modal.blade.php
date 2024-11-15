@@ -9,6 +9,7 @@
     @slot('items', $items ?? null)
     @slot('formData', 'formFullModal')
     @slot('ambito',$ambito ?? null)
+    @slot('estatus_cve',$estatus_cve ?? null)
     @slot('user',$user ?? null)
     @slot('jefes',$jefes ?? null)
 @endcomponent

@@ -6,6 +6,7 @@
 namespace App\Filters\Denuncia;
 
 use App\Filters\Common\QueryFilter;
+use App\Http\Controllers\Funciones\FuncionesController;
 use Illuminate\Support\Facades\Auth;
 
 class GetDenunciasItemCustomFilter extends QueryFilter{
@@ -47,6 +48,7 @@ class GetDenunciasItemCustomFilter extends QueryFilter{
 
 
         $filters['status_denuncia'] = '1';
+        $filters['ambito_dependencia'] = '9';
         session(['IsEnlace' => $IsEnlace]);
         session(['IsAdminArchivo' => $IsAdminArchivo]);
         session(['DependenciaArray' => $DependenciaArray]);

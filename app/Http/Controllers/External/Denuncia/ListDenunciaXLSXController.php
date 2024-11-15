@@ -137,10 +137,9 @@ class ListDenunciaXLSXController extends Controller
                 ->setCellValue('V'.$C, $arrUltimoEstatus->estatus ?? '')
                 ->setCellValue('W'.$C, $fechaUntiloEstatus ?? '')
                 ->setCellValue('X'.$C, $respuesta )
-                ->setCellValue('AA'.$C, $favorable ? "SI" : "NO" )
-                ->setCellValue('AB'.$C, $item->observaciones )
-                ->setCellValue('AC'.$C, $item->clave_identificadora )
-                ->setCellValue('AD'.$C, trim($item->genero_ciudadano ?? ''));
+                ->setCellValue('Y'.$C, $favorable ? "SI" : "NO" )
+                ->setCellValue('Z'.$C, $item->clave_identificadora )
+                ->setCellValue('AA'.$C, trim($item->genero_ciudadano ?? ''));
             $C++;
         }
 //        ->setCellValue('N'.$C, $servicio->subarea->area->dependencia->dependencia ?? '')
