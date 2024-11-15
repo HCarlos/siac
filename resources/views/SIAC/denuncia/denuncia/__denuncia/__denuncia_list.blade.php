@@ -27,13 +27,14 @@
 
                     <td class="w-25">
                         {{($item->servicio_ultimo_estatus)}}<br>
-                        <small class="text-gray-lighter">{{( $item->servicio_ultimo_estatus )}}</small>
+                        <small class="text-gray-lighter">{{( $item->ultimo_estatus )}}</small>
                         @if( $item->TotalRespuestas>0 )
                             > <small class="text-danger"><strong> {{( $item->TotalRespuestas )}}</strong></small>
                         @endif
                     </td>
 
-                    <td class="w-25">{{$item->ubicacion}} @if($item->ciudadanos->count() > 1)<span class="text-danger">( <i class="fas fa-users"></i> <strong>  {{$item->ciudadanos->count()}} </strong> )</span> @endif
+                    <td class="w-25">{{$item->ubicacion}}
+                        @if($item->ciudadanos->count() > 1)<span class="text-danger">( <i class="fas fa-users"></i> <strong>  {{$item->ciudadanos->count()}} </strong> )</span> @endif
                     </td>
                     <td class="table-action w-15">
                         <div class="button-list">

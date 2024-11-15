@@ -19,7 +19,7 @@
                         <td class="table-user">{{$item->id}}</td>
                         <td>{{$item->dependencia}}</td>
                         <td>{{$item->abreviatura}}</td>
-                        <td>{{$item->ambito_dependencia===1?'Apoyos':'Servicios'}}</td>
+                        <td>{{$item->DependenciaAmbito}}</td>
                         <td style="background: {{$item->class_css}}">{{$item->class_css}}</td>
                         <td>{{ $item->jefe->FullName }}</td>
                         <td class="table-action w-100">

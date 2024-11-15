@@ -62,9 +62,12 @@ class DenunciaAmbitoController extends Controller{
         if ( $search !== [] && isEmpty($search) !== null && $search !== "" ) {
             $items = _viDDSs::query()
                 ->select([
-                    'id', 'uuid', 'ciudadano', 'curp_ciudadano', 'fecha_ingreso', 'dependencia_ultimo_estatus',
-                    'servicio_ultimo_estatus', 'calle', 'num_ext', 'num_int','colonia', 'ubicacion',
-                    'ambito_dependencia', 'status_denuncia',
+                    'id','uuid','ciudadano','curp_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano',
+                    'fecha_ingreso','dependencia_ultimo_estatus','area','subarea','servicio_ultimo_estatus','cp',
+                    'telefonoscelularesemails', 'calle','num_ext','num_int','colonia','ubicacion','ambito_dependencia',
+                    'denuncia','referencia', 'status_denuncia','prioridad','origen','observaciones','genero',
+                    'cerrado','origen_id','ciudadano_id','ultimo_estatus','firmado','latitud','longitud',
+                    'clave_identificadora','estatus_general',
                 ])
                 ->GetDenunciasAmbitoItemCustomFilter($filters)
                 ->orderByDesc('id')
@@ -73,9 +76,12 @@ class DenunciaAmbitoController extends Controller{
         }else{
             $items = _viDDSs::query()
                 ->select([
-                    'id', 'uuid', 'ciudadano', 'curp_ciudadano', 'fecha_ingreso', 'dependencia_ultimo_estatus',
-                    'servicio_ultimo_estatus', 'calle', 'num_ext', 'num_int','colonia', 'ubicacion',
-                    'ambito_dependencia', 'status_denuncia',
+                    'id','uuid','ciudadano','curp_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano',
+                    'fecha_ingreso','dependencia_ultimo_estatus','area','subarea','servicio_ultimo_estatus','cp',
+                    'telefonoscelularesemails', 'calle','num_ext','num_int','colonia','ubicacion','ambito_dependencia',
+                    'denuncia','referencia', 'status_denuncia','prioridad','origen','observaciones','genero',
+                    'cerrado','origen_id','ciudadano_id','ultimo_estatus','firmado','latitud','longitud',
+                    'clave_identificadora','estatus_general',
                 ])
                 ->GetDenunciasAmbitoItemCustomFilter($filters)
                 ->orderByDesc('id')
@@ -657,8 +663,12 @@ class DenunciaAmbitoController extends Controller{
 
         $items = _viDDSs::query()
             ->select([
-                'id', 'uuid', 'ciudadano', 'curp_ciudadano', 'fecha_ingreso', 'dependencia_ultimo_estatus',
-                'servicio_ultimo_estatus', 'calle', 'num_ext', 'num_int','colonia', 'ubicacion',
+                'id','uuid','ciudadano','curp_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano',
+                'fecha_ingreso','dependencia_ultimo_estatus','area','subarea','servicio_ultimo_estatus','cp',
+                'telefonoscelularesemails', 'calle','num_ext','num_int','colonia','ubicacion','ambito_dependencia',
+                'denuncia','referencia', 'status_denuncia','prioridad','origen','observaciones','genero',
+                'cerrado','origen_id','ciudadano_id','ultimo_estatus','firmado','latitud','longitud',
+                'clave_identificadora','estatus_general',
             ])
             ->ambitoFilterBy($queryFilters)
             ->orderByDesc('id')

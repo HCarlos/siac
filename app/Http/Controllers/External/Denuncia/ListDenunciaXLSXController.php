@@ -97,7 +97,7 @@ class ListDenunciaXLSXController extends Controller
             $fechaLimite    = Carbon::parse($item->fecha_limite)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
             $fechaEjecucion = Carbon::parse($item->fecha_ejecucion)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
 
-            $resp = Denuncia_Dependencia_Servicio::query()->where('denuncia_id',$item->denuncia_id)->orderByDesc('id')->get();
+            $resp = Denuncia_Dependencia_Servicio::query()->where('denuncia_id',$item->id)->orderByDesc('id')->get();
             $respuesta = "";
             $favorable = false;
             foreach ($resp as $r){
@@ -147,13 +147,10 @@ class ListDenunciaXLSXController extends Controller
                 ->setCellValue('V'.$C, $arrUltimoEstatus->estatus ?? '')
                 ->setCellValue('W'.$C, $fechaUntiloEstatus ?? '')
                 ->setCellValue('X'.$C, $respuesta )
-                ->setCellValue('Y'.$C, $item->observaciones )
-                ->setCellValue('Z'.$C, '')
-                ->setCellValue('AA'.$C, '' )
-                ->setCellValue('AB'.$C, $favorable ? "SI" : "NO" )
+                ->setCellValue('AA'.$C, $favorable ? "SI" : "NO" )
+                ->setCellValue('AB'.$C, $item->observaciones )
                 ->setCellValue('AC'.$C, $item->clave_identificadora )
-                ->setCellValue('AD'.$C, trim($ciudadano->StrGenero ?? ''))
-                ->setCellValue('AE'.$C, trim($creadopor->FullName ?? ''));
+                ->setCellValue('AD'.$C, trim($item->genero_ciudadano ?? ''));
             $C++;
         }
 //        ->setCellValue('N'.$C, $servicio->subarea->area->dependencia->dependencia ?? '')

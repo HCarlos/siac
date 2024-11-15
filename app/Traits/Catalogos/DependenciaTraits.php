@@ -59,6 +59,26 @@ trait DependenciaTraits
         return explode('|', trim($pipeString, $quoteCharacter));
     }
 
+    public function getDependenciaAmbitoAttribute(){
+        switch ( $this->ambito_dependencia ) {
+            case 1:
+                return 'Apoyos Sociales';
+                break;
+            case 2:
+                return 'Servicios Municipales';
+                break;
+            case 99:
+                return 'SM Viejitos';
+                break;
+            default:
+                return 'Ninguno';
+                break;
+        }
+
+        return 'Ninguno';
+
+    }
+
 
 
 

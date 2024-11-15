@@ -16,7 +16,7 @@ class DependenciaController extends Controller
 {
 
     protected $tableName = "dependencias";
-    protected $ambito_dependencia = [1=>"Apoyos Sociales",2=>"Servicios Municipales"];
+    protected $ambito_dependencia = [1=>"Apoyos Sociales",2=>"Servicios Municipales",99=>"SM Viejitos"];
 
 // ***************** MUESTRA EL LISTADO DE USUARIOS ++++++++++++++++++++ //
     protected function index(Request $request)

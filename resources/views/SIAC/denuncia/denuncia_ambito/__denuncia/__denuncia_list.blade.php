@@ -16,7 +16,7 @@
             <tbody>
 
             @foreach($items as $item)
-                <tr class="@if($item->cerrado) bg-coral-denuncia-cerrada @endif">
+                <tr class="@if($item->cerrado) bg-coral-denuncia-cerrada @endif" id="tr_{{$item->id}}">
                     <td class="table-user @if($item->origen_id == config('atemun.pagina_web_id')) text-danger @endif">{{$item->id}}</td>
                     <td class="w-25">
                         {{$item->ciudadano}} <br>
@@ -33,7 +33,7 @@
                         @endif
                     </td>
 
-                    <td class="w-25">{{$item->fullUbication}} @if($item->ciudadanos->count() > 1)<span class="text-danger">( <i class="fas fa-users"></i> <strong>  {{$item->ciudadanos->count()}} </strong> )</span> @endif
+                    <td class="w-25">{{$item->ubicacion}} @if($item->ciudadanos->count() > 1)<span class="text-danger">( <i class="fas fa-users"></i> <strong>  {{$item->ciudadanos->count()}} </strong> )</span> @endif
                     </td>
                     <td class="table-action w-15">
                         <div class="button-list">
