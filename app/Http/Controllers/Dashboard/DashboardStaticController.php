@@ -69,21 +69,21 @@ class DashboardStaticController extends Controller{
 
         $srvOp = _viDDSs::query()
             ->select('dependencia_id')
-            ->whereIn('dependencia_id',[1,13])
+            ->whereIn('dependencia_id',[48,49])
             ->whereBetween('fecha_ingreso',[$inicioMes,$finMes])
             ->where('is_visible_nombre_corto_ss',true)
             ->count();
 
         $srvSAS = _viDDSs::query()
             ->select('dependencia_id')
-            ->where('dependencia_id',12)
+            ->where('dependencia_id',47)
             ->whereBetween('fecha_ingreso',[$inicioMes,$finMes])
             ->where('is_visible_nombre_corto_ss',true)
             ->count();
 
         $srvLimpia = _viDDSs::query()
             ->select('dependencia_id')
-            ->where('dependencia_id',2)
+            ->where('dependencia_id',50)
             ->whereBetween('fecha_ingreso',[$inicioMes,$finMes])
             ->where('is_visible_nombre_corto_ss',true)
             ->count();
@@ -101,6 +101,7 @@ class DashboardStaticController extends Controller{
             $arrIntoServicios = array($servicio_id);
             $srv0 = Servicio::find($servicio_id);
             $selServ = $srv0->nombre_corto_ss;
+//            $selServ = $srv0->servicio;
         }else{
             $arrIntoServicios = [];
             foreach ($Servicios as $d) {
@@ -186,7 +187,10 @@ class DashboardStaticController extends Controller{
 
         $totalRes =  $r0 + $r1;
         //$srv2[0]->data ?? 0 + $srv2[1]->data ?? 0;
-        $porcentajeAtendidos = number_format((($r1/$totalRes) * 100), 2, '.',',');
+        $porcentajeAtendidos = 0;
+        if ($r1 > 0) {
+            $porcentajeAtendidos = number_format((($r1/$totalRes) * 100), 2, '.',',');
+        }
 
         // Tabla de Servicios Vencidos
         $srv4 = DB::table("_viddss")

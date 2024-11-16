@@ -6,36 +6,37 @@
                 <thead>
                     <tr role="row">
                         <th class="sorting_asc w-5-percent" aria-sort="ascending" aria-label="Name: activate to sort column descending">ID</th>
-                        <th class="sorting w-40-percent">Servicio</th>
+                        <th class="sorting w-45-percent">Servicio</th>
+                        <th class="sorting w-8-percent">Unidad</th>
                         <th class="sorting w-8-percent">Es Mobile</th>
-                        <th class="sorting w-10-percent">Mobile</th>
-                        <th class="sorting w-12-percent">Es Servicio</th>
-                        <th class="sorting w-10-percent">Servicio</th>
-{{--                        <th class="sorting w-5-percent">Subarea</th>--}}
-                        <th class="w-14-percent"></th>
+                        <th class="sorting w-8-percent">Mobile--</th>
+                        <th class="sorting w-8-percent">Es Servicio</th>
+                        <th class="sorting w-8-percent">Servicio</th>
+                        <th class="w-10-percent"></th>
                     </tr>
                 </thead>
                 <tbody>
                 @foreach($items as $item)
                     <tr>
-                        <td style="width: 5% !important;">{{$item->id}}</td>
-                        <td style="width: 45% !important;">{{$item->servicio}}</td>
-                        <td style="width: 1% !important;" class="text-center">
+                        <td>{{$item->id}}</td>
+                        <td>{{$item->servicio}}</td>
+                        <td>{{$item->abreviatura_dependencia}}</td>
+                        <td class="text-center">
                             @if( (int) $item->is_visible_mobile == 1 )
                                 <i class="fa fa-check text-success "></i>
                             @endif
                         </td>
-                        <td style="width: 1% !important;">
+                        <td>
                             @if( (int) $item->is_visible_mobile == 1 )
                                 {{$item->nombre_mobile}}
                             @endif
                         </td>
-                        <td style="width: 1% !important;" class="text-center">
+                        <td class="text-center">
                             @if( (int) $item->is_visible_nombre_corto_ss == 1 )
                                 <i class="fa fa-check text-success "></i>
                             @endif
                         </td>
-                        <td style="width: 1% !important;">
+                        <td>
                             @if( (int) $item->is_visible_nombre_corto_ss == 1 )
                                 {{$item->nombre_corto_ss}}
                             @endif

@@ -13,20 +13,15 @@
                     <ul class="circle-fill radius-round text-center align-items-center w-100 p-0 mb-3">
                         <li>
                             <div>
-{{--                                <div class=" rounded-circle bg-primary border-4 "></div>--}}
-{{--                                <h4 class="rounded-circle flexbox-100">12</h4>--}}
-
-                                <div>
-                                    <span class="d-inline-block bgc-primary p-3 w-100 radius-round text-center border-4 brc-primary-l2">
-                                         <span class="text-white text-170 w-10">{{ $srvLimpia }}</span>
-                                     </span>
-                                </div>
+                                <span class="d-inline-block bgc-primary p-3 w-100 radius-round text-center border-4 brc-primary-l2">
+                                     <span class="text-white text-170 w-10">{{ $srvLimpia }}</span>
+                                 </span>
                             </div>
                             <strong>Solicitudes <br>de limpia</strong>
                         </li>
                         <li>
-                            <div class="d-inline-block w-60-percent">
-                                <span class="d-inline-block bgc-orange p-3 radius-round text-center border-4 brc-orange-l2">
+                            <div>
+                                <span class="d-inline-block bgc-orange p-3 w-100 radius-round text-center border-4 brc-orange-l2">
                                      <span class="text-white text-170 ">{{ $srvOP }}</span>
                                 </span>
                             </div>
@@ -34,7 +29,7 @@
                         </li>
                         <li>
                             <div>
-                                <span class="d-inline-block bgc-green p-3 radius-round text-center border-4 brc-green-l2">
+                                <span class="d-inline-block bgc-green p-3 w-100 radius-round text-center border-4 brc-green-l2">
                                      <span class="text-white text-170 w-10">{{ $srvSAS }}</span>
                                 </span>
                             </div>
@@ -69,11 +64,16 @@
             <div class="card rounded-bottom rounded-top  card-force-1" >
                 <div class="card-body rounde-bottom rounded-top " style="padding: 0 !important;">
                     <div class="form-row mb-1 col-sm-12">
-                        <div class="col-sm-10 ml-1 mt-1">{{ $selServ }}</div>
+                        <div class="col-sm-9 ml-1 mt-1">{{ $selServ }}</div>
                         <div class="col-sm-1">
                             <button type="button" class="btn btn-xs px-2 btn-green mb-1 btnFullModal float-right mr-1" data-toggle="modal" data-target="#optionsModal">
                                 <i class="fa fa-search"></i>
                             </button>
+                        </div>
+                        <div class="col-sm-1">
+                            <a href="{{route('home')}}" class="btn btn-xs px-2 btn-orange mb-1  float-right mr-1" >
+                                <i class="fa fa-home"></i>
+                            </a>
                         </div>
                     </div>
                     <ul class="charts-2 text-center align-items-center w-100 p-0 mb-3">

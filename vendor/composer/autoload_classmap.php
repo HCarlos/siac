@@ -14,6 +14,7 @@ return array(
     'App\\Classes\\Denuncia\\DenunciaTCPDF' => $baseDir . '/app/Classes/Denuncia/DenunciaTCPDF.php',
     'App\\Classes\\Denuncia\\VistaDenunciaClass' => $baseDir . '/app/Classes/Denuncia/VistaDenunciaClass.php',
     'App\\Classes\\FiltersRules' => $baseDir . '/app/Classes/FiltersRules.php',
+    'App\\Classes\\FiltersRulesBySearch' => $baseDir . '/app/Classes/FiltersRulesBySearch.php',
     'App\\Classes\\Items' => $baseDir . '/app/Classes/Items.php',
     'App\\Classes\\MessageAlertClass' => $baseDir . '/app/Classes/MessageAlertClass.php',
     'App\\Classes\\MyTCPDF' => $baseDir . '/app/Classes/MyTCPDF.php',
