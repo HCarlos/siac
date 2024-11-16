@@ -181,6 +181,8 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
     Route::get('editServicio/{Id}', 'Denuncia\ServicioController@editItem')->name('editServicio');
     Route::put('updateServicio', 'Denuncia\ServicioController@updateItem')->name('updateServicio');
     Route::get('removeServicio/{id}', 'Denuncia\ServicioController@removeItem')->name('removeServicio');
+    Route::get('showModalSearchServicio/', 'Denuncia\ServicioController@showModalSearchServicio')->name('showModalSearchServicio');
+    Route::match(['get','put','post'],'findDataInServicio/', 'Denuncia\ServicioController@findDataInServicio')->name('findDataInServicio');
 
     Route::get('newServicioV2', 'Denuncia\ServicioController@newItemV2')->name('newServicioV2');
     Route::post('createServicioV2', 'Denuncia\ServicioController@createItemV2')->name('createServicioV2');
@@ -188,6 +190,8 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
     Route::put('updateServicioV2', 'Denuncia\ServicioController@updateItemV2')->name('updateServicioV2');
 
     Route::get('quitarArchivoMobileServicio/{Id}', 'Storage\Mobile\StorageMobileServicioController@quitarArchivoMobileServicio')->name('quitarArchivoMobileServicio');
+
+
 
     // Catálogo de Afiliaciones
     Route::get('listAfiliaciones/', 'Denuncia\AfiliacionController@index')->name('listAfiliaciones');

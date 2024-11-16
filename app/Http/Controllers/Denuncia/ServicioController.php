@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Denuncia;
 use App\Classes\RemoveItemSafe;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Denuncia\ServicioRequest;
+use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Medida;
 use App\Models\Catalogos\Servicio;
 use App\Models\Catalogos\Subarea;
@@ -18,7 +19,7 @@ use Illuminate\Support\Facades\Response;
 class ServicioController extends Controller
 {
 
-    protected $tableName = "_viservicios";
+    protected $tableName = "Servicios";
 
 // ***************** MUESTRA EL LISTADO DE USUARIOS ++++++++++++++++++++ //
     protected function index(Request $request)
@@ -36,22 +37,24 @@ class ServicioController extends Controller
 
         $user = Auth::User();
 
-        //        dd($items);
+        $request->session()->put('items', $items);
 
         return view('SIAC.estructura.servicio.servicio_list',
             [
-                'items'           => $items,
-                'titulo_catalogo' => "Catálogo de " . ucwords($this->tableName),
-                'titulo_header'   => '',
-                'user'            => $user,
-                'searchInList'    => 'listServicios',
-                'newWindow'       => true,
-                'tableName'       => $this->tableName,
-                'showEdit'        => 'editServicio',
-                'newItem'         => 'newServicio',
-                'removeItem'      => 'removeServicio',
-                'IsModal'         => false,
-                'exportModel'     => 2,
+                'items'                   => $items,
+                'titulo_catalogo'         => "Catálogo de " . ucwords($this->tableName),
+                'titulo_header'           => '',
+                'user'                    => $user,
+                'searchInList'            => 'listServicios',
+                'newWindow'               => true,
+                'tableName'               => $this->tableName,
+                'showEdit'                => 'editServicio',
+                'newItem'                 => 'newServicio',
+                'removeItem'              => 'removeServicio',
+                'IsModal'                 => false,
+                'exportModel'             => 2,
+                'showModalSearchServicio' => 'showModalSearchServicio',
+                'findDataInServicio'      => 'findDataInServicio',
             ]
         );
     }
@@ -211,4 +214,61 @@ class ServicioController extends Controller
         }
 
     }
+
+
+    protected function showModalSearchServicio(){
+
+        $Dependencias = Dependencia::query()
+            ->orderBy('dependencia')
+            ->pluck('dependencia','id');
+
+        $user = Auth::user();
+        return view ('SIAC.estructura.servicio.search_servicio.servicio_search_panel',
+            [
+                'findDataInDenuncia' => 'findDataInDenuncia',
+                'dependencias'       => $Dependencias,
+                'items'              => $user,
+            ]
+        );
+    }
+
+
+    // ***************** MUESTRA EL MENU DE BUSQUEDA ++++++++++++++++++++ //
+    protected function findDataInServicio(Request $request){
+        $dep = $request->get('dependencia_id');
+        $items = _viServicios::query()
+            ->where('dependencia_id', $dep)
+            ->orderBy('servicio')
+            ->get();
+
+        $dependencia = $items[0]->dependencia ?? '';
+
+        $user = Auth::User();
+
+        $request->session()->put('items', $items);
+
+        return view('SIAC.estructura.servicio.servicio_list',
+            [
+                'items'                   => $items,
+                'titulo_catalogo'         => "Catálogo de " . ucwords($this->tableName) . ' :: ' . $dependencia ?? '',
+                'titulo_header'           => '',
+                'user'                    => $user,
+                'searchInList'            => 'listServicios',
+                'newWindow'               => true,
+                'tableName'               => $this->tableName,
+                'showEdit'                => 'editServicio',
+                'newItem'                 => 'newServicio',
+                'removeItem'              => 'removeServicio',
+                'IsModal'                 => false,
+                'exportModel'             => 2,
+                'showModalSearchServicio' => 'showModalSearchServicio',
+                'findDataInServicio'      => 'findDataInServicio',
+            ]
+        );
+
+    }
+
+
+
+
 }

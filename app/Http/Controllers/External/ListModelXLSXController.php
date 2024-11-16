@@ -36,6 +36,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
@@ -50,7 +51,7 @@ class ListModelXLSXController extends Controller
                 $Model = Ubicacion::all();
                 break;
             case 2:
-                $Model = _viServicios::all();
+                $Model = session::get('items'); // _viServicios::all();
                 break;
             case 3:
                 $Model = Dependencia::all();

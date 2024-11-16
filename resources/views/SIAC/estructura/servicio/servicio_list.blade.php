@@ -4,7 +4,7 @@
 
 @component('components.catalogo')
     @slot('buttons')
-        @include('shared.ui_kit.__menu_catalogo')
+        @include('shared.ui_kit.__menu_catalogo_servicios')
     @endslot
     @slot('body_catalogo')
         <div class="col-md-12">

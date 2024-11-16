@@ -48,7 +48,6 @@ class DenunciaAmbitoController extends Controller{
         $this->middleware('auth');
     }
 
-
     protected function index(Request $request, $ambito_dependencia){
         ini_set('max_execution_time', 300);
         $search = $request->only(['search']);
@@ -57,7 +56,6 @@ class DenunciaAmbitoController extends Controller{
         session(['ambito_dependencia' => $ambito_dependencia]);
         session(['is_pagination' => true]);
         $this->ambito_dependencia = $ambito_dependencia;
-
 
         if ( $search !== [] && isEmpty($search) !== null && $search !== "" ) {
             $items = _viDDSs::query()
