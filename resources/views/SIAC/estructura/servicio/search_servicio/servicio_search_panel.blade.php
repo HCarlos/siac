@@ -1,6 +1,6 @@
 @component('components.tools.form-full-modal-search')
     @slot('metodo','POST')
-    @slot('action','putModalDenunciaUserUpdate')
+    @slot('action','findDataInServicio')
     @slot('_csrf')
         @csrf
         {{method_field('PUT')}}
