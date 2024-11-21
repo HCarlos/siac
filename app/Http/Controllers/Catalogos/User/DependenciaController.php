@@ -22,7 +22,9 @@ class DependenciaController extends Controller{
     }
 
     public function index($Id = 0){
-        $listEle     = Dependencia::select('id','dependencia as data')->pluck('data','id');
+        $listEle     = Dependencia::select('id','dependencia as data')
+                        ->orderBy('dependencia')
+                        ->pluck('data','id');
         $listTarget  = null;
 //        $listTarget  = User::all()->sortBy(function($item) {
 //            return $item->ap_paterno.' '.$item->ap_materno.' '.$item->nombre;

@@ -363,6 +363,15 @@
                             </a>
                         </li>
                     @endif
+                        @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') || Auth::user()->can('asignar_estatus'))
+                            <li>
+                                <a href="{{route('asignaEstatusList',['Id'=>0])}}">
+                                    <i class="fas fa-user-cog"></i>
+                                    <span class="badge badge-light float-right">{{\App\Models\Catalogos\Estatu::count()}}</span>
+                                    <span>Estatus</span>
+                                </a>
+                            </li>
+                        @endif
                     @if (Auth::user()->hasRole('Administrator|SysOp|test_admin'))
                     <li>
                         <a href="{{route('archivosConfig')}}">

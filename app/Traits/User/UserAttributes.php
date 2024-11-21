@@ -212,5 +212,9 @@ trait UserAttributes
 
     }
 
+    public function hasEstatus($estatus): bool{
+        return $this->estatus->contains('id',$estatus);
+    }
+
 
 }

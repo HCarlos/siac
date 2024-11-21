@@ -378,6 +378,12 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
     Route::post('unAssignDepToUser','Catalogos\User\DependenciaController@desasignarDep')->name('unAssignDepToUser');
     Route::get('getDependenciasUser/{Id}','Catalogos\User\DependenciaController@getItems')->name('getDependenciasUser');
 
+    // USUARIOS ESTATUS
+    Route::get('asignaEstatusList/{Id}','Catalogos\User\EstatusController@index')->name('asignaEstatusList');
+    Route::post('assignEstToUser','Catalogos\User\EstatusController@asignarEst')->name('assignEstToUser');
+    Route::post('unAssignEstToUser','Catalogos\User\EstatusController@desasignarEst')->name('unAssignEstToUser');
+    Route::get('getEstatusUser/{Id}','Catalogos\User\EstatusController@getItems')->name('getEstatusUser');
+
     // EXTERNAL FILES
     Route::get('archivosConfig','Storage\StorageExternalFilesController@archivos_config')->name('archivosConfig');
     Route::post('subirArchivoBase/', 'Storage\StorageExternalFilesController@subirArchivoBase')->name('subirArchivoBase/');

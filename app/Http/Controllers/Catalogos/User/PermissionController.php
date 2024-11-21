@@ -24,11 +24,13 @@ class PermissionController extends Controller
     }
 
     public function index($Id = 0){
-        $listEle     = Permission::select('id','name as data')->pluck('data','id');
+        $listEle     = Permission::select('id','name as data')
+                                ->orderBy('name')
+                                ->pluck('data','id');
         $listTarget  = User::all()->sortBy(function($item) {
             return $item->ap_paterno.' '.$item->ap_materno.' '.$item->nombre;
         });
-        $Id = $Id == 0 ? 1 : $Id;
+        $Id = $Id === 0 ? 1 : $Id;
         $users = User::findOrFail($Id);
         $this->lstAsigns = $users->permissions->pluck('name','id');
 
@@ -55,13 +57,11 @@ class PermissionController extends Controller
 
 
     public function indexV2($Id = 0){
-        $listEle     = Permission::select('id','name as data')->pluck('data','id');
-        $listTarget  = null;
-//        $listTarget  = User::all()->sortBy(function($item) {
-//            return $item->ap_paterno.' '.$item->ap_materno.' '.$item->nombre;
-//        });
+        $listEle     = Permission::select('id','name as data')
+            ->orderBy('name')
+            ->pluck('data','id');
 
-        //dd($listEle);
+        $listTarget  = null;
 
         $Id = $Id == 0 ? 1 : $Id;
         $users = User::findOrFail($Id);

@@ -23,11 +23,13 @@ class RoleController extends Controller
     }
 
     public function index($Id = 0){
-        $listEle     = Role::select('id','name as data')->pluck('data','id');
+        $listEle     = Role::select('id','name as data')
+                        ->orderBy('name')
+                        ->pluck('data','id');
+
         $listTarget  = User::all()->sortBy(function($item) {
             return $item->ap_paterno.' '.$item->ap_materno.' '.$item->nombre;
         });
-//        $listTarget  = User::select('id','username','ap_paterno','ap_materno','nombre')->orderBy('ap_paterno','asc')->get();
         $Id = $Id == 0 ? 1 : $Id;
         $users = User::findOrFail($Id);
         $this->lstAsigns = $users->roles->pluck('name','id');
@@ -56,9 +58,12 @@ class RoleController extends Controller
 
 
     public function indexV2($Id = 0){
-        $listEle     = Role::select('id','name as data')->pluck('data','id');
+        $listEle     = Role::select('id','name as data')
+                        ->orderBy('name')
+                        ->pluck('data','id');
+
         $listTarget  = null;
-//        $listTarget  = User::select('id','username','ap_paterno','ap_materno','nombre')->orderBy('ap_paterno','asc')->get();
+
         $Id = $Id == 0 ? 1 : $Id;
         $users = User::findOrFail($Id);
         $this->lstAsigns = $users->roles->pluck('name','id');
