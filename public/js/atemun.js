@@ -523,15 +523,36 @@ jQuery(function($) {
         $(".searchIdentical").on('click',function (event){
            event.preventDefault();
            var formData = {};
-            formData['descripcion']  = $("#descripcion").val();
-            formData['referencia']   = $("#referencia").val();
-            formData['ubicacion']    = $("#ubicacion").val();
-            formData['ubicacion_id'] = $("#ubicacion_id").val();
-            formData['usuario_id']   = $("#usuario_id").val();
-            formData['servicio_id']  = $("#servicio_id").val();
-            formData['id']           = $("#id").val();
+            formData['descripcion']        = $("#descripcion").val();
+            formData['referencia']         = $("#referencia").val();
+            formData['ubicacion']          = $("#ubicacion").val();
+            formData['ubicacion_id']       = $("#ubicacion_id").val();
+            formData['searchgoogle']       = $("#searchGoogle").val();
+            formData['searchgoogleresult'] = $("#searchGoogleResult").html();
+            formData['usuario_id']         = $("#usuario_id").val();
+            formData['servicio_id']        = $("#servicio_id").val();
+            formData['id']                 = $("#id").val();
 
             var ciudadano_id = $("#usuario_id").val();
+
+            // alert(formData.toString());
+
+            if ($("#servicio_id").val() <= 0){
+                alert("Proporcione un servicio");
+                return false;
+            }
+            if ( $("#searchgoogle").val() ){
+                if ($("#searchgoogle").val() === '' && $("#searchGoogleResult").html() === ''){
+                    alert("Proporcione la ubicación del problema");
+                    return false;
+                }
+            }else{
+                if ( $("#ubicacion_id").val() <= 0  ){
+                    alert("Proporcione la ubicación del problema");
+                    return false;
+                }
+            }
+
 
             $.ajax({
                 method: "POST",
@@ -552,7 +573,7 @@ jQuery(function($) {
                         Tbl += "<tr class='bgc-h-yellow-l3'>";
                         Tbl += "<td>"+
                                 value.id+"<br>"+
-                                "<strong>"+value.descripcion+"</strong><br>"+
+                                "<strong>"+value.denuncia+"</strong><br>"+
                                 "<small>"+value.fecha+"</small><br>"+
                                 "<strong class='text-green'>"+value.ciudadano+"</strong><br>"+
                                 "<small>"+value.ubicacion+"</small><br>"+

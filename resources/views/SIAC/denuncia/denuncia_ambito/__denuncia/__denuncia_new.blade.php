@@ -30,7 +30,7 @@
                             <i class="mdi mdi-phone font-18 pl-1 pr-1"></i> <span class="pt-1" id="lblTelefonos"></span>
                             <i class="mdi mdi-email font-18 pl-1 pr-1"></i> <span class="pt-1" id="lblEMails"></span>
                         </span>
-                        <button type="button" class="btn btn-sm btn-orange float-right text-white  denuncuaUserModalChange"  data-toggle="modal" data-placement="top" data-target="#denuncuaUserModalChange" data-original-title="Actualizar datos del usuario"><i class="mdi mdi-refresh"></i></button>
+                        <button type="button" class="btn btn-sm btn-orange float-right text-white  denunciaUserModalChange"  data-toggle="modal" data-placement="top" data-target="#denunciaUserModalChange" data-original-title="Actualizar datos del usuario"><i class="mdi mdi-refresh"></i></button>
                     </div>
                 </div>
             </div>
@@ -183,8 +183,8 @@
 
 <input type="hidden" name="id" value="0" >
 <input type="hidden" name="ubicacion_id" id="ubicacion_id" value="{{ old('ubicacion_id') }}" >
-<input type="hidden" name="creadopor_id" id="creadopor_id" value="{{ old('ubicacion_id', $user->id ?? 0) }}" >
-<input type="hidden" name="modificadopor_id" id="modificadopor_id" value="{{ old('ubicacion_id', $user->id ?? 0) }}" >
+<input type="hidden" name="creadopor_id" id="creadopor_id" value="{{ old('creadopor_id', $user->id ?? 0) }}" >
+<input type="hidden" name="modificadopor_id" id="modificadopor_id" value="{{ old('modificadopor_id', $user->id ?? 0) }}" >
 <input type="hidden" name="usuario_id" id="usuario_id" value="{{ old('usuario_id') }}" >
 <input type="hidden" name="isFechaIngresoView" id="isFechaIngresoView" value="{{ config('atemun.modificar_fecha_ingreso') }}" >
 <input type="hidden" name="usuario_telefonos" id="usuario_telefonos" class="form-control" value="{{ old('usuario_telefonos') }}" >

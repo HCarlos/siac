@@ -43,10 +43,13 @@ class SearchIdenticalRequest extends FormRequest{
 
     public function manage(){
         $this->data = [];
+//        dd($this->all());
         try {
             $descripcion  = strtoupper(trim($this->descripcion));
             $referencia   = strtoupper(trim($this->referencia));
             $ubicacion    = strtoupper(trim($this->ubicacion));
+            $searchgoogle    = strtoupper(trim($this->searchgoogle));
+            $searchgoogleresult    = strtoupper(trim($this->searchgoogleresult));
             $ubicacion_id = (int) $this->ubicacion_id;
             $usuario_id   = (int) $this->usuario_id;
             $servicio_id  = (int) $this->servicio_id;
@@ -54,28 +57,22 @@ class SearchIdenticalRequest extends FormRequest{
 
             $Ubi = Ubicacion::find($ubicacion_id);
 
-        $filters = $descripcion.' '.$referencia.' '.$ubicacion;
-//        $filters = $descripcion.' '.$referencia.' '.$Ubi->colonia;
-        $filters = $Ubi->calle.' '.$Ubi->colonia;
-//         dd( $filters );
-        $F           = new FuncionesController();
-        $tsString    = $F->string_to_tsQuery($filters,' & ');
+            $filters = $descripcion.' '.$referencia.' '.$ubicacion;
+            $filters = $Ubi->calle ?? ''.' '.$Ubi->colonia ?? '';
+            $filters .= $searchgoogle.' '.$searchgoogleresult;
 
-//        dd( $tsString );
+            $F           = new FuncionesController();
+            $tsString    = $F->string_to_tsQuery($filters,' & ');
+
             $oFilters['search'] = $tsString;
             $oFilters['servicio_id'] = $servicio_id;
 
-//            dd($oFilters);
+            $items = _viDDSs::query()
+                ->filterBy($oFilters)
+                ->orderBy('id')
+                ->get();
 
-        $items = _viDDSs::query()
-            ->filterBy($oFilters)
-            ->orderBy('id')
-            ->get();
-
-//        dd($items->count());
-
-        $this->llevarArray($items, $usuario_id);
-
+            $this->llevarArray($items, $usuario_id);
 
         }catch (QueryException $e){
             $Msg = new MessageAlertClass();
@@ -91,7 +88,7 @@ class SearchIdenticalRequest extends FormRequest{
             if ( $item->ciudadano_id != $usuario_id || $usuario_id = 0) {
                 $Ciudadano = User::find($item->ciudadano_id);
                 $this->data[] = array(
-                    'descripcion'      => $item->descripcion,
+                    'denuncia'         => $item->denuncia,
                     'referencia'       => $item->referencia,
                     'ubicacion'        => $item->FullUbication,
                     'ciudadano_id'     => $item->ciudadano_id,

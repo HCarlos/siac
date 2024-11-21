@@ -31,7 +31,7 @@
                             <i class="mdi mdi-phone font-18 pl-1 pr-1"></i> <span class="pt-1" id="lblTelefonos">{{ $items->ciudadano->telefonos }}</span>
                             <i class="mdi mdi-email font-18 pl-1 pr-1"></i> <span class="pt-1" id="lblEMails">{{ $items->ciudadano->emails }}</span>
                         </span>
-                        <button type="button" class="btn btn-sm btn-orange float-right text-white  denuncuaUserModalChange"  data-toggle="modal" data-placement="top" data-target="#denuncuaUserModalChange" data-original-title="Actualizar datos del usuario"><i class="mdi mdi-refresh"></i></button>
+                        <button type="button" class="btn btn-sm btn-orange float-right text-white  denunciaUserModalChange"  data-toggle="modal" data-placement="top" data-target="#denunciaUserModalChange" data-original-title="Actualizar datos del usuario"><i class="mdi mdi-refresh"></i></button>
                     </div>
                 </div>
 

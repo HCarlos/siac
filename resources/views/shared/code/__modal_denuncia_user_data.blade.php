@@ -1,5 +1,5 @@
 <!-- Modal de Opciones -->
-<div class="modal fade m-0 p-0 " id="denuncuaUserModalChange" tabindex="-1" role="dialog" aria-labelledby="denuncuaUserModalChangeLabel" aria-hidden="true">
+<div class="modal fade m-0 p-0 " id="denunciaUserModalChange" tabindex="-1" role="dialog" aria-labelledby="denunciaUserModalChangeLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 740px !important; padding: 0px !important;">
         <div class="modal-content shadow border-none radius-2 ">
             <div class="modal-header modal-colored-header bg-info m">
@@ -38,7 +38,7 @@
                     </div>
                 </div>
 
-                <input type="hidden" name="ciudadano_id" id="ciudadano_id" value="0" class="col-xs-4 form-control" />
+                <input type="hidden" name="ciudadano_id" id="ciudadano_id" value="{{ old('ciudadano_id',$items->ciudadano->id ?? 0)}}" class="col-xs-4 form-control" />
 <hr>
                 <div class="col-xs-12 mt-2">
                     <div class="form-group col-4 float-left">

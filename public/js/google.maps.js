@@ -36,7 +36,17 @@ async function initMap(lat, lon, siExiste) {
 
     if (!siExiste) {
 
-        let searchGoogle = document.getElementById("searchGoogle").value + " centro tabasco";
+        // let searchGoogle = document.getElementById("searchGoogle").value + " centro tabasco";
+        let searchGoogle = document.getElementById("searchGoogle").value;
+        let positionString = searchGoogle.search('centro')
+        if (positionString === -1) {
+            searchGoogle += ' centro';
+        }
+        positionString = searchGoogle.search('tabasco')
+        if (positionString === -1) {
+            searchGoogle += ' tabasco';
+        }
+
 
         const request = {
             query: searchGoogle,

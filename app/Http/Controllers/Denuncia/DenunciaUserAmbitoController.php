@@ -41,6 +41,8 @@ class DenunciaUserAmbitoController extends Controller{
 
         $data = $request->all();
 
+//        dd($data);
+
         $Ciudadano = User::find($data['ciudadano_id']);
         $Ciudadano->ap_paterno = $data['ap_paterno'];
         $Ciudadano->ap_materno = $data['ap_materno'];

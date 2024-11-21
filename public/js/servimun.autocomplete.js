@@ -20,7 +20,7 @@ jQuery(function($) {
         function callAjax(Obj, Url, Get, Item, ID, Elem) {
             $(Obj).autocomplete({
                 source: function(request, response) {
-                    $(".denuncuaUserModalChange").prop('disabled',true);
+                    $(".denunciaUserModalChange").prop('disabled',true);
                     $("#editUser").prop('disabled',true);
                     $.ajax({
                         url: Url,
@@ -88,7 +88,7 @@ jQuery(function($) {
 
                     if ( $("#usuario_id") ){
                         $("#usuario_id").val(d.id)
-                        $(".denuncuaUserModalChange").prop('disabled',false);
+                        $(".denunciaUserModalChange").prop('disabled',false);
                     };
                     if ( $("#ubicacion_id") )       $("#ubicacion_id").val(d.ubicacion_id);
                     if ( $("#ubicacion_id_span") )  $("#ubicacion_id_span").html(d.ubicacion_id);
@@ -137,7 +137,7 @@ jQuery(function($) {
                     $("#usuario_id").val(0);
                     $("#editUser").prop('disabled',true);
                     $("#editUser").prop('href',null);
-                    $(".denuncuaUserModalChange").prop('disabled',true);
+                    $(".denunciaUserModalChange").prop('disabled',true);
 
                     if ( $("#usuario_telefonos") )  {
                         limpiarDatosdelUsuario();
@@ -191,56 +191,60 @@ jQuery(function($) {
         });
 
         if ( $("#usuario_id") && parseInt( $("#usuario_id").val() ) > 0 ) {
-            $(".denuncuaUserModalChange").prop('disabled', false);
+            $(".denunciaUserModalChange").prop('disabled', false);
         }else{
-            $(".denuncuaUserModalChange").prop('disabled', true);
+            $(".denunciaUserModalChange").prop('disabled', true);
         }
+
+        // if ( $("#btnRefreshUserData") ) {
+        //     alert("Si entra bien");
+        // }
 
         if ( $("#btnRefreshUserData") ) {
             $("#btnRefreshUserData").on('click', function (event) {
                 event.preventDefault();
-                if ($("#btnRefreshUserData")) {
-                    var ciudadano_id = parseInt($("#ciudadano_id").val());
-                    if (ciudadano_id > 0) {
+                var ciudadano_id = parseInt($("#ciudadano_id").val());
 
-                        var hRef = "putModalDenunciaUserUpdate";
-                        var token = $("meta[name='csrf-token']").attr('content');
-                        var ap_paterno = $("#ciu_ap_paterno").val();
-                        var ap_materno = $("#ciu_ap_materno").val();
-                        var nombre = $("#ciu_nombre").val();
-                        var telefonos = $("#ciu_telefonos").val();
-                        var celulares = $("#ciu_celulares").val();
-                        var emails = $("#ciu_emails").val();
+                if (ciudadano_id > 0) {
 
-                        var PARAMS = {
-                            ciudadano_id: ciudadano_id,
-                            ap_paterno: ap_paterno,
-                            ap_materno: ap_materno,
-                            nombre: nombre,
-                            telefonos: telefonos,
-                            celulares: celulares,
-                            emails: emails,
-                            _token: token
-                        };
+                    var hRef = "/putModalDenunciaUserUpdate";
+                    var token = $("meta[name='csrf-token']").attr('content');
+                    var ap_paterno = $("#ciu_ap_paterno").val();
+                    var ap_materno = $("#ciu_ap_materno").val();
+                    var nombre = $("#ciu_nombre").val();
+                    var telefonos = $("#ciu_telefonos").val();
+                    var celulares = $("#ciu_celulares").val();
+                    var emails = $("#ciu_emails").val();
 
-                        $.post(hRef, PARAMS, function (response) {
-                            alert(response.mensaje);
-                            var d = response.data;
-                            $("#lblCelulares").html(d.celulares);
-                            $("#lblTelefonos").html(d.telefonos);
-                            $("#lblEMails").html(d.emails);
-                            $("#denuncuaUserModalChange").modal('hide');
-                        }).fail(function (response) {
-                            $("#denuncuaUserModalChange").modal('hide');
-                            // var err = JSON.stringify(response.responseJSON);
-                            // if ( response.responseJSON.errors === undefined ) {
-                            //     fillArray(response.responseJSON, $form)
-                            // }else{
-                            //     sayErrors(response.responseJSON.errors, $form);
-                            // }
-                        });
+                    var PARAMS = {
+                        ciudadano_id: ciudadano_id,
+                        ap_paterno: ap_paterno,
+                        ap_materno: ap_materno,
+                        nombre: nombre,
+                        telefonos: telefonos,
+                        celulares: celulares,
+                        emails: emails,
+                        _token: token
+                    };
 
-                    }
+                    // alert(PARAMS);
+
+                    $.post(hRef, PARAMS, function (response) {
+                        alert(response.mensaje);
+                        var d = response.data;
+                        $("#lblCelulares").html(d.celulares);
+                        $("#lblTelefonos").html(d.telefonos);
+                        $("#lblEMails").html(d.emails);
+                        $("#denunciaUserModalChange").modal('hide');
+                    }).fail(function (response) {
+                        $("#denunciaUserModalChange").modal('hide');
+                        // var err = JSON.stringify(response.responseJSON);
+                        // if ( response.responseJSON.errors === undefined ) {
+                        //     fillArray(response.responseJSON, $form)
+                        // }else{
+                        //     sayErrors(response.responseJSON.errors, $form);
+                        // }
+                    });
                 }
 
             });
