@@ -545,17 +545,6 @@ class DenunciaAmbitoController extends Controller{
                 ->orderBy('dependencia')->pluck('dependencia','id');
             $dep_id = $dependencia_id_array[0];
 
-//            $Servicios = Servicio::where("estatus_cve", 1)
-//                        ->whereHas('subareas', function($p) use ($dep_id) {
-//                            $p->whereHas("areas", function($q) use ($dep_id){
-//                                return $q->where("dependencia_id",$dep_id);
-//                            });
-//                        })
-//                        ->where("estatus_cve", 1)
-//                        ->orderBy('servicio')
-//                        ->get()
-//                        ->pluck('servicio','id');
-
             $Servicios = _viServicios::select(['servicio', 'id', 'servicio_habilitado'])
                 ->where("servicio_habilitado", 1)
                 ->where("dependencia_id",$dep_id)

@@ -254,6 +254,7 @@ class FuncionesController extends Controller
                         'denuncia','referencia', 'status_denuncia','prioridad','origen','observaciones','genero_ciudadano',
                         'cerrado','origen_id','ciudadano_id','ultimo_estatus','firmado','latitud','longitud',
                         'clave_identificadora','estatus_general','ambito_sas','fecha_ultimo_estatus',
+                        'creadopor_id','modificadopor_id',
                     ];
     }
 
@@ -261,6 +262,9 @@ class FuncionesController extends Controller
         return [1,99];
     }
 
+    public static function arrAmbitosDependencia(): array{
+        return [1=>"Apoyos Sociales",2=>"Servicios Municipales",99=>"SM Viejitos"];
+    }
 
 
 

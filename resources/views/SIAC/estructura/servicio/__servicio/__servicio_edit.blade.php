@@ -8,21 +8,21 @@
     </div>
 </div>
 <div class="form-group row mb-1">
-    <label for = "is_visible_nombre_corto_ss" class="col-md-2 col-form-label text-right">Is Servicio</label>
+    <label for = "is_visible_nombre_corto_ss" class="col-md-2 col-form-label text-right">Para Monitoreo</label>
     <div class="col-md-2">
         <select class=" form-control " name="is_visible_nombre_corto_ss" id="is_visible_nombre_corto_ss" size="1">
             <option value="1" @if( $items->is_visible_nombre_corto_ss ) selected @endif >SI</option>
             <option value="0" @if( ! $items->is_visible_nombre_corto_ss ) selected @endif >NO</option>
         </select>
     </div>
-    <label for = "nombre_corto_orden_ss" class="col-md-2 col-form-label has-nombre_corto_orden_ss text-right">Orden Serv.</label>
+    <label for = "nombre_corto_orden_ss" class="col-md-2 col-form-label has-nombre_corto_orden_ss text-right">Orden Mon.</label>
     <div class="col-md-2">
         <input type="text" name="nombre_corto_orden_ss" id="nombre_corto_orden_ss" value="{{ old('nombre_corto_orden_ss',$items->nombre_corto_orden_ss) }}" class="form-control" />
         <span class="has-nombre_corto_orden_ss">
             <strong class="text-danger"></strong>
         </span>
     </div>
-    <label for = "nombre_corto_ss" class="col-md-2 col-form-label has-nombre_corto_ss text-right">Nombre Serv.</label>
+    <label for = "nombre_corto_ss" class="col-md-2 col-form-label has-nombre_corto_ss text-right">Nombre Mon.</label>
     <div class="col-md-2">
         <input type="text" name="nombre_corto_ss" id="nombre_corto_ss" value="{{ old('nombre_corto_ss',$items->nombre_corto_ss) }}" class="form-control" />
         <span class="has-nombre_corto_ss">
@@ -31,7 +31,7 @@
     </div>
 </div>
 <div class="form-group row mb-1">
-    <label for = "is_visible_mobile" class="col-md-2 col-form-label text-right">Is Mobile</label>
+    <label for = "is_visible_mobile" class="col-md-2 col-form-label text-right">Para Mobile</label>
     <div class="col-md-2">
         <select class=" form-control " name="is_visible_mobile" id="is_visible_mobile" size="1">
             <option value="1" @if( $items->isVisibleMobile() ) selected @endif >SI</option>

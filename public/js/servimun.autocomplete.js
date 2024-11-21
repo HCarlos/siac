@@ -7,7 +7,6 @@ jQuery(function($) {
             }
         });
 
-
         var Objs = ["#search_autocomplete","#search_autocomplete_user",".search_autocomplete_user","#search_autocomplete_calle","#search_autocomplete_colonia","#search_autocomplete_cp","#search_autocomplete_comunidad"];
         var Urls = ["/searchAdress","/searchUser","/searchUser","/buscarCalle","/buscarColonia","/buscarCodigopostal","/buscarComunidad"];
         var Gets = ["/getUbi/","/getUser/","/getUser/","/getCalle/","/getColonia/","/getCodigopostal/","/getComunidad/"];
@@ -21,7 +20,7 @@ jQuery(function($) {
         function callAjax(Obj, Url, Get, Item, ID, Elem) {
             $(Obj).autocomplete({
                 source: function(request, response) {
-                    $("#btnRefreshButtonUser").prop('disabled',true);
+                    $(".denuncuaUserModalChange").prop('disabled',true);
                     $("#editUser").prop('disabled',true);
                     $.ajax({
                         url: Url,
@@ -54,7 +53,6 @@ jQuery(function($) {
 
         }
 
-
         function asignObjects(Obj, Item, data) {
             // alert(Item);
             //
@@ -73,14 +71,25 @@ jQuery(function($) {
                     if ( $("#searchGoogle") )       $("#searchGoogle").val(d.sanitizer_location);
 
                     if ( $("#usuario_telefonos") )  {
-                        $("#usuario_telefonos").val(d.telefonos);
-                        var dd = d.telefonos.split(';');
-                        $("#lblCelulares").html(dd[0]);
-                        $("#lblTelefonos").html(dd[1]);
-                        $("#lblEMails").html(dd[2]);
+                        llevarDatosdelUsuario(d);
+                        // $("#usuario_telefonos").val(d.telefonos);
+                        // var dd = d.telefonos.split(';');
+                        // $("#lblCelulares").html(dd[0]);
+                        // $("#lblTelefonos").html(dd[1]);
+                        // $("#lblEMails").html(dd[2]);
+                        // $("#ciu_ap_paterno").val(d.ap_paterno);
+                        // $("#ciu_ap_materno").val(d.ap_materno);
+                        // $("#ciu_nombre").val(d.nombre);
+                        // $("#ciu_telefonos").val(dd[1]);
+                        // $("#ciu_celulares").val(dd[0]);
+                        // $("#ciu_emails").val(dd[2]);
+                        // $("#ciudadano_id").val(d.id);
                     }
 
-                    if ( $("#usuario_id") )         $("#usuario_id").val(d.id);
+                    if ( $("#usuario_id") ){
+                        $("#usuario_id").val(d.id)
+                        $(".denuncuaUserModalChange").prop('disabled',false);
+                    };
                     if ( $("#ubicacion_id") )       $("#ubicacion_id").val(d.ubicacion_id);
                     if ( $("#ubicacion_id_span") )  $("#ubicacion_id_span").html(d.ubicacion_id);
                     if ( $("#ubicacion") )          $("#ubicacion").val(d.id+' '+d.domicilio);
@@ -88,7 +97,6 @@ jQuery(function($) {
                     if ( $("#editUser") ) $("#editUser").prop('disabled',false);
                     if ( $("#editUser") ) $("#editUser").attr('href','/editUser/'+d.id);
 
-                    $("#btnRefreshButtonUser").prop('disabled',false);
                     break;
                 case 2:
                     if ( $("#lstAsigns") ) $("#lstAsigns").empty();
@@ -129,7 +137,23 @@ jQuery(function($) {
                     $("#usuario_id").val(0);
                     $("#editUser").prop('disabled',true);
                     $("#editUser").prop('href',null);
-                    $("#btnRefreshButtonUser").prop('disabled',true);
+                    $(".denuncuaUserModalChange").prop('disabled',true);
+
+                    if ( $("#usuario_telefonos") )  {
+                        limpiarDatosdelUsuario();
+                        // $("#usuario_telefonos").empty();
+                        // $("#lblCelulares").html('');
+                        // $("#lblTelefonos").html('');
+                        // $("#lblEMails").html('');
+                        // $("#ciu_ap_paterno").empty();
+                        // $("#ciu_ap_materno").empty();
+                        // $("#ciu_nombre").empty();
+                        // $("#ciu_telefonos").empty();
+                        // $("#ciu_celulares").empty();
+                        // $("#ciu_emails").empty();
+                        // $("#ciudadano_id").val(0);
+                    }
+
                     break;
                 case 2:
                     if ( $("#lstAsigns") ) $("#lstAsigns").empty();
@@ -166,28 +190,93 @@ jQuery(function($) {
              $("#ubicacion_nueva_id").val( $(this).val() );
         });
 
-        $("#btnRefreshButtonUser").on('click',function(event){
-            event.preventDefault();
-            if ( $("#usuario_id") ) {
-                var user_id = parseInt($("#usuario_id").val());
-                if ( user_id > 0 ) {
-                    // alert(user_id);
-                    $.ajax({
-                        methods: "GET",
-                        url: "/getUser/"+user_id,
-                        dataType: "json",
-                        success: function(data) {
-                            var d = data.data;
+        if ( $("#usuario_id") && parseInt( $("#usuario_id").val() ) > 0 ) {
+            $(".denuncuaUserModalChange").prop('disabled', false);
+        }else{
+            $(".denuncuaUserModalChange").prop('disabled', true);
+        }
+
+        if ( $("#btnRefreshUserData") ) {
+            $("#btnRefreshUserData").on('click', function (event) {
+                event.preventDefault();
+                if ($("#btnRefreshUserData")) {
+                    var ciudadano_id = parseInt($("#ciudadano_id").val());
+                    if (ciudadano_id > 0) {
+
+                        var hRef = "putModalDenunciaUserUpdate";
+                        var token = $("meta[name='csrf-token']").attr('content');
+                        var ap_paterno = $("#ciu_ap_paterno").val();
+                        var ap_materno = $("#ciu_ap_materno").val();
+                        var nombre = $("#ciu_nombre").val();
+                        var telefonos = $("#ciu_telefonos").val();
+                        var celulares = $("#ciu_celulares").val();
+                        var emails = $("#ciu_emails").val();
+
+                        var PARAMS = {
+                            ciudadano_id: ciudadano_id,
+                            ap_paterno: ap_paterno,
+                            ap_materno: ap_materno,
+                            nombre: nombre,
+                            telefonos: telefonos,
+                            celulares: celulares,
+                            emails: emails,
+                            _token: token
+                        };
+
+                        $.post(hRef, PARAMS, function (response) {
+                            alert(response.mensaje);
+                            var d = response.data;
                             $("#lblCelulares").html(d.celulares);
-                            $("#lblTelefonos").html(d.telefonos_casa);
+                            $("#lblTelefonos").html(d.telefonos);
                             $("#lblEMails").html(d.emails);
-                        },
-                    });
+                            $("#denuncuaUserModalChange").modal('hide');
+                        }).fail(function (response) {
+                            $("#denuncuaUserModalChange").modal('hide');
+                            // var err = JSON.stringify(response.responseJSON);
+                            // if ( response.responseJSON.errors === undefined ) {
+                            //     fillArray(response.responseJSON, $form)
+                            // }else{
+                            //     sayErrors(response.responseJSON.errors, $form);
+                            // }
+                        });
+
+                    }
                 }
-            }
 
-        });
-
+            });
+        }
 
     });
+
+
+    function llevarDatosdelUsuario(d){
+        $("#usuario_telefonos").val(d.telefonos);
+        var dd = d.telefonos.split(';');
+        $("#lblCelulares").html(dd[0]);
+        $("#lblTelefonos").html(dd[1]);
+        $("#lblEMails").html(dd[2]);
+        $("#ciu_ap_paterno").val(d.ap_paterno);
+        $("#ciu_ap_materno").val(d.ap_materno);
+        $("#ciu_nombre").val(d.nombre);
+        $("#ciu_telefonos").val(dd[1]);
+        $("#ciu_celulares").val(dd[0]);
+        $("#ciu_emails").val(dd[2]);
+        $("#ciudadano_id").val(d.id);
+    }
+
+    function limpiarDatosdelUsuario(){
+        $("#usuario_telefonos").empty();
+        $("#lblCelulares").html('');
+        $("#lblTelefonos").html('');
+        $("#lblEMails").html('');
+        $("#ciu_ap_paterno").empty();
+        $("#ciu_ap_materno").empty();
+        $("#ciu_nombre").empty();
+        $("#ciu_telefonos").empty();
+        $("#ciu_celulares").empty();
+        $("#ciu_emails").empty();
+        $("#ciudadano_id").val(0);
+    }
+
+
 });

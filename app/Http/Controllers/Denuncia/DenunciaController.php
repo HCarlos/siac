@@ -73,16 +73,6 @@ class DenunciaController extends Controller{
             $items->appends($search)->fragment('table');
         }
 
-
-
-//        $items = _::query()
-//            ->getDenunciasItemCustomFilter($filters)
-//            ->orderByDesc('id')
-//            ->paginate($this->max_item_for_query);
-//        $items->appends($search)->fragment('table');
-//        $request->session()->put('items', $items);
-
-
         $request->session()->put('items', $items);
 
 
@@ -640,7 +630,8 @@ class DenunciaController extends Controller{
 
     protected function searchIdentical(SearchIdenticalRequest $request){
         $items = $request->manage();
-        if ( $items == [] ) {
+//        dd($items);
+        if ($items === null || $items === []) {
             return Response::json(['mensaje' => 'No hay datos', 'result_msg' => 'Error', 'data' => null, 'status' => '200'], 200);
         }
         return Response::json(['mensaje' => count($items).' registros(s).', 'result_msg' => 'OK', 'data' => $items, 'status' => '200'], 200);

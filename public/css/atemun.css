@@ -931,6 +931,15 @@ gmp-map {
     overflow: auto;
 }
 
+.text-verde-morena {
+    color: #085108;
+}
+
+.text-rojo-morena {
+    color: #6d0505;
+}
+
+
 img.scanned {
     height: 200px; /** Sets the display size */
     margin-right: 12px;

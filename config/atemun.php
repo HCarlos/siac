@@ -122,6 +122,7 @@ return [
             'imagene_parent'                        => 'imagene_parent',
             'firmas'                                => 'firmas',
             'denuncia_firma'                        => 'denuncia_firma',
+            'estatu_user'                           => 'estatu_user',
         ],
         'domicilios' => [
             'users'             => 'users',

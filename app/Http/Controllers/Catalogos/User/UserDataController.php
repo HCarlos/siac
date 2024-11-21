@@ -338,7 +338,6 @@ class UserDataController extends Controller
             );
             $sl = $F->str_sanitizer($sl);
         }
-
         $items->domicilio = $items->ubicaciones()->first()->Ubicacion;
         $items->ubicacion_id = $items->ubicaciones()->first()->id;
         $items->nombre_completo = $items->FullName;

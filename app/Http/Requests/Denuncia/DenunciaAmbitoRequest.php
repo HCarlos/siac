@@ -49,10 +49,15 @@ class DenunciaAmbitoRequest extends FormRequest
     {
 
         return [
-            'descripcion'      => ['required'],
-            'servicio_id'      => ['required'],
-            'usuario_id'       => ['required'],
-            'ubicacion_id'     => ['required','numeric','min:1'],
+            'descripcion'  => ['required','string','min:4'],
+            'referencia'   => ['required','string','min:4'],
+            'servicio_id'  => ['required','numeric','min:1'],
+            'usuario_id'   => ['required','numeric','min:1'],
+            'origen_id'    => ['required','numeric','min:1'],
+            'ubicacion_id' => ['required','numeric','min:1'],
+            'latitud'      => ['required','numeric'],
+            'longitud'     => ['required','numeric'],
+            'gd_ubicacion' => ['required','string','min:4'],
         ];
     }
 
@@ -67,8 +72,12 @@ class DenunciaAmbitoRequest extends FormRequest
             'descripcion'     => 'Solicitud',
             'referencia'      => 'Referencia',
             'servicio_id'     => 'Servicio',
+            'origen_id'       => 'Fuente',
             'usuario_id'      => 'Usuario',
             'ubicacion_id'    => 'Ubicación',
+            'latitud'         => 'Latitud',
+            'longitud'        => 'Longitud',
+            'gd_ubicacion'    => 'Ubicación google',
         ];
     }
 

@@ -22,6 +22,7 @@ use App\Models\Catalogos\Domicilios\Estado;
 use App\Models\Catalogos\Domicilios\Municipio;
 use App\Models\Catalogos\Domicilios\Ubicacion;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 trait DenunciaTrait
@@ -47,11 +48,11 @@ trait DenunciaTrait
     }
 
     public function getFechaIngresoSolicitudAttribute(){
-        return  $this->fecha_ingreso->format('d-m-Y H:i:s');;
+        return Carbon::parse($this->fecha_ingreso)->format('d-m-Y H:i:s');
     }
 
     public function getFolioDacAttribute(){
-        return "DAC-".str_pad($this->id,6,'0',STR_PAD_LEFT)."-".$this->fecha_ingreso->format('y');
+        return "DAC-".str_pad($this->id,6,'0',STR_PAD_LEFT)."-".Carbon::parse($this->fecha_ingreso)->format('y');
     }
 
 

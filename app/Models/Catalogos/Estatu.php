@@ -4,6 +4,7 @@ namespace App\Models\Catalogos;
 
 use App\Filters\Catalogo\EstatuFilter;
 use App\Models\Denuncias\Denuncia;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -16,6 +17,7 @@ class Estatu extends Model
 
     protected $fillable = [
         'id', 'estatus','predeterminado','abreviatura','orden_impresion','estatus_cve','resuelto',
+        'favorable','ambito_estatus',
     ];
 
     protected $casts = ['predeterminado'=>'boolean','resuelto'=>'boolean',];
@@ -50,6 +52,11 @@ class Estatu extends Model
     public function servicios(){
         return $this->belongsToMany(Servicio::class,'denuncia_dependencia_servicio_estatus','estatu_id','servicio_id')
         ->withPivot('fecha_movimiento','observaciones','favorable','fue_leida','creadopor_id');
+    }
+
+    public function users(){
+        return $this->belongsToMany(User::class,'estatu_user','estatu_id','user_id')
+            ->withPivot('orden','predeterminado');
     }
 
 

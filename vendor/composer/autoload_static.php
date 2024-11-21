@@ -830,6 +830,7 @@ class ComposerStaticInitbc22812bef43aaecbfc0faae11c3f329
         'App\\Http\\Controllers\\Denuncia\\DenunciaController' => __DIR__ . '/../..' . '/app/Http/Controllers/Denuncia/DenunciaController.php',
         'App\\Http\\Controllers\\Denuncia\\DenunciaDependenciaServicioController' => __DIR__ . '/../..' . '/app/Http/Controllers/Denuncia/DenunciaDependenciaServicioController.php',
         'App\\Http\\Controllers\\Denuncia\\DenunciaMobileController' => __DIR__ . '/../..' . '/app/Http/Controllers/Denuncia/DenunciaMobileController.php',
+        'App\\Http\\Controllers\\Denuncia\\DenunciaUserAmbitoController' => __DIR__ . '/../..' . '/app/Http/Controllers/Denuncia/DenunciaUserAmbitoController.php',
         'App\\Http\\Controllers\\Denuncia\\EstatuController' => __DIR__ . '/../..' . '/app/Http/Controllers/Denuncia/EstatuController.php',
         'App\\Http\\Controllers\\Denuncia\\Imagene\\ImageneController' => __DIR__ . '/../..' . '/app/Http/Controllers/Denuncia/Imagene/ImageneController.php',
         'App\\Http\\Controllers\\Denuncia\\MedidaController' => __DIR__ . '/../..' . '/app/Http/Controllers/Denuncia/MedidaController.php',

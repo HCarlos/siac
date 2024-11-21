@@ -29,19 +29,23 @@ async function initMap(lat, lon, siExiste) {
     const map = new Map(document.getElementById("map"), {
         zoom: 18.5,
         center: plaza[0],
-        mapId: "{{ env('GOOGLE_MAPS_KEY') }}",
+        mapId: localStorage.apikeymps,
     });
 
     const infoWindow = new InfoWindow();
 
     if (!siExiste) {
 
-        let searchGoogle = document.getElementById("searchGoogle").value;
+        let searchGoogle = document.getElementById("searchGoogle").value + " centro tabasco";
 
         const request = {
             query: searchGoogle,
             fields: ["name", "formatted_address", "geometry"],
         };
+
+    // , "formatted_address"
+
+        // alert(request.query);
 
         service = new google.maps.places.PlacesService(map);
         service.findPlaceFromQuery(request, (results, status) => {
@@ -50,11 +54,13 @@ async function initMap(lat, lon, siExiste) {
                 createMarker(results[0], infoWindow, PinElement, AdvancedMarkerElement, map);
 //      }
                 map.setCenter(results[0].geometry.location);
+                geocodePosition(results[0].geometry.location)
             }
         });
 
     }else{
         createMarker(plaza[0], infoWindow, PinElement, AdvancedMarkerElement, map);
+        geocodePosition(plaza[0])
     }
 
 

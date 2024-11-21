@@ -8,6 +8,7 @@ namespace App\Http\Requests\Denuncia;
 use App\Classes\MessageAlertClass;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Models\Catalogos\Domicilios\Ubicacion;
+use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\Denuncia;
 use App\User;
 use Illuminate\Database\QueryException;
@@ -46,10 +47,10 @@ class SearchIdenticalRequest extends FormRequest{
             $descripcion  = strtoupper(trim($this->descripcion));
             $referencia   = strtoupper(trim($this->referencia));
             $ubicacion    = strtoupper(trim($this->ubicacion));
-            $ubicacion_id = intval($this->ubicacion_id);
-            $usuario_id   = intval($this->usuario_id);
-            $servicio_id  = intval($this->servicio_id);
-            $id           = intval($this->id);
+            $ubicacion_id = (int) $this->ubicacion_id;
+            $usuario_id   = (int) $this->usuario_id;
+            $servicio_id  = (int) $this->servicio_id;
+            $id           = (int) $this->id;
 
             $Ubi = Ubicacion::find($ubicacion_id);
 
@@ -64,7 +65,9 @@ class SearchIdenticalRequest extends FormRequest{
             $oFilters['search'] = $tsString;
             $oFilters['servicio_id'] = $servicio_id;
 
-        $items = Denuncia::query()
+//            dd($oFilters);
+
+        $items = _viDDSs::query()
             ->filterBy($oFilters)
             ->orderBy('id')
             ->get();

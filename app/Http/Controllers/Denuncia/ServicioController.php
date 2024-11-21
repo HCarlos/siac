@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Denuncia;
 
 use App\Classes\RemoveItemSafe;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Funciones\FuncionesController;
 use App\Http\Requests\Denuncia\ServicioRequest;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Medida;
@@ -193,8 +194,7 @@ class ServicioController extends Controller
 
 
 // ***************** ELIMINA EL ITEM VIA AJAX ++++++++++++++++++++ //
-    protected function removeItem($id = 0)
-    {
+    protected function removeItem($id = 0){
         $item = Servicio::withTrashed()->findOrFail($id);
         if (isset($item)) {
             return RemoveItemSafe::RemoveItemObject($item,'servicio_id',$id);
@@ -228,7 +228,9 @@ class ServicioController extends Controller
                 'findDataInDenuncia' => 'findDataInDenuncia',
                 'dependencias'       => $Dependencias,
                 'items'              => $user,
-            ]
+                'ambito_dependencia' => FuncionesController::arrAmbitosDependencia(),
+
+        ]
         );
     }
 

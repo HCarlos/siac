@@ -103,6 +103,7 @@ return array(
     'App\\Http\\Controllers\\Denuncia\\DenunciaController' => $baseDir . '/app/Http/Controllers/Denuncia/DenunciaController.php',
     'App\\Http\\Controllers\\Denuncia\\DenunciaDependenciaServicioController' => $baseDir . '/app/Http/Controllers/Denuncia/DenunciaDependenciaServicioController.php',
     'App\\Http\\Controllers\\Denuncia\\DenunciaMobileController' => $baseDir . '/app/Http/Controllers/Denuncia/DenunciaMobileController.php',
+    'App\\Http\\Controllers\\Denuncia\\DenunciaUserAmbitoController' => $baseDir . '/app/Http/Controllers/Denuncia/DenunciaUserAmbitoController.php',
     'App\\Http\\Controllers\\Denuncia\\EstatuController' => $baseDir . '/app/Http/Controllers/Denuncia/EstatuController.php',
     'App\\Http\\Controllers\\Denuncia\\Imagene\\ImageneController' => $baseDir . '/app/Http/Controllers/Denuncia/Imagene/ImageneController.php',
     'App\\Http\\Controllers\\Denuncia\\MedidaController' => $baseDir . '/app/Http/Controllers/Denuncia/MedidaController.php',

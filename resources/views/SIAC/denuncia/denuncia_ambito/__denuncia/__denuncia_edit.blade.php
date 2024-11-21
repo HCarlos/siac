@@ -11,53 +11,92 @@
                             <a href="{{route("newUser")}}" target="_blank" class="btn btn-icon btn-info"> <i class="mdi mdi-plus"></i></a>
                         </span>
                     </div>
-                    <div class="input-group btn-group-xs">
-                        <input type="text" name="usuario" id="usuario" value="{{ $items->Ciudadano->FullName }}" class="form-control" readonly>
-                        <span class="input-group-append">
-                            <a  href="{{route("editUser",['Id'=>$items->Ciudadano->id])}}" target="_blank" class="btn btn-xs btn-icon btn-primary editUser" id="editUser" > <i class="mdi mdi-account-edit text-white "></i></a>
+{{--                    <div class="input-group btn-group-xs">--}}
+{{--                        <input type="text" name="usuario" id="usuario" value="{{ $items->Ciudadano->FullName }}" class="form-control" readonly>--}}
+{{--                        <span class="input-group-append">--}}
+{{--                            <a  href="{{route("editUser",['Id'=>$items->Ciudadano->id])}}" target="_blank" class="btn btn-xs btn-icon btn-primary editUser" id="editUser" > <i class="mdi mdi-account-edit text-white "></i></a>--}}
+{{--                        </span>--}}
+{{--                        <span class="input-group-append">--}}
+{{--                            <button type="button" class="btn btn-ico btn-secondary" id="btnRefreshButtonUser" >--}}
+{{--                                <i class="mdi mdi-refresh"></i>--}}
+{{--                            </button>--}}
+{{--                        </span>--}}
+{{--                    </div>--}}
+
+                </div>
+                <div class="col-lg-12 border-bottom">
+                    <div class="input-group btn-group-sm mb-1 mt-1 ">
+                        <span class="input-group-append float-left flex-fill">
+                            <i class="mdi mdi-cellphone-iphone font-18 pl-1 pr-1"></i> <span class="pt-1" id="lblCelulares">{{ $items->ciudadano->celulares }}</span>
+                            <i class="mdi mdi-phone font-18 pl-1 pr-1"></i> <span class="pt-1" id="lblTelefonos">{{ $items->ciudadano->telefonos }}</span>
+                            <i class="mdi mdi-email font-18 pl-1 pr-1"></i> <span class="pt-1" id="lblEMails">{{ $items->ciudadano->emails }}</span>
                         </span>
-                        <span class="input-group-append">
-                            <button type="button" class="btn btn-ico btn-secondary" id="btnRefreshButtonUser" >
-                                <i class="mdi mdi-refresh"></i>
-                            </button>
-                        </span>
-                    </div>
-                    <div class="input-group btn-group-xs mb-1 border-bottom">
-                        <span class="input-group-append">
-                            <i class="mdi mdi-cellphone-iphone font-18 pl-1 pr-1"></i> <span class="pt-1" id="lblCelulares">{{ $items->Ciudadano->celulares }}</span>
-                            <i class="mdi mdi-phone font-18 pl-1 pr-1"></i> <span class="pt-1" id="lblTelefonos">{{ $items->Ciudadano->telefonos }}</span>
-                            <i class="mdi mdi-email font-18 pl-1 pr-1"></i> <span class="pt-1" id="lblEMails">{{ $items->Ciudadano->emails }}</span>
-                        </span>
+                        <button type="button" class="btn btn-sm btn-orange float-right text-white  denuncuaUserModalChange"  data-toggle="modal" data-placement="top" data-target="#denuncuaUserModalChange" data-original-title="Actualizar datos del usuario"><i class="mdi mdi-refresh"></i></button>
                     </div>
                 </div>
+
         </div>
 
-            <div class="form-row mb-1 " >
-                <label class="col-lg-12 col-form-label labelDenuncia">Ubica la dirección del problema: </label>
-                <div class="col-lg-12 mb-2">
-                    <select id="pregunta1" name="pregunta1" class="form-control pregunta1" size="1">
-                        <option value="0" {{$pregunta1 === 0 ? 'selected': '' }} >La misma dirección del usuario demandante </option>
-                        <option value="1" {{$pregunta1 === 1 ? 'selected': '' }} >Otra dirección </option>
-                    </select>
+{{--            <div class="form-row mb-1 " >--}}
+{{--                <label class="col-lg-12 col-form-label labelDenuncia">Ubica la dirección del problema: </label>--}}
+{{--                <div class="col-lg-12 mb-2">--}}
+{{--                    <select id="pregunta1" name="pregunta1" class="form-control pregunta1" size="1">--}}
+{{--                        <option value="0" {{$pregunta1 === 0 ? 'selected': '' }} >La misma dirección del usuario demandante </option>--}}
+{{--                        <option value="1" {{$pregunta1 === 1 ? 'selected': '' }} >Otra dirección </option>--}}
+{{--                    </select>--}}
 
-                </div>
-            </div>
+{{--                </div>--}}
+{{--            </div>--}}
+{{--            <div class="form-row panelUbiProblem pb-2" style="background-color: floralwhite">--}}
+{{--                <label for = "search_autocomplete" class="col-lg-12 col-form-label">Buscar ubicación del Problema</label>--}}
+{{--                <div class="col-lg-12">--}}
+{{--                    <div class="input-group">--}}
+{{--                        <input type="text" name="search_autocomplete" id="search_autocomplete" value="{{ $items->Ubicacion->Ubicacion }}" class="form-control" placeholder="Buscar ubicación...">--}}
+{{--                        <span class="input-group-append">--}}
+{{--                            <a href="{{route("newUbicacion")}}" target="_blank" class="btn btn-icon btn-info"> <i class="mdi mdi-plus"></i></a>--}}
+{{--                        </span>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--            <div class="form-row pb-2">--}}
+{{--                <input type="text" name="ubicacion" id="ubicacion" value="{{ old('ubicacion', $items->Ubicacion->id.' '.$items->Ubicacion->Ubicacion) }}" class="form-control" disabled/>--}}
+{{--            </div>--}}
+{{--            <hr>--}}
 
-            <div class="form-row panelUbiProblem pb-2" style="background-color: floralwhite">
-                <label for = "search_autocomplete" class="col-lg-12 col-form-label">Buscar ubicación del Problema</label>
-                <div class="col-lg-12">
+{{--            <div class="form-row mb-1 ">--}}
+{{--                <label for = "searchGoogle" class="col-lg-2 col-form-label text-right">Ubicación: </label>--}}
+{{--                <div class="col-xs-8">--}}
+{{--                    <input type="text" name="searchGoogle" id="searchGoogle" class="form-control" value="{{ old('searchGoogle', $items->searchGoogle) }}" placeholder="escriba aquí la colonia" >--}}
+{{--                    <small class="text-verde-morena font-medium text-center p-0 m-0" id="searchGoogleResult">{{ $items->gd_ubicacion }}</small>--}}
+{{--                    <small class="text-danger font-medium text-center p-0 m-0" id="searchGoogleError"></small>--}}
+{{--                </div>--}}
+{{--                <div class="col-lg-2">--}}
+{{--                    <button type="button" class="btn btn-sm btn-primary float-right" id="searchGoogleBtn">--}}
+{{--                        <i class="mdi mdi-magnify"></i>--}}
+{{--                    </button>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+
+            <div class="form-row mb-1 ">
+                <label for = "searchGoogle" class="col-sm-2 col-form-label text-right">Ubicación: </label>
+                <div class="col-sm-10">
                     <div class="input-group">
-                        <input type="text" name="search_autocomplete" id="search_autocomplete" value="{{ $items->Ubicacion->Ubicacion }}" class="form-control" placeholder="Buscar ubicación...">
-                        <span class="input-group-append">
-                            <a href="{{route("newUbicacion")}}" target="_blank" class="btn btn-icon btn-info"> <i class="mdi mdi-plus"></i></a>
-                        </span>
+                        <input type="text" name="searchGoogle" id="searchGoogle" class="form-control" value="{{ old('searchGoogle', $items->searchGoogle) }}" placeholder="escriba aquí la colonia" >
+                        <button type="button" class="btn btn-sm btn-primary float-right" id="searchGoogleBtn">
+                            <i class="mdi mdi-magnify"></i>
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="form-row pb-2">
-                <input type="text" name="ubicacion" id="ubicacion" value="{{ old('ubicacion', $items->Ubicacion->id.' '.$items->Ubicacion->Ubicacion) }}" class="form-control" disabled/>
+
+            <div class="form-row mb-1">
+                <label for = "searchGoogleResult" class="col-lg-2 col-form-label text-right"> </label>
+                <div class="col-lg-10">
+                    <small class="text-success font-medium text-center p-0 m-0" id="searchGoogleResult"></small>
+                    <small class="text-danger font-medium text-center p-0 m-0" id="searchGoogleError"></small>
+                </div>
             </div>
-            <hr>
+
 
             <div class="form-row mb-1 ">
                 <label for = "latitud" class="col-lg-2 col-form-label text-right">Latitud: </label>
@@ -69,35 +108,13 @@
                     <input type="text" name="longitud" id="longitud" class="form-control longitud" value="{{ old('longitud', $items->longitud) }}" placeholder="-92.944787" >
                 </div>
             </div>
-            <div class="form-row mb-1 ">
-                <label for = "searchGoogle" class="col-lg-2 col-form-label text-right">Google: </label>
-                <div class="col-lg-8">
-                    <input type="text" name="searchGoogle" id="searchGoogle" class="form-control" value="{{ old('searchGoogle', $items->searchGoogle) }}" placeholder="escriba aquí la colonia" >
-                    <small class="col-xs-12 text-danger" id="searchGoogleError"></small>
-                </div>
-                <div class="col-lg-2">
-                    <button type="button" class="btn btn-sm btn-primary float-right" id="searchGoogleBtn">
-                        <i class="mdi mdi-magnify"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="form-row mb-1">
-                <label for = "searchGoogle" class="col-lg-2 col-form-label text-right"> </label>
-                <div class="col-lg-10">
-                    <small class="text-default font-medium text-center p-0 m-0" id="searchGoogleResult">{{ $items->gd_ubicacion }}</small>
-                </div>
-            </div>
-            <div class="form-group row mb-1">
+            <hr>
+            <div class="form-group row mb-1 mt-2">
                 <div class="col-lg-12 ">
                     <div id="map" class="hidden"></div>
                 </div>
             </div>
-            <div class="form-group row mb-1">
-                <label for = "referencia" class="col-lg-12 col-form-label labelDenuncia text-left">Referencia para una mejor ubicación:  </label>
-                <div class="col-lg-12">
-                    <textarea name="referencia" id="referencia" rows="5" class="form-control">{{ old('referencia', $items->referencia) }}</textarea>
-                </div>
-            </div>
+            <hr>
         </div>
     </div>
 
@@ -108,6 +125,7 @@
                 <label for = "origen_id" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Fuente:</label>
                 <div class="col-lg-10">
                     <select id="origen_id" name="origen_id" class="form-control" size="1">
+                        <option value="0" >Seleccione una fuente</option>
                         @foreach($origenes as $t)
                             <option value="{{$t->id}}" {{ $t->id === $items->origen_id ? 'selected': '' }} >{{ $t->origen }} </option>
                         @endforeach
@@ -119,9 +137,9 @@
                 <label for = "servicio_id" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Servicio:</label>
                 <div class="col-lg-10">
                     <select id="servicio_id" name="servicio_id" class="form-control" size="1">
-                        <option value="0" selected>Seleccione un Servicio</option>
+                        <option value="0" >Seleccione un Servicio</option>
                         @foreach($servicios as $t)
-                            <option value="{{$t->id}}" {{ $t->id === $items->servicio_id ? 'selected': '' }} >{{ $t->id }} - {{ $t->servicio.' ('.$t->abreviatura_dependencia.')' }}</option>
+                            <option value="{{$t->id}}" {{ $t->id === $items->servicio_id ? 'selected': '' }} >{{ $t->servicio.' ('.$t->abreviatura_dependencia.')' }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -132,6 +150,16 @@
                 <div class="col-lg-10">
                     <textarea name="descripcion" id="descripcion" class="form-control">{{ old('descripcion',$items->descripcion) }}</textarea>
                     <span class="has-descripcion">
+                        <strong class="text-danger"></strong>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group row mb-1">
+                <label for = "referencia" class="col-lg-2 col-form-label has-referencia labelDenuncia text-right m-0 p-0">Referencia:</label>
+                <div class="col-lg-10">
+                    <textarea name="referencia" id="referencia" class="form-control">{{ old('referencia',$items->referencia) }}</textarea>
+                    <span class="has-referencia">
                         <strong class="text-danger"></strong>
                     </span>
                 </div>
@@ -199,6 +227,12 @@
 
 
 
+
+
+
+
+
+
 <div class="row mt-4">
 <div class="col-sm-3">
 <h6>CREADO</h6>
@@ -232,10 +266,10 @@
 <hr>
 
 <input type="hidden" name="id" id="id" value="{{$items->id}}" >
-<input type="hidden" name="ubicacion_id" id="ubicacion_id" value="{{$items->Ubicacion->id}}" >
+<input type="hidden" name="ubicacion_id" id="ubicacion_id" value="{{$items->ubicacion->id}}" >
 <input type="hidden" name="creadopor_id" id="creadopor_id" value="{{$items->creadopor_id}}" >
 <input type="hidden" name="modificadopor_id" id="modificadopor_id" value="{{$user->id}}" >
-<input type="hidden" name="usuario_id" id="usuario_id" value="{{$items->Ciudadano->id}}" >
+<input type="hidden" name="usuario_id" id="usuario_id" value="{{$items->ciudadano->id}}" >
 
 <input type="hidden" name="oficio_envio" id="oficio_envio" value="{{$items->oficio_envio}}" >
 <input type="hidden" name="folio_sas" id="folio_sas" value="{{$items->folio_sas}}" >
@@ -245,14 +279,9 @@
 <input type="hidden" name="fecha_limite" id="fecha_limite" value="{{$items->fecha_limite}}" >
 <input type="hidden" name="fecha_ejecucion" id="fecha_ejecucion" value="{{$items->fecha_ejecucion}}" >
 
-{{--<input type="hidden" name="referencia" id="referencia" value="{{$items->referencia}}" >--}}
-
 <input type="hidden" name="clave_identificadora" id="clave_identificadora" value="{{$items->clave_identificadora}}" >
-{{--<input type="hidden" name="latitud" id="latitud" value="{{$items->latitud}}" >--}}
-{{--<input type="hidden" name="longitud" id="longitud" value="{{$items->longitud}}" >--}}
 
 <input type="hidden" name="prioridad_id" id="prioridad_id" value="{{$items->prioridad_id}}" >
-{{--<input type="hidden" name="origen_id" id="origen_id" value="{{$items->origen_id}}" >--}}
 <input type="hidden" name="estatus_id" id="estatus_id" value="{{$items->estatus_id}}" >
 
 <input type="hidden" name="observaciones" id="observaciones" value="{{$items->observaciones}}" >
@@ -262,16 +291,8 @@
 
 <input type="hidden" name="usuario_telefonos" id="usuario_telefonos" value="{{ $items->Ciudadano->TelefonosCelularesEmails }}" class="form-control" readonly>
 
-{{--<input type="hidden" name="g_calle" id="g_calle" value="{{ old('g_calle',$items->Ubicacion->g_calle) }}" >--}}
-{{--<input type="hidden" name="g_num_ext" id="g_num_ext" value="{{ old('g_num_ext',$items->Ubicacion->g_num_ext) }}" >--}}
-{{--<input type="hidden" name="g_num_int" id="g_num_int" value="{{ old('g_num_int',$items->Ubicacion->g_num_int) }}" >--}}
-{{--<input type="hidden" name="g_colonia" id="g_colonia" value="{{ old('g_colonia',$items->Ubicacion->g_colonia) }}" >--}}
-{{--<input type="hidden" name="g_comunidad" id="g_comunidad" value="{{ old('g_comunidad',$items->Ubicacion->g_comunidad) }}" >--}}
-{{--<input type="hidden" name="g_municipio" id="g_municipio" value="{{ old('g_municipio',$items->Ubicacion->g_municipio) }}" >--}}
-{{--<input type="hidden" name="g_estado" id="g_estado" value="{{ old('g_estado',$items->Ubicacion->g_estado) }}" >--}}
-{{--<input type="hidden" name="g_cp" id="g_cp" value="{{ old('g_cp',$items->Ubicacion->g_cp) }}" >--}}
-{{--<input type="hidden" name="altitud" id="altitud" value="{{ old('altitud',$items->Ubicacion->g_altitud) }}" >--}}
-{{--<input type="hidden" name="g_ubicacion" id="g_ubicacion" value="{{ old('g_ubicacion',$items->Ubicacion->g_ubicacion) }}" >--}}
-
 <input type="hidden" name="altitud" id="altitud" value="{{ old('altitud',$items->altitud) }}" >
 <input type="hidden" name="gd_ubicacion" id="gd_ubicacion" value="{{ old('gd_ubicacion',$items->gd_ubicacion) }}" >
+
+@include('shared/code/__modal_denuncia_user_data')
+

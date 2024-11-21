@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Catalogos\Dependencia;
 
 use App\Classes\RemoveItemSafe;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Funciones\FuncionesController;
 use App\Http\Requests\Dependencia\DependenciaRequest;
 use App\Models\Catalogos\Dependencia;
 use App\User;
@@ -23,6 +24,8 @@ class DependenciaController extends Controller
     protected function index(Request $request)
     {
         ini_set('max_execution_time', 300);
+        $this->ambito_dependencia = FuncionesController::arrAmbitosDependencia();
+
         $filters = $request->all(['search']);
         $items = Dependencia::query()
             ->filterBy($filters)
@@ -53,8 +56,10 @@ class DependenciaController extends Controller
     }
 
     // ***************** CREAR NUEVO ++++++++++++++++++++ //
-    protected function newItem()
-    {
+    protected function newItem(){
+
+        $this->ambito_dependencia = FuncionesController::arrAmbitosDependencia();
+
         $Jefes = User::all()->sortBy(function($item) {
             return $item->ap_paterno.' '.$item->ap_materno.' '.$item->nombre;
         });
@@ -84,13 +89,14 @@ class DependenciaController extends Controller
     // ***************** CREAR NUEVO MODAL++++++++++++++++++++ //
     protected function newItemV2(){
 
+        $this->ambito_dependencia = FuncionesController::arrAmbitosDependencia();
+
         $Jefes = User::query()->whereHas('roles',function($q){
                     return $q->where('name','JEFE');
                 })->orderByRaw("concat(ap_paterno,' ',ap_materno,' ',nombre) DESC")
                 ->get();
         $user = Auth::user();
 
-//        dd($this->ambito_dependencia);
 
         return view('SIAC.dependencia.dependencia.dependencia_modal',
         [

@@ -208,20 +208,31 @@ class ListDenunciaXLSXController extends Controller
             }
 
 
-            if (json_decode($item->estatus_general) == null){
-                $fechaUntiloEstatus = "";
-            }else{
-                $arrUltimoEstatus = last(json_decode($item->estatus_general));
-                $fechaUntiloEstatus   = Carbon::parse($arrUltimoEstatus->fecha)->format('d-m-Y');
-            }
+//            if (json_decode($item->estatus_general) == null){
+//                $fechaUntiloEstatus = "";
+//            }else{
+//                $arrUltimoEstatus = last(json_decode($item->estatus_general));
+//                $fechaUntiloEstatus   = Carbon::parse($arrUltimoEstatus->fecha)->format('d-m-Y');
+//            }
 
+            $telcel = explode(';',$item->telefonoscelularesemails);
+            $cadcel = '';
+            for ($i = 0; $i < count($telcel) - 1;  $i++) {
+                if ($cadcel === ''){
+                    $cadcel .= trim($telcel[$i]);
+                }else if ( trim($telcel[$i]) !== '' ){
+                    $cadcel .= ', ' . trim($telcel[$i]);
+                }else{
+                    $cadcel .= '';
+                }
+            }
 
             $sh
                 ->setCellValue('A'.$C, $item->id ?? 0)
                 ->setCellValue('B'.$C, trim($item->ultimo_servicio ?? ''))
                 ->setCellValue('C'.$C, $fechaIngreso ?? '')
                 ->setCellValue('D'.$C, trim($item->ciudadano ?? ''))
-                ->setCellValue('E'.$C, trim($item->telefonoscelularesemails ?? ''))
+                ->setCellValue('E'.$C, $cadcel)
                 ->setCellValue('F'.$C, trim($item->calle ?? ''))
                 ->setCellValue('G'.$C, trim($item->num_ext ?? ''))
                 ->setCellValue('H'.$C, trim($item->num_int ?? ''))
