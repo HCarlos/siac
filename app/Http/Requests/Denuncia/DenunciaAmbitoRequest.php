@@ -134,7 +134,7 @@ class DenunciaAmbitoRequest extends FormRequest
                 'ambito'                       => $this->ambito ?? 0,
             ];
 
-//            dd($Item);
+//            dd($this->ambito);
 
             if (Auth::user()->isRole('Administrator|SysOp')){
                 $item = $this->guardar($Item);

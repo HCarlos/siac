@@ -11,18 +11,6 @@
                             <a href="{{route("newUser")}}" target="_blank" class="btn btn-icon btn-info"> <i class="mdi mdi-plus"></i></a>
                         </span>
                     </div>
-{{--                    <div class="input-group btn-group-xs">--}}
-{{--                        <input type="text" name="usuario" id="usuario" value="{{ $items->Ciudadano->FullName }}" class="form-control" readonly>--}}
-{{--                        <span class="input-group-append">--}}
-{{--                            <a  href="{{route("editUser",['Id'=>$items->Ciudadano->id])}}" target="_blank" class="btn btn-xs btn-icon btn-primary editUser" id="editUser" > <i class="mdi mdi-account-edit text-white "></i></a>--}}
-{{--                        </span>--}}
-{{--                        <span class="input-group-append">--}}
-{{--                            <button type="button" class="btn btn-ico btn-secondary" id="btnRefreshButtonUser" >--}}
-{{--                                <i class="mdi mdi-refresh"></i>--}}
-{{--                            </button>--}}
-{{--                        </span>--}}
-{{--                    </div>--}}
-
                 </div>
                 <div class="col-lg-12 border-bottom">
                     <div class="input-group btn-group-sm mb-1 mt-1 ">
@@ -36,47 +24,6 @@
                 </div>
 
         </div>
-
-{{--            <div class="form-row mb-1 " >--}}
-{{--                <label class="col-lg-12 col-form-label labelDenuncia">Ubica la dirección del problema: </label>--}}
-{{--                <div class="col-lg-12 mb-2">--}}
-{{--                    <select id="pregunta1" name="pregunta1" class="form-control pregunta1" size="1">--}}
-{{--                        <option value="0" {{$pregunta1 === 0 ? 'selected': '' }} >La misma dirección del usuario demandante </option>--}}
-{{--                        <option value="1" {{$pregunta1 === 1 ? 'selected': '' }} >Otra dirección </option>--}}
-{{--                    </select>--}}
-
-{{--                </div>--}}
-{{--            </div>--}}
-{{--            <div class="form-row panelUbiProblem pb-2" style="background-color: floralwhite">--}}
-{{--                <label for = "search_autocomplete" class="col-lg-12 col-form-label">Buscar ubicación del Problema</label>--}}
-{{--                <div class="col-lg-12">--}}
-{{--                    <div class="input-group">--}}
-{{--                        <input type="text" name="search_autocomplete" id="search_autocomplete" value="{{ $items->Ubicacion->Ubicacion }}" class="form-control" placeholder="Buscar ubicación...">--}}
-{{--                        <span class="input-group-append">--}}
-{{--                            <a href="{{route("newUbicacion")}}" target="_blank" class="btn btn-icon btn-info"> <i class="mdi mdi-plus"></i></a>--}}
-{{--                        </span>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--            <div class="form-row pb-2">--}}
-{{--                <input type="text" name="ubicacion" id="ubicacion" value="{{ old('ubicacion', $items->Ubicacion->id.' '.$items->Ubicacion->Ubicacion) }}" class="form-control" disabled/>--}}
-{{--            </div>--}}
-{{--            <hr>--}}
-
-{{--            <div class="form-row mb-1 ">--}}
-{{--                <label for = "searchGoogle" class="col-lg-2 col-form-label text-right">Ubicación: </label>--}}
-{{--                <div class="col-xs-8">--}}
-{{--                    <input type="text" name="searchGoogle" id="searchGoogle" class="form-control" value="{{ old('searchGoogle', $items->searchGoogle) }}" placeholder="escriba aquí la colonia" >--}}
-{{--                    <small class="text-verde-morena font-medium text-center p-0 m-0" id="searchGoogleResult">{{ $items->gd_ubicacion }}</small>--}}
-{{--                    <small class="text-danger font-medium text-center p-0 m-0" id="searchGoogleError"></small>--}}
-{{--                </div>--}}
-{{--                <div class="col-lg-2">--}}
-{{--                    <button type="button" class="btn btn-sm btn-primary float-right" id="searchGoogleBtn">--}}
-{{--                        <i class="mdi mdi-magnify"></i>--}}
-{{--                    </button>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
             <div class="form-row mb-1 ">
                 <label for = "searchGoogle" class="col-sm-2 col-form-label text-right">Ubicación: </label>
                 <div class="col-sm-10">
@@ -165,6 +112,31 @@
                 </div>
             </div>
 
+            <div class="form-group row d-flex justify-content-sm-center align-items-center vh-100 m-0 p-0" >
+                <div class="card shadow-sm center-block mt-2 " >
+                    <div class="card-header bgc-pink shadow-lg pt-1 pb-0">
+                        <h5 class="text-110 text-white">
+                            Datos adicionales
+                        </h5>
+                    </div>
+                    <div class="card-body brg-default-light p-2" >
+                        <div class="form-group row ">
+                            <label for = "folio_sas" class="col-sm-2 col-form-label text-right">Folio SAS</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="folio_sas" id="folio_sas" value="{{ old('folio_sas', $items->folio_sas) }}" class="form-control col-sm" />
+                            </div>
+                            <label for = "ambito" class="col-sm-2 col-form-label text-right">Tipo</label>
+                            <div class="col-sm-4">
+                                <select class="form-control col-sm" size="1" id="ambito" name="ambito">
+                                    @foreach($ambito as $id => $valor)
+                                        <option value="{{$id}}" {{ $id === $items->ambito ? 'selected': '' }} >{{ $valor }} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="form-group row mb-3 mt-3">
                 <div class="col-lg-3"></div>
@@ -209,15 +181,21 @@
                     </table>
                 </div> <!-- end table-responsive-->
             </div>
+
         </div>
-    @if ( Auth::user()->hasRole('Administrator') )
-        <button type="button" class="btn btn-sm btn-default float-left" id="addImage"  onclick="scanWithoutAspriseDialog();">Scanear Imagen</button>
-        <div id="scannerImages" name="scannerImages"></div><br><br>
-{{--        <input type="text" name="scannerInput" id="scannerInput" class="col-lg-12">--}}
-{{--        <input type="hidden" name="scannerInputs[]" id="scannerInputs0" class="col-lg-12" value="">--}}
-{{--        <input type="hidden" name="scannerInputs[]" id="scannerInputs1" class="col-lg-12" value="">--}}
-{{--        <input type="hidden" name="scannerInputs[]" id="scannerInputs2" class="col-lg-12" value="">--}}
-    @endif
+        <hr>
+        <div class="form-group row mb-1 ml-1">
+                @if ( Auth::user()->hasRole('Administrator') )
+                    <button type="button" class="btn btn-sm btn-default float-left" id="addImage"  onclick="scanWithoutAspriseDialog();">Scanear Imagen</button>
+                    <div id="scannerImages" name="scannerImages"></div><br><br>
+                @endif
+        </div>
+        <hr>
+        <div class="form-group row mb-1">
+            <div class="col-lg-12">
+                @include('shared.ui_kit.__button_form_denuncia_ambito')
+            </div>
+        </div>
 
 </div>
 
@@ -272,7 +250,7 @@
 <input type="hidden" name="usuario_id" id="usuario_id" value="{{$items->ciudadano->id}}" >
 
 <input type="hidden" name="oficio_envio" id="oficio_envio" value="{{$items->oficio_envio}}" >
-<input type="hidden" name="folio_sas" id="folio_sas" value="{{$items->folio_sas}}" >
+{{--<input type="hidden" name="folio_sas" id="folio_sas" value="{{$items->folio_sas}}" >--}}
 
 <input type="hidden" name="fecha_ingreso" id="fecha_ingreso" value="{{$items->fecha_ingreso}}" >
 <input type="hidden" name="fecha_oficio_dependencia" id="fecha_oficio_dependencia" value="{{$items->fecha_oficio_dependencia}}" >
@@ -285,7 +263,7 @@
 <input type="hidden" name="estatus_id" id="estatus_id" value="{{$items->estatus_id}}" >
 
 <input type="hidden" name="observaciones" id="observaciones" value="{{$items->observaciones}}" >
-<input type="hidden" name="ambito" id="ambito" value="{{$items->ambito}}" >
+{{--<input type="hidden" name="ambito" id="ambito" value="{{$items->ambito}}" >--}}
 
 <input type="hidden" name="isFechaIngresoView" id="isFechaIngresoView" value="{{ config('atemun.modificar_fecha_ingreso') }}" >
 

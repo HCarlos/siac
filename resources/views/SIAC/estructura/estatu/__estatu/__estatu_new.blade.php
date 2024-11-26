@@ -17,7 +17,7 @@
     </div>
 </div>
 <div class="form-group row mb-1">
-    <label for = "dependencia_id" class="col-md-2 col-form-label has-dependencia_id">Dependencia</label>
+    <label for = "dependencia_id" class="col-md-2 col-form-label has-dependencia_id">Unidad</label>
     <div class="col-md-9">
         <select class="dependencia_id form-control " data-toggle="select2"  name="dependencia_id" id="dependencia_id" size="1">
             <option value="0" selected>Ninguna</option>

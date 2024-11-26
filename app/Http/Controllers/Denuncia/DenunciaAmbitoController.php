@@ -105,6 +105,7 @@ class DenunciaAmbitoController extends Controller{
                 'IsEnlace'                            => session('IsEnlace'),
                 'DependenciaArray'                    => session('DependenciaArray'),
                 'is_pagination'                       => session('is_pagination'),
+                'ambito'                              => FuncionesController::arrAmbitosSM(),
             ]
         );
     }
@@ -181,6 +182,7 @@ class DenunciaAmbitoController extends Controller{
                 'createDenuncia'       => 'createDenunciaAmbito1',
                 'exportModel'          => 23,
                 'msg'                  => $this->msg,
+                'ambito'               => FuncionesController::arrAmbitosSM(),
             ]
         );
     }
@@ -236,6 +238,7 @@ class DenunciaAmbitoController extends Controller{
                 'origenes'             => $Origenes,
                 'exportModel'          => 23,
                 'msg'                  => $this->msg,
+                'ambito'               => FuncionesController::arrAmbitosSM(),
             ]
         );
     }
@@ -355,6 +358,7 @@ class DenunciaAmbitoController extends Controller{
                 'titulo_header'        => 'Editando el Folio: '.$Id,
                 'msg'                  => $this->msg,
                 'pregunta1'            => $pregunta1,
+                'ambito'               => FuncionesController::arrAmbitosSM(),
             ]
         );
     }
@@ -425,6 +429,7 @@ class DenunciaAmbitoController extends Controller{
                 'origenes'             => $Origenes,
                 'msg'                  => $this->msg,
                 'pregunta1'            => $pregunta1,
+                'ambito'               => FuncionesController::arrAmbitosSM(),
             ]
         );
     }
@@ -453,6 +458,7 @@ class DenunciaAmbitoController extends Controller{
 
     protected function updateItem2(DenunciaAmbitoRequest $request){
         $this->ambito_dependencia = Session::get('ambito_dependencia');
+//        dd($request->all());
         $item = $request->manage($this->ambito_dependencia);
         if (!isset($item->id)) {
             abort(422);
@@ -669,6 +675,7 @@ class DenunciaAmbitoController extends Controller{
                 'showEditDenunciaDependenciaServicio' => $this->ambito_dependencia == 1 ? 'editDenunciaDependenciaServicio' :'listDenunciaDependenciaServicioAmbito',
                 'imagenesDenunciaItem'                => 'listImagenes',
                 'is_pagination'                       => true,
+                'ambito'                              => FuncionesController::arrAmbitosSM(),
             ]
         );
 

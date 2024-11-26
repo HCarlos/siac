@@ -11,17 +11,6 @@
                             <a href="{{route("newUser")}}" target="_blank" class="btn btn-icon btn-info"> <i class="mdi mdi-plus"></i></a>
                         </span>
                     </div>
-{{--                    <div class="input-group btn-group-xs">--}}
-{{--                        <input type="text" name="usuario" id="usuario" class="form-control" value="" readonly>--}}
-{{--                        <span class="input-group-append">--}}
-{{--                            <a  target="_blank" class="btn btn-xs btn-icon btn-primary editUser" id="editUser" disabled> <i class="mdi mdi-account-edit text-white"></i></a>--}}
-{{--                        </span>--}}
-{{--                        <span class="input-group-append">--}}
-{{--                            <button type="button" class="btn btn-ico btn-secondary" id="btnRefreshButtonUser" disabled>--}}
-{{--                                <i class="mdi mdi-reload"></i>--}}
-{{--                            </button>--}}
-{{--                        </span>--}}
-{{--                    </div>--}}
                 </div>
                 <div class="col-lg-12 border-bottom">
                     <div class="input-group btn-group-sm mb-1 mt-1 ">
@@ -34,37 +23,6 @@
                     </div>
                 </div>
             </div>
-
-{{--            <div class="form-row mb-1 " >--}}
-{{--                <label class="col-lg-12 col-form-label labelDenuncia">Ubica la dirección del problema: </label>--}}
-{{--                <div class="col-lg-8 mb-2">--}}
-{{--                    <div class="custom-control custom-radio mb-2">--}}
-{{--                        <input type="radio" id="radio1" name="pregunta1" class="custom-control-input pregunta1" value="0">--}}
-{{--                        <label class="custom-control-label" for="radio1">La misma ubicación del usuario demandante</label>--}}
-{{--                    </div>--}}
-{{--                    <div class="custom-control custom-radio">--}}
-{{--                        <input type="radio" id="radio2" name="pregunta1" class="custom-control-input pregunta1" value="1">--}}
-{{--                        <label class="custom-control-label" for="radio2">Otra Ubicación</label>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
-{{--            <div class="form-row panelUbiProblem pb-2" style="background-color: floralwhite">--}}
-{{--                <label for = "search_autocomplete" class="col-lg-12 col-form-label">Buscar ubicación del Problema</label>--}}
-{{--                <div class="col-lg-12">--}}
-{{--                    <div class="input-group">--}}
-{{--                        <input type="text" name="search_autocomplete" id="search_autocomplete" class="form-control search_autocomplete" value="" placeholder="Buscar ubicación...">--}}
-{{--                        <span class="input-group-append">--}}
-{{--                            <a href="{{route("newUbicacion")}}" target="_blank" class="btn btn-icon btn-info"> <i class="mdi mdi-plus"></i></a>--}}
-{{--                        </span>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
-{{--            <div class="form-row ">--}}
-{{--                <input type="text" name="ubicacion" id="ubicacion" value="{{ old('ubicacion') }}" class="form-control" disabled/>--}}
-{{--            </div>--}}
-{{--            <hr>--}}
 
             <div class="form-row mb-1 ">
                 <label for = "searchGoogle" class="col-sm-2 col-form-label text-right">Ubicación: </label>
@@ -149,6 +107,33 @@
                 </div>
             </div>
 
+            <div class="form-group row d-flex justify-content-sm-center align-items-center vh-100 m-0 p-0" >
+                <div class="card shadow-sm center-block mt-2 " >
+                    <div class="card-header bgc-pink shadow-lg pt-1 pb-0">
+                        <h5 class="text-110 text-white">
+                            Datos adicionales
+                        </h5>
+                    </div>
+                    <div class="card-body brg-default-light p-2" >
+                        <div class="form-group row ">
+                            <label for = "folio_sas" class="col-sm-2 col-form-label text-right">Folio SAS</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="folio_sas" id="folio_sas" value="{{ old('folio_sas') }}" class="form-control col-sm" />
+                            </div>
+                            <label for = "ambito" class="col-sm-2 col-form-label text-right">Tipo</label>
+                            <div class="col-sm-4">
+                                <select class="form-control col-sm" size="1" id="ambito" name="ambito">
+                                    @foreach($ambito as $id => $valor)
+                                        <option value="{{$id}}" >{{ $valor }} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
             <div class="form-group row mb-3 mt-3">
                 <label for="file1" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Archivo:</label>
                 <div class="col-lg-10">
@@ -175,8 +160,14 @@
                     </table>
                 </div>
             </div>
-
         </div>
+        <hr>
+        <div class="form-group row mb-1">
+            <div class="col-lg-12">
+                @include('shared.ui_kit.__button_form_denuncia_ambito')
+            </div>
+        </div>
+
     </div>
 </div>
 </div>
@@ -188,17 +179,6 @@
 <input type="hidden" name="usuario_id" id="usuario_id" value="{{ old('usuario_id') }}" >
 <input type="hidden" name="isFechaIngresoView" id="isFechaIngresoView" value="{{ config('atemun.modificar_fecha_ingreso') }}" >
 <input type="hidden" name="usuario_telefonos" id="usuario_telefonos" class="form-control" value="{{ old('usuario_telefonos') }}" >
-
-{{--<input type="hidden" name="g_calle" id="g_calle" value="{{ old('g_calle',$items->g_calle) }}" >--}}
-{{--<input type="hidden" name="g_num_ext" id="g_num_ext" value="{{ old('g_num_ext',$items->g_num_ext) }}" >--}}
-{{--<input type="hidden" name="g_num_int" id="g_num_int" value="{{ old('g_num_int',$items->g_num_int) }}" >--}}
-{{--<input type="hidden" name="g_colonia" id="g_colonia" value="{{ old('g_colonia',$items->g_colonia) }}" >--}}
-{{--<input type="hidden" name="g_comunidad" id="g_comunidad" value="{{ old('g_comunidad',$items->g_comunidad) }}" >--}}
-{{--<input type="hidden" name="g_municipio" id="g_municipio" value="{{ old('g_municipio',$items->g_municipio) }}" >--}}
-{{--<input type="hidden" name="g_estado" id="g_estado" value="{{ old('g_estado',$items->g_estado) }}" >--}}
-{{--<input type="hidden" name="g_cp" id="g_cp" value="{{ old('g_cp',$items->g_cp) }}" >--}}
-{{--<input type="hidden" name="altitud" id="altitud" value="{{ old('altitud') }}" >--}}
-{{--<input type="hidden" name="g_ubicacion" id="g_ubicacion" value="{{ old('g_ubicacion') }}" >--}}
 
 <input type="hidden" name="altitud" id="altitud" value="{{ old('altitud') }}" >
 <input type="hidden" name="gd_ubicacion" id="gd_ubicacion" value="{{ old('gd_ubicacion') }}" >

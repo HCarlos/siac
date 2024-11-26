@@ -480,7 +480,6 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|DELEGADO|CIUDADANO|
     Route::get('editDenunciaDependenciaServicioAmbito/{Id}', 'Denuncia\DenunciaDependenciaServicioAmbitoController@editItem')->name('editDenunciaDependenciaServicioAmbito');
     Route::post('putAddDenunciaDependenciaServicioAmbito', 'Denuncia\DenunciaDependenciaServicioAmbitoController@putEdit')->name('putAddDenunciaDependenciaServicioAmbito');
 
-
     // Catálogo de DENUNCIAS CIUDADANAS
     Route::get('listDenunciasCiudadanas/', 'Denuncia\DenunciaCiudadanaController@index')->name('listDenunciasCiudadanas');
     Route::get('editDenunciaCiudadana/{Id}', 'Denuncia\DenunciaCiudadanaController@editItem')->name('editDenunciaCiudadana');

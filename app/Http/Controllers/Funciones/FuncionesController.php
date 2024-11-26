@@ -266,6 +266,10 @@ class FuncionesController extends Controller
         return [1=>"Apoyos Sociales",2=>"Servicios Municipales",99=>"SM Viejitos"];
     }
 
+    public static function arrAmbitosSM(): array{
+        return [0=>"No Aplica",1=>"Urbano",2=>"Rural",3=>"Desazolve Manual",4=>"Desazolve con Vactor",5=>"Desazolve con equipo almeja"];
+
+    }
 
 
 

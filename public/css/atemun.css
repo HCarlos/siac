@@ -935,18 +935,22 @@ gmp-map {
     color: #085108;
 }
 
+.bgc-pink {
+    background-color: #d53c77 !important;
+    color: white !important;
+}
+
 .text-rojo-morena {
     color: #6d0505;
 }
 
+div#scannerImages {
+    margin-top: 20px;
+}
 
 img.scanned {
     height: 200px; /** Sets the display size */
     margin-right: 12px;
-}
-
-div#scannerImages {
-    margin-top: 20px;
 }
 
 /*.asprise-footer, .asprise-footer a:visited { font-family: Arial, Helvetica, sans-serif; color: #999; font-size: 13px; }*/
