@@ -41,7 +41,7 @@
                                 @include('shared.ui_kit.__remove_item')
                                 @include('shared.ui_kit.__imagenes_list_item')
                                 @if( \Illuminate\Support\Facades\Auth::user()->isPermission('rsd_sas|consultar|all') )
-                                    @include('shared.ui_kit.__edit_denuncia_dependencia_servicio_item')
+                                    @include('shared.ui_kit.__edit_denuncia_dependencia_servicio_ambito_item')
                                 @endif
                             @endif
                             @if( ($item->cerrado == false && $item->firmado == false) && auth()->user()->can('elimina_denuncia_general') )

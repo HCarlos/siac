@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Denuncia;
 
 use App\Classes\Denuncia\VistaDenunciaClass;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Denuncia\DenunciaDependenciaServicioAmbitoRequest;
 use App\Http\Requests\Denuncia\DenunciaDependenciaServicioRequest;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Estatu;
@@ -15,13 +16,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
 
-class DenunciaDependenciaServicioController extends Controller
+class DenunciaDependenciaServicioAmbitoController extends Controller
 {
 
     protected $tableName = "denuncia_dependencia_servicio";
     protected $Id = 0;
     protected $msg = "";
+    protected $ambito_dependencia = 1;
 
 // ***************** MUESTRA EL LISTADO DE USUARIOS ++++++++++++++++++++ //
 
@@ -42,6 +45,7 @@ class DenunciaDependenciaServicioController extends Controller
         $Denuncia = Denuncia::find($Id);
 
         $request->session()->put('items', $items);
+        $this->ambito_dependencia = Session::get('ambito_dependencia');
 
         session(['msg' => '']);
 
@@ -50,7 +54,7 @@ class DenunciaDependenciaServicioController extends Controller
 
         Denuncia_Dependencia_Servicio::where('denuncia_id', $Id)->update(['fue_leida' => true]);
 
-        return view('SIAC.denuncia.denuncia_dependencia_servicio.denuncia_dependencia_servicio_list',
+        return view('SIAC.denuncia.denuncia_dependencia_servicio_ambito.denuncia_dependencia_servicio_ambito_list',
             [
                 'items'                               => $items,
                 'Id'                                  => $this->Id,
@@ -58,16 +62,16 @@ class DenunciaDependenciaServicioController extends Controller
                 'titulo_catalogo'                     => "Cronología de cambios de estatus de la orden: " . $this->Id,
                 'user'                                => $user,
                 'newWindow'                           => true,
-                'newItem'                             => 'addDenunciaDependenciaServicio',
+                'newItem'                             => 'addDenunciaDependenciaServicioAmbito',
                 'tableName'                           => $this->tableName,
-                'showEdit'                            => 'editDenunciaDependenciaServicio',
+                'showEdit'                            => 'editDenunciaDependenciaServicioAmbito',
                 'showProcess1'                        => 'showDataListDenunciaRespuestaExcel1A',
-                'postNew'                             => 'postAddDenunciaDependenciaServicio',
-                'addItem'                             => 'addDenunciaDependenciaServicio',
+                'postNew'                             => 'postAddDenunciaDependenciaServicioAmbito',
+                'addItem'                             => 'addDenunciaDependenciaServicioAmbito',
                 'removeItem'                          => 'removeDenunciaDependenciaServicio',
                 'imprimirDenuncia'                    => "imprimirDenuncia/",
                 'imprimirDenunciaConRespuesta'        => "imprimir_denuncia_respuesta/",
-                'showEditDenunciaDependenciaServicio' => 'listDenunciaDependenciaServicio',
+                'showEditDenunciaDependenciaServicio' => 'listDenunciaDependenciaServicioAmbito',
                 'imagenesDenunciaItem'                => 'listImagenes',
             ]
         );
@@ -75,26 +79,38 @@ class DenunciaDependenciaServicioController extends Controller
 
 // ***************** EDITA LOS DATOS  ++++++++++++++++++++ //
     protected function editItem($Id){
+
         $items        = Denuncia_Dependencia_Servicio::find($Id);
         $Denuncia     = Denuncia::find($items->denuncia_id);
+        $user_id      = Auth::user()->id;
 
         $IsEnlace = Auth::user()->isRole('ENLACE');
+        $this->ambito_dependencia = Session::get('ambito_dependencia');
+
         if($IsEnlace){
             $dep_id = (int)Auth::user()->IsEnlaceDependencia;
-            $Dependencias = Dependencia::all()->whereIn('id',$dep_id);
+            $Dependencias = Dependencia::query()->whereIn('id',$dep_id)->get();
             $Servicios    = Servicio::getQueryServiciosFromDependencias($items->dependencia_id);
         }else{
-            $Dependencias = Dependencia::all()->sortBy('dependencia');
+            $Dependencias = Dependencia::query()->orderBy('dependencia')->get();
             $Servicios    = Servicio::getQueryServiciosFromDependencias($items->dependencia_id);
         }
 
         if (Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN') ) {
-            $Estatus      = Estatu::all()->sortBy('estatus');
+            $Estatus      = Estatu::query()->orderBy('estatus')->get();
         }else{
-            $Estatus      = Estatu::all()->where('estatus_cve',1)->sortBy('estatus');
+//            $Estatus      = Estatu::all()->where('estatus_cve',1)->sortBy('estatus');
+            $Estatus = Estatu::query()
+                ->where('estatus_cve',1)
+                ->whereHas('users', function($q) use ($user_id) {
+                    return $q->where("user_id",$user_id);
+                })
+                ->orderBy('estatus')
+                ->get();
+
         }
 
-        return view('SIAC.denuncia.denuncia_dependencia_servicio.denuncia_dependencia_servicio_edit',
+        return view('SIAC.denuncia.denuncia_dependencia_servicio_ambito.denuncia_dependencia_servicio_ambito_edit',
             [
                 'user'            => Auth::user(),
                 'items'           => $items,
@@ -103,112 +119,30 @@ class DenunciaDependenciaServicioController extends Controller
                 'servicios'       => $Servicios,
                 'estatus'         => $Estatus,
                 'editItemTitle'   => "Agregando servicio a la solicitud ".$Id,
-                'postNew'         => 'putAddDenunciaDependenciaServicio',
+                'postNew'         => 'putAddDenunciaDependenciaServicioAmbito',
                 'titulo_catalogo' => "Editando el Id: " . $Id,
                 'titulo_header'   => 'de la Solicitud '.$Denuncia->id,
+                'ambito_dependencia' => $this->ambito_dependencia,
             ]
         );
     }
 
 // ***************** GUARDA LOS CAMBIOS ++++++++++++++++++++ //
-    protected function putEdit(DenunciaDependenciaServicioRequest $request){
+    protected function putEdit(DenunciaDependenciaServicioAmbitoRequest $request){
         $denuncia_id = $request["denuncia_id"];
         $Id = $request->manage();
         if  (!isset($Id)) {
             return '<script type="text/javascript">alert("'.$Id.'");</script>';
         }
-        return Redirect::to('listDenunciaDependenciaServicio/'.$denuncia_id);
+        return Redirect::to('listDenunciaDependenciaServicioAmbito/'.$denuncia_id);
     }
 
 
     protected function addItem($Id){
 
         $items         = Denuncia::find($Id);
-
-        $IsEnlace = Auth::user()->isRole('ENLACE');
-        if($IsEnlace){
-            $dep_id = Auth::user()->IsEnlaceDependencia;
-            $Dependencias = Dependencia::all()->whereIn('id',$dep_id);
-            $Servicios = Servicio::whereHas('subareas', function($p) use ($items) {
-                $p->whereHas("areas", function($q) use ($items){
-                    return $q->where("dependencia_id",$items->dependencia_id);
-                });
-            })->orderBy('servicio')->get();
-//            $DDS = Denuncia_Dependencia_Servicio::all()->where('denuncia_id',$Id)->whereIn('dependencia_id',$dep_id);
-            $servicio_id = $items->servicio_id;
-        }else{
-            $dep_id = $items->dependencia_id;
-            $Dependencias = Dependencia::all()->sortBy('dependencia');
-            $Servicios = Servicio::whereHas('subareas', function($p) use ($dep_id) {
-                $p->whereHas("areas", function($q) use ($dep_id){
-                    return $q->where("dependencia_id",$dep_id);
-                });
-            })->orderBy('servicio')->get();
-            $servicio_id = $items->servicio_id;
-        }
-
-        if (Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN') ) {
-            $Estatus      = Estatu::all()->sortBy('estatus');
-        }else{
-            $Estatus      = Estatu::all()->where('estatus_cve',1)->sortBy('estatus');
-        }
-
-        return view('SIAC.denuncia.denuncia_dependencia_servicio.denuncia_dependencia_servicio_new',
-            [
-                'user'              => Auth::user(),
-                'items'             => $items,
-                'Id'                => $Id,
-                'editItemTitle'     => 'Nuevo',
-                'dependencias'      => $Dependencias,
-                'dependencia_id'    => $items->dependencia_id,
-                'servicio_id'       => $servicio_id,
-                'servicios'         => $Servicios,
-                'estatus'           => $Estatus,
-                'postNew'           => 'postAddDenunciaDependenciaServicio',
-                'titulo_catalogo'   => "Nuevo cambio de estatus de la orden: " . $Id,
-                'titulo_header'     => 'Agregar dependencia',
-                'exportModel'       => 23,
-            ]
-        );
-    }
-
-    // ***************** CREAR NUEVO ++++++++++++++++++++ //
-    protected function postNew(DenunciaDependenciaServicioRequest $request){
-        $denuncia_id = $request["denuncia_id"];
-//        dd( $denuncia_id );
-
-        $Id = $request->manage();
-        //dd($item);
-        if (!isset($Id)) {
-            return '<script type="text/javascript">alert("'.$Id.'");</script>';
-        }
-        return Redirect::to('listDenunciaDependenciaServicio/'.$denuncia_id);
-    }
-
-    // ***************** ELIMINA EL ITEM VIA AJAX ++++++++++++++++++++ //
-        protected function removeItem($id = 0)
-        {
-            $item = Denuncia_Dependencia_Servicio::withTrashed()->findOrFail($id);
-            $denuncia_id = $item->denuncia_id;
-            if (isset($item)) {
-                if (!$item->trashed()) {
-                    $item->forceDelete();
-                } else {
-                    $item->forceDelete();
-                }
-                $vid = new VistaDenunciaClass();
-                $vid->vistaDenuncia($denuncia_id);
-                return Response::json(['mensaje' => 'Registro eliminado con éxito', 'data' => 'OK', 'status' => '200'], 200);
-            } else {
-                return Response::json(['mensaje' => 'Se ha producido un error.', 'data' => 'Error', 'status' => '200'], 200);
-            }
-        }
-
-
-    protected function addItemAmbito($Id){
-
-        $items         = Denuncia::find($Id);
         $user_id       = Auth::user()->id;
+        $this->ambito_dependencia = Session::get('ambito_dependencia');
 
         $IsEnlace = Auth::user()->isRole('ENLACE');
         if($IsEnlace){
@@ -237,12 +171,14 @@ class DenunciaDependenciaServicioController extends Controller
             $Estatus = Estatu::query()
                 ->where('estatus_cve',1)
                 ->whereHas('users', function($q) use ($user_id) {
-                        return $q->where("user_id",$user_id);
+                    return $q->where("user_id",$user_id);
                 })
-                ->orderBy('estatus');
+                ->orderBy('estatus')
+                ->get();
+
         }
 
-        return view('SIAC.denuncia.denuncia_dependencia_servicio.denuncia_dependencia_servicio_new',
+        return view('SIAC.denuncia.denuncia_dependencia_servicio_ambito.denuncia_dependencia_servicio_ambito_new',
             [
                 'user'              => Auth::user(),
                 'items'             => $items,
@@ -253,13 +189,50 @@ class DenunciaDependenciaServicioController extends Controller
                 'servicio_id'       => $servicio_id,
                 'servicios'         => $Servicios,
                 'estatus'           => $Estatus,
-                'postNew'           => 'postAddDenunciaDependenciaServicio',
+                'postNew'           => 'postAddDenunciaDependenciaServicioAmbito',
                 'titulo_catalogo'   => "Nuevo cambio de estatus de la orden: " . $Id,
                 'titulo_header'     => 'Agregar dependencia',
                 'exportModel'       => 23,
+                'ambito_dependencia' => $this->ambito_dependencia,
             ]
         );
     }
+
+
+    // ***************** CREAR NUEVO ++++++++++++++++++++ //
+    protected function postNew(DenunciaDependenciaServicioAmbitoRequest $request){
+        $denuncia_id = $request["denuncia_id"];
+        $this->ambito_dependencia = Session::get('ambito_dependencia');
+
+        $Id = $request->manage();
+        //dd($item);
+        if (!isset($Id)) {
+            return '<script type="text/javascript">alert("'.$Id.'");</script>';
+        }
+        return Redirect::to('listDenunciaDependenciaServicioAmbito/'.$denuncia_id);
+    }
+
+    // ***************** ELIMINA EL ITEM VIA AJAX ++++++++++++++++++++ //
+        protected function removeItem($id = 0)
+        {
+            $item = Denuncia_Dependencia_Servicio::withTrashed()->findOrFail($id);
+            $denuncia_id = $item->denuncia_id;
+            if (isset($item)) {
+                if (!$item->trashed()) {
+                    $item->forceDelete();
+                } else {
+                    $item->forceDelete();
+                }
+                $vid = new VistaDenunciaClass();
+                $vid->vistaDenuncia($denuncia_id);
+                return Response::json(['mensaje' => 'Registro eliminado con éxito', 'data' => 'OK', 'status' => '200'], 200);
+            } else {
+                return Response::json(['mensaje' => 'Se ha producido un error.', 'data' => 'Error', 'status' => '200'], 200);
+            }
+        }
+
+
+
 
 
 

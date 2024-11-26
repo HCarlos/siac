@@ -13,6 +13,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class StatuRequest extends FormRequest
 {
@@ -20,8 +21,7 @@ class StatuRequest extends FormRequest
 
     protected $redirectRoute = 'editEstatu';
 
-    public function authorize()
-    {
+    public function authorize(){
         return true;
     }
 
@@ -39,7 +39,7 @@ class StatuRequest extends FormRequest
     public function rules()
     {
         return [
-            'estatus' => ['required','min:3',new Uppercase,'unique:estatus,estatus,'.$this->id],
+            'estatus' => ['required','min:3','unique:estatus,estatus,'.$this->id],
         ];
     }
 //'dependencia_id' => ['present','not_in:0','gt:0'],
@@ -62,26 +62,33 @@ class StatuRequest extends FormRequest
         ];
     }
 
-    public function manage()
-    {
+    public function manage(){
 
         try {
 
+            if ( isset($this->favorable) ){
+                $Fav = !( (int) $this->favorable === 0 );
+            }else{
+                $Fav = false;
+            }
+
             $Item = [
                 'estatus' => strtoupper($this->estatus),
-                'predeterminado' => $this->predeterminado==1 ? true : false,
-                'resuelto' => $this->resuelto==1 ? true : false,
-                'abreviatura' => strtoupper($this->abreviatura),
+                'predeterminado'  => $this->predeterminado==1 ? true : false,
+                'resuelto'        => $this->resuelto==1 ? true : false,
+                'abreviatura'     => strtoupper($this->abreviatura),
                 'orden_impresion' => strtoupper($this->orden_impresion),
-                'estatus_cve' => (int) ($this->estatus_cve),
+                'estatus_cve'     => (int) ($this->estatus_cve),
+                'favorable'       => $Fav,
+                'ambito_estatus'  => $this->ambito_estatus,
             ];
+
+//            dd($Item);
 
             if ( $this->predeterminado == 1) {
                 Estatu::where('predeterminado',true)->update(['predeterminado'=>false]);
             };
-//            return $query->whereHas('roles', function ($q) use ($roles) {
-//                $q->whereIn('role_id', $roles);
-//            });
+
             $idd = $this->dependencia_id;
             $isExsit = Estatu::whereHas('dependencias', function ($q) use ($idd) {
                 return $q->where("dependencia_id",$idd);

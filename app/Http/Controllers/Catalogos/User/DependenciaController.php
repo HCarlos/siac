@@ -31,7 +31,7 @@ class DependenciaController extends Controller{
 //        });
         $Id = $Id == 0 ? 1 : $Id;
         $users = User::findOrFail($Id);
-        $this->lstAsigns = $users->dependencias->pluck('dependencia','id');
+        $this->lstAsigns = $users->dependencias->sortBy('dependencia')->pluck('dependencia','id');
 
         //dd($this->lstAsigns);
 

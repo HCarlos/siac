@@ -10,4 +10,5 @@
     @slot('formData', 'formFullModal')
     @slot('user',$user ?? null)
     @slot('dependencia',$dependencia ?? null)
+    @slot('ambito',$ambito ?? null)
 @endcomponent

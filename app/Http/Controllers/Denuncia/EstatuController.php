@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Denuncia;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Funciones\FuncionesController;
 use App\Http\Requests\Denuncia\StatuRequest;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Estatu;
@@ -11,8 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 
-class EstatuController extends Controller
-{
+class EstatuController extends Controller{
+
     protected $tableName = "Status";
 
 // ***************** MUESTRA EL LISTADO DE USUARIOS ++++++++++++++++++++ //
@@ -80,6 +81,8 @@ class EstatuController extends Controller
             ->orderBy('dependencia')
             ->get();
         $user = Auth::user();
+        $ambito = FuncionesController::arrAmbitosDependencia();
+
         return view('SIAC.estructura.estatu.estatu_modal',
             [
                 'Titulo'          => 'Nueva',
@@ -89,6 +92,7 @@ class EstatuController extends Controller
                 'IsNew'           => true,
                 'user'            => $user,
                 'dependencia'     => $Dependencias,
+                'ambito'          => $ambito,
             ]
         );
 
@@ -147,7 +151,11 @@ class EstatuController extends Controller
             ->orderBy('dependencia')
             ->get();
         $item = Estatu::find($Id);
+//        dd($item);
         $user = Auth::user();
+
+        $ambito = FuncionesController::arrAmbitosDependencia();
+
         return view('SIAC.estructura.estatu.estatu_modal',
             [
 
@@ -161,6 +169,7 @@ class EstatuController extends Controller
                 'items'           => $item,
                 'user'            => $user,
                 'dependencia'     => $Dependencias,
+                'ambito'          => $ambito,
             ]
         );
 
@@ -185,7 +194,7 @@ class EstatuController extends Controller
     protected function removeItem($id = 0)
     {
         $item = Estatu::withTrashed()->findOrFail($id);
-        if ( strtoupper(trim($item->estatus)) == "CERRADO"){
+        if ( strtoupper(trim($item->estatus)) === "CERRADO"){
             return Response::json(['mensaje' => 'No se puede eliminar ese Estatus', 'data' => 'Error', 'status' => '200'], 200);
         }else{
 

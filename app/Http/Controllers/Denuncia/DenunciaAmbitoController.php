@@ -91,12 +91,12 @@ class DenunciaAmbitoController extends Controller{
                 'tableName'                           => $this->tableName,
                 'showEdit'                            => 'editDenunciaAmbito',
                 'showAddUser'                         => 'addUserDenunciaAmbito',
-                'showEditDenunciaDependenciaServicio' => 'listDenunciaDependenciaServicio',
+                'showEditDenunciaDependenciaServicio' => $this->ambito_dependencia == 1 ? 'editDenunciaDependenciaServicio' :'listDenunciaDependenciaServicioAmbito',
                 'showProcess1'                        => 'showDataListDenunciaAmbitoExcel1A',
                 'newItem'                             => 'newDenunciaAmbito',
                 'removeItem'                          => 'removeDenunciaAmbito',
                 'respuestasDenunciaItem'              => 'listRespuestas',
-                'respuestasDenunciaCiudadanaItem'     => 'listRespuestasCiudadanas',
+                'respuestasDenunciaCiudadanaItem'     => 'listRespuestasCiudadanasAmbito',
                 'imagenesDenunciaItem'                => 'listImagenes',
                 'searchAdressDenuncia'                => 'listDenunciasAmbito'.$this->ambito_dependencia,
                 'showModalSearchDenuncia'             => 'showModalSearchDenunciaAmbito',
@@ -136,7 +136,7 @@ class DenunciaAmbitoController extends Controller{
             $Dependencias = Dependencia::query()
                 ->where("estatus_cve", 1)
                 ->where('ambito_dependencia',$this->ambito_dependencia)
-                ->whereIn('id',$DependenciaIdArray,false)
+                ->whereIn('id',$DependenciaIdArray)
                 ->orderBy('dependencia')->get();
         }else{
             $Dependencias = Dependencia::query()
@@ -191,10 +191,11 @@ class DenunciaAmbitoController extends Controller{
 
         if($IsEnlace){
             $DependenciaIdArray = Session::get('DependenciaIdArray');
+//            dd($this->ambito_dependencia);
             $Dependencias = Dependencia::query()->select('id')
                 ->where("estatus_cve", 1)
                 ->where('ambito_dependencia',$this->ambito_dependencia)
-                ->whereIn('id',$DependenciaIdArray,false)
+                ->whereIn('id',$DependenciaIdArray)
                 ->orderBy('dependencia')
                 ->get()
                 ->toArray();
@@ -294,7 +295,7 @@ class DenunciaAmbitoController extends Controller{
             $Dependencias = Dependencia::query()
                 ->where("estatus_cve", 1)
                 ->where('ambito_dependencia',$this->ambito_dependencia)
-                ->whereIn('id',$DependenciaIdArray,false)
+                ->whereIn('id',$DependenciaIdArray)
                 ->orderBy('dependencia')
                 ->get();
         }else{
@@ -372,7 +373,7 @@ class DenunciaAmbitoController extends Controller{
                 ->select('id')
                 ->where("estatus_cve", 1)
                 ->where('ambito_dependencia',$this->ambito_dependencia)
-                ->whereIn('id',$DependenciaIdArray,false)
+                ->whereIn('id',$DependenciaIdArray)
                 ->orderBy('dependencia')
                 ->get()
                 ->toArray();
@@ -654,7 +655,7 @@ class DenunciaAmbitoController extends Controller{
                 'user'                                => $user,
                 'searchInListDenuncia'                => 'listDenunciasAmbito'.$this->ambito_dependencia,
                 'respuestasDenunciaItem'              => 'listRespuestas',
-                'respuestasDenunciaCiudadanaItem'     => 'listRespuestasCiudadanas',
+                'respuestasDenunciaCiudadanaItem'     => 'listRespuestasCiudadanasAmbito',
                 'newWindow'                           => true,
                 'tableName'                           => $this->tableName,
                 'showEdit'                            => 'editDenunciaAmbito',
@@ -665,7 +666,7 @@ class DenunciaAmbitoController extends Controller{
                 'searchAdressDenuncia'                => 'listDenunciasAmbito'.$this->ambito_dependencia,
                 'showModalSearchDenuncia'             => 'showModalSearchDenunciaAmbito',
                 'findDataInDenunciaAmbito'            => 'findDataInDenunciaAmbito',
-                'showEditDenunciaDependenciaServicio' => 'listDenunciaDependenciaServicio',
+                'showEditDenunciaDependenciaServicio' => $this->ambito_dependencia == 1 ? 'editDenunciaDependenciaServicio' :'listDenunciaDependenciaServicioAmbito',
                 'imagenesDenunciaItem'                => 'listImagenes',
                 'is_pagination'                       => true,
             ]

@@ -17,7 +17,7 @@
         <div class="card bg-default text-white {{$altoPanelCen}} " >
             <div class="card-body">
                 <div class="position-ref full-height" style="padding-top: 30vh">
-                    @if ( Auth::User()->hasRole('Administrator|SysOp') || Auth::user()->can(['asignar','desasignar']) )
+                    @if ( Auth::User()->hasRole('Administrator|test_admin') || Auth::user()->can(['asignar','desasignar']) )
                         @isset($urlAsigna)
                             <button type="button" class="btn btn-block btn-primary btn-rounded btnAsign0" id="{{$urlAsigna.'-'.$urlRegresa}}">
                                 Agregar <i class="fas fa-chevron-right"></i>

@@ -32,7 +32,7 @@ class RoleController extends Controller
         });
         $Id = $Id == 0 ? 1 : $Id;
         $users = User::findOrFail($Id);
-        $this->lstAsigns = $users->roles->pluck('name','id');
+        $this->lstAsigns = $users->roles->sortBy('name')->pluck('name','id');
 
         $user = Auth::User();
         return view ('catalogos.asignaciones.roles_usuario',

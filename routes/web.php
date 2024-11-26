@@ -474,6 +474,13 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|DELEGADO|CIUDADANO|
     Route::post('putAddDenunciaDependenciaServicio', 'Denuncia\DenunciaDependenciaServicioController@putEdit')->name('putAddDenunciaDependenciaServicio');
     Route::get('removeDenunciaDependenciaServicio/{id}', 'Denuncia\DenunciaDependenciaServicioController@removeItem')->name('removeDenunciaDependenciaServicio');
 
+    Route::get('listDenunciaDependenciaServicioAmbito/{Id}', 'Denuncia\DenunciaDependenciaServicioAmbitoController@index')->name('listDenunciaDependenciaServicioAmbito');
+    Route::get('addDenunciaDependenciaServicioAmbito/{Id}', 'Denuncia\DenunciaDependenciaServicioAmbitoController@addItem')->name('addDenunciaDependenciaServicioAmbito');
+    Route::post('postAddDenunciaDependenciaServicioAmbito', 'Denuncia\DenunciaDependenciaServicioAmbitoController@postNew')->name('postAddDenunciaDependenciaServicioAmbito');
+    Route::get('editDenunciaDependenciaServicioAmbito/{Id}', 'Denuncia\DenunciaDependenciaServicioAmbitoController@editItem')->name('editDenunciaDependenciaServicioAmbito');
+    Route::post('putAddDenunciaDependenciaServicioAmbito', 'Denuncia\DenunciaDependenciaServicioAmbitoController@putEdit')->name('putAddDenunciaDependenciaServicioAmbito');
+
+
     // Catálogo de DENUNCIAS CIUDADANAS
     Route::get('listDenunciasCiudadanas/', 'Denuncia\DenunciaCiudadanaController@index')->name('listDenunciasCiudadanas');
     Route::get('editDenunciaCiudadana/{Id}', 'Denuncia\DenunciaCiudadanaController@editItem')->name('editDenunciaCiudadana');
@@ -500,6 +507,9 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|DELEGADO|CIUDADANO|
     Route::get('removeRespuestaCiudadana/{id}', 'Denuncia\Respuesta\RespuestaCiudadanaController@removeItem')->name('removeRespuestaCiudadana');
     Route::get('/showModalRespuestaCiudadanaNew/{denuncia_id}', 'Denuncia\Respuesta\RespuestaCiudadanaController@showModalRespuestaCiudadanaNew')->name('/showModalRespuestaCiudadanaNew');
     Route::get('showModalRespuestaCiudadanaEdit/{Id}', 'Denuncia\Respuesta\RespuestaCiudadanaController@showModalRespuestaCiudadanaEdit')->name('/showModalRespuestaCiudadanaEdit');
+
+    Route::get('listRespuestasCiudadanasAmbito/{Id}', 'Denuncia\Respuesta\RespuestaCiudadanaController@indexAmbito')->name('listRespuestasCiudadanasAmbito');
+
 
     // Catálogo de Respuestas Mobile
     Route::get('listRespuestasMobile/{Id}', 'Denuncia\Respuesta\RespuestaMobileController@index')->name('listRespuestasMobile');

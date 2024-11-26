@@ -32,7 +32,7 @@ class PermissionController extends Controller
         });
         $Id = $Id === 0 ? 1 : $Id;
         $users = User::findOrFail($Id);
-        $this->lstAsigns = $users->permissions->pluck('name','id');
+        $this->lstAsigns = $users->permissions->sortBy('name')->pluck('name','id');
 
         $user = Auth::User();
         return view ('catalogos.asignaciones.permissions_usuario',

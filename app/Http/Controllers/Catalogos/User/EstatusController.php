@@ -28,9 +28,9 @@ class EstatusController extends Controller{
         $listTarget  = null;
         $Id = $Id == 0 ? 1 : $Id;
         $users = User::findOrFail($Id);
-        $this->lstAsigns = $users->estatus->pluck('estatus','id');
+        $this->lstAsigns = $users->estatus->sortBy('estatus')->pluck('estatus','id');
 
-        //dd($this->lstAsigns);
+//        dd($this->lstAsigns);
 
         $user = Auth::User();
         return view ('catalogos.asignaciones.estatus_usuario',
