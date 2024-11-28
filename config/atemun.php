@@ -123,6 +123,9 @@ return [
             'firmas'                                => 'firmas',
             'denuncia_firma'                        => 'denuncia_firma',
             'estatu_user'                           => 'estatu_user',
+            'servicioscategorias'                   => 'servicioscategorias',
+            'servicioscategoria_user'               => 'servicioscategoria_user',
+            'origene_user'                          => 'origene_user',
         ],
         'domicilios' => [
             'users'             => 'users',

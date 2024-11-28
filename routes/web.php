@@ -214,6 +214,16 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
     Route::get('editAsentamientoV2/{Id}', 'Catalogos\Domicilio\AsentamientoController@editItemV2')->name('editAsentamientoV2');
     Route::put('updateAsentamientoV2', 'Catalogos\Domicilio\AsentamientoController@updateItemV2')->name('updateAsentamientoV2');
 
+    // Catálogo de ServiciosCategorias
+    Route::get('listServiciosCategorias/', 'Denuncia\ServicioCategoriaController@index')->name('listServiciosCategorias');
+    Route::get('newServicioCategoria', 'Denuncia\ServicioCategoriaController@newItemV2')->name('newServicioCategoria');
+    Route::post('createServicioCategoria', 'Denuncia\ServicioCategoriaController@createItemV2')->name('createServicioCategoria');
+    Route::get('editServicioCategoria/{Id}', 'Denuncia\ServicioCategoriaController@editItemV2')->name('editServicioCategoria');
+    Route::put('updateServicioCategoria', 'Denuncia\ServicioCategoriaController@updateItemV2')->name('updateServicioCategoria');
+    Route::get('removeServicioCategoria/{id}', 'Denuncia\ServicioCategoriaController@removeItem')->name('removeServicioCategoria');
+
+
+
     // Catálogo de Calles
     Route::get('listCalles/', 'Catalogos\Domicilio\CalleController@index')->name('listCalles');
     Route::get('editCalle/{Id}', 'Catalogos\Domicilio\CalleController@editItem')->name('editCalle');
@@ -383,6 +393,12 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
     Route::post('assignEstToUser','Catalogos\User\EstatusController@asignarEst')->name('assignEstToUser');
     Route::post('unAssignEstToUser','Catalogos\User\EstatusController@desasignarEst')->name('unAssignEstToUser');
     Route::get('getEstatusUser/{Id}','Catalogos\User\EstatusController@getItems')->name('getEstatusUser');
+
+    // USUARIOS CATEGORIAS SERVICIOS
+    Route::get('asignaServCatList/{Id}','Catalogos\User\ServicioCategoriaController@index')->name('asignaServCatList');
+    Route::post('assignServCatToUser','Catalogos\User\ServicioCategoriaController@asignarServCat')->name('assignServCatToUser');
+    Route::post('unAssignServCatToUser','Catalogos\User\ServicioCategoriaController@desasignarServCat')->name('unAssignServCatToUser');
+    Route::get('getServCatUser/{Id}','Catalogos\User\ServicioCategoriaController@getItems')->name('getServCatUser');
 
     // EXTERNAL FILES
     Route::get('archivosConfig','Storage\StorageExternalFilesController@archivos_config')->name('archivosConfig');

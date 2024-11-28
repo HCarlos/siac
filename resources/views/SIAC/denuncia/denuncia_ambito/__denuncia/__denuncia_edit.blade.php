@@ -112,29 +112,14 @@
                 </div>
             </div>
 
-            <div class="form-group row d-flex justify-content-sm-center align-items-center vh-100 m-0 p-0" >
-                <div class="card shadow-sm center-block mt-2 " >
-                    <div class="card-header bgc-pink shadow-lg pt-1 pb-0">
-                        <h5 class="text-110 text-white">
-                            Datos adicionales
-                        </h5>
-                    </div>
-                    <div class="card-body brg-default-light p-2" >
-                        <div class="form-group row ">
-                            <label for = "folio_sas" class="col-sm-2 col-form-label text-right">Folio SAS</label>
-                            <div class="col-sm-4">
-                                <input type="text" name="folio_sas" id="folio_sas" value="{{ old('folio_sas', $items->folio_sas) }}" class="form-control col-sm" />
-                            </div>
-                            <label for = "ambito" class="col-sm-2 col-form-label text-right">Tipo</label>
-                            <div class="col-sm-4">
-                                <select class="form-control col-sm" size="1" id="ambito" name="ambito">
-                                    @foreach($ambito as $id => $valor)
-                                        <option value="{{$id}}" {{ $id === $items->ambito ? 'selected': '' }} >{{ $valor }} </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+            <div class="form-group row mb-1">
+                <label for = "ambito" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Servicio:</label>
+                <div class="col-lg-10">
+                    <select id="ambito" name="ambito" class="form-control" size="1">
+                        @foreach($ambito as $id => $valor)
+                            <option value="{{$id}}" {{ $id === $items->ambito ? 'selected': '' }} >{{ $valor }} </option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
 

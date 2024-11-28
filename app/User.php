@@ -6,6 +6,8 @@ use App\Filters\User\UserFilter;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Domicilios\Ubicacion;
 use App\Models\Catalogos\Estatu;
+use App\Models\Catalogos\Origen;
+use App\Models\Catalogos\ServicioCategoria;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Imagene;
 use App\Models\Denuncias\Respuesta;
@@ -108,6 +110,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function estatus(){
         return $this->belongsToMany(Estatu::class,'estatu_user','user_id','estatu_id')
         ->withPivot('orden','predeterminado');
+    }
+
+    public function servicioscategorias(){
+        return $this->belongsToMany(ServicioCategoria::class,'servicioscategoria_user','user_id','servicioscategoria_id')
+            ->withPivot('orden','predeterminado');
+    }
+
+    public function origenes(){
+        return $this->belongsToMany(Origen::class,'origene_user','user_id','origene_id')
+            ->withPivot('orden','predeterminado');
     }
 
     public function Denuncia(){

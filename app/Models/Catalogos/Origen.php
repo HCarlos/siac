@@ -3,6 +3,7 @@
 namespace App\Models\Catalogos;
 
 use App\Filters\Catalogo\OrigenFilter;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -37,6 +38,13 @@ class Origen extends Model
         }
         return $obj;
     }
+
+    public function users(){
+        return $this->belongsToMany(User::class,'origene_user','origene_id','user_id')
+            ->withPivot('orden','predeterminado');
+    }
+
+
 
 
 }

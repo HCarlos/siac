@@ -527,7 +527,7 @@ jQuery(function($) {
             formData['referencia']         = $("#referencia").val();
             formData['ubicacion']          = $("#ubicacion").val();
             formData['ubicacion_id']       = $("#ubicacion_id").val();
-            formData['searchgoogle']       = $("#searchGoogle").val();
+            // formData['searchgoogle']       = $("#searchGoogle").val();
             formData['searchgoogleresult'] = $("#searchGoogleResult").html();
             formData['usuario_id']         = $("#usuario_id").val();
             formData['servicio_id']        = $("#servicio_id").val();

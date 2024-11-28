@@ -63,12 +63,12 @@ jQuery(function($) {
                     $("#ubicacion_id_span").html(d.id);
                     $("#ubicacion").val(d.id+' '+d.calle+' '+d.colonia+' '+d.comunidad+' '+d.ciudad+' '+d.municipio+' '+d.estado+' '+d.cp);
                     $("#ubicacion_nueva_id").val(d.id);
-                    $("#searchGoogle").val(d.sanitizer_location);
+                    // $("#searchGoogle").val(d.sanitizer_location);
                     break;
                 case 1:
                     if ( $("#usuario") )            $("#usuario").val('('+d.id+') '+d.nombre_completo);
                     if ( $("#usuario_domicilio") )  $("#usuario_domicilio").val(d.domicilio);
-                    if ( $("#searchGoogle") )       $("#searchGoogle").val(d.sanitizer_location);
+                    // if ( $("#searchGoogle") )       $("#searchGoogle").val(d.sanitizer_location);
 
                     if ( $("#usuario_telefonos") )  {
                         llevarDatosdelUsuario(d);

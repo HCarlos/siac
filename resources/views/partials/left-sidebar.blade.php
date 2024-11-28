@@ -140,33 +140,42 @@
                         </a>
                     </li>
                     @endif
-                    @if (Auth::user()->hasRole('Administrator|SysOp'))
-                    <li>
-                        <a href="{{route('listAfiliaciones')}}">
-                            <i class="fas fa-money-check-alt"></i>
-                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Afiliacion::count()}}</span>
-                            <span>Afiliaciones</span>
-                        </a>
-                    </li>
+                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin'))
+                        <li>
+                            <a href="{{route('listServiciosCategorias')}}">
+                                <i class="fas fa-money-check-alt"></i>
+                                <span class="badge badge-light float-right">{{\App\Models\Catalogos\ServicioCategoria::count()}}</span>
+                                <span>Categorías de Servicios</span>
+                            </a>
+                        </li>
                     @endif
-                    @if (Auth::user()->hasRole('Administrator|SysOp'))
-                    <li>
-                        <a href="{{route('listTipoasentamientos')}}">
-                            <i class="fas fa-money-check-alt"></i>
-                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Tipoasentamiento::count()}}</span>
-                            <span>Tipo Asentamientos</span>
-                        </a>
-                    </li>
-                    @endif
-                    @if (Auth::user()->hasRole('Administrator|SysOp'))
-                    <li>
-                        <a href="{{route('listAsentamientos')}}">
-                            <i class="fas fa-money-check-alt"></i>
-                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Asentamiento::count()}}</span>
-                            <span>Asentamientos</span>
-                        </a>
-                    </li>
-                    @endif
+{{--                    @if (Auth::user()->hasRole('Administrator|SysOp'))--}}
+{{--                    <li>--}}
+{{--                        <a href="{{route('listAfiliaciones')}}">--}}
+{{--                            <i class="fas fa-money-check-alt"></i>--}}
+{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Afiliacion::count()}}</span>--}}
+{{--                            <span>Afiliaciones</span>--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
+{{--                    @endif--}}
+{{--                    @if (Auth::user()->hasRole('Administrator|SysOp'))--}}
+{{--                    <li>--}}
+{{--                        <a href="{{route('listTipoasentamientos')}}">--}}
+{{--                            <i class="fas fa-money-check-alt"></i>--}}
+{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Tipoasentamiento::count()}}</span>--}}
+{{--                            <span>Tipo Asentamientos</span>--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
+{{--                    @endif--}}
+{{--                    @if (Auth::user()->hasRole('Administrator|SysOp'))--}}
+{{--                    <li>--}}
+{{--                        <a href="{{route('listAsentamientos')}}">--}}
+{{--                            <i class="fas fa-money-check-alt"></i>--}}
+{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Asentamiento::count()}}</span>--}}
+{{--                            <span>Asentamientos</span>--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
+{{--                    @endif--}}
 
                 </ul>
             </li>
@@ -312,30 +321,12 @@
 
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
-                    <i class="fas fa-cog"></i>
-                    <span> Configuraciones </span>
+                    <i class="fas fa-users"></i>
+                    <span> Asiganaciones</span>
                     <span class="menu-arrow"></span>
                 </a>
 
                 <ul class="side-nav-second-level" aria-expanded="false">
-                    @if (Auth::user()->hasRole('Administrator|SysOp'))
-                    <li>
-                        <a href="{{route('listCategorias')}}">
-                            <i class="fas fa-user-tag"></i>
-                            <span class="badge badge-light float-right">{{\App\Models\Users\Categoria::count()}}</span>
-                            <span>Categorias Usuario</span>
-                        </a>
-                    </li>
-                    @endif
-                    @if (Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|ENLACE'))
-                    <li>
-                        <a href="{{route('listUsers')}}">
-                            <i class="fas fa-users"></i>
-                            <span class="badge badge-success float-right">{{\App\User::count()}}</span>
-                            <span>Usuarios</span>
-                        </a>
-                    </li>
-                    @endif
                     @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') || Auth::user()->can('asignar_roles'))
                     <li>
                         <a href="{{route('asignaRoleList',['Id'=>0])}}">
@@ -363,22 +354,61 @@
                             </a>
                         </li>
                     @endif
-                        @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') || Auth::user()->can('asignar_estatus'))
-                            <li>
-                                <a href="{{route('asignaEstatusList',['Id'=>0])}}">
-                                    <i class="fas fa-user-cog"></i>
-                                    <span class="badge badge-light float-right">{{\App\Models\Catalogos\Estatu::count()}}</span>
-                                    <span>Estatus</span>
-                                </a>
-                            </li>
-                        @endif
+                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') || Auth::user()->can('asignar_estatus'))
+                        <li>
+                            <a href="{{route('asignaEstatusList',['Id'=>0])}}">
+                                <i class="fas fa-user-cog"></i>
+                                <span class="badge badge-light float-right">{{\App\Models\Catalogos\Estatu::count()}}</span>
+                                <span>Estatus</span>
+                            </a>
+                        </li>
+                    @endif
+                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') || Auth::user()->can('asignar_categoria_servicios'))
+                        <li>
+                            <a href="{{route('asignaServCatList',['Id'=>0])}}">
+                                <i class="fas fa-user-cog"></i>
+                                <span class="badge badge-light float-right">{{\App\Models\Catalogos\Estatu::count()}}</span>
+                                <span>Categoría de Servicios</span>
+                            </a>
+                        </li>
+                    @endif
+                </ul>
+
+            </li>
+
+            <li class="side-nav-item">
+                <a href="javascript: void(0);" class="side-nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span> Configuraciones </span>
+                    <span class="menu-arrow"></span>
+                </a>
+
+                <ul class="side-nav-second-level" aria-expanded="false">
+{{--                    @if (Auth::user()->hasRole('Administrator|SysOp'))--}}
+{{--                        <li>--}}
+{{--                            <a href="{{route('listCategorias')}}">--}}
+{{--                                <i class="fas fa-user-tag"></i>--}}
+{{--                                <span class="badge badge-light float-right">{{\App\Models\Users\Categoria::count()}}</span>--}}
+{{--                                <span>Categorias Usuario</span>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                    @endif--}}
+                    @if (Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|ENLACE'))
+                        <li>
+                            <a href="{{route('listUsers')}}">
+                                <i class="fas fa-users"></i>
+                                <span class="badge badge-success float-right">{{\App\User::count()}}</span>
+                                <span>Usuarios</span>
+                            </a>
+                        </li>
+                    @endif
                     @if (Auth::user()->hasRole('Administrator|SysOp|test_admin'))
-                    <li>
-                        <a href="{{route('archivosConfig')}}">
-                            <i class="fas fa-file-excel"></i>
-                            <span>Formatos Excel</span>
-                        </a>
-                    </li>
+                        <li>
+                            <a href="{{route('archivosConfig')}}">
+                                <i class="fas fa-file-excel"></i>
+                                <span>Formatos Excel</span>
+                            </a>
+                        </li>
                     @endif
                 </ul>
 
