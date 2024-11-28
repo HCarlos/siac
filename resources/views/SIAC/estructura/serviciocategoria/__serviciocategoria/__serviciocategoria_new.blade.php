@@ -1,5 +1,5 @@
 <div class="form-group row mb-3">
-    <label for = "categoria_servicios" class="col-md-3 col-form-label has-categoria_servicios">Categoríía</label>
+    <label for = "categoria_servicios" class="col-md-3 col-form-label has-categoria_servicios">Categoría</label>
     <div class="col-md-9">
         <input type="text" name="categoria_servicios" id="categoria_servicios" value="{{ old('categoria_servicios') }}" class="form-control" />
         <span class="has-categoria_servicios">

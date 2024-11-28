@@ -322,7 +322,7 @@
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
                     <i class="fas fa-users"></i>
-                    <span> Asiganaciones</span>
+                    <span> Asignaciones</span>
                     <span class="menu-arrow"></span>
                 </a>
 
@@ -367,7 +367,7 @@
                         <li>
                             <a href="{{route('asignaServCatList',['Id'=>0])}}">
                                 <i class="fas fa-user-cog"></i>
-                                <span class="badge badge-light float-right">{{\App\Models\Catalogos\Estatu::count()}}</span>
+                                <span class="badge badge-light float-right">{{\App\Models\Catalogos\ServicioCategoria::count()}}</span>
                                 <span>Categoría de Servicios</span>
                             </a>
                         </li>
