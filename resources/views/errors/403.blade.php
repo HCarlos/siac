@@ -37,6 +37,18 @@
                             <p class="text-muted mt-3">Lo sento, no tiene permisos para entrar.</p>
 
                             <a class="btn btn-info mt-3" href="/"><i class="mdi mdi-reply"></i> Ir al inicio</a>
+
+                            <a class="btn btn-info mt-3" href="{{ route('logout') }}"
+                               onclick="event.preventDefault();
+                             document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+
+
                         </div>
                     </div> <!-- end card-body-->
                 </div>
