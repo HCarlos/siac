@@ -400,6 +400,13 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
     Route::post('unAssignServCatToUser','Catalogos\User\ServicioCategoriaController@desasignarServCat')->name('unAssignServCatToUser');
     Route::get('getServCatUser/{Id}','Catalogos\User\ServicioCategoriaController@getItems')->name('getServCatUser');
 
+    // USUARIOS ORIGENES
+    Route::get('asignaOrigenesList/{Id}','Catalogos\User\OrigenesController@index')->name('asignaOrigenesList');
+    Route::post('assignOrigenToUser','Catalogos\User\OrigenesController@asignarOrigen')->name('assignOrigenToUser');
+    Route::post('unAssignOrigenToUser','Catalogos\User\OrigenesController@desasignarOrigen')->name('unAssignOrigenToUser');
+    Route::get('getOrigenesUser/{Id}','Catalogos\User\OrigenesController@getItems')->name('getOrigenesUser');
+
+
     // EXTERNAL FILES
     Route::get('archivosConfig','Storage\StorageExternalFilesController@archivos_config')->name('archivosConfig');
     Route::post('subirArchivoBase/', 'Storage\StorageExternalFilesController@subirArchivoBase')->name('subirArchivoBase/');

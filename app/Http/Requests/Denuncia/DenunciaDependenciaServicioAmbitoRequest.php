@@ -16,10 +16,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
-class DenunciaDependenciaServicioAmbitoRequest extends FormRequest
-{
-
-
+class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
 
     protected $redirectRoute = 'editDenunciaDependenciaServicio';
 
@@ -56,9 +53,9 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest
             }
             if ( $this->id <= 0 ){
                 $item = Denuncia::find($this->denuncia_id);
+//                dd($this->denuncia_id);
                 $this->attaches($item);
             }else{
-
                 $Item = [
                     'dependencia_id'   => $this->dependencia_id,
                     'servicio_id'      => $this->servicio_id,
@@ -81,7 +78,6 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest
             return $Msg->Message($e);
         }
         return $this->id;
-
     }
 
     public function attaches($Item){

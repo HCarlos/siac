@@ -216,8 +216,8 @@ trait UserAttributes
         return $this->estatus->contains('id',$estatus);
     }
 
-    public function hasServiciosCategorias($servicioscategorias): bool{
-        return $this->servicioscategorias->contains('id',$servicioscategorias);
+    public function hasOrigenes($origenes): bool{
+        return $this->origenes->contains('id',$origenes);
     }
 
 

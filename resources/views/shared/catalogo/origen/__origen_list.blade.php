@@ -5,7 +5,7 @@
                 <thead>
                     <tr role="row">
                         <th class="sorting_asc w-5-percent" aria-sort="ascending" aria-label="Name: activate to sort column descending">ID</th>
-                        <th class="sorting w-85-percent" >Origenes</th>
+                        <th class="sorting w-85-percent" >Fuente de Captación</th>
                         <th class=" w-10-percent"></th>
                     </tr>
                 </thead>

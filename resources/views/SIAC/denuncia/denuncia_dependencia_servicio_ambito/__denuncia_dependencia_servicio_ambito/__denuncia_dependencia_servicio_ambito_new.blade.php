@@ -16,7 +16,7 @@
                 <label for = "servicio_id" class="col-md-3 col-form-label">Servicio</label>
                 <div class="col-md-9">
                     <select id="servicio_id" name="servicio_id" class="form-control" size="1">
-                        <option value="0" selected >Seleccione un Servicio</option>
+                        <option value="0" >Seleccione un Servicio</option>
                         @foreach($servicios as $t)
                             <option value="{{$t->id}}" @if($t->id==$servicio_id) selected @endif >{{ $t->servicio }} </option>
                         @endforeach
@@ -54,6 +54,6 @@
 </div>
 
 <input type="hidden" name="id" value="0" >
-<input type="hidden" name="denuncia_id" value="{{ $items->id }}" >
+<input type="hidden" name="denuncia_id" value="{{ $items->denuncia_id }}" >
 <input type="hidden" name="creadopor_id" id="creadopor_id" value="{{$user->id}}" >
 <hr>

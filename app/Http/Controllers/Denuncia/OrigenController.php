@@ -14,7 +14,7 @@ class OrigenController extends Controller
 {
 
 
-    protected $tableName = "Origenes";
+    protected $tableName = "origenes";
 
 // ***************** MUESTRA EL LISTADO DE USUARIOS ++++++++++++++++++++ //
     protected function index(Request $request)
@@ -31,7 +31,7 @@ class OrigenController extends Controller
         return view('catalogos.catalogo.origen.origen_list',
             [
                 'items' => $items,
-                'titulo_catalogo' => "Catálogo de " . ucwords($this->tableName),
+                'titulo_catalogo' => "Catálogo de Fuentes de Captación",
                 'titulo_header'   => '',
                 'user'            => $user,
                 'searchInList'    => 'listOrigenes',
@@ -52,9 +52,9 @@ class OrigenController extends Controller
     {
         return view('catalogos.catalogo.origen.origen_new',
             [
-                'editItemTitle' => 'Nuevo',
+                'editItemTitle' => 'Nueva',
                 'postNew' => 'createOrigen',
-                'titulo_catalogo' => "Catálogo de " . ucwords($this->tableName),
+                'titulo_catalogo' => "Catálogo de Fuentes de Captación",
                 'titulo_header'   => 'Nuevo registro',
             ]
         );
@@ -75,7 +75,7 @@ class OrigenController extends Controller
         $user = Auth::user();
         return view('SIAC._comun.__modal_comun_1',
             [
-                'Titulo'      => 'Nuevo',
+                'Titulo'      => 'Nueva Fuente de Captación',
                 'Route'       => 'createOrigenV2',
                 'Method'      => 'POST',
                 'items_forms' => 'SIAC.estructura.origen.__origen.__origen_new',
@@ -111,7 +111,7 @@ class OrigenController extends Controller
                 'items' => $item,
                 'editItemTitle' => isset($item->categoria) ? $item->categoria : 'Nuevo',
                 'putEdit' => 'updateOrigen',
-                'titulo_catalogo' => "Catálogo de " . ucwords($this->tableName),
+                'titulo_catalogo' => "Catálogo de Fuentes de Captación",
                 'titulo_header'   => 'Editando el Folio '.$Id,
             ]
         );
@@ -134,7 +134,7 @@ class OrigenController extends Controller
         $user = Auth::user();
         return view('SIAC._comun.__modal_comun_1',
             [
-                'Titulo'      => 'Nuevo',
+                'Titulo'      => 'Editando el folio '.$Id,
                 'Route'       => 'updateOrigenV2',
                 'Method'      => 'POST',
                 'items'       => $item,

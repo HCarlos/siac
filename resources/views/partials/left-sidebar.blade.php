@@ -49,7 +49,7 @@
             </li>
             @endif
 
-            @if (Auth::user()->hasRole('Administrator|SysOp|test_admin'))
+            @if (Auth::user()->hasRole('Administrator|SysOp|test_admin|CAPTURISTA_C'))
                 <li class="side-nav-item">
                     <a href="{{route('listDenunciasAmbito2')}}" class="side-nav-link">
                         <i class="mdi dripicons-archive"></i>
@@ -118,7 +118,7 @@
                         <a href="{{route('listOrigenes')}}">
                             <i class="fas fa-money-check-alt"></i>
                             <span class="badge badge-light float-right">{{\App\Models\Catalogos\Origen::count()}}</span>
-                            <span>Origenes</span>
+                            <span>Fuentes de Captación</span>
                         </a>
                     </li>
                     @endif
@@ -350,7 +350,7 @@
                             <a href="{{route('asignaDependenciaList',['Id'=>0])}}">
                                 <i class="fas fa-user-cog"></i>
                                 <span class="badge badge-light float-right">{{\App\Models\Catalogos\Dependencia::count()}}</span>
-                                <span>Dependencias</span>
+                                <span>Unidades Administrativas</span>
                             </a>
                         </li>
                     @endif
@@ -372,6 +372,15 @@
                             </a>
                         </li>
                     @endif
+                        @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') || Auth::user()->can('asignar_categoria_servicios'))
+                            <li>
+                                <a href="{{route('asignaOrigenesList',['Id'=>0])}}">
+                                    <i class="fas fa-user-cog"></i>
+                                    <span class="badge badge-light float-right">{{\App\Models\Catalogos\Origen::count()}}</span>
+                                    <span>Fuentes de Captación</span>
+                                </a>
+                            </li>
+                        @endif
                 </ul>
 
             </li>

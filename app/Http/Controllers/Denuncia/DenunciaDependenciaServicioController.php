@@ -8,6 +8,7 @@ use App\Http\Requests\Denuncia\DenunciaDependenciaServicioRequest;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Estatu;
 use App\Models\Catalogos\Servicio;
+use App\Models\Denuncias\_viServicios;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use App\User;
@@ -129,21 +130,24 @@ class DenunciaDependenciaServicioController extends Controller
         if($IsEnlace){
             $dep_id = Auth::user()->IsEnlaceDependencia;
             $Dependencias = Dependencia::all()->whereIn('id',$dep_id);
-            $Servicios = Servicio::whereHas('subareas', function($p) use ($items) {
-                $p->whereHas("areas", function($q) use ($items){
-                    return $q->where("dependencia_id",$items->dependencia_id);
-                });
-            })->orderBy('servicio')->get();
-//            $DDS = Denuncia_Dependencia_Servicio::all()->where('denuncia_id',$Id)->whereIn('dependencia_id',$dep_id);
+//            $Servicios = Servicio::whereHas('subareas', function($p) use ($items) {
+//                $p->whereHas("areas", function($q) use ($items){
+//                    return $q->where("dependencia_id",$items->dependencia_id);
+//                });
+//            })->orderBy('servicio')->get();
+
+            $Servicios = _viServicios::query()->where('dependencia_id',$items->dependencia_id)->get()->sortBy($items->servicio);
+
             $servicio_id = $items->servicio_id;
         }else{
-            $dep_id = $items->dependencia_id;
+//            $dep_id = $items->dependencia_id;
             $Dependencias = Dependencia::all()->sortBy('dependencia');
-            $Servicios = Servicio::whereHas('subareas', function($p) use ($dep_id) {
-                $p->whereHas("areas", function($q) use ($dep_id){
-                    return $q->where("dependencia_id",$dep_id);
-                });
-            })->orderBy('servicio')->get();
+//            $Servicios = Servicio::whereHas('subareas', function($p) use ($dep_id) {
+//                $p->whereHas("areas", function($q) use ($dep_id){
+//                    return $q->where("dependencia_id",$dep_id);
+//                });
+//            })->orderBy('servicio')->get();
+            $Servicios = _viServicios::query()->where('dependencia_id',$items->dependencia_id)->get()->sortBy($items->servicio);
             $servicio_id = $items->servicio_id;
         }
 

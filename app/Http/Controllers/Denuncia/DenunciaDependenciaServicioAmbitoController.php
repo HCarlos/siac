@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Denuncia;
 
 use App\Classes\Denuncia\VistaDenunciaClass;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Funciones\FuncionesController;
 use App\Http\Requests\Denuncia\DenunciaDependenciaServicioAmbitoRequest;
 use App\Http\Requests\Denuncia\DenunciaDependenciaServicioRequest;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Estatu;
 use App\Models\Catalogos\Servicio;
+use App\Models\Denuncias\_viDDSs;
+use App\Models\Denuncias\_viServicios;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use App\User;
@@ -89,17 +92,29 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
 
         if($IsEnlace){
             $dep_id = (int)Auth::user()->IsEnlaceDependencia;
-            $Dependencias = Dependencia::query()->whereIn('id',$dep_id)->get();
-            $Servicios    = Servicio::getQueryServiciosFromDependencias($items->dependencia_id);
+            $Dependencias = Dependencia::query()
+                ->where("estatus_cve", 1)
+                ->whereIn('id',$dep_id)
+                ->orderBy('dependencia')
+                ->get();
+
+            $Servicios = _viServicios::query()->where('dependencia_id',$items->dependencia_id)->get()->sortBy($items->servicio);
+
         }else{
-            $Dependencias = Dependencia::query()->orderBy('dependencia')->get();
-            $Servicios    = Servicio::getQueryServiciosFromDependencias($items->dependencia_id);
+
+            $Dependencias = Dependencia::query()
+                ->where('ambito_dependencia', $this->ambito_dependencia)
+                ->where("estatus_cve", 1)
+                ->orderBy('dependencia')
+                ->get();
+
+            $Servicios = _viServicios::query()->where('dependencia_id',$items->dependencia_id)->get()->sortBy($items->servicio);
+
         }
 
         if (Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN') ) {
             $Estatus      = Estatu::query()->orderBy('estatus')->get();
         }else{
-//            $Estatus      = Estatu::all()->where('estatus_cve',1)->sortBy('estatus');
             $Estatus = Estatu::query()
                 ->where('estatus_cve',1)
                 ->whereHas('users', function($q) use ($user_id) {
@@ -140,33 +155,40 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
 
     protected function addItem($Id){
 
-        $items         = Denuncia::find($Id);
+        $items = Denuncia_Dependencia_Servicio::query()->where('denuncia_id',$Id)->orderByDesc('id')->first();
+
         $user_id       = Auth::user()->id;
         $this->ambito_dependencia = Session::get('ambito_dependencia');
 
         $IsEnlace = Auth::user()->isRole('ENLACE');
         if($IsEnlace){
             $dep_id = Auth::user()->IsEnlaceDependencia;
-            $Dependencias = Dependencia::all()->whereIn('id',$dep_id);
-            $Servicios = Servicio::whereHas('subareas', function($p) use ($items) {
-                $p->whereHas("areas", function($q) use ($items){
-                    return $q->where("dependencia_id",$items->dependencia_id);
-                });
-            })->orderBy('servicio')->get();
+
+            $Dependencias = Dependencia::query()
+                ->where("estatus_cve", 1)
+                ->whereIn('id',$dep_id)
+                ->orderBy('dependencia')
+                ->get();
+
+            $Servicios = _viServicios::query()->where('dependencia_id',$items->dependencia_id)->get()->sortBy($items->servicio);
+
             $servicio_id = $items->servicio_id;
         }else{
-            $dep_id = $items->dependencia_id;
-            $Dependencias = Dependencia::all()->sortBy('dependencia');
-            $Servicios = Servicio::whereHas('subareas', function($p) use ($dep_id) {
-                $p->whereHas("areas", function($q) use ($dep_id){
-                    return $q->where("dependencia_id",$dep_id);
-                });
-            })->orderBy('servicio')->get();
+
+            $Dependencias = Dependencia::query()
+                ->where('ambito_dependencia', $this->ambito_dependencia)
+                ->where("estatus_cve", 1)
+                ->orderBy('dependencia')
+                ->get();
+
+            $Servicios = _viServicios::query()->where('dependencia_id',$items->dependencia_id)->get()->sortBy($items->servicio);
+
             $servicio_id = $items->servicio_id;
+
         }
 
         if (Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN') ) {
-            $Estatus = Estatu::query()->orderBy('estatus');
+            $Estatus = Estatu::query()->orderBy('estatus')->get();
         }else{
             $Estatus = Estatu::query()
                 ->where('estatus_cve',1)
@@ -175,7 +197,6 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
                 })
                 ->orderBy('estatus')
                 ->get();
-
         }
 
         return view('SIAC.denuncia.denuncia_dependencia_servicio_ambito.denuncia_dependencia_servicio_ambito_new',

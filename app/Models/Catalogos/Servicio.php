@@ -4,6 +4,7 @@ namespace App\Models\Catalogos;
 
 use App\Filters\Catalogo\ServicioFilter;
 use App\Http\Controllers\Funciones\FuncionesController;
+use App\Models\Denuncias\_viServicios;
 use App\Models\Denuncias\Denuncia;
 use App\Traits\Catalogos\Estructura\Servicio\ServicioTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -91,17 +92,21 @@ class Servicio extends Model
 
     static function getQueryServiciosFromDependencias($id=0){
 
-        $items =  static::whereHas('subareas', function($p) use ($id) {
-            $p->whereHas("areas", function($q) use ($id){
-                return $q->where("dependencia_id",$id);
-            });
-        })->orderBy('servicio')->get();
+//        $items =  static::whereHas('subareas', function($p) use ($id) {
+//            $p->whereHas("areas", function($q) use ($id){
+//                return $q->where("dependencia_id",$id);
+//            });
+//        })->orderBy('servicio')->get();
+
+        $items =  _viServicios::query()->where("dependencia_id",$id)->orderBy('servicio')->get();
+
+//        dd($items);
 
         $data = [];
         foreach ($items as $item){
-            $suba = trim($item->subarea->subarea) == "GENERAL" ? "" : trim($item->subarea->subarea).' - ';
-            $area = trim($item->subarea->area->area) == "GENERAL" ? "" : trim($item->subarea->area->area).' - ';
-            $depe = trim($item->subarea->area->dependencia->abreviatura) == "GENERAL" ? "" : trim($item->subarea->area->dependencia->abreviatura);
+            $suba = trim($item->subarea) === "GENERAL" ? "" : trim($item->subarea).' - ';
+            $area = trim($item->area) === "GENERAL" ? "" : trim($item->area).' - ';
+            $depe = trim($item->abreviatura_dependencia) === "GENERAL" ? "" : trim($item->abreviatura_dependencia);
             $data[]=array('id'=>$item->id,'servicio'=>$item->servicio.' - '.$suba.$area.$depe);
         }
 

@@ -113,9 +113,10 @@
             </div>
 
             <div class="form-group row mb-1">
-                <label for = "ambito" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Servicio:</label>
+                <label for = "ambito" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Categoría:</label>
                 <div class="col-lg-10">
                     <select id="ambito" name="ambito" class="form-control" size="1">
+                        <option value="0" {{ $items->ambito === 0 ? 'selected': '' }} >No Aplica</option>
                         @foreach($ambito as $id => $valor)
                             <option value="{{$id}}" {{ $id === $items->ambito ? 'selected': '' }} >{{ $valor }} </option>
                         @endforeach
