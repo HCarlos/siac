@@ -50,11 +50,11 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/user/change/email', [UserAPIController::class, 'userChangeEmail']);
         Route::post('/user/delete', [UserAPIController::class, 'userDelete']);
 
-        // Denunciases should
+        // Denuncias should
         Route::post('/denuncia/insert', [DenunciaAPIController::class, 'insertDenunciaMobile']);
         Route::post('/denuncia/getlist', [DenunciaAPIController::class, 'getDenuncias']);
 
-        // Ads Images Denucnas should
+        // Ads Images Denuncias should
         Route::post('/denuncia/add/image', [DenunciaAPIController::class, 'addImageDenunciaMobile']);
         Route::post('/denuncia/getimagesdenuncialist', [DenunciaAPIController::class, 'getImagesDenunciaList']);
         Route::post('/denuncia/add/respuesta', [DenunciaAPIController::class, 'addRespuestaDenunciaMobile']);

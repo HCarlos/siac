@@ -467,17 +467,17 @@ class DenunciaAmbitoController extends Controller{
             ->get()
             ->pluck('categoria_servicios','id');
 
-
-//        dd($ServCat);
-//
-        $user_ubicacion = $item->Ciudadano->ubicaciones->first->id->id;
+        if ($item->Ciudadano->ubicacion_id == 0) {
+            $user_ubicacion = 0;
+        }else{
+            $user_ubicacion = $item->Ciudadano->ubicaciones->first->id->id;
+        }
 
         if ( $user_ubicacion === $item->ubicacion_id ){
             $pregunta1 = 0;
         }else{
             $pregunta1 = 1;
         }
-
 
 
         $this->msg = "";

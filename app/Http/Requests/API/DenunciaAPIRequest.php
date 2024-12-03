@@ -8,6 +8,7 @@ namespace App\Http\Requests\API;
 use App\Events\APIDenunciaEvent;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Models\Catalogos\Domicilios\Ubicacion;
+use App\Models\Denuncias\_viServicios;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Imagene;
 use App\Models\Mobiles\Denunciamobile;
@@ -79,13 +80,15 @@ class DenunciaAPIRequest extends FormRequest{
         ];
     }
 
-    public function manage()
-    {
+    public function manage(){
+
         try {
             ini_set('max_execution_time', 300000);
             app()['cache']->forget('spatie.permission.cache');
 
             $Ser = Serviciomobile::all()->where("servicio",trim($this->servicio))->first();
+//            $srv = explode('_',$this->servicio_id);
+//            $Ser = _viServicios::query()->where("id",$srv[1])->first();
 
             $F           = new FuncionesController();
             $filters      = strtolower($this->ubicacion_google);
@@ -141,6 +144,9 @@ class DenunciaAPIRequest extends FormRequest{
                 'cp'                           => strtoupper($Ubi->cp),
                 'latitud'                      => $this->latitud ?? 0.0000,
                 'longitud'                     => $this->longitud ?? 0.0000,
+                'altitud'                      => $this->altitud ?? 0.0000,
+                'searchGoogle'                 => $this->ubicacion_google ?? '',
+                'gd_ubicacion'                 => $this->ubicacion_google ?? '',
                 'prioridad_id'                 => 2,
                 'origen_id'                    => 24,
                 'dependencia_id'               => $Ser->dependencia_id,
@@ -155,6 +161,7 @@ class DenunciaAPIRequest extends FormRequest{
                 'ip'                           => "",
                 'host'                         => "",
                 'denunciamobile_id'            => $this->DenMobGen->id,
+                'ambito'                       => $this->ambito ?? 2,
             ];
 
             $obj = $this->guardarDenunciaMobileADenuncia($Item);

@@ -84,7 +84,7 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
         //dd($Item);
         $item =  (object) [
             'denuncia_id' => $this->denuncia_id,
-            'respuesta'    => $this->observaciones,
+            'respuesta'    => $this->observaciones ?? '',
         ];
 
         $Item->dependencias()->attach(
@@ -99,11 +99,12 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
                 'creadopor_id'     => Auth::user()->id,
             ]
         );
-        $cfm = new SendNotificationFCM();
-        $cfm->sendNotificationMobile($item,3);
 
         $vid = new VistaDenunciaClass();
         $vid->vistaDenuncia($this->denuncia_id);
+
+        $cfm = new SendNotificationFCM();
+        $cfm->sendNotificationMobile($item,3);
 
         return Denuncia_Dependencia_Servicio::orderBy('id', 'DESC')->first()->id;
 

@@ -209,5 +209,4 @@ return [
         'server_android_alza' => 'AIzaSyD9jQdDKkXvAOgurJDSYtECzzCiaZSX1EM',
     ],
 
-
 ];

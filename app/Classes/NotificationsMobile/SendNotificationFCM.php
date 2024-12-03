@@ -34,8 +34,10 @@ class SendNotificationFCM{
         $message->addRecipient(new Device($devicetoken));
         $message
             ->setNotification(new Notification($titulo, $mensaje))
-            ->setData(['valid' => true])
-        ;
+            ->setData(['valid' => true]);
+
+//        dd($message);
+
         $response = $client->send($message);
         $r = (object)json_decode($response->getBody()->getContents());
         if ($r->failure === 0) {
@@ -124,14 +126,16 @@ class SendNotificationFCM{
             $IsValidQuery = true;
         }else if ($Type === 3){
             $dm = Denuncia::find($Item->denuncia_id);
-            $user_id = $dm->ciudadano_id;
-            $respuesta = $Item->respuesta;
+            $user_id = $dm->ciudadano_id ?? 1;
+            $respuesta = $Item->respuesta ?? '';
             $IsValidQuery = true;
         }
         if ($IsValidQuery){
             $usermobile = UserMobile::query()->where('user_id', $user_id)->get();
             foreach ($usermobile as $um){
-                $response = $fcm->sendNotification($um->id,$um->user_id,$um->mobile_type,$um->token,$dm->denuncia,$respuesta);
+                if ($um) {
+                    $fcm->sendNotification($um->id, $um->user_id, $um->mobile_type, $um->token, $dm->denuncia, $respuesta);
+                }
             }
         }
         return $Item;

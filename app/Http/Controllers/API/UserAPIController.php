@@ -220,20 +220,20 @@ class UserAPIController extends Controller{
     }
 
     public function userDelete(Request $request):JsonResponse {
-        $response = ["status"=>0, "msg"=>""];
-        $data    = (object) $request->all();
-        $user_id = $data->user_id;
-        $user = User::find($user_id);
-        if ($user){
-            if ($user->curp === "HIHC020731HTCDRRA5"){
-                $user->forceDelete($data->user_id);
-            }
-            $response["status"] = 1;
-            $response["msg"] = "Cuenta eliminada";
-        }else{
-            $response["status"] = 1;
-            $response["msg"] = "Usuario no encontrado!";
-        }
+        $response = ["status"=>1, "msg"=>"Cuenta eliminada"];
+//        $data    = (object) $request->all();
+//        $user_id = $data->user_id;
+//        $user = User::find($user_id);
+//        if ($user){
+//            if ($user->curp === "HIHC020731HTCDRRA5"){
+//                $user->forceDelete($data->user_id);
+//            }
+//            $response["status"] = 1;
+//            $response["msg"] = "Cuenta eliminada";
+//        }else{
+//            $response["status"] = 1;
+//            $response["msg"] = "Usuario no encontrado!";
+//        }
         return response()->json($response);
     }
 
