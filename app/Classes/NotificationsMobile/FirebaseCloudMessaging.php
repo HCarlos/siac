@@ -58,7 +58,7 @@ class FirebaseCloudMessaging{
         require_once __DIR__ . '/config.php';
 
         // POST variables
-        $url = 'https://fcm.googleapis.com/fcm/send';
+        $url = 'https://fcm.googleapis.com/v1/projects/siac-villahermos-1715790465415/messages:send';
 
         $headers = array(
             'Authorization: key=' . 'AAAAOxp8RQA:APA91bEQIojJa-3wWzgJRuLvm11c2qSJJG-oziCAYFWRyD7vkf7flyKBNZC0qEprPpIwpA-OuScGrjGQqBhp6zEDCkj0z6MhVLVEf9R9g8zSsKjowT6qghhm1fbPB9mcAxCmFiJQkcld',

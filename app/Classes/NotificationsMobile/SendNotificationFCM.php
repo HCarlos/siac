@@ -10,7 +10,7 @@ use App\Models\Mobiles\Denunciamobile;
 use App\Models\Users\UserMobile;
 use App\Models\Users\UserMobileMessage;
 use App\Models\Users\UserMobileMessageRequest;
-use sngrl\PhpFirebaseCloudMessaging\Client;
+
 use sngrl\PhpFirebaseCloudMessaging\Message;
 use sngrl\PhpFirebaseCloudMessaging\Recipient\Device;
 use sngrl\PhpFirebaseCloudMessaging\Notification;
@@ -26,9 +26,10 @@ class SendNotificationFCM{
             $server_key = config('atemun.fcm.server_android_key');
         }
 
-        $client = new Client();
+        $client = new MyClient();
         $client->setApiKey($server_key);
         $client->injectGuzzleHttpClient(new \GuzzleHttp\Client());
+
         $message = new Message();
         $message->setPriority('high');
         $message->addRecipient(new Device($devicetoken));
@@ -39,14 +40,16 @@ class SendNotificationFCM{
 //        dd($message);
 
         $response = $client->send($message);
-        $r = (object)json_decode($response->getBody()->getContents());
-        if ($r->failure === 0) {
-            if ($response->getStatusCode() === 200) {
 
-//                if (!UserMobileMessage::query()
-//                    ->where('usermobile_id', $usermobile_id)
-//                    ->where('user_id', $user_id)
-//                    ->first()) {
+
+
+        $r = (object)json_decode($response->getBody()->getContents());
+
+//        dd($r);
+
+        if ( isset($r->success) && $r->success === 1 && isset($r->failure) ) {
+
+            if ($response->getStatusCode() === 200) {
 
                     $umm = UserMobileMessage::create([
                         'usermobile_id' => $usermobile_id,
@@ -57,20 +60,7 @@ class SendNotificationFCM{
                         'is_read' => false,
                     ]);
 
-//                }
-
-                // dd( $response->getStatusCode() );
-                // dd( $response->getBody()->getContents() );
-
-
-                //dd( $r->results );
                 if (isset($umm)) {
-
-//                    if (!UserMobileMessageRequest::query()
-//                        ->where('usermobilemessage_id', $umm->id)
-//                        ->where('usermobile_id', $usermobile_id)
-//                        ->where('user_id', $user_id)
-//                        ->first()) {
 
                         $resp = $r->results[0]->message_id ?? '';
                         $ummr = UserMobileMessageRequest::create([
@@ -83,7 +73,6 @@ class SendNotificationFCM{
                             'canonical_ids' => $r->canonical_ids,
                             'message_id' => $resp,
                         ]);
-//                    }
                 }
                 $um = UserMobile::find($usermobile_id);
                 $um->enabled = true;
@@ -98,7 +87,7 @@ class SendNotificationFCM{
             $um->enabled = false;
             $um->save();
         }
-
+//        dd($response);
         return $response;
 
     }
