@@ -41,7 +41,8 @@ class SendNotificationFCM{
 
         $response = $client->send($message);
 
-
+        // var_dump($response->getStatusCode());
+        var_dump($response->getBody()->getContents());
 
         $r = (object)json_decode($response->getBody()->getContents());
 
