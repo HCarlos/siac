@@ -20,75 +20,71 @@ class SendNotificationFCM{
 
     public function __construct(){ }
 
-    public function sendNotification($usermobile_id, $user_id, $device_name, $devicetoken, $titulo, $mensaje ){
-        $server_key = config('atemun.fcm.server_ios_key');
+    public function sendNotification($usermobile_id, $user_id, $device_name, $devicetoken, $titulo, $mensaje, $denuncia_id ){
+
+
         if ( $device_name === "ANDROID"){
-            $server_key = config('atemun.fcm.server_android_key');
+            // Enviar a Android
+            $resultAndroid = GetAccessTokenGoogle::sendFCMForDevice($devicetoken, $device_name, $titulo, $mensaje, $denuncia_id, $user_id);
+            $response = $resultAndroid['response'] . PHP_EOL;
+            // echo "Android Response: " . $resultAndroid['response'] . PHP_EOL;
+        }else{
+            // Enviar a Apple
+            $resultApple = GetAccessTokenGoogle::sendFCMForDevice($devicetoken, $device_name, $titulo, $mensaje, $denuncia_id, $user_id);
+            $response = $resultApple['response'] . PHP_EOL;
+            //echo "Apple Response: " . $resultApple['response'] . PHP_EOL;
         }
 
-        $client = new MyClient();
-        $client->setApiKey($server_key);
-        $client->injectGuzzleHttpClient(new \GuzzleHttp\Client());
+        $response = (object) json_decode($response, true);
 
-        $message = new Message();
-        $message->setPriority('high');
-        $message->addRecipient(new Device($devicetoken));
-        $message
-            ->setNotification(new Notification($titulo, $mensaje))
-            ->setData(['valid' => true]);
 
-//        dd($message);
+//        dd($response);
 
-        $response = $client->send($message);
+        if ( isset($response->error) ){
 
-        // var_dump($response->getStatusCode());
-        var_dump($response->getBody()->getContents());
-
-        $r = (object)json_decode($response->getBody()->getContents());
-
-//        dd($r);
-
-        if ( isset($r->success) && $r->success === 1 && isset($r->failure) ) {
-
-            if ($response->getStatusCode() === 200) {
-
-                    $umm = UserMobileMessage::create([
-                        'usermobile_id' => $usermobile_id,
-                        'user_id' => $user_id,
-                        'title' => $titulo,
-                        'message' => $mensaje,
-                        'fecha' => now(),
-                        'is_read' => false,
-                    ]);
-
-                if (isset($umm)) {
-
-                        $resp = $r->results[0]->message_id ?? '';
-                        $ummr = UserMobileMessageRequest::create([
-                            'usermobilemessage_id' => $umm->id,
-                            'usermobile_id' => $usermobile_id,
-                            'user_id' => $user_id,
-                            'multicast_id' => $r->multicast_id,
-                            'success' => $r->success,
-                            'failure' => $r->failure,
-                            'canonical_ids' => $r->canonical_ids,
-                            'message_id' => $resp,
-                        ]);
-                }
-                $um = UserMobile::find($usermobile_id);
-                $um->enabled = true;
-                $um->save();
-            } else {
-                $um = UserMobile::find($usermobile_id);
-                $um->enabled = false;
-                $um->save();
-            }
-        } else{
             $um = UserMobile::find($usermobile_id);
             $um->enabled = false;
             $um->save();
+
+            return false;
         }
+
 //        dd($response);
+
+        if ( isset($response->name) ) {
+
+//            dd($response->name);
+
+            $umm = UserMobileMessage::create([
+                'usermobile_id' => $usermobile_id,
+                'user_id' => $user_id,
+                'title' => $titulo,
+                'message' => $mensaje,
+                'fecha' => now(),
+                'is_read' => false,
+            ]);
+
+            if (isset($umm)) {
+
+                    $resp = $response->name ?? '';
+                    $name = explode('/',$response->name);
+                    $ummr = UserMobileMessageRequest::create([
+                        'usermobilemessage_id' => $umm->id,
+                        'usermobile_id' => $usermobile_id,
+                        'user_id' => $user_id,
+                        'multicast_id' => $name[3],
+                        'success' => 1,
+                        'failure' => 0,
+                        'canonical_ids' => 0,
+                        'message_id' => $name[3],
+                    ]);
+            }
+            $um = UserMobile::find($usermobile_id);
+            $um->enabled = true;
+            $um->save();
+
+        }
+
         return $response;
 
     }
@@ -124,7 +120,7 @@ class SendNotificationFCM{
             $usermobile = UserMobile::query()->where('user_id', $user_id)->get();
             foreach ($usermobile as $um){
                 if ($um) {
-                    $fcm->sendNotification($um->id, $um->user_id, $um->mobile_type, $um->token, $dm->denuncia, $respuesta);
+                    $fcm->sendNotification($um->id, $um->user_id, $um->mobile_type, $um->token, $dm->denuncia, $respuesta, $dm->denuncia);
                 }
             }
         }

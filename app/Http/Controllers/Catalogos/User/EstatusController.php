@@ -76,7 +76,7 @@ class EstatusController extends Controller{
         foreach($Estatus AS $i=>$valor) {
             if ($Estatus[$i] !== ""){
                 $Estatu = Estatu::where('id', $Estatus[$i])->first();
-                $rl = $user->hasEstatus($Estatus[$i]); ;
+                $rl = $user->hasEstatus($Estatus[$i]);
                 if (!$rl) {
                     $user->estatus()->attach($Estatu);
                 }

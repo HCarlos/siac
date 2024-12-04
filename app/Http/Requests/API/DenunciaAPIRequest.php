@@ -86,9 +86,9 @@ class DenunciaAPIRequest extends FormRequest{
             ini_set('max_execution_time', 300000);
             app()['cache']->forget('spatie.permission.cache');
 
-            $Ser = Serviciomobile::all()->where("servicio",trim($this->servicio))->first();
-//            $srv = explode('_',$this->servicio_id);
-//            $Ser = _viServicios::query()->where("id",$srv[1])->first();
+//            $Ser = Serviciomobile::all()->where("servicio",trim($this->servicio))->first();
+            $srv = explode('_',$this->servicio_id);
+            $Ser = Serviciomobile::query()->where("id",$srv[1])->first();
 
             $F           = new FuncionesController();
             $filters      = strtolower($this->ubicacion_google);
@@ -117,7 +117,7 @@ class DenunciaAPIRequest extends FormRequest{
                 'ubicacion'         => strtoupper(trim($Ubi->Ubicacion ?? $this->ubicacion_google)),
                 'ubicacion_google'  => strtoupper(trim($this->ubicacion_google)),
                 'latitud'           => $this->latitud,
-                'longitud'           => $this->longitud,
+                'longitud'          => $this->longitud,
                 'user_id'           => $this->user_id,
             ]);
 
@@ -131,7 +131,7 @@ class DenunciaAPIRequest extends FormRequest{
                 'fecha_limite'                 => now(),
                 'fecha_ejecucion'              => now(),
                 'descripcion'                  => strtoupper($this->denuncia),
-                'referencia'                   => "",
+                'referencia'                   => $this->ubicacion_google ?? '',
                 'clave_identificadora'         => "",
                 'calle'                        => strtoupper($Ubi->calle),
                 'num_ext'                      => strtoupper($Ubi->num_ext),
@@ -178,7 +178,6 @@ class DenunciaAPIRequest extends FormRequest{
         }
         return $DenMob;
     }
-
 
     public function manageImage(Denunciamobile $denunciamobile, $ITEM){
 

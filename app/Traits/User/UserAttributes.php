@@ -220,5 +220,9 @@ trait UserAttributes
         return $this->origenes->contains('id',$origenes);
     }
 
+    public function hasServiciosCategorias($categoria_servicios): bool{
+        return $this->servicioscategorias->contains('id',$categoria_servicios);
+    }
+
 
 }
