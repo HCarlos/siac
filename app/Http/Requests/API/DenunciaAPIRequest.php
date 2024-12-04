@@ -173,7 +173,6 @@ class DenunciaAPIRequest extends FormRequest{
             }
             return $DenMob;
         } catch (QueryException $e) {
-//            dd($e->getMessage());
             return ["status"=>0, "msg"=>$e->getMessage()];
         }
         return $DenMob;
@@ -210,8 +209,6 @@ class DenunciaAPIRequest extends FormRequest{
             ];
 
             $imm = Imagemobile::create($Item);
-
-            //dd($ITEM);
 
             $__Item = [
                 'fecha'        => $imm->fecha,
