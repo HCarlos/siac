@@ -63,7 +63,6 @@ class EstatusController extends Controller{
     }
 
 
-
     public function asignarEst(Request $request): JsonResponse{
 
         $data     = $request->all(['Id','names']);
