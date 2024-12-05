@@ -88,18 +88,18 @@ class DenunciaAPIRequest extends FormRequest{
 
             $tipo_mobile = strtoupper(trim($this->tipo_mobile));
 
-            return Str::of($tipo_mobile);
+//            return Str::of($tipo_mobile);
 
 
 
 //            $Ser = Serviciomobile::all()->where("servicio",trim($this->servicio))->first();
 
-            if ($tipo_mobile === "ANDROID"){
+//            if ($tipo_mobile === "ANDROID"){
                 $srv = explode('_',$this->servicio_id);
                 $Ser = Serviciomobile::query()->where("id",$srv[1])->first();
-            }else{
-                $Ser = Serviciomobile::query()->where("id",$this->id)->first();
-            }
+//            }else{
+//                $Ser = Serviciomobile::query()->where("id",$this->id)->first();
+//            }
 
             $F           = new FuncionesController();
             $filters      = strtolower($this->ubicacion_google);
@@ -168,7 +168,7 @@ class DenunciaAPIRequest extends FormRequest{
                 'creadopor_id'                 => $this->user_id,
                 'modificadopor_id'             => $this->user_id,
                 'domicilio_ciudadano_internet' => strtoupper(trim($this->ubicacion_google))  ?? '' ,
-                'observaciones'                => strtoupper(trim($this->marca_mobile))." - ".$this->DenMobGen->id,
+                'observaciones'                => strtoupper(trim($this->tipo_mobile))." - ".$this->DenMobGen->id,
                 'ip'                           => "",
                 'host'                         => "",
                 'denunciamobile_id'            => $this->DenMobGen->id,
