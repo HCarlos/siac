@@ -87,8 +87,13 @@ class DenunciaAPIRequest extends FormRequest{
             app()['cache']->forget('spatie.permission.cache');
 
 //            $Ser = Serviciomobile::all()->where("servicio",trim($this->servicio))->first();
-            $srv = explode('_',$this->servicio_id);
-            $Ser = Serviciomobile::all()->where("id",$srv[1])->first();
+
+            //            $srv = explode('_',$this->servicio_id);
+//            $Ser = Serviciomobile::all()->where("id",$srv[1])->first();
+
+//            dd($Ser);
+
+            $Ser = Serviciomobile::query()->where("servicio_id",$this->servicio_id)->first();
 
             $F           = new FuncionesController();
             $filters      = strtolower($this->ubicacion_google);
