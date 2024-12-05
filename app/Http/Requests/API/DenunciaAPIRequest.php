@@ -88,6 +88,8 @@ class DenunciaAPIRequest extends FormRequest{
 
             $tipo_mobile = strtoupper(trim($this->tipo_mobile));
 
+            dd($tipo_mobile);
+
 //            $Ser = Serviciomobile::all()->where("servicio",trim($this->servicio))->first();
 
             if ($tipo_mobile == "ANDROID"){
