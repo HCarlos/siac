@@ -88,7 +88,7 @@ class DenunciaAPIRequest extends FormRequest{
 
             $tipo_mobile = strtoupper(trim($this->tipo_mobile));
 
-            dd($tipo_mobile);
+            return Str::of($tipo_mobile);
 
 
 
