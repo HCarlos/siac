@@ -11,9 +11,9 @@ use App\Models\Users\UserMobile;
 use App\Models\Users\UserMobileMessage;
 use App\Models\Users\UserMobileMessageRequest;
 
-use sngrl\PhpFirebaseCloudMessaging\Message;
-use sngrl\PhpFirebaseCloudMessaging\Recipient\Device;
-use sngrl\PhpFirebaseCloudMessaging\Notification;
+//use sngrl\PhpFirebaseCloudMessaging\Message;
+//use sngrl\PhpFirebaseCloudMessaging\Recipient\Device;
+//use sngrl\PhpFirebaseCloudMessaging\Notification;
 
 class SendNotificationFCM{
 
@@ -21,7 +21,6 @@ class SendNotificationFCM{
     public function __construct(){ }
 
     public function sendNotification($usermobile_id, $user_id, $device_name, $devicetoken, $titulo, $mensaje, $denuncia_id ){
-
 
         if ( $device_name === "ANDROID"){
             // Enviar a Android
@@ -36,7 +35,6 @@ class SendNotificationFCM{
         }
 
         $response = (object) json_decode($response, true);
-
 
 //        dd($response);
 

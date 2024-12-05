@@ -5,6 +5,8 @@
 
 namespace App\Classes\NotificationsMobile;
 use Exception;
+use Google\Auth\CredentialsLoader;
+use Google\Auth\OAuth2;
 use Google\Client;
 class GetAccessTokenGoogle{
 
