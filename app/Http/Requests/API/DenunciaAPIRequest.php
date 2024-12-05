@@ -86,7 +86,7 @@ class DenunciaAPIRequest extends FormRequest{
             ini_set('max_execution_time', 300000);
             app()['cache']->forget('spatie.permission.cache');
 
-            $tipo_mobile = strtoupper(trim($this->tipo_mobile));
+//            $tipo_mobile = strtoupper(trim($this->tipo_mobile));
 
 //            return Str::of($tipo_mobile);
 
