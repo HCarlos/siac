@@ -52,6 +52,8 @@ class UserAPIController extends Controller{
                 $response["token_type"] = 'Bearer';
                 $response["msg"] = $token->plainTextToken;
                 $response["user"] = $user;
+                $response["api_version"] = "1.2.1";
+                $response["app_version"] = "1.5.3";
 
                 if ( isset($data->deviceToken) && isset($data->device_name) ){
                     if ( ! UserMobile::query()
