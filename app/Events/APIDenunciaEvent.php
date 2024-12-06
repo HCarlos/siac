@@ -2,7 +2,9 @@
 
 namespace App\Events;
 
+use App\Classes\Denuncia\VistaDenunciaClass;
 use App\Http\Controllers\Funciones\FuncionesController;
+use App\Models\Mobiles\Denunciamobile;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Broadcasting\Channel;
@@ -42,6 +44,9 @@ class APIDenunciaEvent  implements ShouldBroadcast {
         return 'APIDenunciaEvent';
     }
 
+    /**
+     * @throws \JsonException
+     */
     public function broadcastWith(){
         $this->status = 200;
         $fecha = Carbon::now()->format('d-m-Y H:i:s');
@@ -65,6 +70,11 @@ class APIDenunciaEvent  implements ShouldBroadcast {
             'fecha'          => now(),
             'user_id'        => $this->user_id,
         ]);
+
+        $DenMob = Denunciamobile::find($this->denuncia_id);
+
+        $vid = new VistaDenunciaClass();
+        $vid->vistaDenuncia($DenMob->denuncia_id);
 
         return [
             'denuncia_id'  => $this->denuncia_id,

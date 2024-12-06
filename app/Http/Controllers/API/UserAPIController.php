@@ -63,7 +63,7 @@ class UserAPIController extends Controller{
                         UserMobile::create([
                             'user_id' => $user->id,
                             'token' => $data->deviceToken,
-                            'mobile_type' => $data->device_name
+                            'mobile_type' => $data->device_name,
                         ]);
 
                     }

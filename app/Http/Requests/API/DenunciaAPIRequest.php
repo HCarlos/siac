@@ -5,6 +5,7 @@
 
 namespace App\Http\Requests\API;
 
+use App\Classes\Denuncia\VistaDenunciaClass;
 use App\Events\APIDenunciaEvent;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Models\Catalogos\Domicilios\Ubicacion;
@@ -85,13 +86,6 @@ class DenunciaAPIRequest extends FormRequest{
         try {
             ini_set('max_execution_time', 300000);
             app()['cache']->forget('spatie.permission.cache');
-
-//            $Ser = Serviciomobile::all()->where("servicio",trim($this->servicio))->first();
-
-            //            $srv = explode('_',$this->servicio_id);
-//            $Ser = Serviciomobile::all()->where("id",$srv[1])->first();
-
-//            dd($Ser);
 
             $Ser = Serviciomobile::query()->where("servicio_id",$this->servicio_id)->first();
 
@@ -283,11 +277,16 @@ class DenunciaAPIRequest extends FormRequest{
         ]));
     }
 
+    /**
+     * @throws \JsonException
+     */
     protected function guardarDenunciaMobileADenuncia($Item){
         $item = Denuncia::create($Item);
         $this->attachesDenunciaMobileADenuncia($item);
         $this->DenMobGen->denuncia_id = $item->id;
         $this->DenMobGen->save();
+//        $vid = new VistaDenunciaClass();
+//        $vid->vistaDenuncia($this->id);
         return $item;
     }
 

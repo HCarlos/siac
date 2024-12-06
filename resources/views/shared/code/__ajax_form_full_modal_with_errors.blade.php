@@ -3,9 +3,12 @@
     var strElements = "label, input, select, checkbox, textarea, radio, file, im, span";
     if( $("#formFullModal") ){
         $("#alertError").hide();
+        $("#loader").hide();
         $("#formFullModal").unbind("submit");
         $("#formFullModal").on("submit", function (event) {
             event.preventDefault();
+            $("#loader").show();
+            $(".btnSaveLoader").prop("disabled", true);
             var $form = $(this);
             var url = $form.attr('action');
             var formData = {};
@@ -49,6 +52,7 @@
             $form.find('.has-' + key ).addClass('text-danger');
         });
     }
+
 
 
 </script>

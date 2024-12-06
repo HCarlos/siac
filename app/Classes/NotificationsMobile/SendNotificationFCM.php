@@ -44,7 +44,7 @@ class SendNotificationFCM{
             $um->enabled = false;
             $um->save();
 
-            return false;
+            return null;
         }
 
 //        dd($response);
@@ -115,7 +115,10 @@ class SendNotificationFCM{
             $IsValidQuery = true;
         }
         if ($IsValidQuery){
-            $usermobile = UserMobile::query()->where('user_id', $user_id)->get();
+            $usermobile = UserMobile::query()
+                ->where('user_id', $user_id)
+                ->where('enabled', true)
+                ->get();
             foreach ($usermobile as $um){
                 if ($um) {
                     $fcm->sendNotification($um->id, $um->user_id, $um->mobile_type, $um->token, $dm->denuncia, $respuesta, $dm->denuncia);

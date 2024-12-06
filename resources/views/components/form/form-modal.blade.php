@@ -12,7 +12,11 @@
         @include( $items_forms )
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary float-left">
+
+        <span class="hidden mr-2" id="loader">
+            <img src="/images/loader.gif" width="32" height="32" class="ml-1" /> Guardando...
+        </span>
+        <button type="submit" class="btn btn-primary float-left btnSaveLoader" id="btnSaveLoader">
             <i class="fas fa-check-circle"></i> Guardar
         </button>
         <button type="button" class="btn btn-danger float-right" data-dismiss="modal">
