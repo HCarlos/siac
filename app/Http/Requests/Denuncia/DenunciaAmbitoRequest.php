@@ -116,7 +116,7 @@ class DenunciaAmbitoRequest extends FormRequest
                 'latitud'                      => $this->latitud ?? 0.0000,
                 'longitud'                     => $this->longitud ?? 0.0000,
                 'altitud'                      => $this->altitud ?? 0.0000,
-                'searchGoogle'                 => $this->searchGoogle ?? '',
+                'search_google'                 => $this->search_google ?? '',
                 'gd_ubicacion'                 => $this->gd_ubicacion ?? '',
                 'prioridad_id'                 => $this->prioridad_id ?? 2,
                 'origen_id'                    => $this->origen_id ?? 1,
@@ -229,7 +229,7 @@ class DenunciaAmbitoRequest extends FormRequest
                 $ubic = Ubicacion::find($Item->ubicacion_id);
                 $ubic->update([
                     'altitud' => $Item->altitud ?? 0.00,
-                    'searchGoogle' => $Item->searchGoogle ?? '',
+                    'search_google' => $Item->search_google ?? '',
                     'g_ubicacion' => $Item->gd_ubicacion] ?? '');
             }
 

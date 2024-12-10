@@ -5,10 +5,9 @@
                 <h6>{{$Denuncia->Ciudadano->FullName}}  <small>{{ date('d-m-Y H:i:s', strtotime($Denuncia->fecha_ingreso)) }}</small></h6>
             </div>
             <div class="card-body">
-                <p><strong>DESCRIPCIÓN:</strong></p>
-                <p>{{$Denuncia->descripcion}}</p>
-                <p><strong>REFERENCIA / OBSERVACIONES:</strong></p>
-                <p>{{$Denuncia->referencia.'  '.$Denuncia->observaciones}}</p>
+                <p><strong>DESCRIPCIÓN: </strong>{{$Denuncia->descripcion}}</p>
+                <p><strong>REFERENCIA: </strong>{{$Denuncia->referencia.'  '.$Denuncia->observaciones}}</p>
+                <p><strong>UBICACION: </strong>{{$Denuncia->gd_ubicacion}}</p>
             </div>
         </div>
     </div>
@@ -34,7 +33,7 @@
             <td>{{$item->id}}</td>
             <td>{{$item->dependencia->dependencia}}</td>
             <td>{{$item->servicio->servicio}}</td>
-            <td>{{$item->observaciones}}</td>
+            <td>{{$item->observaciones === "" ? "SE RECIBE LA SOLICITUD" : $item->observaciones }}</td>
             <td>{{$item->estatu->estatus}}</td>
     {{--                    <td class="text-center">@if($item->favorable==true)<i class="fas fa-check seagreen"></i> @else <i class="mdi mdi-close-box red mdi-18px"></i> @endif </td>--}}
             <td>{{$item->fecha_movimiento}}</td>

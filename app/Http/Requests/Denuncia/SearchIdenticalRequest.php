@@ -45,21 +45,21 @@ class SearchIdenticalRequest extends FormRequest{
         $this->data = [];
 //        dd($this->all());
         try {
-            $descripcion  = strtoupper(trim($this->descripcion));
-            $referencia   = strtoupper(trim($this->referencia));
-            $ubicacion    = strtoupper(trim($this->ubicacion));
-            $searchgoogle    = strtoupper(trim($this->searchgoogle));
-            $searchgoogleresult    = strtoupper(trim($this->searchgoogleresult));
-            $ubicacion_id = (int) $this->ubicacion_id;
-            $usuario_id   = (int) $this->usuario_id;
-            $servicio_id  = (int) $this->servicio_id;
-            $id           = (int) $this->id;
+            $descripcion        = strtoupper(trim($this->descripcion));
+            $referencia         = strtoupper(trim($this->referencia));
+            $ubicacion          = strtoupper(trim($this->ubicacion));
+            $search_google      = strtoupper(trim($this->search_google));
+            $searchgoogleresult = strtoupper(trim($this->searchgoogleresult));
+            $ubicacion_id       = (int) $this->ubicacion_id;
+            $usuario_id         = (int) $this->usuario_id;
+            $servicio_id        = (int) $this->servicio_id;
+            $id                 = (int) $this->id;
 
             $Ubi = Ubicacion::find($ubicacion_id);
 
             $filters = $descripcion.' '.$referencia.' '.$ubicacion;
             $filters = $Ubi->calle ?? ''.' '.$Ubi->colonia ?? '';
-            $filters .= $searchgoogle.' '.$searchgoogleresult;
+            $filters .= $search_google.' '.$searchgoogleresult;
 
             $F           = new FuncionesController();
             $tsString    = $F->string_to_tsQuery($filters,' & ');

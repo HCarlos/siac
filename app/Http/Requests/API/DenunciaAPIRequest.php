@@ -144,7 +144,7 @@ class DenunciaAPIRequest extends FormRequest{
                 'latitud'                      => $this->latitud ?? 0.0000,
                 'longitud'                     => $this->longitud ?? 0.0000,
                 'altitud'                      => $this->altitud ?? 0.0000,
-                'searchGoogle'                 => $this->ubicacion_google ?? '',
+                'search_google'                => $this->ubicacion_google ?? '',
                 'gd_ubicacion'                 => $this->ubicacion_google ?? '',
                 'prioridad_id'                 => 2,
                 'origen_id'                    => 24,

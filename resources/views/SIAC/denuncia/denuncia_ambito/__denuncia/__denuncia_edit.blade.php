@@ -25,10 +25,10 @@
 
         </div>
             <div class="form-row mb-1 ">
-                <label for = "searchGoogle" class="col-sm-2 col-form-label text-right">Ubicación: </label>
+                <label for = "search_google" class="col-sm-2 col-form-label text-right">Ubicación: </label>
                 <div class="col-sm-10">
                     <div class="input-group">
-                        <input type="text" name="searchGoogle" id="searchGoogle" class="form-control" value="{{ old('searchGoogle', $items->searchGoogle) }}" placeholder="escriba aquí la colonia" >
+                        <input type="text" name="search_google" id="search_google" class="form-control" value="{{ old('search_google', $items->search_google) }}" placeholder="escriba aquí la colonia" >
                         <button type="button" class="btn btn-sm btn-primary float-right" id="searchGoogleBtn">
                             <i class="mdi mdi-magnify"></i>
                         </button>

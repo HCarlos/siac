@@ -30,13 +30,13 @@ class AlterUbicaciones1Table extends Migration
                 $table->string('g_estado',50)->default('');
                 $table->string('g_cp',20)->default('');
 
-                $table->string('searchGoogle',500)->default('');
+                $table->string('search_google',500)->default('');
                 $table->string('g_ubicacion',500)->default('');
                 $table->double('altitud')->default(0.0000)->nullable();
             });
 
             Schema::table($Catalogos['denuncias'], function (Blueprint $table) use ($Catalogos ) {
-                $table->string('searchGoogle',500)->default('');
+                $table->string('search_google',500)->default('');
                 $table->string('gd_ubicacion',500)->default('');
                 $table->double('altitud')->default(0.0000)->nullable();
             });
@@ -72,7 +72,7 @@ class AlterUbicaciones1Table extends Migration
 
         if (Schema::hasTable($Domicilios['ubicaciones'])) {
             Schema::table($Domicilios['ubicaciones'], function (Blueprint $table) use ($Domicilios ) {
-                $table->dropColumn(['g_calle','g_num_ext','g_num_int','g_colonia','g_comunidad','g_ciudad','g_municipio','g_estado','g_cp','g_ubicacion','searchGoogle','altitud']);
+                $table->dropColumn(['g_calle','g_num_ext','g_num_int','g_colonia','g_comunidad','g_ciudad','g_municipio','g_estado','g_cp','g_ubicacion','search_google','altitud']);
             });
             DB::statement("DROP INDEX IF EXISTS g_searchtext_gin");
             DB::statement("DROP TRIGGER IF EXISTS ts_g_searchtext ON ubicaciones");
@@ -82,7 +82,7 @@ class AlterUbicaciones1Table extends Migration
 
         if (Schema::hasTable($Catalogos['denuncias'])) {
             Schema::table($Catalogos['denuncias'], function (Blueprint $table) use ($Catalogos ) {
-                $table->dropColumn(['gd_ubicacion','searchGoogle','altitud']);
+                $table->dropColumn(['gd_ubicacion','search_google','altitud']);
             });
             DB::statement("DROP INDEX IF EXISTS gd_searchtext_gin");
             DB::statement("DROP TRIGGER IF EXISTS ts_gd_searchtext ON denuncias");

@@ -36,20 +36,19 @@ async function initMap(lat, lon, siExiste) {
 
     if (!siExiste) {
 
-        // let searchGoogle = document.getElementById("searchGoogle").value + " centro tabasco";
-        let searchGoogle = document.getElementById("searchGoogle").value;
-        let positionString = searchGoogle.search('centro')
+        let search_google = document.getElementById("search_google").value;
+        let positionString = search_google.search('centro')
         if (positionString === -1) {
-            searchGoogle += ' centro';
+            search_google += ' centro';
         }
-        positionString = searchGoogle.search('tabasco')
+        positionString = search_google.search('tabasco')
         if (positionString === -1) {
-            searchGoogle += ' tabasco';
+            search_google += ' tabasco';
         }
 
 
         const request = {
-            query: searchGoogle,
+            query: search_google,
             fields: ["name", "formatted_address", "geometry"],
         };
 
@@ -165,7 +164,7 @@ if  ( document.getElementById("map") ){
 
 $("#searchGoogleBtn").click(event => {
     event.preventDefault();
-    if ( $("#searchGoogle").val() !== "" ) {
+    if ( $("#search_google").val() !== "" ) {
         $("#map").show();
         initMap(lat, lon, siExiste);
     }else {
@@ -173,9 +172,9 @@ $("#searchGoogleBtn").click(event => {
     }
 });
 
-$("#searchGoogle").change(event => {
+$("#search_google").change(event => {
     event.preventDefault();
-    if ( $("#searchGoogle").val() === "" ) {
+    if ( $("#search_google").val() === "" ) {
         $("#map").hide();
     }
 });
