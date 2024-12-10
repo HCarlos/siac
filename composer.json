@@ -42,7 +42,6 @@
         "yajra/laravel-datatables-oracle": "^9.21.2"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-latest",
         "nunomaduro/collision": "^4.3.0",
         "phpunit/phpunit": "^9.6.21"
     },
