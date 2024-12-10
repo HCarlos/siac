@@ -171,7 +171,7 @@
         </div>
         <hr>
         <div class="form-group row mb-1 ml-1">
-                @if ( Auth::user()->hasRole('Administrator') )
+                @if ( Auth::user()->hasRole('Administrator|test_admin|ENLACE') )
                     <button type="button" class="btn btn-sm btn-default float-left" id="addImage"  onclick="scanWithoutAspriseDialog();">Scanear Imagen</button>
                     <div id="scannerImages" name="scannerImages"></div><br><br>
                 @endif
