@@ -519,8 +519,8 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|DELEGADO|CIUDADANO|
     Route::get('removeRespuesta/{id}', 'Denuncia\Respuesta\RespuestaController@removeItem')->name('removeRespuesta');
     Route::get('/showModalRespuestaNew/{denuncia_id}', 'Denuncia\Respuesta\RespuestaController@showModalRespuestaNew')->name('/showModalRespuestaNew');
     Route::get('showModalRespuestaEdit/{Id}', 'Denuncia\Respuesta\RespuestaController@showModalRespuestaEdit')->name('/showModalRespuestaEdit');
-    Route::post('saveRespuestaDen/', 'Denuncia\Respuesta\RespuestaController@saveRespuestaDen')->name('saveRespuestaDen');
-    Route::put('saveRespuestaDen/', 'Denuncia\Respuesta\RespuestaController@saveRespuestaDen')->name('saveRespuestaDen');
+    // Route::post('saveRespuestaDen/', 'Denuncia\Respuesta\RespuestaController@saveRespuestaDen')->name('saveRespuestaDen');
+    Route::match(['put','post'],'saveRespuestaDen/', 'Denuncia\Respuesta\RespuestaController@saveRespuestaDen')->name('saveRespuestaDen');
 
     Route::get('/RespuestaARespuestaNew/{denuncia_id}/{respuesta_id}', 'Denuncia\Respuesta\RespuestaController@RespuestaARespuestaNew')->name('/RespuestaARespuestaNew');
     Route::post('saveRespuestaARespuestaDen/', 'Denuncia\Respuesta\RespuestaController@saveRespuestaARespuestaDen')->name('saveRespuestaARespuestaDen');
@@ -543,8 +543,8 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|DELEGADO|CIUDADANO|
     Route::get('removeImagene/{id}', 'Denuncia\Imagene\ImageneController@removeItem')->name('removeImagene');
     Route::get('/showModalImageneNew/{denuncia_id}', 'Denuncia\Imagene\ImageneController@showModalImageneNew')->name('/showModalImageneNew');
     Route::get('showModalImageneEdit/{Id}', 'Denuncia\Imagene\ImageneController@showModalImageneEdit')->name('/showModalImageneEdit');
-    Route::post('saveImageneDen/', 'Denuncia\Imagene\ImageneController@saveImageneDen')->name('saveImageneDen');
-    Route::put('saveImageneDen/', 'Denuncia\Imagene\ImageneController@saveImageneDen')->name('saveImageneDen');
+    // Route::post('saveImageneDen/', 'Denuncia\Imagene\ImageneController@saveImageneDen')->name('saveImageneDen');
+    Route::match(['put','post'],'saveImageneDen/', 'Denuncia\Imagene\ImageneController@saveImageneDen')->name('saveImageneDen');
 
     Route::get('/ImagenAImagenNew/{denuncia_id}/{imagen_id}', 'Denuncia\Imagene\ImageneController@ImagenAImagenNew')->name('/ImagenAImagenNew');
     Route::post('saveImagenAImagenDen/', 'Denuncia\Imagene\ImageneController@saveImagenAImagenDen')->name('saveImagenAImagenDen');

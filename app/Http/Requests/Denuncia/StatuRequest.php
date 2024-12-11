@@ -81,6 +81,7 @@ class StatuRequest extends FormRequest
                 'estatus_cve'     => (int) ($this->estatus_cve),
                 'favorable'       => $Fav,
                 'ambito_estatus'  => $this->ambito_estatus,
+                'requiere_imagen' => $this->requiere_imagen==1 ? true : false,
             ];
 
 //            dd($Item);

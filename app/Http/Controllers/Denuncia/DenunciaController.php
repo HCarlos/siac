@@ -143,11 +143,13 @@ class DenunciaController extends Controller{
         if (Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN') ) {
             $Estatus = Estatu::query()
                         ->where("estatus_cve", 1)
+                        ->where('ambito_estatus', 99)
                         ->orderBy('estatus')
                         ->get();
         }else{
             $Estatus = Estatu::query()
                 ->where('estatus_cve',1)
+                ->where('ambito_estatus', 99)
                 ->orderBy('estatus')
                 ->get();
         }
@@ -238,12 +240,14 @@ class DenunciaController extends Controller{
 
             $Estatus = Estatu::query()
                         ->where("estatus_cve", 1)
+                        ->where('ambito_estatus', 99)
                         ->orderBy('estatus')
                         ->get();
         }else{
 
             $Estatus = Estatu::query()
                         ->where('estatus_cve',1)
+                        ->where('ambito_estatus', 99)
                         ->orderBy('estatus')
                         ->get();
 
@@ -403,12 +407,13 @@ class DenunciaController extends Controller{
         if(Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN')){
             $Estatus = Estatu::query()
                         ->where("estatus_cve", 1)
+                        ->where('ambito_estatus', 99)
                         ->orderBy('estatus')
                         ->get();
         }else{
             $Estatus = Estatu::query()
                         ->where("estatus_cve", 1)
-                        ->where('estatus_cve',1)
+                        ->where('ambito_estatus', 99)
                         ->orderBy('estatus')
                         ->get();
         }

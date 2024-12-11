@@ -18,7 +18,7 @@
     </div>
 </div>
 <div class="form-group row mb-1">
-    <label for = "dependencia_id" class="col-md-2 col-form-label has-dependencia_id">Dependencia</label>
+    <label for = "dependencia_id" class="col-md-2 col-form-label has-dependencia_id">Unidad</label>
     <div class="col-md-7">
         <select class="dependencia_id form-control " data-toggle="select2"  name="dependencia_id" id="dependencia_id" size="1">
             <option value="0" selected>Ninguna</option>
@@ -35,7 +35,7 @@
     </div>
 </div>
 <div class="form-group row mb-1">
-    <label for = "dependencia_id" class="col-md-2 col-form-label">Dependencias</label>
+    <label for = "dependencia_id" class="col-md-2 col-form-label">Unidades</label>
     <div class="col-md-9">
         <ul class="list-group">
             @foreach($items->dependencias as $t)
@@ -97,6 +97,17 @@
         </select>
     </div>
 </div>
+
+<div class="form-group row mb-1">
+    <label for = "requiere_imagen" class="col-md-2 col-form-label">Tiene imagen</label>
+    <div class="col-md-2">
+        <select class="requiere_imagen form-control " name="requiere_imagen" id="requiere_imagen" size="1">
+            <option value="0" @if($items->requiere_imagen === 0) selected @endif >No</option>
+            <option value="1" @if($items->requiere_imagen === 1) selected @endif >Si</option>
+        </select>
+    </div>
+</div>
+
 
 <input type="hidden" name="id" value="{{$items->id}}" >
 

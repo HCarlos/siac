@@ -41,7 +41,7 @@
     </div>
     <label for = "resuelto" class="col-md-2 col-form-label">Evalua Resuelto</label>
     <div class="col-md-2">
-        <select class="resuelto form-control select2" name="resuelto" id="resuelto" size="1">
+        <select class="resuelto form-control " name="resuelto" id="resuelto" size="1">
             <option value="0" selected>No</option>
             <option value="1">Si</option>
         </select>
@@ -59,7 +59,7 @@
 <div class="form-group row mb-1">
     <label for = "favorable" class="col-md-2 col-form-label">Es Favorable</label>
     <div class="col-md-2">
-        <select class="favorable form-control select2" name="favorable" id="favorable" size="1">
+        <select class="favorable form-control " name="favorable" id="favorable" size="1">
             <option value="0">No</option>
             <option value="1" selected>Si</option>
         </select>
@@ -77,6 +77,16 @@
             @foreach($ambito as $id => $valor)
                 <option value="{{ $id }}" >{{ $valor }}</option>
             @endforeach
+        </select>
+    </div>
+</div>
+
+<div class="form-group row mb-1">
+    <label for = "requiere_imagen" class="col-md-2 col-form-label">Tiene Imagen</label>
+    <div class="col-md-2">
+        <select class="requiere_imagen form-control " name="requiere_imagen" id="requiere_imagen" size="1">
+            <option value="0" selected>No</option>
+            <option value="1">Si</option>
         </select>
     </div>
 </div>

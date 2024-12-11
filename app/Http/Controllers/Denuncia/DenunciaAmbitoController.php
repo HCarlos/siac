@@ -164,11 +164,13 @@ class DenunciaAmbitoController extends Controller{
         if (Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN') ) {
             $Estatus      = Estatu::query()
                             ->where("estatus_cve", 1)
+                            ->whereIn('ambito_estatus', [1,2])
                             ->orderBy('estatus')
                             ->get();
         }else{
             $Estatus      = Estatu::query()
                             ->where('estatus_cve',1)
+                            ->whereIn('ambito_estatus', [1,2])
                             ->orderBy('estatus')
                             ->get();
         }
@@ -361,11 +363,13 @@ class DenunciaAmbitoController extends Controller{
         if (Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN') ) {
             $Estatus      = Estatu::query()
                             ->where("estatus_cve", 1)
+                            ->whereIn('ambito_estatus', [1,2])
                             ->orderBy('estatus')
                             ->get();
         }else{
             $Estatus      = Estatu::query()
                             ->where('estatus_cve',1)
+                            ->whereIn('ambito_estatus', [1,2])
                             ->orderBy('estatus')
                             ->get();
         }
@@ -644,12 +648,13 @@ class DenunciaAmbitoController extends Controller{
         if(Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN')){
             $Estatus      = Estatu::query()
                             ->where("estatus_cve", 1)
+                            ->whereIn('ambito_estatus', [1,2])
                             ->orderBy('estatus')
                             ->get();
         }else{
             $Estatus      = Estatu::query()
                             ->where("estatus_cve", 1)
-                            ->where('estatus_cve',1)
+                            ->whereIn('ambito_estatus', [1,2])
                             ->orderBy('estatus')
                             ->get();
         }
