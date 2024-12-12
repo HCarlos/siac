@@ -118,10 +118,10 @@
                 var arrItem = event.currentTarget.id.split('-');
                 var Url   = arrItem[0];
                 var Id    = arrItem[1];
-                var IdDep = arrItem[2] === 999 ? $("#dependencia_id").val() : arrItem[2];
+                var IdDep = parseInt(arrItem[2]) === 999 ? $("#dependencia_id").val() : arrItem[2];
                 if (IdDep > 0){
                     $.get( "/"+Url+"/"+Id+"/"+IdDep , function( data ) {
-                        data.mensaje === "OK" ? document.location.href = '/editEstatuV2/'+Id : alert(data.mensaje);
+                        data.mensaje === "OK" ? document.location.reload() : alert(data.mensaje);
                     }, "json" );
                 }
             })

@@ -20,7 +20,7 @@ class Estatu extends Model
         'favorable','ambito_estatus','requiere_imagen',
     ];
 
-    protected $casts = ['predeterminado'=>'boolean','resuelto'=>'boolean',];
+    protected $casts = ['predeterminado'=>'boolean','resuelto'=>'boolean','requiere_imagen'=>'boolean',];
     protected $hidden = ['deleted_at','created_at','updated_at'];
 
     public function isDefault(){

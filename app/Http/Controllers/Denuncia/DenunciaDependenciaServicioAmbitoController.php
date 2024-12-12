@@ -113,10 +113,14 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
         }
 
         if (Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN') ) {
-            $Estatus      = Estatu::query()->orderBy('estatus')->get();
+            $Estatus = Estatu::query()
+                       ->whereIn('ambito_estatus', [1,2])
+                       ->orderBy('estatus')
+                       ->get();
         }else{
             $Estatus = Estatu::query()
                 ->where('estatus_cve',1)
+                ->whereIn('ambito_estatus', [1,2])
                 ->whereHas('users', function($q) use ($user_id) {
                     return $q->where("user_id",$user_id);
                 })
@@ -127,17 +131,19 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
 
         return view('SIAC.denuncia.denuncia_dependencia_servicio_ambito.denuncia_dependencia_servicio_ambito_edit',
             [
-                'user'            => Auth::user(),
-                'items'           => $items,
-                'Id'              => $Id,
-                'dependencias'    => $Dependencias,
-                'servicios'       => $Servicios,
-                'estatus'         => $Estatus,
-                'editItemTitle'   => "Agregando servicio a la solicitud ".$Id,
-                'postNew'         => 'putAddDenunciaDependenciaServicioAmbito',
-                'titulo_catalogo' => "Editando el Id: " . $Id,
-                'titulo_header'   => 'de la Solicitud '.$Denuncia->id,
+                'user'               => Auth::user(),
+                'items'              => $items,
+                'Id'                 => $Id,
+                'dependencias'       => $Dependencias,
+                'servicios'          => $Servicios,
+                'estatus'            => $Estatus,
+                'editItemTitle'      => "Agregando servicio a la solicitud ".$Id,
+                'postNew'            => 'putAddDenunciaDependenciaServicioAmbito',
+                'titulo_catalogo'    => "Editando el Id: " . $Id,
+                'titulo_header'      => 'de la Solicitud '.$Denuncia->id,
                 'ambito_dependencia' => $this->ambito_dependencia,
+                'denuncia'           => $Denuncia,
+                'removeItem'         => 'removeImagene',
             ]
         );
     }
@@ -156,6 +162,10 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
     protected function addItem($Id){
 
         $items = Denuncia_Dependencia_Servicio::query()->where('denuncia_id',$Id)->orderByDesc('id')->first();
+
+//        dd($items);
+
+        $denuncia = Denuncia::find($Id);
 
         $user_id       = Auth::user()->id;
         $this->ambito_dependencia = Session::get('ambito_dependencia');
@@ -188,10 +198,14 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
         }
 
         if (Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN') ) {
-            $Estatus = Estatu::query()->orderBy('estatus')->get();
+            $Estatus = Estatu::query()
+                ->whereIn('ambito_estatus', [1,2])
+                ->orderBy('estatus')
+                ->get();
         }else{
             $Estatus = Estatu::query()
                 ->where('estatus_cve',1)
+                ->whereIn('ambito_estatus', [1,2])
                 ->whereHas('users', function($q) use ($user_id) {
                     return $q->where("user_id",$user_id);
                 })
@@ -201,20 +215,22 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
 
         return view('SIAC.denuncia.denuncia_dependencia_servicio_ambito.denuncia_dependencia_servicio_ambito_new',
             [
-                'user'              => Auth::user(),
-                'items'             => $items,
-                'Id'                => $Id,
-                'editItemTitle'     => 'Nuevo',
-                'dependencias'      => $Dependencias,
-                'dependencia_id'    => $items->dependencia_id,
-                'servicio_id'       => $servicio_id,
-                'servicios'         => $Servicios,
-                'estatus'           => $Estatus,
-                'postNew'           => 'postAddDenunciaDependenciaServicioAmbito',
-                'titulo_catalogo'   => "Nuevo cambio de estatus de la orden: " . $Id,
-                'titulo_header'     => 'Agregar dependencia',
-                'exportModel'       => 23,
+                'user'               => Auth::user(),
+                'items'              => $items,
+                'Id'                 => $Id,
+                'editItemTitle'      => 'Nuevo',
+                'dependencias'       => $Dependencias,
+                'dependencia_id'     => $items->dependencia_id,
+                'servicio_id'        => $servicio_id,
+                'servicios'          => $Servicios,
+                'estatus'            => $Estatus,
+                'postNew'            => 'postAddDenunciaDependenciaServicioAmbito',
+                'titulo_catalogo'    => "Nuevo cambio de estatus de la orden: " . $Id,
+                'titulo_header'      => 'Agregar dependencia',
+                'exportModel'        => 23,
                 'ambito_dependencia' => $this->ambito_dependencia,
+                'denuncia'           => $denuncia,
+                'removeItem'         => 'removeImagene',
             ]
         );
     }

@@ -383,10 +383,10 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
     Route::get('getPermisionsUser/{Id}','Catalogos\User\PermissionController@getItems')->name('getPermisionsUser');
 
     // USUARIOS DEPENDENCIAS
-    Route::get('asignaDependenciaList/{Id}','Catalogos\User\DependenciaController@index')->name('asignaDependenciaList');
-    Route::post('assignDepToUser','Catalogos\User\DependenciaController@asignarDep')->name('assignDepToUser');
-    Route::post('unAssignDepToUser','Catalogos\User\DependenciaController@desasignarDep')->name('unAssignDepToUser');
-    Route::get('getDependenciasUser/{Id}','Catalogos\User\DependenciaController@getItems')->name('getDependenciasUser');
+    Route::get('asignaDependenciaList/{Id}','Catalogos\User\DependenciaUserController@index')->name('asignaDependenciaList');
+    Route::post('assignDepToUser','Catalogos\User\DependenciaUserController@asignarDep')->name('assignDepToUser');
+    Route::post('unAssignDepToUser','Catalogos\User\DependenciaUserController@desasignarDep')->name('unAssignDepToUser');
+    Route::get('getDependenciasUser/{Id}','Catalogos\User\DependenciaUserController@getItems')->name('getDependenciasUser');
 
     // USUARIOS ESTATUS
     Route::get('asignaEstatusList/{Id}','Catalogos\User\EstatusController@index')->name('asignaEstatusList');
@@ -401,10 +401,10 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
     Route::get('getServCatUser/{Id}','Catalogos\User\ServicioCategoriaController@getItems')->name('getServCatUser');
 
     // USUARIOS ORIGENES
-    Route::get('asignaOrigenesList/{Id}','Catalogos\User\OrigenesController@index')->name('asignaOrigenesList');
-    Route::post('assignOrigenToUser','Catalogos\User\OrigenesController@asignarOrigen')->name('assignOrigenToUser');
-    Route::post('unAssignOrigenToUser','Catalogos\User\OrigenesController@desasignarOrigen')->name('unAssignOrigenToUser');
-    Route::get('getOrigenesUser/{Id}','Catalogos\User\OrigenesController@getItems')->name('getOrigenesUser');
+    Route::get('asignaOrigenesList/{Id}','Catalogos\User\OrigenesUserController@index')->name('asignaOrigenesList');
+    Route::post('assignOrigenToUser','Catalogos\User\OrigenesUserController@asignarOrigen')->name('assignOrigenToUser');
+    Route::post('unAssignOrigenToUser','Catalogos\User\OrigenesUserController@desasignarOrigen')->name('unAssignOrigenToUser');
+    Route::get('getOrigenesUser/{Id}','Catalogos\User\OrigenesUserController@getItems')->name('getOrigenesUser');
 
 
     // EXTERNAL FILES

@@ -8,6 +8,8 @@ namespace App\Http\Requests\Denuncia;
 use App\Classes\Denuncia\VistaDenunciaClass;
 use App\Classes\MessageAlertClass;
 use App\Classes\NotificationsMobile\SendNotificationFCM;
+use App\Http\Controllers\Storage\StorageDenunciaController;
+use App\Http\Controllers\Storage\StorageRespuestaDenunciaController;
 use App\Models\Catalogos\Estatu;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
@@ -39,6 +41,8 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
     public function manage(){
         try {
 
+//            dd($this->request->all());
+
 //            $Fav = !(isset($this->favorable) ?? $this->favorable === 0);
             if ( isset($this->favorable) ){
                 $Fav = !( (int) $this->favorable === 0 );
@@ -53,7 +57,6 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
             }
             if ( $this->id <= 0 ){
                 $item = Denuncia::find($this->denuncia_id);
-//                dd($this->denuncia_id);
                 $this->attaches($item);
             }else{
                 $Item = [
@@ -68,9 +71,7 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
                 ];
                 $item = Denuncia_Dependencia_Servicio::findOrFail($this->id);
                 $item->update($Item);
-
-                $vid = new VistaDenunciaClass();
-                $vid->vistaDenuncia($this->denuncia_id);
+                return $this->sendInfo($item);
 
             }
         }catch (QueryException $e){
@@ -99,6 +100,30 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
                 'creadopor_id'     => Auth::user()->id,
             ]
         );
+
+        $it = Denuncia_Dependencia_Servicio::query()
+            ->where('denuncia_id',$Item->id)
+            ->where('dependencia_id',$this->dependencia_id)
+            ->where('servicio_id',$this->servicio_id)
+            ->where('estatu_id',$this->estatus_id)
+            ->orderByDesc('id')->first();
+
+        return $this->sendInfo($it);
+
+    }
+
+
+    function saveImage($item){
+        if ($this->files) {
+            $Storage = new StorageRespuestaDenunciaController();
+            $Storage->subirArchivoDenunciaRespuesta($this, Denuncia::find($this->denuncia_id),$item);
+        }
+    }
+
+
+    function sendInfo($item){
+
+        $this->saveImage($item);
 
         $vid = new VistaDenunciaClass();
         $vid->vistaDenuncia($this->denuncia_id);

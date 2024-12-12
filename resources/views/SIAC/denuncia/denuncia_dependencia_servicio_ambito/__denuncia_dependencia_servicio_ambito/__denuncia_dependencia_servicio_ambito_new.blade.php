@@ -29,26 +29,26 @@
                 <div class="col-md-5">
                     <select id="estatus_id" name="estatus_id" class="form-control" size="1">
                         @foreach($estatus as $t)
-                            <option value="{{$t->id}}" {{ $t->isDefault() ? 'selected': '' }} >{{ $t->estatus }} </option>
+                            <option value="{{$t->id}}" {{ $t->isDefault() ? 'selected': '' }} data-require="{{ $t->requiere_imagen }}" >{{ $t->estatus }} </option>
                         @endforeach
                     </select>
                 </div>
             </div>
-{{--            <div class="form-group row mb-1">--}}
-{{--                <label for = "favorable" class="col-md-3 col-form-label">Favorable</label>--}}
-{{--                <div class="col-md-5">--}}
-{{--                    <select id="favorable" name="favorable" class="form-control" size="1">--}}
-{{--                        <option value="0" selected >NO</option>--}}
-{{--                        <option value="1">SI</option>--}}
-{{--                    </select>--}}
-{{--                </div>--}}
-{{--            </div>--}}
+
             <div class="form-group row mb-1">
                 <label for = "observaciones" class="col-md-3 col-form-label">Argumentos</label>
                 <div class="col-md-9">
                     <textarea id="estatus_id" name="observaciones" class="form-control" cols="10" rows="4" ></textarea>
                 </div>
             </div>
+
+            <div class="form-group row mb-1 hide" id="requiereImagen">
+                <label for = "file1" class="col-md-3 col-form-label">Agregue una imagen</label>
+                <div class="col-md-5">
+                    <input type="file" id="file1" name="file1" class="form-control-file">
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -57,3 +57,27 @@
 <input type="hidden" name="denuncia_id" value="{{ $items->denuncia_id }}" >
 <input type="hidden" name="creadopor_id" id="creadopor_id" value="{{$user->id}}" >
 <hr>
+
+@section('script_interno')
+
+    <script type="text/javascript">
+    $( document ).ready(function() {
+
+        $('#requiereImagen').hide();
+
+        $( "#estatus_id" ).change(function(event) {
+            event.preventDefault();
+
+            var requiere_imagen = $(this).find("option:selected").attr('data-require');
+
+            if ( requiere_imagen === '1' ) {
+                $( "#requiereImagen" ).show();
+            } else {
+                $( "#requiereImagen" ).hide();
+            }
+        });
+
+    })
+</script>
+
+@endsection

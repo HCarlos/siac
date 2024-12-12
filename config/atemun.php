@@ -120,6 +120,7 @@ return [
             'denuncia_user'                         => 'denuncia_user',
             'imagene_user'                          => 'imagene_user',
             'imagene_parent'                        => 'imagene_parent',
+            'imagene_respuesta'                     => 'imagene_respuesta',
             'firmas'                                => 'firmas',
             'denuncia_firma'                        => 'denuncia_firma',
             'estatu_user'                           => 'estatu_user',

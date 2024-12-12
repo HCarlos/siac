@@ -2,6 +2,7 @@
 
 namespace App\Models\Denuncias;
 
+use App\Models\Catalogos\Dependencia;
 use App\Traits\Denuncia\ImageneTrait;
 use Illuminate\Database\Eloquent\Model;
 use App\User;
@@ -43,6 +44,10 @@ class Imagene extends Model{
 
     public function childs(){
         return $this->belongsToMany(Imagene::class,'imagene_parent','imagene_id','imagen_parent_id');
+    }
+
+    public function respuestas(){
+        return $this->belongsToMany(Denuncia_Dependencia_Servicio::class,'imagene_respuesta','imagene_id','ddse_id');
     }
 
 

@@ -31,7 +31,7 @@ class StorageDenunciaController extends Controller{
         $host   = gethostbyaddr($_SERVER['REMOTE_ADDR']);
         $idemp  = 1;
         $data    = $request->all();
-//        dd($request);
+//        dd($DenunciaObject);
         $user = Auth::User();
         $arrFiles =$request->files->keys();
 //        dd($arrFiles);
@@ -61,7 +61,6 @@ class StorageDenunciaController extends Controller{
     }
 
     public function attaches($Item,$DenunciaObject){
-
         $Item->users()->attach($Item->user__id);
         $den = Denuncia::find($DenunciaObject->id);
         $den->imagenes()->attach($Item);

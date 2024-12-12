@@ -50,4 +50,9 @@ class Denuncia_Dependencia_Servicio extends Model{
         return $this->hasOne(User::class,'id','creadopor_id');
     }
 
+    public function imagenes(){
+        return $this->belongsToMany(Imagene::class,'imagene_respuesta','ddse_id','imagene_id');
+    }
+
+
 }
