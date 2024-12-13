@@ -27,14 +27,14 @@
                 <div class="col-md-5">
                     <select id="estatus_id" name="estatus_id" class="form-control" size="1">
                         @foreach($estatus as $t)
-                            <option value="{{$t->id}}" {{ $t->id === $items->estatu_id  ? 'selected': '' }} >{{ $t->estatus }} </option>
+                            <option value="{{$t->id}}" {{ $t->id === $items->estatu_id  ? 'selected': '' }} data-require="{{ $t->requiere_imagen }}" >{{ $t->estatus }} </option>
                         @endforeach
                     </select>
                 </div>
             </div>
 
             <div class="form-group row mb-1">
-                <label for = "observaciones" class="col-md-3 col-form-label">Argumentos--</label>
+                <label for = "observaciones" class="col-md-3 col-form-label">Argumentos</label>
                 <div class="col-md-9">
                     <textarea id="observaciones" name="observaciones" class="form-control" cols="10" rows="4" >{{$items->observaciones}}</textarea>
                 </div>
@@ -111,7 +111,7 @@
 
             $('#requiereImagen').hide();
 
-            $( "#estatus_id" ).change(function(event) {
+            $( "#estatus_id").change(function(event) {
                 event.preventDefault();
 
                 var requiere_imagen = $(this).find("option:selected").attr('data-require');
