@@ -34,7 +34,7 @@
             </div>
 
             <div class="form-group row mb-1">
-                <label for = "observaciones" class="col-md-3 col-form-label">Argumentos</label>
+                <label for = "observaciones" class="col-md-3 col-form-label">Argumentos--</label>
                 <div class="col-md-9">
                     <textarea id="observaciones" name="observaciones" class="form-control" cols="10" rows="4" >{{$items->observaciones}}</textarea>
                 </div>

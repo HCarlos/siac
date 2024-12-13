@@ -76,8 +76,8 @@
     <label for = "favorable" class="col-md-2 col-form-label">Es Favorable</label>
     <div class="col-md-2">
         <select class="favorable form-control " name="favorable" id="favorable" size="1">
-            <option value="0" @if($items->favorable === 0) selected @endif >No</option>
-            <option value="1" @if($items->favorable === 1) selected @endif >Si</option>
+            <option value="0" @if($items->isFavorable() === false) selected @endif >No</option>
+            <option value="1" @if($items->isFavorable() === true) selected @endif >Si</option>
         </select>
     </div>
     <label for = "orden_impresion" class="col-md-2 col-form-label has-orden_impresion">Orden Imp.</label>
@@ -102,8 +102,8 @@
     <label for = "requiere_imagen" class="col-md-2 col-form-label">Tiene imagen</label>
     <div class="col-md-2">
         <select class="requiere_imagen form-control " name="requiere_imagen" id="requiere_imagen" size="1">
-            <option value="0" @if($items->requiere_imagen === 0) selected @endif >No</option>
-            <option value="1" @if($items->requiere_imagen === 1) selected @endif >Si</option>
+            <option value="0" @if($items->hasImagen() === false) selected @endif >No</option>
+            <option value="1" @if($items->hasImagen() === true) selected @endif >Si</option>
         </select>
     </div>
 </div>

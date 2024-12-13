@@ -20,7 +20,7 @@ class Estatu extends Model
         'favorable','ambito_estatus','requiere_imagen',
     ];
 
-    protected $casts = ['predeterminado'=>'boolean','resuelto'=>'boolean','requiere_imagen'=>'boolean',];
+    protected $casts = ['predeterminado'=>'boolean','resuelto'=>'boolean','requiere_imagen'=>'boolean','favorable'=>'boolean'];
     protected $hidden = ['deleted_at','created_at','updated_at'];
 
     public function isDefault(){
@@ -30,6 +30,13 @@ class Estatu extends Model
         return $this->resuelto;
     }
 
+    public function isFavorable(){
+        return $this->favorable;
+    }
+
+    public function hasImagen(){
+        return $this->requiere_imagen;
+    }
 
     public function scopeFilterBy($query, $filters){
         return (new EstatuFilter())->applyTo($query, $filters);
