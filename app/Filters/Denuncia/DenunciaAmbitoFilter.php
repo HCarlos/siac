@@ -26,6 +26,7 @@ class DenunciaAmbitoFilter extends QueryFilter
         return [
             'status_denuncia'        => '',
             'ambito_dependencia'     => '',
+            'ambito_estatus'         => '',
             'search'                 => '',
             'curp'                   => '',
             'ciudadano'              => '',
@@ -57,14 +58,17 @@ class DenunciaAmbitoFilter extends QueryFilter
         return $query->where('ambito_dependencia', $search);
     }
 
+    public function ambito_estatus($query, $search){
+        if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
+        return $query->where('ue_id', (int)$search );
+    }
+
 
     public function search($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
         $search = strtoupper($search);
         $filters  = $search;
         $F        = new FuncionesController();
-
-//        $tsString = $F->string_to_tsQuery( strtoupper($filters),' & ');
 
         $filters      = strtolower($filters);
         $filters      = $F->str_sanitizer($filters);
@@ -118,32 +122,45 @@ class DenunciaAmbitoFilter extends QueryFilter
         if ( !is_array($search) ){
             if ((int)$search === 0){
                 $search = Auth::user()->DependenciaIdArray;
-//                return $query;
             }
         }
-        return $query->whereHas('dependencias', function ($q) use ($query, $search) {
-                if ( is_array($search) ){
-//                    dd($search);
-                    return $q->whereIn('dependencia_id', $search);
-                }else{
-                    return $q->where('dependencia_id', (int)$search);
-                }
-        });
+//        return $query->whereHas('dependencias', function ($q) use ($query, $search) {
+//                if ( is_array($search) ){
+//                    return $q->whereIn('dependencia_id', $search);
+//                }else{
+//                    return $q->where('dependencia_id', (int)$search);
+//                }
+//        });
+
+        if ( is_array($search) ){
+            return $query->whereIn('due_id', $search);
+        }else{
+            return $query->where('due_id', (int)$search);
+        }
+
+
+
     }
 
     public function servicio_id($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "0" || trim($search) == "") {return $query;}
-        return $query->whereHas('denuncia_servicios', function ($q) use ($query, $search) {
-            return $q->where('servicio_id', (int)$search);
-        });
+//        return $query->whereHas('denuncia_servicios', function ($q) use ($query, $search) {
+//            return $q->where('servicio_id', (int)$search);
+//        });
+          return $query->where('sue_id', (int)$search);
     }
 
     public function estatus_id($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "0") {return $query;}
 
-        return $query->whereHas('denuncia_estatus', function ($q) use ($query, $search) {
-            return $q->where('estatu_id', (int)$search);
-        });
+//        return $query->whereHas('denuncia_estatus', function ($q) use ($query, $search) {
+//            return $q->where('estatu_id', (int)$search);
+//        });
+
+//        return $query->whereHas('denuncia_estatus', function ($q) use ($query, $search) {
+            return $query->where('ue_id', (int)$search);
+//        });
+
 
     }
 
@@ -159,26 +176,26 @@ class DenunciaAmbitoFilter extends QueryFilter
             $date2 = Carbon::createFromFormat('Y-m-d', $fhasta)->toDateString();
             $date2 .= ' 23:59:59';
 
-            return $query->whereHas('ultimo_estatu_denuncia_dependencia_servicio', function ($q) use ($search, $date1, $date2, $estatu, $depend) {
+//            return $query->whereHas('ultimo_estatu_denuncia_dependencia_servicio', function ($q) use ($search, $date1, $date2, $estatu, $depend) {
                 $arr = Auth::user()->DependenciaIdArray;
                 if (auth()->user()->hasAnyPermission(['buscar_solo_en_su_ámbito'])) {
                     if ($estatu > 0){
-                        if ( is_array($arr) ) return $q->whereIn('dependencia_id',$arr)->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
+                        if ( is_array($arr) ) return $query->whereIn('dependencia_id',$arr)->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
                         else {
-                            if ($arr > 0) return $q->where('dependencia_id', $arr)->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
-                            else return $q->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
+                            if ($arr > 0) return $query->where('dependencia_id', $arr)->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
+                            else return $query->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
                         }
                     }
                 }else{
                     if ($estatu > 0){
-                        if ($depend > 0) return $q->where('dependencia_id', $depend)->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
-                        else return $q->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
+                        if ($depend > 0) return $query->where('dependencia_id', $depend)->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
+                        else return $query->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
                     }else{
-                        if ($depend > 0) return $q->where('dependencia_id', $depend)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
-                        else return $q->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
+                        if ($depend > 0) return $query->where('dependencia_id', $depend)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
+                        else return $query->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
                     }
                 }
-            });
+//            });
 
 //        });
     }
@@ -201,9 +218,9 @@ class DenunciaAmbitoFilter extends QueryFilter
     public function dependencia($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "0") {return $query;}
         $search = explode('|',$search);
-        return $query->orWhereHas('dependencia', function ($q) use ($search) {
-            return $q->whereIn('dependencia',$search);
-        });
+//        return $query->orWhereHas('dependencia', function ($q) use ($search) {
+            return $query->whereIn('dependencia',$search);
+//        });
 
     }
 

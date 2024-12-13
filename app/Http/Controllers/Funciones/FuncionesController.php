@@ -256,6 +256,7 @@ class FuncionesController extends Controller
                         'clave_identificadora','estatus_general','ambito_sas','fecha_ultimo_estatus',
                         'creadopor_id','modificadopor_id',
                         'search_google','gd_ubicacion',
+                        'ue_id'
                     ];
     }
 

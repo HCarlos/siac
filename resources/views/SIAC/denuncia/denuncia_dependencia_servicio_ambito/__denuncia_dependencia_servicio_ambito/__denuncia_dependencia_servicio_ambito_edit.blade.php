@@ -40,7 +40,7 @@
                 </div>
             </div>
 
-            <div class="form-group row mb-1">
+            <div class="form-group row mb-1 hide" id="requiereImagen">
                 <label for = "file1" class="col-md-3 col-form-label">Agregue una imagen</label>
                 <div class="col-md-5">
                     <input type="file" id="file1" name="file1" class="form-control-file">
@@ -103,6 +103,7 @@
 <input type="hidden" name="denuncia_id" value="{{ $items->denuncia_id }}" >
 <input type="hidden" name="creadopor_id" id="creadopor_id" value="{{$user->id}}" >
 <hr>
+
 @section('script_interno')
 
     <script type="text/javascript">

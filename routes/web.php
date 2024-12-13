@@ -449,6 +449,11 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
     /// DENUNCIAS CON AMBITO
     Route::get('listDenunciasAmbito1', 'Denuncia\DenunciaAmbitoController@index1')->name('listDenunciasAmbito1');
     Route::get('listDenunciasAmbito2', 'Denuncia\DenunciaAmbitoController@index2')->name('listDenunciasAmbito2');
+    Route::get('listDenunciasAmbito16', 'Denuncia\DenunciaAmbitoController@index16')->name('listDenunciasAmbito16');
+    Route::get('listDenunciasAmbito17', 'Denuncia\DenunciaAmbitoController@index17')->name('listDenunciasAmbito17');
+    Route::get('listDenunciasAmbito18', 'Denuncia\DenunciaAmbitoController@index18')->name('listDenunciasAmbito18');
+    Route::get('listDenunciasAmbito19', 'Denuncia\DenunciaAmbitoController@index19')->name('listDenunciasAmbito19');
+    Route::get('listDenunciasAmbito20', 'Denuncia\DenunciaAmbitoController@index20')->name('listDenunciasAmbito20');
     Route::get('editDenunciaAmbito/{Id}', 'Denuncia\DenunciaAmbitoController@editItem')->name('editDenunciaAmbito');
     Route::put('updateDenunciaAmbito1', 'Denuncia\DenunciaAmbitoController@updateItem1')->name('updateDenunciaAmbito1');
     Route::put('updateDenunciaAmbito2', 'Denuncia\DenunciaAmbitoController@updateItem2')->name('updateDenunciaAmbito2');

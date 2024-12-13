@@ -49,16 +49,65 @@
             </li>
             @endif
 
+{{--            @if (Auth::user()->hasRole('Administrator|SysOp|test_admin|CAPTURISTA_C'))--}}
+{{--                <li class="side-nav-item">--}}
+{{--                    <a href="{{route('listDenunciasAmbito2')}}" class="side-nav-link">--}}
+{{--                        <i class="mdi dripicons-archive"></i>--}}
+{{--                        @php $filters['filterdata']=""; @endphp--}}
+{{--                        <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->count()}}</span>--}}
+{{--                        <span>Servicios Mun.</span>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
+{{--            @endif--}}
+
             @if (Auth::user()->hasRole('Administrator|SysOp|test_admin|CAPTURISTA_C'))
                 <li class="side-nav-item">
-                    <a href="{{route('listDenunciasAmbito2')}}" class="side-nav-link">
-                        <i class="mdi dripicons-archive"></i>
-                        @php $filters['filterdata']=""; @endphp
-                        <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->count()}}</span>
-                        <span>Servicios Mun.</span>
+                    <a href="javascript: void(0);" class="side-nav-link">
+                        <i class="dripicons-browser"></i>
+                        <span> Serv. Mun. </span>
+                        <span class="badge badge-light float-right mr-3">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->count()}}</span>
+                        <span class="menu-arrow"></span>
                     </a>
+                    <ul class="side-nav-second-level" aria-expanded="false">
+                        <li class="side-nav-item">
+                            <a href="{{route('listDenunciasAmbito16')}}" class="side-nav-link">
+                                <i class="mdi dripicons-archive"></i>
+                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',16)->count()}}</span>
+                                <span>Recibidas</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="{{route('listDenunciasAmbito17')}}" class="side-nav-link">
+                                <i class="mdi dripicons-archive"></i>
+                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',17)->count()}}</span>
+                                <span>Atendidas</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="{{route('listDenunciasAmbito18')}}" class="side-nav-link">
+                                <i class="mdi dripicons-archive"></i>
+                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',18)->count()}}</span>
+                                <span>Observadas</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="{{route('listDenunciasAmbito19')}}" class="side-nav-link">
+                                <i class="mdi dripicons-archive"></i>
+                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',19)->count()}}</span>
+                                <span>En proceso / Programadas</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="{{route('listDenunciasAmbito20')}}" class="side-nav-link">
+                                <i class="mdi dripicons-archive"></i>
+                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',20)->count()}}</span>
+                                <span>Rechazadas</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             @endif
+
 
             @if (Auth::user()->hasRole('Administrator|SysOp|test_admin'))
             <li class="side-nav-item">

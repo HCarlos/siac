@@ -46,6 +46,7 @@ class GetDenunciasAmbitoItemCustomFilter extends QueryFilter{
 
         $filters['status_denuncia'] = '1';
         $filters['ambito_dependencia'] = session::get('ambito_dependencia');
+        $filters['ambito_estatus'] = session::get('ambito_estatus');
 
 //        dd( $filters );
 

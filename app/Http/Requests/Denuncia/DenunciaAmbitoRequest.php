@@ -94,6 +94,13 @@ class DenunciaAmbitoRequest extends FormRequest
 
             $fi = $fecha_i.' '.$fecha_f;
 
+            $IsObs = isset($this->observaciones) ? strtoupper(trim($this->observaciones)) : "SE RECIBE LA SOLICITUD";
+            $this->observaciones = $IsObs;
+            $isEstatus = isset($this->estatus_id) ? (int) $this->estatus_id : env('ESTATUS_DEFAULT_SERVICIOS_MUNICIPALES');
+            $this->estatus_id = $isEstatus;
+            $isHashTag = isset($this->clave_identificadora) ? strtoupper($this->clave_identificadora) : '';
+            $this->clave_identificadora = $isHashTag;
+
             $Item = [
                 'fecha_ingreso'                => $this->fecha_ingreso ?? $fi,
                 'oficio_envio'                 => is_null($this->oficio_envio) ? "" : strtoupper($this->oficio_envio),
@@ -103,7 +110,7 @@ class DenunciaAmbitoRequest extends FormRequest
                 'fecha_limite'                 => $this->fecha_limite ?? $fecha->addDay(3)->format('Y-m-d'),
                 'descripcion'                  => isset($this->descripcion) ? strtoupper($this->descripcion) : '',
                 'referencia'                   => isset($this->referencia) ? strtoupper($this->referencia) : '',
-                'clave_identificadora'         => isset($this->clave_identificadora) ? strtoupper($this->clave_identificadora) : '',
+                'clave_identificadora'         => $this->clave_identificadora,
                 'calle'                        => strtoupper($Ubicacion->calle),
                 'num_ext'                      => strtoupper($Ubicacion->num_ext),
                 'num_int'                      => strtoupper($Ubicacion->num_int),
@@ -123,12 +130,12 @@ class DenunciaAmbitoRequest extends FormRequest
                 'dependencia_id'               => $Servicio->dependencia_id,
                 'ubicacion_id'                 => (int)$this->ubicacion_id,
                 'servicio_id'                  => (int)$this->servicio_id,
-                'estatus_id'                   => isset($this->estatus_id) ? (int) $this->estatus_id : env('ESTATUS_DEFAULT_SERVICIOS_MUNICIPALES'),
+                'estatus_id'                   => $this->estatus_id,
                 'ciudadano_id'                 => (int)$this->usuario_id,
                 'creadopor_id'                 => (int)$this->creadopor_id,
                 'modificadopor_id'             => (int)$this->modificadopor_id,
                 'domicilio_ciudadano_internet' => strtoupper(trim($this->domicilio_ciudadano_internet))  ?? '' ,
-                'observaciones'                => isset($this->observaciones) ? strtoupper(trim($this->observaciones)) : "",
+                'observaciones'                => $this->observaciones,
                 'ip'                           => FuncionesController::getIp(),
                 'host'                         => config('atemun.public_url'),
                 'ambito'                       => $this->ambito ?? 0,
@@ -215,7 +222,15 @@ class DenunciaAmbitoRequest extends FormRequest
                 ->where('estatu_id','=',$Item->estatus_id)
                 ->get();
             if ($Obj->count() <= 0 ) {
-                $Objx = $Item->dependencias()->attach($Item->dependencia_id, ['servicio_id' => $Item->servicio_id, 'estatu_id' => $Item->estatus_id, 'favorable' => false, 'fecha_movimiento' => now(), 'creadopor_id' => $user_id]);
+                $Objx = $Item->dependencias()->attach($Item->dependencia_id,
+                    [
+                        'servicio_id'      => $Item->servicio_id,
+                        'estatu_id'        => $Item->estatus_id,
+                        'favorable'        => false,
+                        'fecha_movimiento' => now(),
+                        'creadopor_id'     => $user_id,
+                        'observaciones'    => $Item->observaciones
+                    ]);
                 event(new DenunciaUpdateStatusGeneralEvent($Item->id,$user_id,$trigger_type));
             }
 

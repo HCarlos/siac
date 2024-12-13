@@ -38,6 +38,7 @@ class DenunciaAmbitoController extends Controller{
     protected $msg = "";
     protected $max_item_for_query = 150;
     protected $ambito_dependencia = 0;
+    protected $ambito_estatus = 0;
 
     // ***************** MUESTRA EL LISTADO DE USUARIOS ++++++++++++++++++++ //
 
@@ -49,14 +50,16 @@ class DenunciaAmbitoController extends Controller{
         $this->middleware('auth');
     }
 
-    protected function index(Request $request, $ambito_dependencia){
+    protected function index(Request $request, $ambito_dependencia, $ambito_estatus = 0){
         ini_set('max_execution_time', 300);
         $search = $request->only(['search']);
 
         $filters['filterdata'] = $search;
         session(['ambito_dependencia' => $ambito_dependencia]);
+        session(['ambito_estatus' => $ambito_estatus]);
         session(['is_pagination' => true]);
         $this->ambito_dependencia = $ambito_dependencia;
+        $this->ambito_estatus = $ambito_estatus;
 
         if ( $search !== [] && isEmpty($search) !== null && $search !== "" ) {
             $items = _viDDSs::query()
@@ -92,7 +95,7 @@ class DenunciaAmbitoController extends Controller{
                 'tableName'                           => $this->tableName,
                 'showEdit'                            => 'editDenunciaAmbito',
                 'showAddUser'                         => 'addUserDenunciaAmbito',
-                'showEditDenunciaDependenciaServicio' => $this->ambito_dependencia == 1 ? 'listDenunciaDependenciaServicioAmbito' :'listDenunciaDependenciaServicioAmbito',
+                'showEditDenunciaDependenciaServicio' => $this->ambito_dependencia === 2 ? 'listDenunciaDependenciaServicioAmbito' : 'listDenunciaDependenciaServicio',
                 'showProcess1'                        => 'showDataListDenunciaAmbitoExcel1A',
                 'newItem'                             => 'newDenunciaAmbito',
                 'removeItem'                          => 'removeDenunciaAmbito',
@@ -112,14 +115,30 @@ class DenunciaAmbitoController extends Controller{
     }
 
     protected function index1(Request $request){
-        return $this->index($request, 1);
+        return $this->index($request, 1,0);
     }
 
     protected function index2(Request $request){
-        return $this->index($request, 2);
+        return $this->index($request, 2,0);
     }
 
-    protected function newItem1($ambito_dependencia){
+    protected function index16(Request $request){
+        return $this->index($request, 2,16);
+    }
+    protected function index17(Request $request){
+        return $this->index($request, 2,17);
+    }
+    protected function index18(Request $request){
+        return $this->index($request, 2,18);
+    }
+    protected function index19(Request $request){
+        return $this->index($request, 2,19);
+    }
+    protected function index20(Request $request){
+        return $this->index($request, 2,20);
+    }
+
+    protected function newItem1($ambito_dependencia, $ambito_estatus){
 
         $Prioridades  = Prioridad::query()
                         ->where("estatus_cve", 1)
@@ -133,6 +152,7 @@ class DenunciaAmbitoController extends Controller{
 
         $IsEnlace = Session::get('IsEnlace');
         $this->ambito_dependencia = $ambito_dependencia;
+        $this->ambito_estatus = $ambito_estatus;
 
         if($IsEnlace){
 
@@ -204,9 +224,10 @@ class DenunciaAmbitoController extends Controller{
         );
     }
 
-    protected function newItem2($ambito_dependencia){
+    protected function newItem2($ambito_dependencia,$ambito_estatus){
         $IsEnlace = Session::get('IsEnlace');
         $this->ambito_dependencia = $ambito_dependencia;
+        $this->ambito_estatus = $ambito_estatus;
 
         if($IsEnlace){
 
@@ -276,8 +297,8 @@ class DenunciaAmbitoController extends Controller{
     protected function newItem(){
         $this->ambito_dependencia = Session::get('ambito_dependencia');
         return ($this->ambito_dependencia == 1)
-            ? $this->newItem1($this->ambito_dependencia)
-            : $this->newItem2($this->ambito_dependencia);
+            ? $this->newItem1($this->ambito_dependencia, $this->ambito_estatus)
+            : $this->newItem2($this->ambito_dependencia, $this->ambito_estatus);
     }
 
     // ***************** CREAR NUEVO ++++++++++++++++++++ //
@@ -306,7 +327,7 @@ class DenunciaAmbitoController extends Controller{
     }
 
 
-    protected function editItem1($Id, $ambito_dependencia){
+    protected function editItem1($Id, $ambito_dependencia, $ambito_estatus){
 
         $item         = Denuncia::find($Id);
 
@@ -322,6 +343,7 @@ class DenunciaAmbitoController extends Controller{
 
         $IsEnlace = Session::get('IsEnlace');
         $this->ambito_dependencia = $ambito_dependencia;
+        $this->ambito_estatus = $ambito_estatus;
 
         if($IsEnlace){
             $DependenciaIdArray = Session::get('DependenciaIdArray');
@@ -406,12 +428,13 @@ class DenunciaAmbitoController extends Controller{
     }
 
 
-    protected function editItem2($Id, $ambito_dependencia){
+    protected function editItem2($Id, $ambito_dependencia, $ambito_estatus){
 
         $item         = Denuncia::find($Id);
 
         $IsEnlace = Session::get('IsEnlace');
         $this->ambito_dependencia = $ambito_dependencia;
+        $this->ambito_estatus = $ambito_estatus;
 
         if($IsEnlace){
             $DependenciaIdArray = Session::get('DependenciaIdArray');
@@ -504,8 +527,8 @@ class DenunciaAmbitoController extends Controller{
     protected function editItem($Id){
         $this->ambito_dependencia = Session::get('ambito_dependencia');
         return ($this->ambito_dependencia === 1)
-            ? $this->editItem1($Id,$this->ambito_dependencia)
-            : $this->editItem2($Id,$this->ambito_dependencia);
+            ? $this->editItem1($Id,$this->ambito_dependencia,$this->ambito_estatus)
+            : $this->editItem2($Id,$this->ambito_dependencia,$this->ambito_estatus);
     }
 
 
@@ -680,6 +703,7 @@ class DenunciaAmbitoController extends Controller{
                     ->pluck('clave_identificadora','clave_identificadora');
 
         $this->ambito_dependencia = session::get('ambito_dependencia');
+        $this->ambito_estatus = session::get('ambito_estatus');
 
         $user = Auth::user();
         return view ('SIAC.denuncia.search_ambito.denuncia_search_panel',
@@ -693,6 +717,7 @@ class DenunciaAmbitoController extends Controller{
                 'hashtag'            => $hashtag,
                 'items'              => $user,
                 'ambito_dependencia' => $this->ambito_dependencia,
+                'ambito_estatus'     => $this->ambito_estatus,
             ]
         );
     }
@@ -725,6 +750,7 @@ class DenunciaAmbitoController extends Controller{
 
         $request->session()->put('items', $items);
         $this->ambito_dependencia = session::get('ambito_dependencia');
+        $this->ambito_estatus = session::get('ambito_estatus');
         return view('SIAC.denuncia.denuncia_ambito.denuncia_list',
             [
                 'items'                               => $items,
@@ -744,7 +770,7 @@ class DenunciaAmbitoController extends Controller{
                 'searchAdressDenuncia'                => 'listDenunciasAmbito'.$this->ambito_dependencia,
                 'showModalSearchDenuncia'             => 'showModalSearchDenunciaAmbito',
                 'findDataInDenunciaAmbito'            => 'findDataInDenunciaAmbito',
-                'showEditDenunciaDependenciaServicio' => $this->ambito_dependencia == 1 ? 'editDenunciaDependenciaServicio' :'listDenunciaDependenciaServicioAmbito',
+                'showEditDenunciaDependenciaServicio' => $this->ambito_dependencia == 2 ? 'listDenunciaDependenciaServicioAmbito' : 'listDenunciaDependenciaServicio',
                 'imagenesDenunciaItem'                => 'listImagenes',
                 'is_pagination'                       => true,
                 'ambito'                              => FuncionesController::arrAmbitosSM(),
