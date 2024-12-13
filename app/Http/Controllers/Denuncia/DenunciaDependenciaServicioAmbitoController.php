@@ -240,7 +240,6 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
     protected function postNew(DenunciaDependenciaServicioAmbitoRequest $request){
         $denuncia_id = $request["denuncia_id"];
         $this->ambito_dependencia = Session::get('ambito_dependencia');
-
         $Id = $request->manage();
         //dd($item);
         if (!isset($Id)) {
@@ -250,8 +249,8 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
     }
 
     // ***************** ELIMINA EL ITEM VIA AJAX ++++++++++++++++++++ //
-        protected function removeItem($id = 0)
-        {
+        protected function removeItem($id = 0){
+
             $item = Denuncia_Dependencia_Servicio::withTrashed()->findOrFail($id);
             $denuncia_id = $item->denuncia_id;
             if (isset($item)) {
@@ -266,6 +265,7 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
             } else {
                 return Response::json(['mensaje' => 'Se ha producido un error.', 'data' => 'Error', 'status' => '200'], 200);
             }
+
         }
 
 

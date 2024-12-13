@@ -87,7 +87,9 @@ class StatuRequest extends FormRequest
 //            dd($Item);
 
             if ( $this->predeterminado == 1) {
-                Estatu::where('predeterminado',true)->update(['predeterminado'=>false]);
+                Estatu::where('predeterminado',true)
+                    ->where('ambito_estatus',$this->ambito_estatus)
+                    ->update(['predeterminado'=>false]);
             };
 
             $idd = $this->dependencia_id;

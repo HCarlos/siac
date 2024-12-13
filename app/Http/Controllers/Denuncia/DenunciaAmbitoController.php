@@ -164,13 +164,13 @@ class DenunciaAmbitoController extends Controller{
         if (Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN') ) {
             $Estatus      = Estatu::query()
                             ->where("estatus_cve", 1)
-                            ->whereIn('ambito_estatus', [1,2])
+                            ->whereIn('ambito_estatus', FuncionesController::arrAmbitosViejitos())
                             ->orderBy('estatus')
                             ->get();
         }else{
             $Estatus      = Estatu::query()
                             ->where('estatus_cve',1)
-                            ->whereIn('ambito_estatus', [1,2])
+                            ->whereIn('ambito_estatus', FuncionesController::arrAmbitosViejitos())
                             ->orderBy('estatus')
                             ->get();
         }
@@ -212,7 +212,7 @@ class DenunciaAmbitoController extends Controller{
 
             $DependenciaIdArray = Session::get('DependenciaIdArray');
 
-            $Dependencias = Dependencia::query()->select('id')
+            $dependencias_id = Dependencia::query()->select('id')
                 ->where("estatus_cve", 1)
                 ->where('ambito_dependencia',$this->ambito_dependencia)
                 ->whereIn('id',$DependenciaIdArray)
@@ -230,7 +230,7 @@ class DenunciaAmbitoController extends Controller{
 
         }else{
 
-            $Dependencias = Dependencia::query()->select('id')
+            $dependencias_id = Dependencia::query()->select('id')
                 ->where("estatus_cve", 1)
                 ->where('ambito_dependencia',$this->ambito_dependencia)
                 ->orderBy('dependencia')
@@ -249,7 +249,7 @@ class DenunciaAmbitoController extends Controller{
             ->select('id','servicio','abreviatura_dependencia')
             ->where("servicio_habilitado", 1)
             ->where('ambito_dependencia',$this->ambito_dependencia)
-            ->whereIn('dependencia_id',$Dependencias)
+            ->whereIn('dependencia_id',$dependencias_id)
             ->orderBy('servicio')
             ->get();
 
@@ -363,13 +363,13 @@ class DenunciaAmbitoController extends Controller{
         if (Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN') ) {
             $Estatus      = Estatu::query()
                             ->where("estatus_cve", 1)
-                            ->whereIn('ambito_estatus', [1,2])
+                            ->whereIn('ambito_estatus', FuncionesController::arrAmbitosViejitos())
                             ->orderBy('estatus')
                             ->get();
         }else{
             $Estatus      = Estatu::query()
                             ->where('estatus_cve',1)
-                            ->whereIn('ambito_estatus', [1,2])
+                            ->whereIn('ambito_estatus', FuncionesController::arrAmbitosViejitos())
                             ->orderBy('estatus')
                             ->get();
         }
@@ -415,7 +415,7 @@ class DenunciaAmbitoController extends Controller{
 
         if($IsEnlace){
             $DependenciaIdArray = Session::get('DependenciaIdArray');
-            $Dependencias = Dependencia::query()
+            $dependencias_id = Dependencia::query()
                 ->select('id')
                 ->where("estatus_cve", 1)
                 ->where('ambito_dependencia',$this->ambito_dependencia)
@@ -434,7 +434,7 @@ class DenunciaAmbitoController extends Controller{
 
 
         }else{
-            $Dependencias = Dependencia::query()
+            $dependencias_id = Dependencia::query()
                 ->select('id')
                 ->where("estatus_cve", 1)
                 ->where('ambito_dependencia',$this->ambito_dependencia)
@@ -454,14 +454,9 @@ class DenunciaAmbitoController extends Controller{
             ->select('id','servicio','abreviatura_dependencia')
             ->where("servicio_habilitado", 1)
             ->where('ambito_dependencia',$this->ambito_dependencia)
-            ->whereIn('dependencia_id',$Dependencias)
+            ->whereIn('dependencia_id',$dependencias_id)
             ->orderBy('servicio')
             ->get();
-
-//        $Origenes     = Origen::query()
-//                        ->where("estatus_cve", 1)
-//                        ->orderBy('origen')
-//                        ->get();
 
         $ServCat = ServicioCategoria::query()
             ->whereHas('users', function ($query) {
@@ -623,12 +618,12 @@ class DenunciaAmbitoController extends Controller{
                 ->orderBy('dependencia')->pluck('dependencia','id');
             $dep_id = $dependencia_id_array[0];
 
-            $Servicios = _viServicios::select(['servicio', 'id', 'servicio_habilitado'])
-                ->where("servicio_habilitado", 1)
-                ->where("dependencia_id",$dep_id)
-                ->orderBy('servicio')
-                ->get()
-                ->pluck('servicio','id');
+//            $Servicios = _viServicios::select(['servicio', 'id', 'servicio_habilitado'])
+//                ->where("servicio_habilitado", 1)
+//                ->where("dependencia_id",$dep_id)
+//                ->orderBy('servicio')
+//                ->get()
+//                ->pluck('servicio','id');
 
 
         }else{
@@ -638,23 +633,28 @@ class DenunciaAmbitoController extends Controller{
                             ->orderBy('dependencia')
                             ->pluck('dependencia','id');
 
-            $Servicios    = _viServicios::query()
-                            ->select(['servicio', 'id', 'servicio_habilitado'])
-                            ->where("servicio_habilitado", 1)
-                            ->orderBy('servicio')
-                            ->pluck('servicio','id');
+//            $Servicios    = _viServicios::query()
+//                            ->select(['servicio', 'id', 'servicio_habilitado'])
+//                            ->where("servicio_habilitado", 1)
+//                            ->orderBy('servicio')
+//                            ->pluck('servicio','id');
         }
+
+        $Est = $this->ambito_dependencia == 1
+            ? FuncionesController::arrAmbitosViejitos()
+            : FuncionesController::arrAmbitosServiciosMunicipales();
+
 
         if(Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN')){
             $Estatus      = Estatu::query()
                             ->where("estatus_cve", 1)
-                            ->whereIn('ambito_estatus', [1,2])
+                            ->whereIn('ambito_estatus', $Est)
                             ->orderBy('estatus')
                             ->get();
         }else{
             $Estatus      = Estatu::query()
                             ->where("estatus_cve", 1)
-                            ->whereIn('ambito_estatus', [1,2])
+                            ->whereIn('ambito_estatus', $Est)
                             ->orderBy('estatus')
                             ->get();
         }
@@ -687,7 +687,7 @@ class DenunciaAmbitoController extends Controller{
                 'findDataInDenunciaAmbito' => 'findDataInDenunciaAmbito',
                 'dependencias'       => $Dependencias,
                 'capturistas'        => $Capturistas,
-                'servicios'          => $Servicios,
+                'servicios'          => [],
                 'estatus'            => $Estatus,
                 'origenes'           => $Origenes,
                 'hashtag'            => $hashtag,

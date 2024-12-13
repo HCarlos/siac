@@ -111,7 +111,7 @@ class DenunciaAPIRequest extends FormRequest{
                 'serviciomobile_id' => $Ser ? $Ser->id : 1,
                 'dependencia_id'    => $Ser ? $Ser->dependencia_id : 1,
                 'servicio_id'       => $Ser ? $Ser->servicio_id : 1,
-                'estatus_id'        => 8 ,
+                'estatus_id'        => env('ESTATUS_DEFAULT_SERVICIOS_MUNICIPALES') ,
                 'ubicacion_id'      => $Ubi->id,
                 'ubicacion'         => strtoupper(trim($Ubi->Ubicacion ?? $this->ubicacion_google)),
                 'ubicacion_google'  => strtoupper(trim($this->ubicacion_google)),

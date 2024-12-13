@@ -263,6 +263,14 @@ class FuncionesController extends Controller
         return [1,99];
     }
 
+    public static function arrAmbitosApoyosSociales(): array{
+        return [1];
+    }
+
+    public static function arrAmbitosServiciosMunicipales(): array{
+        return [2];
+    }
+
     public static function arrAmbitosDependencia(): array{
         return [1=>"Apoyos Sociales",2=>"Servicios Municipales",99=>"SM Viejitos"];
     }

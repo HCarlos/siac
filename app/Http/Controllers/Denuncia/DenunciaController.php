@@ -383,14 +383,14 @@ class DenunciaController extends Controller{
                 ->pluck('dependencia','id');
 
             $dep_id = $dependencia_id_array[0];
-            $Servicios = Servicio::where("estatus_cve", 1)
-                            ->whereHas('subareas', function($p) use ($dep_id) {
-                                $p->whereHas("areas", function($q) use ($dep_id){
-                                    return $q->where("dependencia_id",$dep_id);
-                                });
-                            })->orderBy('servicio')
-                            ->get()
-                            ->pluck('servicio','id');
+//            $Servicios = Servicio::where("estatus_cve", 1)
+//                            ->whereHas('subareas', function($p) use ($dep_id) {
+//                                $p->whereHas("areas", function($q) use ($dep_id){
+//                                    return $q->where("dependencia_id",$dep_id);
+//                                });
+//                            })->orderBy('servicio')
+//                            ->get()
+//                            ->pluck('servicio','id');
 
         }else{
             $Dependencias = Dependencia::query()
@@ -398,10 +398,10 @@ class DenunciaController extends Controller{
                                 ->whereIn("ambito_dependencia", FuncionesController::arrAmbitosViejitos())
                                 ->orderBy('dependencia')
                                 ->pluck('dependencia','id');
-            $Servicios    = Servicio::query()
-                                ->where("estatus_cve", 1)
-                                ->orderBy('servicio')
-                                ->pluck('servicio','id');
+//            $Servicios    = Servicio::query()
+//                                ->where("estatus_cve", 1)
+//                                ->orderBy('servicio')
+//                                ->pluck('servicio','id');
         }
 
         if(Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN')){
@@ -442,7 +442,7 @@ class DenunciaController extends Controller{
                 'findDataInDenuncia' => 'findDataInDenuncia',
                 'dependencias'       => $Dependencias,
                 'capturistas'        => $Capturistas,
-                'servicios'          => $Servicios,
+                'servicios'          => [], //$Servicios,
                 'estatus'            => $Estatus,
                 'origenes'           => $Origenes,
                 'hashtag'            => $hashtag,

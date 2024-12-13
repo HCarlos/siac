@@ -123,7 +123,7 @@ class DenunciaAmbitoRequest extends FormRequest
                 'dependencia_id'               => $Servicio->dependencia_id,
                 'ubicacion_id'                 => (int)$this->ubicacion_id,
                 'servicio_id'                  => (int)$this->servicio_id,
-                'estatus_id'                   => isset($this->estatus_id) ? (int) $this->estatus_id : 8,
+                'estatus_id'                   => isset($this->estatus_id) ? (int) $this->estatus_id : env('ESTATUS_DEFAULT_SERVICIOS_MUNICIPALES'),
                 'ciudadano_id'                 => (int)$this->usuario_id,
                 'creadopor_id'                 => (int)$this->creadopor_id,
                 'modificadopor_id'             => (int)$this->modificadopor_id,
