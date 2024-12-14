@@ -41,10 +41,6 @@
             </div>
 
             <div class="form-group row mb-1 hide" id="requiereImagen">
-                <label for = "file1" class="col-md-3 col-form-label">Agregue una imagen</label>
-                <div class="col-md-5">
-                    <input type="file" id="file1" name="file1" class="form-control-file">
-                </div>
             </div>
 
             <div class="form-group row mb-1">
@@ -80,16 +76,6 @@
                             </td>
                         </tr>
                     @endforeach
-                    {{--                    @for($it=$items->imagenes->count()+1;$it<=3;$it++)--}}
-                    {{--                        <tr>--}}
-                    {{--                            <td colspan="3">--}}
-                    {{--                                <div class="form-group mb-1 col-lg-3">--}}
-                    {{--                                    <label for="file{{$it}}"><strong>Archivo {{$it}}</strong>: Subir archivo</label>--}}
-                    {{--                                    <input type="file" id="file{{$it}}" name="file{{$it}}" class="form-control-file">--}}
-                    {{--                                </div>--}}
-                    {{--                            </td>--}}
-                    {{--                        </tr>--}}
-                    {{--                    @endfor--}}
                     </tbody>
                 </table>
 
@@ -111,17 +97,27 @@
 
             $('#requiereImagen').hide();
 
-            $( "#estatus_id").change(function(event) {
+            $( "#estatus_id" ).change(function(event) {
                 event.preventDefault();
 
                 var requiere_imagen = $(this).find("option:selected").attr('data-require');
 
                 if ( requiere_imagen === '1' ) {
+                    // $( "#requiereImagen" ).html(getFileHTML());
                     $( "#requiereImagen" ).show();
                 } else {
+                    // $( "#requiereImagen" ).empty();
                     $( "#requiereImagen" ).hide();
                 }
             });
+
+            function getFileHTML() {
+                return '' +
+                    '<div class="form-group row w-100-percent mb-1"><label for = "file1" class="col-md-3 col-form-label">Agregue una imagen</label><div class="col-md-5"><input type="file" id="file1" name="file1" class="form-control-file" required></div></div>' +
+                    '<div class="form-group row w-100-percent mb-1"><label for = "file2" class="col-md-3 col-form-label">Agregue una imagen</label><div class="col-md-5"><input type="file" id="file2" name="file2" class="form-control-file" ></div></div>' +
+                    '<div class="form-group row w-100-percent mb-1"><label for = "file3" class="col-md-3 col-form-label">Agregue una imagen</label><div class="col-md-5"><input type="file" id="file3" name="file3" class="form-control-file" ></div></div>'
+                    ;
+            }
 
         })
     </script>

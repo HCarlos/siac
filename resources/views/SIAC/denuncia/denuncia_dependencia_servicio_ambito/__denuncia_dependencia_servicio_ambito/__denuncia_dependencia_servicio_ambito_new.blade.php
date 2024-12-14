@@ -42,11 +42,7 @@
                 </div>
             </div>
 
-            <div class="form-group row mb-1 hide" id="requiereImagen">
-                <label for = "file1" class="col-md-3 col-form-label">Agregue una imagen</label>
-                <div class="col-md-5">
-                    <input type="file" id="file1" name="file1" class="form-control-file">
-                </div>
+            <div class="form-group row mb-1 hide requiereImagen" id="requiereImagen">
             </div>
 
         </div>
@@ -69,13 +65,27 @@
             event.preventDefault();
 
             var requiere_imagen = $(this).find("option:selected").attr('data-require');
+            //var obj = $(this).find("option:selected");
 
             if ( requiere_imagen === '1' ) {
+                //obj.prop('required', true);
+                $( "#requiereImagen" ).html(getFileHTML());
                 $( "#requiereImagen" ).show();
             } else {
+                //obj.prop('required', false);
+                $( "#requiereImagen" ).empty();
                 $( "#requiereImagen" ).hide();
             }
         });
+
+        function getFileHTML() {
+            return '' +
+                '<div class="form-group row w-100-percent mb-1"><label for = "file1" class="col-md-3 col-form-label">Agregue una imagen</label><div class="col-md-5"><input type="file" id="file1" name="file1" class="form-control-file" required></div></div>' +
+                '<div class="form-group row w-100-percent mb-1"><label for = "file2" class="col-md-3 col-form-label">Agregue una imagen</label><div class="col-md-5"><input type="file" id="file2" name="file2" class="form-control-file" ></div></div>' +
+                '<div class="form-group row w-100-percent mb-1"><label for = "file3" class="col-md-3 col-form-label">Agregue una imagen</label><div class="col-md-5"><input type="file" id="file3" name="file3" class="form-control-file" ></div></div>'
+                ;
+        }
+
 
     })
 </script>
