@@ -52,6 +52,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::match(['get','put','post'],'dashboard', 'Dashboard\DashboardController@index')->name('dashboard');
     Route::match(['get','put','post'],'dashboard_enlace', 'Dashboard\DashboardEnlaceController@index')->name('dashboard_enlace');
     Route::match(['get','put','post'],'dashboard-statistics', 'Dashboard\DashboardStaticController@index')->name('dashboard-statistics');
+    Route::match(['get','put','post'],'dashboard-statistics-two', 'Dashboard\DashboardStaticTwoController@index')->name('dashboard-statistics-two');
 
     // USUARIOS
     Route::get('edit', 'Catalogos\User\UserDataController@showEditUserData')->name('edit');

@@ -1,0 +1,157 @@
+/*
+ * Copyright (c) 2024. Realizado por Carlos Hidalgo
+ */
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Grid container */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+    grid-template-rows: repeat(8, 1fr); /* 8 filas */
+    gap: 10px; /* Espaciado entre celdas */
+    width: 90%; /* Adaptable al ancho de la pantalla */
+    max-width: 1200px;
+    aspect-ratio: 3 / 8; /* Relación de aspecto */
+    padding: 10px;
+}
+
+/* Grid items */
+.grid-item {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    color: #362f2f;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    aspect-ratio: 1; /* Mantener cuadrado */
+    transition: all 1.3s ease-in-out;
+    overflow: hidden;
+    flex-direction: column;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+}
+
+/* Expanded grid item */
+.grid-item.expanded {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    border-radius: 0;
+}
+
+/* Expand button */
+.expand-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #FFD700;
+    border: none;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #302d2d;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 1.2s ease;
+    z-index: 1100;
+}
+
+.expand-btn:hover {
+    background-color: rgba(255, 127, 80, 0.85);
+}
+
+/* Collapse button */
+.collapse-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #FFC107;
+    border: none;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #302d2d;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 1.2s ease;
+    display: none; /* Ocultar por defecto */
+    z-index: 1101;
+}
+
+/* Mostrar el botón Collapse en el div expandido */
+.grid-item.expanded .collapse-btn {
+    display: block;
+}
+
+.collapse-btn:hover {
+    background-color: rgba(255, 127, 80, 0.85);
+}
+
+/* Ocultar botón Expand al expandir */
+.grid-item.expanded .expand-btn {
+    display: none;
+}
+
+
+/*.grid-item button {*/
+/*    position: absolute;*/
+/*    top: 10px;*/
+/*    background: transparent;*/
+/*    border: none;*/
+/*    cursor: pointer;*/
+/*    font-size: 18px;*/
+/*}*/
+
+/*.expand-btn {*/
+/*    right: 40px;*/
+/*}*/
+
+/*.collapse-btn {*/
+/*    right: 10px;*/
+/*}*/
+
+/* Contenedor del gráfico */
+
+.chart {
+    background: white;
+    width: 100%;
+    height: 100%;
+    padding: 2em;
+    z-index: 1001!important;
+}
+
+
+#gauge-chart {
+    background: white;
+    width: 100%;
+    height: 100%;
+    z-index: 1001!important;
+}
+
+@media (max-width: 600px) {
+    .grid-item {
+        max-width: 90%; /* Reducir el tamaño del contenedor en pantallas pequeñas */
+    }
+}
