@@ -30,7 +30,7 @@ class AlterUbicaciones2Table extends Migration
         if (Schema::hasTable($Catalogos['denuncias'])) {
             DB::statement("ALTER DATABASE dbatemun set default_text_search_config = 'spanish'");
             DB::statement("ALTER TABLE denuncias ADD COLUMN gd_searchtext TSVECTOR");
-            DB::statement("UPDATE denuncias SET gd_searchtext = to_tsvector('spanish', coalesce(trim(search_google),'') || ' ' || coalesce(trim(gd_ubicacion),'') )");
+            DB::statement("UPDATE denuncias SET gd_searchtext = to_tsvector('spanish', coalesce(trim(descripcion),'') || ' ' || coalesce(trim(referencia),'') || ' ' || coalesce(trim(search_google),'') || ' ' || coalesce(trim(gd_ubicacion),'') )");
             DB::statement("CREATE INDEX gd_searchtext_gin ON denuncias USING GIN(gd_searchtext)");
             DB::statement("CREATE TRIGGER ts_gd_searchtext BEFORE INSERT OR UPDATE ON denuncias FOR EACH ROW EXECUTE PROCEDURE tsvector_update_trigger('gd_searchtext', 'pg_catalog.spanish','search_google','gd_ubicacion')");
         }
