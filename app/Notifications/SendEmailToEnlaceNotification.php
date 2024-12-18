@@ -58,7 +58,7 @@ class SendEmailToEnlaceNotification extends Notification
         return (new MailMessage)
             ->subject('Notificación Importante')
             ->line($this->mensaje)
-            ->action('Ver más', url('/listDenunciaDependenciaServicioAmbito/'.$this->denuncia->id))
+            ->action('Ver estatus', url('/listDenunciaDependenciaServicioAmbito/'.$this->denuncia->id))
             ->line('¡Gracias por usar nuestra aplicación!');
     }
 

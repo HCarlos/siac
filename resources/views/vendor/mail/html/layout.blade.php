@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-    <style>
+    <style type="text/css">
         @media only screen and (max-width: 600px) {
             .inner-body {
                 width: 100% !important;
@@ -21,7 +21,7 @@
             }
         }
     </style>
-
+    <title>SIAC Team!</title>
 </head>
 <body>
 
@@ -30,16 +30,12 @@
             <td align="center">
                 <table class="content" width="100%" cellpadding="0" cellspacing="0">
                     {{ $header ?? '' }}
-                    <!-- Email Body -->
                     <tr>
                         <td class="body" width="100%" cellpadding="0" cellspacing="0">
                             <table class="inner-body" align="center" width="570" cellpadding="0" cellspacing="0">
-                                <!-- Body content -->
                                 <tr>
                                     <td class="content-cell">
                                         {{ Illuminate\Mail\Markdown::parse($slot) }}
-{{--                                        {{ $slot }}--}}
-
                                         {{ $subcopy ?? '' }}
                                     </td>
                                 </tr>

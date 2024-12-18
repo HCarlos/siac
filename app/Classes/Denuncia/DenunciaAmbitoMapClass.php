@@ -43,7 +43,7 @@ class DenunciaAmbitoMapClass{
         $mapUrl = "https://maps.googleapis.com/maps/api/staticmap?center={$latitude},{$longitude}&zoom=17&size=2550x3300&markers=color:red|{$latitude},{$longitude}&key={$googleMapsApiKey}";
 
         // Descargar el mapa como imagen temporal
-        $mapImage = public_path('map_image.png'); // Guardamos temporalmente la imagen
+        $mapImage = public_path('storage/map_image.png'); // Guardamos temporalmente la imagen
         file_put_contents($mapImage, file_get_contents($mapUrl));
 
         // Agregar el mapa al PDF
