@@ -93,24 +93,24 @@
             </div>
 
             <div class="form-group row mb-1">
-                <label for = "descripcion" class="col-lg-2 col-form-label has-descripcion labelDenuncia text-right m-0 p-0">Descripción:</label>
+                <label for = "descripcion" class="col-lg-2 col-form-label has-descripcion labelDenuncia text-right m-0 p-0">Descripción y/o referencia:</label>
                 <div class="col-lg-10">
-                    <textarea name="descripcion" id="descripcion" class="form-control">{{ old('descripcion',$items->descripcion) }}</textarea>
+                    <textarea name="descripcion" id="descripcion" class="form-control" rows="6">{{ old('descripcion',$items->descripcion) }}</textarea>
                     <span class="has-descripcion">
                         <strong class="text-danger"></strong>
                     </span>
                 </div>
             </div>
 
-            <div class="form-group row mb-1">
-                <label for = "referencia" class="col-lg-2 col-form-label has-referencia labelDenuncia text-right m-0 p-0">Referencia:</label>
-                <div class="col-lg-10">
-                    <textarea name="referencia" id="referencia" class="form-control">{{ old('referencia',$items->referencia) }}</textarea>
-                    <span class="has-referencia">
-                        <strong class="text-danger"></strong>
-                    </span>
-                </div>
-            </div>
+{{--            <div class="form-group row mb-1">--}}
+{{--                <label for = "referencia" class="col-lg-2 col-form-label has-referencia labelDenuncia text-right m-0 p-0">Referencia:</label>--}}
+{{--                <div class="col-lg-10">--}}
+{{--                    <textarea name="referencia" id="referencia" class="form-control">{{ old('referencia',$items->referencia) }}</textarea>--}}
+{{--                    <span class="has-referencia">--}}
+{{--                        <strong class="text-danger"></strong>--}}
+{{--                    </span>--}}
+{{--                </div>--}}
+{{--            </div>--}}
 
             <div class="form-group row mb-1">
                 <label for = "ambito" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Categoría:</label>
@@ -257,6 +257,7 @@
 
 <input type="hidden" name="altitud" id="altitud" value="{{ old('altitud',$items->altitud) }}" >
 <input type="hidden" name="gd_ubicacion" id="gd_ubicacion" value="{{ old('gd_ubicacion',$items->gd_ubicacion) }}" >
+<input type="hidden" name="referencia" id="referencia" value="{{ old('referencia',$items->referencia) }}" >
 
 @include('shared/code/__modal_denuncia_user_data')
 

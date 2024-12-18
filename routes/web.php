@@ -563,6 +563,7 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|DELEGADO|CIUDADANO|
     Route::get('listDenunciasMobile', 'Denuncia\DenunciaMobileController@index')->name('listDenunciasMobile');
     Route::get('removeDenunciaMobile/{id}', 'Denuncia\DenunciaMobileController@removeDenunciaMobile')->name('removeDenunciaMobile');
 
+    Route::post('searchIdenticalAmbito', 'Denuncia\DenunciaAmbitoController@searchIdenticalAmbito')->name('searchIdenticalAmbito');
 
 
 
@@ -585,6 +586,9 @@ Route::get('enviar', ['as' => 'enviar', function () {
 Route::get('/imprimir_denuncia/{uuid}', 'External\Denuncia\HojaDenunciaController@imprimirDenuncia')->name('imprimir_denuncia/');
 Route::get('/imprimir_denuncia_respuesta/{uuid}', 'External\Denuncia\HojaDenunciaController@imprimirDenunciaConRespuestas')->name('imprimir_denuncia_respuesta/');
 Route::get('/imprimir_denuncia_archivo/{uuid}', 'External\Denuncia\HojaDenunciaArchivoController@imprimirDenuncia')->name('imprimir_denuncia_archivo/');
+
+Route::get('/imprimir_denuncia_ambito_archivo/{uuid}', 'External\Denuncia\HojaDenunciaAmbitoArchivoController@imprimirDenuncia')->name('imprimir_denuncia_ambito_archivo/');
+Route::get('/imprimir_denuncia_ambito_respuesta/{uuid}', 'External\Denuncia\HojaDenunciaAmbitoController@imprimirDenunciaConRespuestas')->name('imprimir_denuncia_ambito_respuesta/');
 
 //Route::group(['middleware' => 'cors'], function(){
 

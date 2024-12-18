@@ -4,6 +4,7 @@ namespace App\Events;
 
 use App\Classes\Denuncia\VistaDenunciaClass;
 use App\Http\Controllers\Funciones\FuncionesController;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;

@@ -1,4 +1,4 @@
-@if(Gate::check('all'))
+{{--@if(Gate::check('all'))--}}
 @php $IsModal = $IsModal ?? false  @endphp
 @php $IsModalEdit = $IsModalEdit ?? false @endphp
 @if( $IsModal || $IsModalEdit )
@@ -18,4 +18,4 @@
         <i class="fas fa-users text-info"></i>
     </a>
 @endisset
-@endif
+{{--@endif--}}

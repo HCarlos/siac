@@ -63,18 +63,6 @@ class SendEmailAPIVerificationNotification extends VerifyEmail implements Should
             ->line(Lang::get('Si no creaste esta cuenta, no se requiere ninguna acción.'));
     }
 
-//    protected function verificationUrl($notifiable)
-//    {
-//        return URL::temporarySignedRoute(
-//            'verification.verify',
-//            Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
-//            [
-//                'id' => $notifiable->getKey(),
-//                'hash' => sha1($notifiable->getEmailForVerification()),
-//            ]
-//        );
-//    }
-
     protected function verificationAPIUrl($notifiable)
     {
         $user_id = $notifiable->getKey();
@@ -114,8 +102,6 @@ class SendEmailAPIVerificationNotification extends VerifyEmail implements Should
             //
         ];
     }
-
-
 
     public function getRedirect($user){
         $role1 = $user->hasRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|ENLACE|USER_ARCHIVO_CAP|USER_ARCHIVO_ADMIN');

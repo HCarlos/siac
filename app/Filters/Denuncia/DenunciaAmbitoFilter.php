@@ -59,23 +59,19 @@ class DenunciaAmbitoFilter extends QueryFilter
     }
 
     public function ambito_estatus($query, $search){
-        if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
+        if (is_null($search) || empty($search) || trim($search) === "") {return $query;}
         return $query->where('ue_id', (int)$search );
     }
 
 
     public function search($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
-        $search = strtoupper($search);
-        $filters  = $search;
-        $F        = new FuncionesController();
 
-        $filters      = strtolower($filters);
-        $filters      = $F->str_sanitizer($filters);
-        $tsString     = $F->string_to_tsQuery( strtoupper($filters),' & ');
+        $search = trim($search); // Eliminar espacios en blanco innecesarios
+        $search = addslashes($search); // Escapar caracteres especiales
 
-        return $query->whereRaw("searchtextdenuncia @@ to_tsquery('spanish', ?)", [$tsString])
-            ->orderByRaw("calle, num_ext, num_int, colonia, denuncia, referencia ASC");
+        return $query->whereRaw("gd_searchtext @@ plainto_tsquery('spanish', ?)", [$search]
+                    )->orderByRaw("denuncia ASC,referencia ASC,search_google ASC,gd_ubicacion ASC");
 
     }
 

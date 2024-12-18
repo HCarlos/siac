@@ -590,6 +590,81 @@ jQuery(function($) {
             })
         });
 
+
+        $(".searchIdenticalAmbito").on('click',function (event){
+            event.preventDefault();
+            var formData = {};
+            formData['descripcion']        = $("#descripcion").val();
+            formData['referencia']         = $("#referencia").val();
+            formData['ubicacion']          = $("#ubicacion").val();
+            formData['ubicacion_id']       = $("#ubicacion_id").val();
+            formData['search_google']      = $("#search_google").val();
+            formData['searchgoogleresult'] = $("#searchGoogleResult").html();
+            formData['usuario_id']         = $("#usuario_id").val();
+            formData['servicio_id']        = $("#servicio_id").val();
+            formData['id']                 = $("#id").val();
+
+            var ciudadano_id = $("#usuario_id").val();
+
+            // alert(formData.toString());
+
+            if ($("#servicio_id").val() <= 0){
+                alert("Proporcione un servicio");
+                return false;
+            }
+            if ( $("#search_google").val() ){
+                if ($("#search_google").val() === '' && $("#searchGoogleResult").html() === ''){
+                    alert("Búsque la ubicación del problema");
+                    return false;
+                }
+            }else{
+                alert("Búsque la ubicación del problema");
+            }
+
+
+            $.ajax({
+                method: "POST",
+                data: formData,
+                url: '/searchIdenticalAmbito'
+            })
+                .done(function( response ) {
+                    var Tbl = "";
+                    if (response.result_msg === 'OK'){
+
+                        $("#tblBody").empty();
+
+                        $.each(response.data, function( index, value ) {
+                            var TC = "";
+                            if (value.total_ciudadanos !== ""){
+                                TC = "(<strong class='text-danger'> <i class='fas fa-users'></i> "+value.total_ciudadanos+"</strong>)<br>";
+                            }
+                            Tbl += "<tr class='bgc-h-yellow-l3'>";
+                            Tbl += "<td>"+
+                                value.id+"<br>"+
+                                "<strong>"+value.denuncia+"</strong><br>"+
+                                "<small>"+value.fecha+"</small><br>"+
+                                "<strong class='text-green'>"+value.ciudadano+"</strong><br>"+
+                                "<small>"+value.gd_ubicacion+"</small><br>"+
+                                "<strong class='text-primary-dark'>"+value.ultimo_estatus+"</strong> " + TC +
+                                "</td>"+
+                                "<td>"+
+                                "<a href='/updateAddUserDenunciaGet/"+value.id+"/"+ciudadano_id+"' class='btn btn-danger'>Vincular</a>"+
+                                "</td>";
+                            Tbl += "</tr>";
+                        });
+                        $("#tblBody").append(Tbl);
+                    }else{
+                        alert(response.mensaje);
+                    }
+                })
+        });
+
+
+
+
+ú
+
+
         $(".formData").on('submit',function(event){
             $(".btnGuardarDenuncia").prop('disabled', true);
         });

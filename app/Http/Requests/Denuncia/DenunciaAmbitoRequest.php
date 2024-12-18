@@ -12,9 +12,12 @@ use App\Http\Controllers\Funciones\FuncionesController;
 use App\Http\Controllers\Storage\StorageDenunciaAmbitoController;
 use App\Http\Controllers\Storage\StorageDenunciaController;
 use App\Models\Catalogos\Domicilios\Ubicacion;
+use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\_viServicios;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\DenunciaEstatu;
+use App\Notifications\SendEmailToEnlaceNotification;
+use App\User;
 use Carbon\Carbon;
 use Doctrine\DBAL\Driver\Exception;
 use Illuminate\Database\QueryException;
@@ -187,6 +190,7 @@ class DenunciaAmbitoRequest extends FormRequest
             }
         }
         event(new IUQDenunciaEvent($item->id,Auth::user()->id,$trigger_type));
+
         return $item;
     }
 

@@ -74,7 +74,7 @@ class DenunciaArchivoTCPDF extends TCPDF{
 
     function Footer(){
 
-        $this->SetY(-7);
+        $this->SetY(-10);
         //Arial italic 8
         $this->SetFont(FONT_DEJAVUSANSMONO,'',6);
 

@@ -70,38 +70,51 @@
                     </a>
                     <ul class="side-nav-second-level" aria-expanded="false">
                         <li class="side-nav-item">
+                            <a href="{{route('listDenunciasAmbito2')}}" class="side-nav-link">
+                                @php $filters['filterdata']=""; @endphp
+                                <i class="mdi dripicons-archive"></i>
+                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->count()}}</span>
+                                <span>Todas</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
                             <a href="{{route('listDenunciasAmbito16')}}" class="side-nav-link">
+                                @php $filters['filterdata']=""; @endphp
                                 <i class="mdi dripicons-archive"></i>
                                 <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',16)->count()}}</span>
                                 <span>Recibidas</span>
                             </a>
                         </li>
                         <li class="side-nav-item">
-                            <a href="{{route('listDenunciasAmbito17')}}" class="side-nav-link">
-                                <i class="mdi dripicons-archive"></i>
-                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',17)->count()}}</span>
-                                <span>Atendidas</span>
-                            </a>
-                        </li>
-                        <li class="side-nav-item">
-                            <a href="{{route('listDenunciasAmbito18')}}" class="side-nav-link">
-                                <i class="mdi dripicons-archive"></i>
-                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',18)->count()}}</span>
-                                <span>Observadas</span>
-                            </a>
-                        </li>
-                        <li class="side-nav-item">
                             <a href="{{route('listDenunciasAmbito19')}}" class="side-nav-link">
+                                @php $filters['filterdata']=""; @endphp
                                 <i class="mdi dripicons-archive"></i>
                                 <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',19)->count()}}</span>
                                 <span>En proceso / Programadas</span>
                             </a>
                         </li>
                         <li class="side-nav-item">
+                            <a href="{{route('listDenunciasAmbito17')}}" class="side-nav-link">
+                                @php $filters['filterdata']=""; @endphp
+                                <i class="mdi dripicons-archive"></i>
+                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',17)->count()}}</span>
+                                <span>Atendidas</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
                             <a href="{{route('listDenunciasAmbito20')}}" class="side-nav-link">
+                                @php $filters['filterdata']=""; @endphp
                                 <i class="mdi dripicons-archive"></i>
                                 <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',20)->count()}}</span>
                                 <span>Rechazadas</span>
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a href="{{route('listDenunciasAmbito18')}}" class="side-nav-link">
+                                @php $filters['filterdata']=""; @endphp
+                                <i class="mdi dripicons-archive"></i>
+                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',18)->count()}}</span>
+                                <span>Observadas</span>
                             </a>
                         </li>
                     </ul>
@@ -454,7 +467,24 @@
                     @if (Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|ENLACE'))
                         <li>
                             <a href="{{route('listUsers')}}">
-                                <i class="fas fa-users"></i>
+
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="20" height="18"
+                                     viewBox="0 0 141.7 141.7" style="enable-background:new 0 0 141.7 141.7;" xml:space="preserve">
+                                    <g id="Capa_1">
+                                        <path fill="white"  d="M1,131v-30.6c0-4.1,1-7.9,2.9-11.2c1.9-3.4,4.5-5.9,7.9-7.5c7.7-3.8,14.6-6.5,20.8-8.1c6.2-1.7,12.5-2.5,19.1-2.5
+                                            s12.9,0.8,19,2.5c6.1,1.7,13,4.4,20.7,8.1c3.4,1.7,6,4.2,8,7.5c2,3.4,2.9,7.1,2.9,11.2V131H1z M111.9,131v-30.6
+                                            c0-7.4-1.7-13.5-5.1-18.3c-3.4-4.8-7.8-8.6-13.3-11.6c7.3,0.9,14.1,2.3,20.6,4.2c6.4,1.8,11.7,3.9,15.7,6.3c3.5,2.2,6.2,5,8.2,8.3
+                                            s3,7,3,11.2V131H111.9z M51.7,60.2c-7,0-12.7-2.5-17.1-7.4s-6.7-11.3-6.7-19.1s2.2-14.2,6.7-19.1s10.1-7.4,17.1-7.4
+                                            s12.7,2.5,17.1,7.4s6.7,11.3,6.7,19.1s-2.2,14.2-6.7,19.1S58.6,60.2,51.7,60.2z M108.7,33.6c0,7.8-2.2,14.2-6.7,19.1
+                                            s-10.1,7.4-17.1,7.4c-1.2,0-2.5-0.1-3.9-0.3c-1.4-0.2-2.7-0.5-3.9-1c2.5-3,4.5-6.6,5.8-10.9s2-9.1,2-14.4s-0.7-10-2-14.1
+                                            s-3.2-7.8-5.8-11.2c1.2-0.4,2.5-0.6,3.9-0.9c1.4-0.2,2.7-0.4,3.9-0.4c7,0,12.7,2.5,17.1,7.4S108.7,25.8,108.7,33.6z M10.5,123.4
+                                            h82.4v-23c0-1.9-0.5-3.7-1.5-5.5s-2.2-3-3.7-3.7c-7.6-3.8-14-6.3-19.2-7.6s-10.8-1.9-16.8-1.9S40,82.2,34.8,83.5
+                                            s-11.6,3.8-19.2,7.6c-1.5,0.7-2.7,1.9-3.6,3.7s-1.4,3.6-1.4,5.5V123.4z M51.7,49.6c4.1,0,7.5-1.5,10.2-4.5c2.7-3,4-6.8,4-11.4
+                                            s-1.3-8.4-4-11.4c-2.7-3-6.1-4.5-10.2-4.5s-7.5,1.5-10.2,4.5c-2.7,3-4,6.8-4,11.4s1.3,8.4,4,11.4C44.2,48,47.6,49.6,51.7,49.6z"/>
+                                    </g>
+                                    <g id="Capa_2"></g>
+                                </svg>
+
                                 <span class="badge badge-success float-right">{{\App\User::count()}}</span>
                                 <span>Usuarios</span>
                             </a>

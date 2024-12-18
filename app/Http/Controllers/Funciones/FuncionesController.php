@@ -48,8 +48,8 @@ class FuncionesController extends Controller
         return $filters;
     }
 
-
     public function string_to_tsQuery(String $string, String $type){
+
         $string = str_replace(', ',' ', $string);
         $string = str_replace(',',' ', $string);
 

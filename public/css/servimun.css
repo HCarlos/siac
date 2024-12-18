@@ -141,3 +141,10 @@ div.help-box2  p  {
     right: 10px;
     top: 10px;
 }
+
+svg {
+    margin: 0 auto !important;
+    width: 20px !important;
+    height: 18px !important;
+    fill: whitesmoke !important;
+}

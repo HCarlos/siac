@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-12 ">
+    <div class="col-md-12">
         <div class="grid-container">
             <div class="form-group row mb-1">
                 <label for = "dependencia_id" class="col-md-3 col-form-label">Dependencia</label>

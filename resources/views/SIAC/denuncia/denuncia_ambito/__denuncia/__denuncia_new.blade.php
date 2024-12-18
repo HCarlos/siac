@@ -89,23 +89,23 @@
             </div>
 
             <div class="form-group row mb-1">
-                <label for = "descripcion" class="col-lg-2 col-form-label has-descripcion labelDenuncia text-right m-0 p-0">Descripción:</label>
+                <label for = "descripcion" class="col-lg-2 col-form-label has-descripcion labelDenuncia text-right m-0 p-0">Descripción y/o referencia:</label>
                 <div class="col-lg-10">
-                    <textarea name="descripcion" id="descripcion" class="form-control">{{ old('descripcion') }}</textarea>
+                    <textarea name="descripcion" id="descripcion" class="form-control" rows="6">{{ old('descripcion') }}</textarea>
                     <span class="has-descripcion">
                         <strong class="text-danger"></strong>
                     </span>
                 </div>
             </div>
-            <div class="form-group row mb-1">
-                <label for = "referencia" class="col-lg-2 col-form-label has-referencia labelDenuncia text-right m-0 p-0">Referencia:</label>
-                <div class="col-lg-10">
-                    <textarea name="referencia" id="referencia" class="form-control">{{ old('referencia') }}</textarea>
-                    <span class="has-descripcion">
-                        <strong class="text-danger"></strong>
-                    </span>
-                </div>
-            </div>
+{{--            <div class="form-group row mb-1">--}}
+{{--                <label for = "referencia" class="col-lg-2 col-form-label has-referencia labelDenuncia text-right m-0 p-0">Referencia:</label>--}}
+{{--                <div class="col-lg-10">--}}
+{{--                    <textarea name="referencia" id="referencia" class="form-control">{{ old('referencia') }}</textarea>--}}
+{{--                    <span class="has-descripcion">--}}
+{{--                        <strong class="text-danger"></strong>--}}
+{{--                    </span>--}}
+{{--                </div>--}}
+{{--            </div>--}}
 
             <div class="form-group row mb-3 mt-3">
                 <label for="file1" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Archivo:</label>
@@ -116,18 +116,18 @@
             <div class="form-group row mb-1">
                 <div class="col-lg-3"></div>
                 <div class="col-lg-9">
-                    <a href="#" class="btn btn-block btn-danger-primary w-50 text-center text-white searchIdentical"><i class="fas fa-search"></i> Buscar coincidencias  </a>
+                    <a href="#" class="btn btn-block btn-danger-primary w-50 text-center text-white searchIdenticalAmbito"><i class="fas fa-search"></i> Buscar coincidencias  </a>
                 </div>
             </div>
             <div class="form-group row mb-1">
                 <div class="col-lg-12">
-                    <table class="table-1 table-centered p-0 ">
-                        <thead class="p-0">
-                        <tr>
-                            <th>Demandas similares</th>
-                            <th></th>
-                        </tr>
-                        </thead>
+                    <table class="table table-bordered table-striped dt-responsive dataTable p-0 " role="grid">
+                            <thead class="p-0">
+                                <tr role="row">
+                                    <th>Demandas similares</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
                         <tbody id="tblBody">
                         </tbody>
                     </table>
@@ -155,5 +155,6 @@
 
 <input type="hidden" name="altitud" id="altitud" value="{{ old('altitud') }}" >
 <input type="hidden" name="gd_ubicacion" id="gd_ubicacion" value="{{ old('gd_ubicacion') }}" >
+<input type="hidden" name="referencia" id="referencia" value="." >
 
 @include('shared/code/__modal_denuncia_user_data')

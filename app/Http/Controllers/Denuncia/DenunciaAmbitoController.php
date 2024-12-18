@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Http\Requests\Denuncia\DenunciaAmbitoRequest;
 use App\Http\Requests\Denuncia\DenunciaRequest;
+use App\Http\Requests\Denuncia\SearchIdenticalAmbitoRequest;
 use App\Http\Requests\Denuncia\SearchIdenticalRequest;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Domicilios\Ubicacion;
@@ -639,15 +640,7 @@ class DenunciaAmbitoController extends Controller{
                 ->where("estatus_cve", 1)
                 ->whereIn('id',$dependencia_id_array)
                 ->orderBy('dependencia')->pluck('dependencia','id');
-            $dep_id = $dependencia_id_array[0];
-
-//            $Servicios = _viServicios::select(['servicio', 'id', 'servicio_habilitado'])
-//                ->where("servicio_habilitado", 1)
-//                ->where("dependencia_id",$dep_id)
-//                ->orderBy('servicio')
-//                ->get()
-//                ->pluck('servicio','id');
-
+//            $dep_id = $dependencia_id_array[0];
 
         }else{
             $Dependencias = Dependencia::query()
@@ -656,11 +649,6 @@ class DenunciaAmbitoController extends Controller{
                             ->orderBy('dependencia')
                             ->pluck('dependencia','id');
 
-//            $Servicios    = _viServicios::query()
-//                            ->select(['servicio', 'id', 'servicio_habilitado'])
-//                            ->where("servicio_habilitado", 1)
-//                            ->orderBy('servicio')
-//                            ->pluck('servicio','id');
         }
 
         $Est = $this->ambito_dependencia == 1
@@ -910,7 +898,7 @@ class DenunciaAmbitoController extends Controller{
     }
 
 
-    protected function searchIdentical(SearchIdenticalRequest $request){
+    protected function searchIdenticalAmbito(SearchIdenticalAmbitoRequest $request){
         $items = $request->manage();
         if ( $items == [] ) {
             return Response::json(['mensaje' => 'No hay datos', 'result_msg' => 'Error', 'data' => null, 'status' => '200'], 200);

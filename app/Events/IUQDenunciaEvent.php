@@ -4,7 +4,9 @@ namespace App\Events;
 
 use App\Classes\Denuncia\VistaDenunciaClass;
 use App\Http\Controllers\Funciones\FuncionesController;
+use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\Denuncia;
+use App\Notifications\SendEmailToEnlaceNotification;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Broadcasting\Channel;
@@ -45,7 +47,41 @@ class IUQDenunciaEvent implements ShouldBroadcast{
         return 'IUQDenunciaEvent';
     }
 
+    private function sendMailToEnlace($msg2){
+
+        $den = _viDDSs::find($this->denuncia_id);
+
+        $usuariosEnlace = User::whereHas('roles', function ($query) {
+                                return $query->where('name', 'ENLACE');
+                            })
+                            ->whereHas('dependencias', function ($query) use ($den) {
+                                return $query->where('dependencia_id', $den->due_id);
+                            })
+                            ->get();
+
+        $fecha = Carbon::now()->format('d-m-Y H:i:s');
+
+        if ($this->trigger_type===0){
+            $msg2 = " se ha CREADO con fecha: ".$fecha;
+        }else if ($this->trigger_type===1){
+            $msg2 = " ha CAMBIADO de ESTATUS a : **".$den->ultimo_estatus.'** con fecha '.$den->fecha_ultimo_estatus;
+        }else if ($this->trigger_type===2){
+            $msg2 = " ha sido Eliminada por: ".Auth::user()->fullName;
+        }else{
+            $msg2 = "Hubo un Problema";
+        }
+
+        foreach ($usuariosEnlace as $usuario) {
+            $usuario->notify(new SendEmailToEnlaceNotification('La orden ID: ' . $this->denuncia_id . $msg2, $usuario, $den));
+        }
+
+    }
+
     public function broadcastWith(): array{
+
+//        $vid = new VistaDenunciaClass();
+//        $vid->vistaDenuncia($this->denuncia_id);
+
         $this->status = 200;
         $fecha = Carbon::now()->format('d-m-Y H:i:s');
         $triger_status = "CREAR";
@@ -64,7 +100,9 @@ class IUQDenunciaEvent implements ShouldBroadcast{
             $this->msg    = "Hubo un Problema";
             $this->icon   = "error";
             $this->status = 204;
+            $this->trigger_type = -1;
         }
+        $this->sendMailToEnlace($this->trigger_type);
 
         Log::alert("Evento: ".$this->msg);
 

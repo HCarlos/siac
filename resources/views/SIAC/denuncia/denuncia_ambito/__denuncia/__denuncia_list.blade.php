@@ -31,9 +31,11 @@
                         @if( $item->TotalRespuestas>0 )
                             > <small class="text-danger"><strong> {{( $item->TotalRespuestas )}}</strong></small>
                         @endif
+                        <br>
+                        @if($item->ciudadanos->count() > 1)<span class="text-danger">( <i class="fas fa-users"></i> <strong>  {{$item->ciudadanos->count()}} </strong> )</span> @endif
                     </td>
 
-                    <td class="w-25">{{$item->gd_ubicacion}} @if($item->ciudadanos->count() > 1)<span class="text-danger">( <i class="fas fa-users"></i> <strong>  {{$item->ciudadanos->count()}} </strong> )</span> @endif
+                    <td class="w-25">@if($item->ambito_dependencia === 2) {{ $item->gd_ubicacion}} @else {{$item->ubicacion}} @endif
                     </td>
                     <td class="table-action w-15">
                         <div class="button-list">
@@ -49,7 +51,11 @@
                             @endif
                             @include('shared.ui_kit.__add_user_item')
                             @include('shared.ui_kit.__edit_item')
-                            @include('shared.ui_kit.__print_denuncia_item')
+                            @if($item->ambito_dependencia === 2)
+                                @include('shared.ui_kit.__print_denuncia_ambito_item')
+                            @else
+                                @include('shared.ui_kit.__print_denuncia_item')
+                            @endif
                             @include('shared.ui_kit.__respuestas_ciudadana_list_item')
                             @if( $item->latitud != 0 && $item->longitud != 0 )
                                 @include('shared.ui_kit.__geolocalization_item')
