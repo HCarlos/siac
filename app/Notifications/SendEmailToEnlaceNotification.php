@@ -53,10 +53,9 @@ class SendEmailToEnlaceNotification extends Notification
 //            ->line(Lang::get('H. Ayuntamiento Constitucional de Centro.'));
 //    }
 
-    public function toMail($notifiable)
-    {
+    public function toMail($notifiable){
         return (new MailMessage)
-            ->subject('Notificación Importante')
+            ->subject('**SIAC** - Notificación Importante')
             ->line($this->mensaje)
             ->action('Ver estatus', url('/listDenunciaDependenciaServicioAmbito/'.$this->denuncia->id))
             ->line('¡Gracias por usar nuestra aplicación!');
