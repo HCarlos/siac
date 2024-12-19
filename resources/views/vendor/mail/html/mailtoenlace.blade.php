@@ -27,7 +27,7 @@
                     <td style="padding: 20px; text-align: left; font-size: 16px; color: #333;">
                         <p style="margin: 0 0 10px;">Hola <strong>{{ $user->username  }}</strong>,</p>
                         <p style="margin: 0 0 10px;">La solicitud <strong>{{$denuncia->id}}</strong>
-                        @if($type == 0)
+                        @if($type === 0)
                                 se ha <strong>CREADO</strong> con fecha {{$fecha_creacion}}
                         @elseif($type === 1)
                                 ha CAMBIADO de ESTATUS a <strong>{{$denuncia->ultimo_estatus}}</strong> con fecha {{ $denuncia->fecha_ultimo_estatus }}

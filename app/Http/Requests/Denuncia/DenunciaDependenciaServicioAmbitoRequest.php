@@ -8,6 +8,7 @@ namespace App\Http\Requests\Denuncia;
 use App\Classes\Denuncia\VistaDenunciaClass;
 use App\Classes\MessageAlertClass;
 use App\Classes\NotificationsMobile\SendNotificationFCM;
+use App\Events\DenunciaUpdateStatusGeneralEvent;
 use App\Http\Controllers\Storage\StorageDenunciaController;
 use App\Http\Controllers\Storage\StorageRespuestaDenunciaController;
 use App\Models\Catalogos\Estatu;
@@ -41,9 +42,6 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
     public function manage(){
         try {
 
-//            dd($this->request->all());
-
-//            $Fav = !(isset($this->favorable) ?? $this->favorable === 0);
             if ( isset($this->favorable) ){
                 $Fav = !( (int) $this->favorable === 0 );
             }else{
@@ -125,11 +123,15 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
 
         $this->saveImage($item);
 
-        $vid = new VistaDenunciaClass();
-        $vid->vistaDenuncia($this->denuncia_id);
+//        $vid = new VistaDenunciaClass();
+//        $vid->vistaDenuncia($this->denuncia_id);
+
+        event(new DenunciaUpdateStatusGeneralEvent($this->denuncia_id,Auth::user()->id,1));
+
 
         $cfm = new SendNotificationFCM();
         $cfm->sendNotificationMobile($item,3);
+
 
         return Denuncia_Dependencia_Servicio::orderBy('id', 'DESC')->first()->id;
 

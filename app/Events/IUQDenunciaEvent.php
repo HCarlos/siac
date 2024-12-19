@@ -50,49 +50,6 @@ class IUQDenunciaEvent implements ShouldBroadcast{
         return 'IUQDenunciaEvent';
     }
 
-    private function sendMailToEnlace($type){
-
-        $den = _viDDSs::find($this->denuncia_id);
-
-        $usuariosEnlace = User::whereHas('roles', function ($query) {
-            return $query->where('name', 'ENLACE');
-        })
-            ->whereHas('dependencias', function ($query) use ($den) {
-                return $query->where('dependencia_id', $den->due_id);
-            })
-            ->get();
-
-        $fecha = Carbon::now()->format('d-m-Y H:i:s');
-        $msg2 = "La solicitud **".$den->id."** ";
-        if ($type===0){
-            $msg2 .= " se ha **CREADO** con fecha: ".$fecha;
-        }else if ($type===1){
-            $msg2 .= " ha **CAMBIADO** de **ESTATUS** a : **".$den->ultimo_estatus.'** con fecha '.$den->fecha_ultimo_estatus;
-        }else if ($type===2){
-            $msg2 .= " ha sido **Eliminada** por: ".Auth::user()->fullName;
-        }else{
-            $msg2 = "Hubo un Problema";
-        }
-        //dd($usuariosEnlace);
-        foreach ($usuariosEnlace as $usuario) {
-            try {
-                Mail::to($usuario->email)
-                    ->bcc("manager@tabascoweb.com")
-                    ->send(new SendMailToEnlace(
-                            $msg2,
-                            $usuario,
-                            $den,
-                            $type
-                        )
-                    );
-
-            } catch (\Exception $e) {
-                dd($e);
-            }
-        }
-
-    }
-
 
     public function broadcastWith(): array{
 
@@ -120,7 +77,6 @@ class IUQDenunciaEvent implements ShouldBroadcast{
             $this->trigger_type = -1;
         }
 
-         $this->sendMailToEnlace($this->trigger_type);
 
         Log::alert("Evento: ".$this->msg);
 

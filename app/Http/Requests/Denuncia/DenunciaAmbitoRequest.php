@@ -161,10 +161,13 @@ class DenunciaAmbitoRequest extends FormRequest
 
     protected function guardar($Item){
         $trigger_type = 0;
+        $user_id = Auth::user()->id;
+
 //        dd($this->id);
         if ((int)$this->id === 0) {
             $item = Denuncia::create($Item);
             $this->attaches($item);
+            event(new DenunciaUpdateStatusGeneralEvent($item->id,$user_id,$trigger_type));
         } else {
             $item = Denuncia::find($this->id);
             if ($item->cerrado === false){
@@ -172,6 +175,7 @@ class DenunciaAmbitoRequest extends FormRequest
                 $item->update($Item);
                 $this->attaches($item);
                 $trigger_type = 1;
+                event(new DenunciaUpdateStatusGeneralEvent($item->id,$user_id,$trigger_type));
             }
         }
         if ($item->cerrado == false) {
@@ -232,7 +236,6 @@ class DenunciaAmbitoRequest extends FormRequest
                         'creadopor_id'     => $user_id,
                         'observaciones'    => $Item->observaciones
                     ]);
-                event(new DenunciaUpdateStatusGeneralEvent($Item->id,$user_id,$trigger_type));
             }
 
             // Buscamos en denuncia_ubicacion
@@ -304,7 +307,6 @@ class DenunciaAmbitoRequest extends FormRequest
             $trigger_type = 1;
         }
 
-
         $Item->prioridades()->detach($this->prioridad_id);
         $Item->origenes()->detach($this->origen_id);
 
@@ -315,14 +317,13 @@ class DenunciaAmbitoRequest extends FormRequest
         $Item->creadospor()->detach($this->creadopor_id);
         $Item->modificadospor()->detach($this->modificadopor_id);
 
-        event(new DenunciaUpdateStatusGeneralEvent($Item->id,$user_id,$trigger_type));
 
         return $Item;
     }
 
     protected function addUserDenuncia($Item){
         $item = Denuncia::find($this->id);
-        if ($item->cerrado == false){
+        if ($item->cerrado === false){
             $Item->ciudadanos()->detach($this->usuario_id);
             $Item->ciudadanos()->attach($this->usuario_id);
         }
