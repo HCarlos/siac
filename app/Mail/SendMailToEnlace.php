@@ -2,11 +2,9 @@
 
 namespace App\Mail;
 
-use App\View\Components\Denuncia;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Queue\SerializesModels;
 
 class SendMailToEnlace extends Mailable{
@@ -16,16 +14,18 @@ class SendMailToEnlace extends Mailable{
     private $mensaje;
     private $user;
     private $denuncia;
+    private $type;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($mensaje, $user, $denuncia){
+    public function __construct($mensaje, $user, $denuncia, $type){
         $this->mensaje  = $mensaje;
         $this->user     = $user;
         $this->denuncia = $denuncia;
+        $this->type     = $type;
     }
 
     /**
@@ -34,22 +34,13 @@ class SendMailToEnlace extends Mailable{
      * @return $this
      */
     public function build(){
-
-//        return (new MailMessage)
-//            ->subject('SIAC - Notificación Importante')
-//            ->line($this->mensaje)
-//            ->action('Ver estatus', url('/listDenunciaDependenciaServicioAmbito/'.$this->denuncia->id))
-//            ->line('¡Gracias por usar nuestra aplicación!');
-
-
-
-        return $this->view('vendor.mail.html.mailstoenlace',
-            [
-                'mensaje' => $this->mensaje,
-                'user' => $this->user,
-                'denuncia' => $this->denuncia,
-            ]
-        );
-
+        $fecha_creacion = Carbon::now()->format('d-m-Y H:i:s');
+        return $this->view('vendor.mail.html.mailtoenlace')->with([
+            'mensaje' => $this->mensaje,
+            'user' => $this->user,
+            'denuncia' => $this->denuncia,
+            'type' => $this->type,
+            'fecha_creacion' => $fecha_creacion
+        ])->subject("SIAC - Notificación Importante");
     }
 }

@@ -155,6 +155,6 @@
 
 <input type="hidden" name="altitud" id="altitud" value="{{ old('altitud') }}" >
 <input type="hidden" name="gd_ubicacion" id="gd_ubicacion" value="{{ old('gd_ubicacion') }}" >
-<input type="hidden" name="referencia" id="referencia" value="." >
+<input type="hidden" name="referencia" id="referencia" value="...." >
 
 @include('shared/code/__modal_denuncia_user_data')

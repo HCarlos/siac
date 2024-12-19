@@ -619,15 +619,15 @@ Route::get('/imprimir_denuncia_ambito_respuesta/{uuid}', 'External\Denuncia\Hoja
             $response = $fcm->sendNotification(1,1,'ANDROID','ezffbR76Sc6wlFKNm02ajT:APA91bH-vk23O3lmEFQCEqASli93-D4IVWkRccwRIUsmJvtxBrv_QGVNbHZ40aW-DzYOEu5zy6LpwKXx9NtPL02AVRsVJMXIAw0wdIHu3orkXaifx-H8YOZh313ObhbYjtnaS12TPEmZ','hola android','carlos android');
     });
 
-Route::get('getServiciosFromDependenciasAxios/{id}', 'Denuncia\ServicioController@getServiciosFromDependenciasAxios')->name('getServiciosFromDependenciasAxios');
+    Route::get('getServiciosFromDependenciasAxios/{id}', 'Denuncia\ServicioController@getServiciosFromDependenciasAxios')->name('getServiciosFromDependenciasAxios');
 
-    Route::get('/enviar-correo', function () {
-    Mail::to('sentauro@gmail.com')
-        ->bcc("manager@tabascoweb.com")
-        ->send(new SendMailToEnlace('Hola', User::find(1), Denuncia::find(101306)));
-    return "Correo enviado exitosamente.";
-
-});
+//    Route::get('/enviar-correo', function () {
+//        Mail::send('vendor.mail.html.mailtoenlace', [], function ($message) {
+//            $message->to('carhid@yahoo.com')
+//                ->subject('Bienvenido a SIAC');
+//        });
+//    return "Correo enviado exitosamente.";
+//    });
 
 
 //});

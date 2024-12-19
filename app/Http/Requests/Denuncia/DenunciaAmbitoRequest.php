@@ -10,15 +10,10 @@ use App\Events\DenunciaUpdateStatusGeneralEvent;
 use App\Events\IUQDenunciaEvent;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Http\Controllers\Storage\StorageDenunciaAmbitoController;
-use App\Http\Controllers\Storage\StorageDenunciaController;
-use App\Mail\SendMailToEnlace;
 use App\Models\Catalogos\Domicilios\Ubicacion;
-use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\_viServicios;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\DenunciaEstatu;
-use App\Notifications\SendEmailToEnlaceNotification;
-use App\User;
 use Carbon\Carbon;
 use Doctrine\DBAL\Driver\Exception;
 use Illuminate\Database\QueryException;
@@ -26,7 +21,6 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 
 class DenunciaAmbitoRequest extends FormRequest
 {
@@ -55,7 +49,6 @@ class DenunciaAmbitoRequest extends FormRequest
 
         return [
             'descripcion'  => ['required','string','min:4'],
-            'referencia'   => ['required','string','min:4'],
             'servicio_id'  => ['required','numeric','min:1'],
             'usuario_id'   => ['required','numeric','min:1'],
             'origen_id'    => ['required','numeric','min:1'],
@@ -75,7 +68,6 @@ class DenunciaAmbitoRequest extends FormRequest
     public function attributes(){
         return [
             'descripcion'     => 'Solicitud',
-            'referencia'      => 'Referencia',
             'servicio_id'     => 'Servicio',
             'origen_id'       => 'Fuente',
             'usuario_id'      => 'Usuario',
@@ -169,7 +161,8 @@ class DenunciaAmbitoRequest extends FormRequest
 
     protected function guardar($Item){
         $trigger_type = 0;
-        if ($this->id === 0) {
+//        dd($this->id);
+        if ((int)$this->id === 0) {
             $item = Denuncia::create($Item);
             $this->attaches($item);
         } else {
@@ -192,7 +185,7 @@ class DenunciaAmbitoRequest extends FormRequest
             }
         }
         event(new IUQDenunciaEvent($item->id,Auth::user()->id,$trigger_type));
-        $this->sendMailToEnlace($trigger_type);
+//        $this->sendMailToEnlace($trigger_type);
 
         return $item;
 
@@ -277,10 +270,10 @@ class DenunciaAmbitoRequest extends FormRequest
             // Buscamos en ciudadano_denuncia
             $Obj = DB::table('ciudadano_denuncia')
                 ->where('denuncia_id','=',$Item->id)
-                ->where('ciudadano_id','=',$Item->usuario_id)
+                ->where('ciudadano_id','=',$Item->ciudadano_id)
                 ->get();
             if ($Obj->count() <= 0 )
-                $Obj = $Item->ciudadanos()->attach($Item->usuario_id);
+                $Obj = $Item->ciudadanos()->attach($Item->ciudadano_id);
 
             // Buscamos en creadopor_denuncia
             $Obj = DB::table('creadopor_denuncia')
@@ -334,52 +327,6 @@ class DenunciaAmbitoRequest extends FormRequest
             $Item->ciudadanos()->attach($this->usuario_id);
         }
         return $item;
-    }
-
-    private function sendMailToEnlace($type){
-
-        $den = _viDDSs::find($this->id);
-
-        $usuariosEnlace = User::whereHas('roles', function ($query) {
-            return $query->where('name', 'ENLACE');
-        })
-            ->whereHas('dependencias', function ($query) use ($den) {
-                return $query->where('dependencia_id', $den->due_id);
-            })
-            ->get();
-
-        $fecha = Carbon::now()->format('d-m-Y H:i:s');
-
-        if ($type===0){
-            $msg2 = " se ha CREADO con fecha: ".$fecha;
-        }else if ($type===1){
-            $msg2 = " ha CAMBIADO de ESTATUS a : **".$den->ultimo_estatus.'** con fecha '.$den->fecha_ultimo_estatus;
-        }else if ($type===2){
-            $msg2 = " ha sido Eliminada por: ".Auth::user()->fullName;
-        }else{
-            $msg2 = "Hubo un Problema";
-        }
-        //dd($usuariosEnlace);
-        foreach ($usuariosEnlace as $usuario) {
-            try {
-//                if ($usuario->username === "CIU517558"){
-
-//                    $res = $usuario->notify(new SendEmailToEnlaceNotification('La orden ID: ' . $this->denuncia_id . $msg2, $usuario, $den));
-                    Mail::to($usuario->email)
-                        ->bcc("manager@tabascoweb.com")
-                        ->send(new SendMailToEnlace(
-                                'La orden ID: ' . $this->denuncia_id . $msg2,
-                                $usuario,
-                                $den
-                            )
-                        );
-
-//                }
-            } catch (\Exception $e) {
-                dd($e);
-            }
-        }
-
     }
 
 
