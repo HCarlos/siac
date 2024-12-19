@@ -12,6 +12,10 @@
 */
 
 use App\Classes\NotificationsMobile\SendNotificationFCM;
+use App\Mail\SendMailToEnlace;
+use App\Models\Denuncias\Denuncia;
+use App\User;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -617,6 +621,13 @@ Route::get('/imprimir_denuncia_ambito_respuesta/{uuid}', 'External\Denuncia\Hoja
 
 Route::get('getServiciosFromDependenciasAxios/{id}', 'Denuncia\ServicioController@getServiciosFromDependenciasAxios')->name('getServiciosFromDependenciasAxios');
 
+    Route::get('/enviar-correo', function () {
+    Mail::to('sentauro@gmail.com')
+        ->bcc("manager@tabascoweb.com")
+        ->send(new SendMailToEnlace('Hola', User::find(1), Denuncia::find(101306)));
+    return "Correo enviado exitosamente.";
+
+});
 
 
 //});

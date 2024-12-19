@@ -11,6 +11,7 @@ use App\Events\IUQDenunciaEvent;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Http\Controllers\Storage\StorageDenunciaAmbitoController;
 use App\Http\Controllers\Storage\StorageDenunciaController;
+use App\Mail\SendMailToEnlace;
 use App\Models\Catalogos\Domicilios\Ubicacion;
 use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\_viServicios;
@@ -25,6 +26,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class DenunciaAmbitoRequest extends FormRequest
 {
@@ -357,10 +359,22 @@ class DenunciaAmbitoRequest extends FormRequest
         }else{
             $msg2 = "Hubo un Problema";
         }
-//        dd($usuariosEnlace);
+        //dd($usuariosEnlace);
         foreach ($usuariosEnlace as $usuario) {
             try {
-                $res = $usuario->notify(new SendEmailToEnlaceNotification('La orden ID: ' . $this->denuncia_id . $msg2, $usuario, $den));
+//                if ($usuario->username === "CIU517558"){
+
+//                    $res = $usuario->notify(new SendEmailToEnlaceNotification('La orden ID: ' . $this->denuncia_id . $msg2, $usuario, $den));
+                    Mail::to($usuario->email)
+                        ->bcc("manager@tabascoweb.com")
+                        ->send(new SendMailToEnlace(
+                                'La orden ID: ' . $this->denuncia_id . $msg2,
+                                $usuario,
+                                $den
+                            )
+                        );
+
+//                }
             } catch (\Exception $e) {
                 dd($e);
             }
