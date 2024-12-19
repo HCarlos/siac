@@ -48,7 +48,7 @@ class IUQDenunciaEvent implements ShouldBroadcast{
         return 'IUQDenunciaEvent';
     }
 
-    private function sendMailToEnlace($msg2){
+    private function sendMailToEnlace(){
 
         $den = _viDDSs::find($this->denuncia_id);
 
@@ -107,7 +107,8 @@ class IUQDenunciaEvent implements ShouldBroadcast{
             $this->status = 204;
             $this->trigger_type = -1;
         }
-        $this->sendMailToEnlace($this->trigger_type);
+
+//         $this->sendMailToEnlace();
 
         Log::alert("Evento: ".$this->msg);
 

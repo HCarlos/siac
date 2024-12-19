@@ -167,12 +167,12 @@ class DenunciaAmbitoRequest extends FormRequest
 
     protected function guardar($Item){
         $trigger_type = 0;
-        if ($this->id == 0) {
+        if ($this->id === 0) {
             $item = Denuncia::create($Item);
             $this->attaches($item);
         } else {
             $item = Denuncia::find($this->id);
-            if ($item->cerrado == false){
+            if ($item->cerrado === false){
                 $this->detaches($item);
                 $item->update($Item);
                 $this->attaches($item);
@@ -190,8 +190,10 @@ class DenunciaAmbitoRequest extends FormRequest
             }
         }
         event(new IUQDenunciaEvent($item->id,Auth::user()->id,$trigger_type));
+        $this->sendMailToEnlace($trigger_type);
 
         return $item;
+
     }
 
     public function attaches($Item){
@@ -249,7 +251,7 @@ class DenunciaAmbitoRequest extends FormRequest
                 $ubic->update([
                     'altitud' => $Item->altitud ?? 0.00,
                     'search_google' => $Item->search_google ?? '',
-                    'g_ubicacion' => $Item->gd_ubicacion] ?? '');
+                    'g_ubicacion' => $Item->gd_ubicacion ?? '']);
             }
 
             // Buscamos en denuncia_servicio
@@ -332,6 +334,39 @@ class DenunciaAmbitoRequest extends FormRequest
         return $item;
     }
 
+    private function sendMailToEnlace($type){
+
+        $den = _viDDSs::find($this->id);
+
+        $usuariosEnlace = User::whereHas('roles', function ($query) {
+            return $query->where('name', 'ENLACE');
+        })
+            ->whereHas('dependencias', function ($query) use ($den) {
+                return $query->where('dependencia_id', $den->due_id);
+            })
+            ->get();
+
+        $fecha = Carbon::now()->format('d-m-Y H:i:s');
+
+        if ($type===0){
+            $msg2 = " se ha CREADO con fecha: ".$fecha;
+        }else if ($type===1){
+            $msg2 = " ha CAMBIADO de ESTATUS a : **".$den->ultimo_estatus.'** con fecha '.$den->fecha_ultimo_estatus;
+        }else if ($type===2){
+            $msg2 = " ha sido Eliminada por: ".Auth::user()->fullName;
+        }else{
+            $msg2 = "Hubo un Problema";
+        }
+//        dd($usuariosEnlace);
+        foreach ($usuariosEnlace as $usuario) {
+            try {
+                $res = $usuario->notify(new SendEmailToEnlaceNotification('La orden ID: ' . $this->denuncia_id . $msg2, $usuario, $den));
+            } catch (\Exception $e) {
+                dd($e);
+            }
+        }
+
+    }
 
 
 
