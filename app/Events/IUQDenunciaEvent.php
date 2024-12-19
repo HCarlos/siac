@@ -74,12 +74,7 @@ class IUQDenunciaEvent implements ShouldBroadcast{
 //        dd($usuariosEnlace);
         foreach ($usuariosEnlace as $usuario) {
             try {
-                if ($usuario->username === "CIU517558") {
                     $res = $usuario->notify(new SendEmailToEnlaceNotification('La orden ID: ' . $this->denuncia_id . $msg2, $usuario, $den));
-                    if (!isNull($res)) {
-                        dd($res);
-                    }
-                }
             } catch (\Exception $e) {
                 dd($e);
             }

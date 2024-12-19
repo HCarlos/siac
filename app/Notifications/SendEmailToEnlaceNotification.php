@@ -55,7 +55,7 @@ class SendEmailToEnlaceNotification extends Notification
 
     public function toMail($notifiable){
         return (new MailMessage)
-            ->subject('**SIAC** - Notificación Importante')
+            ->subject('SIAC - Notificación Importante')
             ->line($this->mensaje)
             ->action('Ver estatus', url('/listDenunciaDependenciaServicioAmbito/'.$this->denuncia->id))
             ->line('¡Gracias por usar nuestra aplicación!');
