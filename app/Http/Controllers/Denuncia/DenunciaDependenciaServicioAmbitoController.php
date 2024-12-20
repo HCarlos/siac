@@ -115,7 +115,7 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
         if (Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN') ) {
             $Estatus = Estatu::query()
                        ->whereIn('ambito_estatus', [1,2])
-                       ->orderBy('estatus')
+                       ->orderBy('orden_impresion')
                        ->get();
         }else{
             $Estatus = Estatu::query()
@@ -124,7 +124,7 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
                 ->whereHas('users', function($q) use ($user_id) {
                     return $q->where("user_id",$user_id);
                 })
-                ->orderBy('estatus')
+                ->orderBy('orden_impresion')
                 ->get();
 
         }
@@ -200,7 +200,7 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
         if (Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN') ) {
             $Estatus = Estatu::query()
                 ->whereIn('ambito_estatus', [1,2])
-                ->orderBy('estatus')
+                ->orderBy('orden_impresion')
                 ->get();
         }else{
             $Estatus = Estatu::query()
@@ -209,7 +209,7 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
                 ->whereHas('users', function($q) use ($user_id) {
                     return $q->where("user_id",$user_id);
                 })
-                ->orderBy('estatus')
+                ->orderBy('orden_impresion')
                 ->get();
         }
 

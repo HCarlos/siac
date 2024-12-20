@@ -5,7 +5,6 @@ namespace App\Events;
 use App\Classes\Denuncia\VistaDenunciaClass;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Mail\SendMailToEnlace;
-use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\Denuncia;
 use App\User;
 use Carbon\Carbon;
@@ -19,11 +18,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
-class DenunciaUpdateStatusGeneralEvent  implements ShouldBroadcast{
+class DenunciaUpdateStatusGeneralAmbitoEvent  implements ShouldBroadcast{
 
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $denuncia_id, $user_id, $trigger_type, $msg, $icon, $status;
+    public $denuncia_id, $user_id, $trigger_type, $msg, $icon, $status, $status_old;
 
     /**
      * Create a new event instance.
@@ -51,11 +50,46 @@ class DenunciaUpdateStatusGeneralEvent  implements ShouldBroadcast{
         return 'DenunciaUpdateStatusGeneralEvent';
     }
 
+    private function sendMailToEnlace($type){
+
+        $den = Denuncia::find($this->denuncia_id);
+
+        $usuariosEnlace = User::whereHas('roles', function ($query) {
+                                return $query->where('name', 'ENLACE');
+                            })
+                            ->whereHas('dependencias', function ($query) use ($den) {
+                                return $query->where('dependencia_id', $den->due_id);
+                            })
+                            ->get();
+
+//        dd($usuariosEnlace);
+
+        foreach ($usuariosEnlace as $usuario) {
+            try {
+//                ->bcc("manager@tabascoweb.com")
+                Mail::to($usuario->email)
+                    ->send(new SendMailToEnlace(
+                        'Notification',
+                            $usuario,
+                            $den,
+                            $type
+                        )
+                    );
+
+            } catch (\Exception $e) {
+                dd($e);
+            }
+        }
+        return true;
+    }
+
 
     /**
      * @throws \JsonException
      */
     public function broadcastWith(): array{
+        $den = Denuncia::find($this->denuncia_id);
+        $this->status_old = $den->estatus_id;
 
         $vid = new VistaDenunciaClass();
         $vid->vistaDenuncia($this->denuncia_id);
@@ -67,6 +101,7 @@ class DenunciaUpdateStatusGeneralEvent  implements ShouldBroadcast{
         if ($this->trigger_type===0){
             $this->msg    =  strtoupper(Auth::user()->FullName)." ha CREADO una nueva denuncia: ".$this->denuncia_id."  ".$fecha." con Estatus General Nuevo";
             $this->icon   = "success";
+            $this->sendMailToEnlace($this->trigger_type);
         }else if ($this->trigger_type===1){
             $this->msg    = strtoupper(Auth::user()->FullName)." ha MODIFICADO la denuncia: ".$this->denuncia_id."  ".$fecha." con Estatus General Modificado";
             $this->icon   = "info";
@@ -75,6 +110,12 @@ class DenunciaUpdateStatusGeneralEvent  implements ShouldBroadcast{
             $this->msg    = strtoupper(Auth::user()->FullName)." ha ELIMINADO la denuncia: ".$this->denuncia_id."  ".$fecha;
             $this->icon   = "warning";
             $triger_status = "ELIMINAR";
+            $this->sendMailToEnlace($this->trigger_type);
+        }else if ($this->trigger_type===3){
+            $this->msg    = strtoupper(Auth::user()->FullName)." ha CAMBIADO su ESTATUS de la denuncia: ".$this->denuncia_id."  ".$fecha." con Estatus General Modificado";
+            $this->icon   = "info";
+            $triger_status = "MODIFICAR";
+            $this->sendMailToEnlace($this->trigger_type);
         }else{
             $this->msg    = "Hubo un Problema";
             $this->icon   = "error";

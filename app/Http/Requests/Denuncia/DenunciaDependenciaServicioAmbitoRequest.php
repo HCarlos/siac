@@ -5,11 +5,9 @@
 
 namespace App\Http\Requests\Denuncia;
 
-use App\Classes\Denuncia\VistaDenunciaClass;
 use App\Classes\MessageAlertClass;
 use App\Classes\NotificationsMobile\SendNotificationFCM;
-use App\Events\DenunciaUpdateStatusGeneralEvent;
-use App\Http\Controllers\Storage\StorageDenunciaController;
+use App\Events\DenunciaUpdateStatusGeneralAmbitoEvent;
 use App\Http\Controllers\Storage\StorageRespuestaDenunciaController;
 use App\Models\Catalogos\Estatu;
 use App\Models\Denuncias\Denuncia;
@@ -126,7 +124,7 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
 //        $vid = new VistaDenunciaClass();
 //        $vid->vistaDenuncia($this->denuncia_id);
 
-        event(new DenunciaUpdateStatusGeneralEvent($this->denuncia_id,Auth::user()->id,1));
+        event(new DenunciaUpdateStatusGeneralAmbitoEvent($this->denuncia_id,Auth::user()->id,3));
 
 
         $cfm = new SendNotificationFCM();
