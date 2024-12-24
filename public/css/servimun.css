@@ -21,11 +21,11 @@
 }
 
 .sidebar-atemun-bg {
-    background: #9e742b !important;
+    background: #fbfbf8 !important;
 }
 
 .sidebar-left-bg {
-    background-color: lightgrey !important;
+    background-color: #302d2d !important;
 }
 
 .sidebar-right-bg {
@@ -36,6 +36,121 @@
     display:flex !important;
     justify-content: center !important;
     align-items: center !important;
+}
+
+.btn-outline-white {
+    color: #fff;
+    border-color: #fff;
+    background-color: transparent;
+}
+
+.btn-outline-white:hover {
+    color: #4d4d4d;
+    background-color: #fff;
+    border-color: #fff;
+}
+
+.btn-outline-white:focus.fs--shadow, .btn-outline-white.focus.fs--shadow {
+    box-shadow: 0 0 1px 2px rgba(221, 221, 221, 0.4);
+}
+
+.show > .btn.btn-outline-white.dropdown-toggle, .btn-outline-white:not(:disabled):not(.disabled):active, .btn-outline-white:not(:disabled):not(.disabled).active {
+    color: #464646;
+    background-color: #fff;
+    border-color: #fff;
+}
+
+.show > .btn.btn-outline-white.dropdown-toggle.fs--shadow:focus, .btn-outline-white:not(:disabled):not(.disabled):active.fs--shadow:focus, .btn-outline-white:not(:disabled):not(.disabled).active.fs--shadow:focus {
+    box-shadow: 0 0 1px 2px rgba(221, 221, 221, 0.4);
+}
+
+.btn-outline-white.disabled, .btn-outline-white:disabled {
+    border-color: #fff;
+    color: #fff;
+}
+
+.page-item.active .page-link {
+    z-index: 1;
+    color: #ffffff;
+    background-color: #989ea3;
+    border-color: #989ea3;
+    font-weight: bold;
+}
+.page-link:not(:disabled):not(.disabled) {
+    cursor: pointer;
+}
+.page-link {
+    position: relative;
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #313a46;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-top-color: rgb(222, 226, 230);
+    border-right-color: rgb(222, 226, 230);
+    border-bottom-color: rgb(222, 226, 230);
+    border-left-color: rgb(222, 226, 230);
+}
+*, ::before, ::after {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.side-nav{
+    color: rgba(54,47,47,0.85) !important;
+}
+
+/*li.side-nav-item > a.side-nav-link, ul.side-nav-second-level > li > a{*/
+/*    color: rgba(54,47,47,0.85) !important;*/
+/*    text-decoration: none; !* Quita el subrayado *!*/
+/*    display: block; !* Permite que el enlace ocupe todo el espacio del `li` *!*/
+/*    transition: all 0.3s ease; !* Transición suave para efectos *!*/
+/*    border-radius: 30px; !* Bordes redondeados individuales *!*/
+/*}*/
+
+/*padding: 5px 8px;*/
+
+
+/*, .side-nav-third-level > li > a*/
+li.side-nav-item > a.side-nav-link, ul.side-nav-second-level > li > a{
+    background-color: #f5f3f3 !important;
+    color: #362f2f !important;
+    /*box-shadow: 0 4px 8px rgb(115, 113, 113); !* Sombra al pasar el cursor *!*/
+    /*transform: translateY(-2px); !* Efecto de elevación *!*/
+}
+
+
+li.side-nav-item > a.side-nav-link:hover, ul.side-nav-second-level > li > a:hover{
+    background-color: #362f2f !important;
+    color: #d3d3cd !important;
+    box-shadow: 0 4px 8px rgb(115, 113, 113); /* Sombra al pasar el cursor */
+    transform: translateY(-2px); /* Efecto de elevación */
+}
+
+.icon_usuarios_interno{
+    color: #a08557 !important;
+}
+
+.icon_editar_interno{
+    color: #948550 !important;
+}
+
+.icon_pdf_interno{
+    color: #727271 !important;
+}
+
+.icon_chat_interno{
+    color: #b25c2e !important;
+}
+
+.icon_tres_puntitos_interno{
+    color: #948550 !important;
+}
+
+.icon_globo_terraqueo_interno{
+    color: #a08557 !important;
 }
 
 .img-bg-home {
@@ -140,11 +255,4 @@ div.help-box2  p  {
     position: absolute;
     right: 10px;
     top: 10px;
-}
-
-svg {
-    margin: 0 auto !important;
-    width: 20px !important;
-    height: 18px !important;
-    fill: whitesmoke !important;
 }

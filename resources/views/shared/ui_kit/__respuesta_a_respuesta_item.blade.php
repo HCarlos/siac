@@ -8,7 +8,7 @@
         data-placement="top"
         title="Responder"
         data-original-title="Responder" >
-        <i class="fas fa-comment-dots"></i>
+        <i class="fas fa-comment-dots">---</i>
     </a>
 </span>
 

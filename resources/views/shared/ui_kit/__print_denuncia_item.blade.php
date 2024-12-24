@@ -1,6 +1,6 @@
 <a href="{{route($item->firmado == true ? 'imprimir_denuncia_archivo' . '/' : 'imprimir_denuncia_respuesta' . '/', ['uuid'=>$item->uuid])}}"
-   class="action-icon text-center" @isset($newWindow) target="_blank" @endisset
-    data-toggle="tooltip" title="Ver Solicitud en PDF"
+   class="action-icon text-center icon_pdf_interno" @isset($newWindow) target="_blank" @endisset
+    data-toggle="tooltip" title="Solicitud en PDF"
     >
-    <i class="fas fa-file-pdf text-cafe"></i>
+    @include('.shared.svgs.__pdf')
 </a>

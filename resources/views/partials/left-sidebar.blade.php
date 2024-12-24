@@ -23,7 +23,7 @@
                     @else
                         <a href="{{ url(Auth::user()->hasRole('ENLACE') ? 'dashboard_enlace' : 'dashboard_enlace') }}" class="side-nav-link">
                     @endif
-                        <i class="mdi dripicons-meter"></i>
+                        @include('.shared.svgs.__dashboard')
                         <span class="badge badge-light float-right"></span>
                         <span>Dashboard</span>
                         </a>
@@ -31,7 +31,7 @@
             @endif
             <li class="side-nav-item">
                 <a href="{{route('listDenuncias')}}" class="side-nav-link">
-                    <i class="mdi dripicons-archive"></i>
+                    @include('.shared.svgs.__solicitudes')
                     @php $filters['filterdata']=""; @endphp
                     <span class="badge badge-light float-right">{{\App\Models\Denuncias\Denuncia::query()->GetDenunciasFilterCount($filters)->count()}}</span>
                     <span>Solicitudes</span>
@@ -41,7 +41,7 @@
             @if (Auth::user()->hasRole('Administrator|SysOp|test_admin'))
             <li class="side-nav-item">
                 <a href="{{route('listDenunciasAmbito1')}}" class="side-nav-link">
-                    <i class="mdi dripicons-archive"></i>
+                    @include('.shared.svgs.__apoyos_sociales')
                     @php $filters['filterdata']=""; @endphp
                     <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',1)->count()}}</span>
                     <span>Apoyos Soc.</span>
@@ -49,68 +49,59 @@
             </li>
             @endif
 
-{{--            @if (Auth::user()->hasRole('Administrator|SysOp|test_admin|CAPTURISTA_C'))--}}
-{{--                <li class="side-nav-item">--}}
-{{--                    <a href="{{route('listDenunciasAmbito2')}}" class="side-nav-link">--}}
-{{--                        <i class="mdi dripicons-archive"></i>--}}
-{{--                        @php $filters['filterdata']=""; @endphp--}}
-{{--                        <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->count()}}</span>--}}
-{{--                        <span>Servicios Mun.</span>--}}
-{{--                    </a>--}}
-{{--                </li>--}}
-{{--            @endif--}}
+
 
             @if (Auth::user()->hasRole('Administrator|SysOp|test_admin|CAPTURISTA_C'))
                 <li class="side-nav-item">
                     <a href="javascript: void(0);" class="side-nav-link">
-                        <i class="dripicons-browser"></i>
+                        @include('.shared.svgs.__servicios_municipales')
                         <span> Serv. Mun. </span>
                         <span class="badge badge-light float-right mr-3">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->count()}}</span>
                         <span class="menu-arrow"></span>
                     </a>
                     <ul class="side-nav-second-level" aria-expanded="false">
-                        <li class="side-nav-item">
-                            <a href="{{route('listDenunciasAmbito2')}}" class="side-nav-link">
+                        <li>
+                            <a href="{{route('listDenunciasAmbito2')}}">
                                 @php $filters['filterdata']=""; @endphp
                                 <i class="mdi dripicons-archive"></i>
                                 <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->count()}}</span>
                                 <span>Todas</span>
                             </a>
                         </li>
-                        <li class="side-nav-item">
-                            <a href="{{route('listDenunciasAmbito16')}}" class="side-nav-link">
+                        <li>
+                            <a href="{{route('listDenunciasAmbito16')}}">
                                 @php $filters['filterdata']=""; @endphp
                                 <i class="mdi dripicons-archive"></i>
                                 <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',16)->count()}}</span>
                                 <span>Recibidas</span>
                             </a>
                         </li>
-                        <li class="side-nav-item">
-                            <a href="{{route('listDenunciasAmbito19')}}" class="side-nav-link">
+                        <li>
+                            <a href="{{route('listDenunciasAmbito19')}}">
                                 @php $filters['filterdata']=""; @endphp
                                 <i class="mdi dripicons-archive"></i>
                                 <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',19)->count()}}</span>
                                 <span>En proceso / Programadas</span>
                             </a>
                         </li>
-                        <li class="side-nav-item">
-                            <a href="{{route('listDenunciasAmbito17')}}" class="side-nav-link">
+                        <li>
+                            <a href="{{route('listDenunciasAmbito17')}}">
                                 @php $filters['filterdata']=""; @endphp
                                 <i class="mdi dripicons-archive"></i>
                                 <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',17)->count()}}</span>
                                 <span>Atendidas</span>
                             </a>
                         </li>
-                        <li class="side-nav-item">
-                            <a href="{{route('listDenunciasAmbito20')}}" class="side-nav-link">
+                        <li>
+                            <a href="{{route('listDenunciasAmbito20')}}">
                                 @php $filters['filterdata']=""; @endphp
                                 <i class="mdi dripicons-archive"></i>
                                 <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',20)->count()}}</span>
                                 <span>Rechazadas</span>
                             </a>
                         </li>
-                        <li class="side-nav-item">
-                            <a href="{{route('listDenunciasAmbito18')}}" class="side-nav-link">
+                        <li>
+                            <a href="{{route('listDenunciasAmbito18')}}">
                                 @php $filters['filterdata']=""; @endphp
                                 <i class="mdi dripicons-archive"></i>
                                 <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',18)->count()}}</span>
@@ -125,7 +116,7 @@
             @if (Auth::user()->hasRole('Administrator|SysOp|test_admin'))
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
-                    <i class="dripicons-browser"></i>
+                    @include('.shared.svgs.__estructura')
                     <span> Estructura </span>
                     <span class="menu-arrow"></span>
                 </a>
@@ -211,40 +202,13 @@
                             </a>
                         </li>
                     @endif
-{{--                    @if (Auth::user()->hasRole('Administrator|SysOp'))--}}
-{{--                    <li>--}}
-{{--                        <a href="{{route('listAfiliaciones')}}">--}}
-{{--                            <i class="fas fa-money-check-alt"></i>--}}
-{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Afiliacion::count()}}</span>--}}
-{{--                            <span>Afiliaciones</span>--}}
-{{--                        </a>--}}
-{{--                    </li>--}}
-{{--                    @endif--}}
-{{--                    @if (Auth::user()->hasRole('Administrator|SysOp'))--}}
-{{--                    <li>--}}
-{{--                        <a href="{{route('listTipoasentamientos')}}">--}}
-{{--                            <i class="fas fa-money-check-alt"></i>--}}
-{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Tipoasentamiento::count()}}</span>--}}
-{{--                            <span>Tipo Asentamientos</span>--}}
-{{--                        </a>--}}
-{{--                    </li>--}}
-{{--                    @endif--}}
-{{--                    @if (Auth::user()->hasRole('Administrator|SysOp'))--}}
-{{--                    <li>--}}
-{{--                        <a href="{{route('listAsentamientos')}}">--}}
-{{--                            <i class="fas fa-money-check-alt"></i>--}}
-{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Asentamiento::count()}}</span>--}}
-{{--                            <span>Asentamientos</span>--}}
-{{--                        </a>--}}
-{{--                    </li>--}}
-{{--                    @endif--}}
 
                 </ul>
             </li>
             @endif
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
-                    <i class="fa fa-folder"></i>
+                    @include('.shared.svgs.__domicilio')
                     <span> Domicilios </span>
                     <span class="menu-arrow"></span>
                 </a>
@@ -253,6 +217,7 @@
                     <li>
                         <a href="{{route('listCalles')}}">
                             <i class="fas fa-money-check-alt"></i>
+{{--                            @include('.shared.svgs.__servicios_municipales')--}}
                             <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Calle::count()}}</span>
                             <span>Calles</span>
                         </a>
@@ -449,21 +414,12 @@
 
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
-                    <i class="fas fa-cog"></i>
+                    @include('.shared.svgs.__configuraciones')
                     <span> Configuraciones </span>
                     <span class="menu-arrow"></span>
                 </a>
 
                 <ul class="side-nav-second-level" aria-expanded="false">
-{{--                    @if (Auth::user()->hasRole('Administrator|SysOp'))--}}
-{{--                        <li>--}}
-{{--                            <a href="{{route('listCategorias')}}">--}}
-{{--                                <i class="fas fa-user-tag"></i>--}}
-{{--                                <span class="badge badge-light float-right">{{\App\Models\Users\Categoria::count()}}</span>--}}
-{{--                                <span>Categorias Usuario</span>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                    @endif--}}
                     @if (Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|ENLACE'))
                         <li>
                             <a href="{{route('listUsers')}}">
@@ -471,7 +427,7 @@
                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="20" height="18"
                                      viewBox="0 0 141.7 141.7" style="enable-background:new 0 0 141.7 141.7;" xml:space="preserve">
                                     <g id="Capa_1">
-                                        <path fill="white"  d="M1,131v-30.6c0-4.1,1-7.9,2.9-11.2c1.9-3.4,4.5-5.9,7.9-7.5c7.7-3.8,14.6-6.5,20.8-8.1c6.2-1.7,12.5-2.5,19.1-2.5
+                                        <path fill="#948550"  d="M1,131v-30.6c0-4.1,1-7.9,2.9-11.2c1.9-3.4,4.5-5.9,7.9-7.5c7.7-3.8,14.6-6.5,20.8-8.1c6.2-1.7,12.5-2.5,19.1-2.5
                                             s12.9,0.8,19,2.5c6.1,1.7,13,4.4,20.7,8.1c3.4,1.7,6,4.2,8,7.5c2,3.4,2.9,7.1,2.9,11.2V131H1z M111.9,131v-30.6
                                             c0-7.4-1.7-13.5-5.1-18.3c-3.4-4.8-7.8-8.6-13.3-11.6c7.3,0.9,14.1,2.3,20.6,4.2c6.4,1.8,11.7,3.9,15.7,6.3c3.5,2.2,6.2,5,8.2,8.3
                                             s3,7,3,11.2V131H111.9z M51.7,60.2c-7,0-12.7-2.5-17.1-7.4s-6.7-11.3-6.7-19.1s2.2-14.2,6.7-19.1s10.1-7.4,17.1-7.4
@@ -505,7 +461,7 @@
             @if (Auth::user()->hasRole('Administrator|SysOp|USER_MOBILE_BASIC|USER_MOBILE_ADMIN') )
                 <li class="side-nav-item">
                     <a href="{{ url('listDenunciasMobile') }}" class="side-nav-link">
-                        <i class="mdi dripicons-device-mobile"></i>
+                        @include('.shared.svgs.__mobile')
                         <span class="badge badge-light float-right">{{ \App\Models\Mobiles\Denunciamobile::count() }}</span>
                         <span>Mobile</span>
                     </a>

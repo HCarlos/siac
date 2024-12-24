@@ -41,7 +41,7 @@
                         <div class="button-list">
                             @if($item->cerrado == false && $item->firmado == false)
                                 @include('shared.ui_kit.__remove_item')
-                                @include('shared.ui_kit.__imagenes_list_item')
+                                @include('shared.ui_kit.__imagenes_list_item_ambito')
                                 @if( \Illuminate\Support\Facades\Auth::user()->isPermission('rsd_sas|consultar|all') )
                                     @include('shared.ui_kit.__edit_denuncia_dependencia_servicio_ambito_item')
                                 @endif

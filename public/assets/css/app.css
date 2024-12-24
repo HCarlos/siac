@@ -12,8 +12,8 @@ File: Main Css File
  * Copyright 2011-2018 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
- 
- 
+
+
 :root {
   --blue: #2c8ef8;
   --indigo: #727cf5;
@@ -8509,7 +8509,7 @@ input[data-switch="dark"]:checked + label {
   background-color: white !important; }
 
 .bg-dark-lighten {
-  background-color: #5b6c82 !important; }
+  background-color: #997423 !important; }
 
 .progress-w-percent {
   min-height: 20px;
