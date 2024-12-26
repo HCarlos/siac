@@ -57,6 +57,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::match(['get','put','post'],'dashboard_enlace', 'Dashboard\DashboardEnlaceController@index')->name('dashboard_enlace');
     Route::match(['get','put','post'],'dashboard-statistics', 'Dashboard\DashboardStaticController@index')->name('dashboard-statistics');
     Route::match(['get','put','post'],'dashboard-statistics-two', 'Dashboard\DashboardStaticTwoController@index')->name('dashboard-statistics-two');
+    Route::match(['get','put','post'],'dashboard-statistics-three', 'Dashboard\DashboardStaticThreeController@index')->name('dashboard-statistics-three');
 
     // USUARIOS
     Route::get('edit', 'Catalogos\User\UserDataController@showEditUserData')->name('edit');
@@ -459,6 +460,7 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
     Route::get('listDenunciasAmbito18', 'Denuncia\DenunciaAmbitoController@index18')->name('listDenunciasAmbito18');
     Route::get('listDenunciasAmbito19', 'Denuncia\DenunciaAmbitoController@index19')->name('listDenunciasAmbito19');
     Route::get('listDenunciasAmbito20', 'Denuncia\DenunciaAmbitoController@index20')->name('listDenunciasAmbito20');
+    Route::get('listDenunciasAmbito21', 'Denuncia\DenunciaAmbitoController@index21')->name('listDenunciasAmbito21');
     Route::get('editDenunciaAmbito/{Id}', 'Denuncia\DenunciaAmbitoController@editItem')->name('editDenunciaAmbito');
     Route::put('updateDenunciaAmbito1', 'Denuncia\DenunciaAmbitoController@updateItem1')->name('updateDenunciaAmbito1');
     Route::put('updateDenunciaAmbito2', 'Denuncia\DenunciaAmbitoController@updateItem2')->name('updateDenunciaAmbito2');
