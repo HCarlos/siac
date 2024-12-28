@@ -92,24 +92,30 @@ class SendNotificationFCM{
         $fcm = new SendNotificationFCM();
         $user_id = 0;
         $respuesta = "";
+        $denuncia = "";
         $IsValidQuery = false;
         if ($Type === 0){
             $dm = Denunciamobile::find($Item->denunciamobile_id);
+            $denuncia = $dm->denuncia;
             $user_id = $Item->user_id;
             $respuesta = $Item->respuesta;
             $IsValidQuery = true;
         }else if ($Type === 1){
             $dm = Denuncia::find($Item->denuncia__id);
+//            dd($dm);
+            $denuncia = $dm->descripcion;
             $user_id = $Item->user__id;
             $respuesta = $Item->respuesta;
             $IsValidQuery = true;
         }else if ($Type === 2){
             $dm = Denuncia::find($Item->denuncia__id);
+            $denuncia = $dm->descripcion;
             $user_id = $Item->user__id;
             $respuesta = $Item->respuesta;
             $IsValidQuery = true;
         }else if ($Type === 3){
             $dm = Denuncia::find($Item->denuncia_id);
+            $denuncia = $dm->descripcion;
             $user_id = $dm->ciudadano_id ?? 1;
             $respuesta = $Item->respuesta ?? '';
             $IsValidQuery = true;
@@ -121,7 +127,7 @@ class SendNotificationFCM{
                 ->get();
             foreach ($usermobile as $um){
                 if ($um) {
-                    $fcm->sendNotification($um->id, $um->user_id, $um->mobile_type, $um->token, $dm->denuncia, $respuesta, $dm->denuncia);
+                    $fcm->sendNotification($um->id, $um->user_id, $um->mobile_type, $um->token, $denuncia, $respuesta, $denuncia);
                 }
             }
         }

@@ -7,8 +7,6 @@
        data-target="#modalFull"
        title="Editar"
     >
-{{--        <i class="fas fa-edit text-primary"></i>--}}
-
         @include('.shared.svgs.__edicion')
 
     </a>
@@ -17,9 +15,6 @@
        class="action-icon text-center icon_editar_interno" @isset($newWindow)     @endisset
        data-toggle="tooltip" title="Editar"
     >
-
-        {{--        <i class="fas fa-edit text-primary"></i>--}}
-
         @include('.shared.svgs.__edicion')
 
     </a>

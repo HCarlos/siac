@@ -14,7 +14,7 @@ class RespuestaCiudadanaAmbitoController extends Controller
     protected $tableName = "respuestas";
 
     // Obtiene el Listado de Respuestas
-    protected function index($Id)
+    protected function indexAmbito($Id)
     {
 
         $items = Respuesta::select()

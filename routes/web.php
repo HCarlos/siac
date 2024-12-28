@@ -542,7 +542,7 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|DELEGADO|CIUDADANO|
     Route::get('/showModalRespuestaCiudadanaNew/{denuncia_id}', 'Denuncia\Respuesta\RespuestaCiudadanaController@showModalRespuestaCiudadanaNew')->name('/showModalRespuestaCiudadanaNew');
     Route::get('showModalRespuestaCiudadanaEdit/{Id}', 'Denuncia\Respuesta\RespuestaCiudadanaController@showModalRespuestaCiudadanaEdit')->name('/showModalRespuestaCiudadanaEdit');
 
-    Route::get('listRespuestasCiudadanasAmbito/{Id}', 'Denuncia\Respuesta\RespuestaCiudadanaController@indexAmbito')->name('listRespuestasCiudadanasAmbito');
+    Route::get('listRespuestasCiudadanasAmbito/{Id}', 'Denuncia\Respuesta\RespuestaCiudadanaAmbitoController@indexAmbito')->name('listRespuestasCiudadanasAmbito');
 
 
     // Catálogo de Respuestas Mobile
