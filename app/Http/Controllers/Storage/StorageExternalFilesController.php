@@ -41,7 +41,8 @@ class StorageExternalFilesController extends Controller
             Storage::disk('externo')->put($fileName, File::get($file));
             return redirect($this->redirectTo);
         }catch (Exception $e){
-            dd($e->getMessage());
+            return redirect($this->redirectTo)
+                ->with('error', 'Ocurrió un error durante la operación: ' . $e->getMessage());
         }
 
     }

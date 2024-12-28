@@ -55,7 +55,8 @@ class StorageRespuestaDenunciaController extends Controller{
             }
 
         }catch (\Exception $e){
-            dd($e);
+            report($e);
+            return redirect($this->redirectTo)->with('error', 'Ocurrió un error al procesar la solicitud. Por favor, inténtalo de nuevo.');
         }
         return redirect($this->redirectTo);
     }

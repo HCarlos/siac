@@ -62,7 +62,7 @@ class MyResetPassword extends Notification
 
         }catch (HttpException $e){
             Log::alert( 'Error en EMail: ' . $e->getMessage() );
-            dd($e->getMessage());
+            //dd($e->getMessage());
         }
 
     }

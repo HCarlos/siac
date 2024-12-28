@@ -88,7 +88,7 @@ trait InitTrait
                             // read CSS data file
                             $cssdata = TCPDF_STATIC::fileGetContents(trim($type[1]));
                             if (($cssdata !== FALSE) AND (strlen($cssdata) > 0)) {
-                                $css = array_merge($css, TCPDF_STATIC::extractCSSproperties($cssdata));
+                                    $css[] = TCPDF_STATIC::extractCSSproperties($cssdata);
                             }
                         }
                     }
@@ -105,12 +105,12 @@ trait InitTrait
                 // (all, braille, embossed, handheld, print, projection, screen, speech, tty, tv)
                 if (empty($type) OR (isset($type[1]) AND (($type[1] == 'all') OR ($type[1] == 'print')))) {
                     $cssdata = $matches[2][$key];
-                    $css = array_merge($css, TCPDF_STATIC::extractCSSproperties($cssdata));
+                    $css[] = TCPDF_STATIC::extractCSSproperties($cssdata);
                 }
             }
         }
         // create a special tag to contain the CSS array (used for table content)
-        $csstagarray = '<cssarray>'.htmlentities(json_encode($css)).'</cssarray>';
+        $csstagarray = '<cssarray>'.htmlentities(json_encode(array_merge(...$css))).'</cssarray>';
         // remove head and style blocks
         $html = preg_replace('/<head([^\>]*)>(.*?)<\/head>/siU', '', $html);
         $html = preg_replace('/<style([^\>]*)>([^\<]*)<\/style>/isU', '', $html);

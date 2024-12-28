@@ -1,5 +1,7 @@
 <?php
 
+global $factory;
+
 use Faker\Generator as Faker;
 
 $factory->define(App\Models\Catalogos\Afiliacion::class, function (Faker $faker) {

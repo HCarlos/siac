@@ -81,6 +81,13 @@ main {
     color: white;
     border-radius: 8px;
     cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+.filter-btn:hover, .filter-btn.active {
+    background-color: rgba(35, 6, 6,0.6);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
 }
 
 .date-picker label {
@@ -93,6 +100,39 @@ main {
     border: 1px solid #ccc;
     border-radius: 8px;
 }
+
+.search-container {
+    display: flex;
+    align-items: center;
+}
+
+.search-btn {
+    background-color: #007bff;
+    border: none;
+    border-radius: 50%;
+    padding: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.search-btn:hover {
+    background-color: #0056b3;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+    transform: scale(1.1);
+}
+
+.search-icon {
+    width: 20px;
+    height: 20px;
+    fill: #ffffff;
+}
+
+.search-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
 
 /* Stats */
 .stats {
@@ -107,6 +147,46 @@ main {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+.card-left {
+    text-align: center;
+}
+
+.count {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.green {
+    color: #28a745;
+}
+
+.card-right {
+    text-align: left;
+    color: #333;
+    font-size: smaller !important;
+}
+
+.card-right p {
+    margin: 4px 0;
+    font-size: 0.5rem !important;
+}
+
+.card-right strong {
+    font-size: 0.5rem !important;
 }
 
 /* Charts Section */
@@ -241,7 +321,7 @@ main {
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 0px;
+    padding: 8px;
     flex: 1;
     min-width: 150px;
     text-align: center;

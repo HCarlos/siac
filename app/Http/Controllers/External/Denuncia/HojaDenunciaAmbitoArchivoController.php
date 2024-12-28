@@ -151,7 +151,6 @@ class HojaDenunciaAmbitoArchivoController extends Controller{
         $pdf->SetFont(FONT_ARIALN,'B',10);
         $pdf->Cell(205,$pdf->alto,"  DESCRIPCIÓN DE LA SOLICITUD : ","B",1,"L");
         $pdf->SetFont(FONT_FREEMONO,'B',8);
-//        $pdf->WriteHTMLCell(160,$pdf->alto,$den->descripcion.' '.$den->referencia,"L",1,"L");
         $pdf->WriteHTMLCell(200,$pdf->alto,8,$pdf->getY(),$den->descripcion.' '.$den->referencia,0,1);
 
         $dds = Denuncia_Dependencia_Servicio::query()->where('denuncia_id',$den->id)->orderBy('id')->get();

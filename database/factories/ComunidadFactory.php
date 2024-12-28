@@ -1,5 +1,7 @@
 <?php
 
+global $factory;
+
 use App\Models\Catalogos\Domicilios\Ciudad;
 use App\Models\Catalogos\Domicilios\Comunidad;
 use App\Models\Catalogos\Domicilios\Estado;

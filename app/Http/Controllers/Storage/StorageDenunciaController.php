@@ -55,7 +55,7 @@ class StorageDenunciaController extends Controller{
             }
 
         }catch (\Exception $e){
-            dd($e);
+            report($e);
         }
         return redirect($this->redirectTo);
     }

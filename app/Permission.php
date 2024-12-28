@@ -22,7 +22,8 @@ class Permission extends Model
         return static::where( 'name',$name )->first();
     }
 
-    public function roles() {
+    public function roles(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
         return $this->belongsToMany(Role::class);
     }
 

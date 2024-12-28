@@ -34,7 +34,7 @@ class ImportEstructuraCentroTabascoSeeder extends Seeder
         $json_data = file_get_contents($file);
         $json_data = preg_split( "/\n/", $json_data );
 
-        for ($x = 0; $x < count($json_data); $x++){
+        for ($x = 0, $xMax = count($json_data); $x < $xMax; $x++){
             try{
 
                 $dupla = preg_split("/\t/", $json_data[$x], -1, PREG_SPLIT_NO_EMPTY);
@@ -65,7 +65,7 @@ class ImportEstructuraCentroTabascoSeeder extends Seeder
         $json_data = file_get_contents($file);
         $json_data = preg_split( "/\n/", $json_data );
 
-        for ($x = 0; $x < count($json_data); $x++){
+        for ($x = 0, $xMax = count($json_data); $x < $xMax; $x++){
             try{
 
                 $dupla = preg_split("/\t/", $json_data[$x], -1, PREG_SPLIT_NO_EMPTY);
@@ -99,7 +99,7 @@ class ImportEstructuraCentroTabascoSeeder extends Seeder
         $json_data = file_get_contents($file);
         $json_data = preg_split( "/\n/", $json_data );
 
-        for ($x = 0; $x < count($json_data); $x++){
+        for ($x = 0, $xMax = count($json_data); $x < $xMax; $x++){
             try{
 
                 $dupla = preg_split("/\t/", $json_data[$x], -1, PREG_SPLIT_NO_EMPTY);
@@ -135,7 +135,7 @@ class ImportEstructuraCentroTabascoSeeder extends Seeder
         $json_data = file_get_contents($file);
         $json_data = preg_split( "/\n/", $json_data );
 
-        for ($x = 0; $x < count($json_data); $x++){
+        for ($x = 0, $xMax = count($json_data); $x < $xMax; $x++){
             try{
 
                 $dupla = preg_split("/\t/", $json_data[$x], -1, PREG_SPLIT_NO_EMPTY);

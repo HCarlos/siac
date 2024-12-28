@@ -248,7 +248,7 @@ class HojaDenunciaAmbitoController extends Controller
         $pdf->SetFont(FONT_ARIALN,'B',10);
         $pdf->Cell(20,$pdf->alto,"UBICACIÓN : ","",0,"R");
         $pdf->SetFont(FONT_FREEMONO,'B',8);
-        $pdf->Cell(185,$pdf->alto,$den->FullUbication,"L",1,"L");
+        $pdf->Cell(185,$pdf->alto,$den->gd_ubicacion,"L",1,"L");
 
         // DENUNCIA
         $y = $pdf->GetY();

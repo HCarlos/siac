@@ -118,7 +118,7 @@ class ImportUsersCentroTabascoSeeder extends Seeder{
 
 //        dd(count($json_data));
 
-        for ($x = 0; $x < count($json_data); $x++){
+        for ($x = 0, $xMax = count($json_data); $x < $xMax; $x++){
             try{
 
                 $dupla = preg_split("/\t/", $json_data[$x], -1, PREG_SPLIT_NO_EMPTY);
@@ -183,7 +183,7 @@ class ImportUsersCentroTabascoSeeder extends Seeder{
 
                 $Colonia = Colonia::query()->where('colonia',$colonia)->first();
                 if ( !$Colonia ){
-                    $col = ['colonia'=>$colonia, 'cp'=>$cp,'altitud'=>$altitud,'latitud'=>$latitud,'longitud'=>$longitud,'codigopostal_id'=> !isset($CP->id) ? 1 : $CP->id,'comunidad_id'=> !isset($Comunidad->id) ? 1 : $Comunidad->id ,'tipocomunidad_id'=>1,'colonia_mig_id'=>$colonia_mig_id];
+                    $col = ['colonia'=>$colonia, 'cp'=>$cp,'altitud'=>$altitud,'latitud'=>$latitud,'longitud'=>$longitud,'codigopostal_id'=> $CP ? $CP->id ?? 1 : 1,'comunidad_id'=> $Comunidad ? $Comunidad->id ?? 1 : 1 ,'tipocomunidad_id'=>1,'colonia_mig_id'=>$colonia_mig_id];
                     $Colonia = Colonia::create($col);
                 }
 
@@ -194,28 +194,28 @@ class ImportUsersCentroTabascoSeeder extends Seeder{
 
                 $Municipio = Municipio::query()->where('municipio',$municipio)->first();
                 if ( !$Municipio ){
-                    $Municipio = Municipio::create(['municipio'=>$municipio,'estado_id'=>!isset($Estado->id) ? 33 : $Estado->id,'municipio_mig_id'=>$municipio_mig_id]);
+                    $Municipio = Municipio::create(['municipio'=>$municipio,'estado_id'=> $Estado->id ?? 33,'municipio_mig_id'=>$municipio_mig_id]);
                 }
 
                 $Ciudad = Ciudad::query()->where('ciudad',$ciudad)->first();
                 if ( !$Ciudad ){
-                    $Ciudad = Ciudad::create(['ciudad'=>$ciudad,'municipio_id'=>!isset($Municipio->id) ? 2007 : $Municipio->id,'ciudad_mig_id'=>$ciudad_mig_id]);
+                    $Ciudad = Ciudad::create(['ciudad'=>$ciudad,'municipio_id'=> $Municipio->id ?? 2007,'ciudad_mig_id'=>$ciudad_mig_id]);
                 }
-                $calle_id        = !isset($Calle->id)  ? 1 : $Calle->id;
-                $colonia_id      = !isset($Colonia->id) ? 1 : $Colonia->id;
-                $comunidad_id    = !isset($Comunidad->id) ? 1 : $Comunidad->id;
-                $ciudad_id       = !isset($Ciudad->id)  ? 1 : $Ciudad->id;
-                $municipio_id    = !isset($Municipio->id)  ? 1 : $Municipio->id;
-                $estado_id       = !isset($Estado->id)  ? 1 : $Estado->id;
-                $codigopostal_id = !isset($CP->id) ? 1 : $CP->id;
+                $calle_id        = $Calle ? $Calle->id ?? 1 : 1;
+                $colonia_id      = $Colonia ? $Colonia->id ?? 1 : 1;
+                $comunidad_id    = $Comunidad ? $Comunidad->id ?? 1 : 1;
+                $ciudad_id       = $Ciudad ? $Ciudad->id ?? 1 : 1;
+                $municipio_id    = $Municipio ? $Municipio->id ?? 1 : 1;
+                $estado_id       = $Estado ? $Estado->id ?? 1 : 1;
+                $codigopostal_id = $CP ? $CP->id ?? 1 : 1;
 
-                $calle           = !isset($Calle->calle)  ? "" : $Calle->calle;
-                $colonia         = !isset($Colonia->colonia) ? "" : $Colonia->colonia;
-                $comunidad       = !isset($Comunidad->comunidad) ? "" : $Comunidad->comunidad;
-                $ciudad          = !isset($Ciudad->ciudad)  ? "" : $Ciudad->ciudad;
-                $municipio       = !isset($Municipio->municipio)  ? "" : $Municipio->municipio;
-                $estado          = !isset($Estado->estado)  ? "" : $Estado->estado;
-                $cp              = !isset($CP->cp) ? "" : $CP->cp;
+                $calle           = $Calle->calle ?? "";
+                $colonia         = $Colonia->colonia ?? "";
+                $comunidad       = $Comunidad->comunidad ?? "";
+                $ciudad          = $Ciudad->ciudad ?? "";
+                $municipio       = $Municipio->municipio ?? "";
+                $estado          = $Estado->estado ?? "";
+                $cp              = $CP->cp ?? "";
 
                 $Item = [
                     'calle'           => $calle,

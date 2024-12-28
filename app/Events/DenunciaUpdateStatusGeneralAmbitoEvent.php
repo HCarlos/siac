@@ -77,7 +77,7 @@ class DenunciaUpdateStatusGeneralAmbitoEvent  implements ShouldBroadcast{
                     );
 
             } catch (\Exception $e) {
-                dd($e);
+                Log::error('Error sending email in sendMailToEnlace: ' . $e->getMessage());
             }
         }
         return true;

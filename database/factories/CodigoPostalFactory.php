@@ -1,5 +1,7 @@
 <?php
 
+global $factory;
+
 use App\Models\Catalogos\Domicilios\Codigopostal;
 use Faker\Generator as Faker;
 

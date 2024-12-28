@@ -1,5 +1,7 @@
 <?php
 
+global $factory;
+
 use App\Models\Catalogos\Domicilios\Calle;
 use App\Models\Catalogos\Domicilios\Codigopostal;
 use App\Models\Catalogos\Domicilios\Colonia;

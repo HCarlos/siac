@@ -59,7 +59,8 @@ class StorageProfileController extends Controller
             return redirect($this->redirectTo);
 
         }catch (Exception $e){
-            dd($e);
+            report($e);
+            return redirect($this->redirectTo)->with('error', 'Ocurrió un error al subir el archivo. Por favor, inténtalo de nuevo.');
         }
         return redirect($this->redirectTo);
 
