@@ -99,8 +99,8 @@ class UserDataController extends Controller
     }
 
 // ***************** EDITA LOS DATOS DEL USUARIO PARA ESCRITURA ++++++++++++++++++++ //
-    protected function editItem($Id)
-    {
+    protected function editItem($Id){
+
         $user = User::find($Id);
         $Ubicaciones_Usuario = $user->ubicaciones;
         //dd( json_decode( json_encode(  $Ubicaciones_Usuario ) ) );
@@ -186,13 +186,6 @@ class UserDataController extends Controller
         $Data = $request->all(['id']);
         //dd($UserId);
         $Obj = $request->manageUser();
-
-//        if ( !isset($user) || !is_object($user) ) {
-//            $this->msg = $user;
-//            $user = User::find($Data['id']);
-//        }else{
-//            $this->msg = "Registro Guardado con éxito!";
-//        }
 
         if (!is_object($Obj)) {
             $id = 0;

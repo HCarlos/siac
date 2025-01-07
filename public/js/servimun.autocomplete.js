@@ -70,18 +70,6 @@ jQuery(function($) {
 
                     if ( $("#usuario_telefonos") )  {
                         llevarDatosdelUsuario(d);
-                        // $("#usuario_telefonos").val(d.telefonos);
-                        // var dd = d.telefonos.split(';');
-                        // $("#lblCelulares").html(dd[0]);
-                        // $("#lblTelefonos").html(dd[1]);
-                        // $("#lblEMails").html(dd[2]);
-                        // $("#ciu_ap_paterno").val(d.ap_paterno);
-                        // $("#ciu_ap_materno").val(d.ap_materno);
-                        // $("#ciu_nombre").val(d.nombre);
-                        // $("#ciu_telefonos").val(dd[1]);
-                        // $("#ciu_celulares").val(dd[0]);
-                        // $("#ciu_emails").val(dd[2]);
-                        // $("#ciudadano_id").val(d.id);
                     }
 
                     if ( $("#usuario_id") ){
@@ -194,10 +182,6 @@ jQuery(function($) {
             $(".denunciaUserModalChange").prop('disabled', true);
         }
 
-        // if ( $("#btnRefreshUserData") ) {
-        //     alert("Si entra bien");
-        // }
-
         if ( $("#btnRefreshUserData") ) {
             $("#btnRefreshUserData").on('click', function (event) {
                 event.preventDefault();
@@ -262,8 +246,11 @@ jQuery(function($) {
         $("#ciu_nombre").val(d.nombre);
         $("#ciu_telefonos").val(dd[1]);
         $("#ciu_celulares").val(dd[0]);
-        $("#ciu_emails").val(dd[2]);
+        $("#ciu_emails").val(dd[2])
         $("#ciudadano_id").val(d.id);
+        $("#btnViewUserData").attr("href","/editUser/"+d.id);
+        //alert(  );
+
     }
 
     function limpiarDatosdelUsuario(){

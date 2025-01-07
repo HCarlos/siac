@@ -944,6 +944,18 @@ gmp-map {
     color: #6d0505;
 }
 
+.text-verde-semaforo {
+    color: #059d05;
+}
+
+.text-amarillo-semaforo {
+    color: #ddaa05;
+}
+
+.text-rojo-semaforo {
+    color: #d60614;
+}
+
 div#scannerImages {
     margin-top: 20px;
 }

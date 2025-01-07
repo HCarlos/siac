@@ -23,8 +23,12 @@
                         <small>{{$item->curp_ciudadano}}</small>
                     </td>
                     <td  class="w-15">{{($item->fecha_ingreso)}}</td>
-                    <td><a title="{{($item->dependencia_ultimo_estatus)}}">{{($item->dependencia_ultimo_estatus)}}</a></td>
-
+                    <td>
+                        <small title="{{($item->dependencia_ultimo_estatus)}}">
+                            {{($item->dependencia_ultimo_estatus)}}
+                        </small>
+                        <small class="fas fa-circle chikirimbita {{ $item->semaforo_ultimo_estatus()['class_color'] }}"> {{ $item->semaforo_ultimo_estatus()['dias'] }}</small>
+                    </td>
                     <td class="w-25">
                         {{($item->servicio_ultimo_estatus)}}<br>
                         <small class="text-gray-lighter">{{( $item->ultimo_estatus )}}</small>

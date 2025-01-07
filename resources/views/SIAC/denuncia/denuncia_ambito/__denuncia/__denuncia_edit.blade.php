@@ -236,7 +236,6 @@
 <input type="hidden" name="usuario_id" id="usuario_id" value="{{$items->ciudadano->id}}" >
 
 <input type="hidden" name="oficio_envio" id="oficio_envio" value="{{$items->oficio_envio}}" >
-{{--<input type="hidden" name="folio_sas" id="folio_sas" value="{{$items->folio_sas}}" >--}}
 
 <input type="hidden" name="fecha_ingreso" id="fecha_ingreso" value="{{$items->fecha_ingreso}}" >
 <input type="hidden" name="fecha_oficio_dependencia" id="fecha_oficio_dependencia" value="{{$items->fecha_oficio_dependencia}}" >

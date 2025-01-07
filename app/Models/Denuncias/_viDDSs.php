@@ -17,6 +17,7 @@ use App\Models\Catalogos\Prioridad;
 use App\Models\Catalogos\Servicio;
 use App\Traits\Denuncia\DenunciaTrait;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -187,6 +188,26 @@ class _viDDSs extends Model{
         return $this->hasOne(Servicio::class,'id','due_id');
     }
 
+    public function semaforo_ultimo_estatus(){
+
+        $sem = 1;
+
+        $fhoy = Carbon::now();
+        $fingreso = Carbon::parse($this->fecha_ingreso);
+
+        $dias = $fhoy->diffInDays($fingreso);
+
+        if ( $dias <= $this->dias_ejecucion ){ $sem = 1; $class_color = 'text-verde-semaforo';  }
+        if ( $dias > $this->dias_ejecucion && $dias <= $this->dias_maximos_ejecucion ){ $sem = 2; $class_color = 'text-amarillo-semaforo';}
+        if ( $dias > $this->dias_maximos_ejecucion ){ $sem = 3; $class_color = 'text-rojo-semaforo';}
+
+        return [
+            'sem' => $sem,
+            'dias' => $dias,
+            'class_color' => $class_color,
+            ];
+
+    }
 
 
 
