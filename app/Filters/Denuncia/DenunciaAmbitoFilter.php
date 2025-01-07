@@ -71,7 +71,7 @@ class DenunciaAmbitoFilter extends QueryFilter
         $search = addslashes($search); // Escapar caracteres especiales
 
         return $query->whereRaw("gd_searchtext @@ plainto_tsquery('spanish', ?)", [$search]
-                    )->orderByRaw("denuncia ASC,referencia ASC,search_google ASC,gd_ubicacion ASC");
+                    )->orderByRaw("denuncia, referencia, search_google, gd_ubicacion ");
 
     }
 
@@ -140,9 +140,7 @@ class DenunciaAmbitoFilter extends QueryFilter
 
     public function servicio_id($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "0" || trim($search) == "") {return $query;}
-//        return $query->whereHas('denuncia_servicios', function ($q) use ($query, $search) {
-//            return $q->where('servicio_id', (int)$search);
-//        });
+//        dd($search);
           return $query->where('sue_id', (int)$search);
     }
 

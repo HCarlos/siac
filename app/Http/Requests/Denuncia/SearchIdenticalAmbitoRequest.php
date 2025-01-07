@@ -65,16 +65,20 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
                 $filters = $Ubi->calle ?? ''.' '.$Ubi->colonia ?? '';
             }else{
 //                $filters = $descripcion.' '.$referencia;
-                $filters = $search_google.' '.$searchgoogleresult;
+                  $filters = $search_google; //.' '.$searchgoogleresult;
+//                $filters = $searchgoogleresult;
             }
 
+//                            dd($filters);
+
             $F           = new FuncionesController();
-            $tsString    = $F->string_to_tsQuery($filters,' & ');
+            $tsString    = $F->string_to_tsQuery(strtolower($filters),' & ');
 
             $oFilters['search'] = $tsString;
             $oFilters['servicio_id'] = $servicio_id;
 
-//            dd($oFilters);
+//                                        dd($oFilters);
+
             if ($ambito_dependencia === 1 ){
                 $items = _viDDSs::query()
                     ->filterBy($oFilters)
