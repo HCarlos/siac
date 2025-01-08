@@ -73,7 +73,7 @@
                         <!-- Button -->
                         <div style="text-align: center; margin: 20px 0;">
                             <a href="https://siac.villahermosa.gob.mx/listDenunciaDependenciaServicioAmbito/{{$denuncia->id}}" style="text-decoration: none; background-color: #870606; color: #ffffff; padding: 12px 24px; border-radius: 5px; font-size: 16px; font-weight: bold; display: inline-block;">
-                                Revisar Ahora
+                                Revisar ahora
                             </a>
                         </div>
                     </td>

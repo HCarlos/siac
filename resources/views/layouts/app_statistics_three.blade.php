@@ -6,11 +6,14 @@
     <title>Dashboard</title>
     <link rel="stylesheet" href="css/dashboard_statistics_three.css">
     <script src="js/dashboard_statistics_three_setup.js" crossorigin="anonymous"></script>
-{{--    <script src="js/dashboard_statistics_three.js" crossorigin="anonymous"></script>--}}
-{{--    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>--}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{{--    <script--}}
+{{--        src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_KEY')}}&callback=initMap"--}}
+{{--        async--}}
+{{--        defer--}}
+{{--    ></script>--}}
 
 </head>
 
@@ -92,34 +95,6 @@
             </div>
         </section>
 
-        <!-- Charts Section -->
-{{--        <section class="charts">--}}
-{{--            <div class="chart">--}}
-{{--                <h3>Por área:</h3>--}}
-{{--                <canvas id="chart1"></canvas>--}}
-{{--            </div>--}}
-{{--            <div class="chart">--}}
-{{--                <h3>Por área:</h3>--}}
-{{--                <canvas id="chart2"></canvas>--}}
-{{--            </div>--}}
-{{--            <div class="chart">--}}
-{{--                <h3>Por área:</h3>--}}
-{{--                <canvas id="chart3"></canvas>--}}
-{{--            </div>--}}
-{{--            <div class="chart">--}}
-{{--                <h3>Por área:</h3>--}}
-{{--                <canvas id="chart4"></canvas>--}}
-{{--            </div>--}}
-{{--            <div class="chart">--}}
-{{--                <h3>Por área:</h3>--}}
-{{--                <canvas id="chart5"></canvas>--}}
-{{--            </div>--}}
-{{--            <div class="chart">--}}
-{{--                <h3>Por zona:</h3>--}}
-{{--                <div id="map"></div>--}}
-{{--            </div>--}}
-{{--        </section>--}}
-
         <div class="dashboard-container">
             <!-- Sección de solicitudes por área -->
             <div class="section">
@@ -180,12 +155,15 @@
                 </div>
             </div>
             <div class="card">
-                <h3>% solicitudes cerradas</h3>
-                <div class="chart" id="chart-closed">[Gráfico de Donut]</div>
+                <div class="chart-container">
+                    <h3>% solicitudes cerradas</h3>
+                    <canvas id="closedRequestsChart" class="canvas_uno"></canvas>
+                </div>
+
             </div>
             <div class="card">
                 <h3>Por zona:</h3>
-                <div class="map-container" id="map">[Mapa Interactivo]</div>
+                <div id="map"></div>
             </div>
         </div>
 
@@ -193,6 +171,16 @@
 
     </main>
 </div>
+
+<script
+    src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_KEY')}}&libraries=marker&v=weekly"
+    async
+    defer
+></script>
+
+<script src="js/dashboard_statistics_three_map_setup.js" type="text/javascript"></script>
+
+
 
 <script>
 
@@ -251,20 +239,29 @@
             options: opciones1()
         });
 
-        // % atendidas
+        // % Atendidas vs Rechazadas
         const ctx7a = document.getElementById('solicitudesChart');
         const chart7a = new Chart(ctx7a, {
             type: 'bar',
-            data: data3([@php echo 95 @endphp, @php echo 47 @endphp]),
+            data: data3([@php echo 93 @endphp, @php echo 47 @endphp]),
             options: opciones3()
         });
 
-        // new Chart(ctx, {
-        //     type: 'bar',
-        //     data: data,
-        //     options: options
-        // });
+        const ctx8a = document.getElementById('closedRequestsChart');
+        const chart8a = new Chart(ctx8a, {
+            type: 'doughnut',
+            data: data4([@php echo 12.69 @endphp, @php echo 100 - 12.69 @endphp]),
+            options: opciones4()
+        });
 
+        // Llamar a la función de inicialización cuando la página cargue
+        const dataSetLocations = [
+            { lat: 17.9889, lng: -92.9283, color: "red" }, // Zona 1
+            { lat: 17.9919, lng: -92.9303, color: "orange" }, // Zona 2
+            { lat: 17.9879, lng: -92.9313, color: "green" }, // Zona 3
+        ];
+
+        window.onload = async () => initMap(dataSetLocations);
 
     });
 
@@ -272,6 +269,19 @@
 
 
 </script>
+
+{{--<script>--}}
+{{--    (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({--}}
+{{--        key: "{{env('GOOGLE_MAPS_KEY')}}",--}}
+{{--        v: "beta",--}}
+{{--        // Use the 'v' parameter to indicate the version to use (weekly, beta, alpha, etc.).--}}
+{{--        // Add other bootstrap parameters as needed, using camel case.--}}
+{{--    });--}}
+{{--    localStorage.apikeymps = "{{env('GOOGLE_MAPS_KEY')}}";--}}
+{{--</script>--}}
+
+
+
 
 </body>
 </html>

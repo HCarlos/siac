@@ -1,7 +1,7 @@
 // Example: Generate simple bar charts using Chart.js
 
     function data1(dataSet) {
-        console.log(dataSet);
+        // console.log(dataSet);
         return {
             labels: ['Alumbrado', 'Esp Púb', 'Limpia', 'Obras', 'SAS'],
             datasets: [{
@@ -15,7 +15,6 @@
         };
 
     }
-
     function opciones1(){
         return {
             responsive: true,
@@ -73,7 +72,6 @@
             datasets: dataSet,
         };
     }
-
     function opciones2(){
         return {
             responsive: true,
@@ -148,82 +146,138 @@
                 barThickness: 50
             }]
         }
-    };
-
-function opciones3(){
-    return {
-        responsive: true,
-        maintainAspectRatio: false,
-        indexAxis: 'x',
-        plugins: {
-            legend: {
-                display: false
-            },
-            tooltip: {
-                callbacks: {
-                    label: function(context) {
-                        return `${context.raw} solicitudes`;
-                    }
-                }
-            }
-        },
-        scales: {
-            x: {
-                grid: {
-                    display: true
-                },
-                ticks: {
-                    color: '#333',
-                    font: {
-                        size: 9
-                    },
-                    display: true
-                }
-            },
-            y: {
-                beginAtZero: true,
-                min: 0,
-                max:100,
-                grid: {
-                    color: '#e0e0e0',
-                    drawBorder: true
-                },
-                ticks: {
-                    stepSize: 5,
-                    color: '#333',
-                    font: {
-                        size: 8
-                    },
-                    display: true
-                }
-            }
-        },
-        interaction: {
-            intersect: true,
-        },
-        animation: {
-            duration: 400,
-            onComplete: function() {
-                ctx = this.ctx;
-                ctx.font = Chart.helpers.fontString(8, 'normal', Chart.defaults.font.family);
-                chartinst = this;
-                this.data.datasets.forEach(function(dataset, i) {
-                    if (chartinst.isDatasetVisible(i)) {
-                        var meta = chartinst.getDatasetMeta(i);
-                        meta.data.forEach(function(bar, index) {
-                            var data = dataset.data[index];
-                            // alert(bar.y);
-                            var textY =data > 95 ? bar.y + 10 : bar.y - 5;
-                            ctx.fillText(data, bar.x - 7, textY);
-                        });
-                    }
-                });
-            }
-        }
-
     }
-};
+    function opciones3(){
+        return {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'x',
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.raw} solicitudes`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: true
+                    },
+                    ticks: {
+                        color: '#333',
+                        font: {
+                            size: 9
+                        },
+                        display: true
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    min: 0,
+                    max:100,
+                    grid: {
+                        color: '#e0e0e0',
+                        drawBorder: true
+                    },
+                    ticks: {
+                        stepSize: 5,
+                        color: '#333',
+                        font: {
+                            size: 8
+                        },
+                        display: true
+                    }
+                }
+            },
+            interaction: {
+                intersect: true,
+            },
+            animation: {
+                duration: 400,
+                onComplete: function() {
+                    ctx = this.ctx;
+                    ctx.font = Chart.helpers.fontString(8, 'normal', Chart.defaults.font.family);
+                    chartinst = this;
+                    this.data.datasets.forEach(function(dataset, i) {
+                        if (chartinst.isDatasetVisible(i)) {
+                            var meta = chartinst.getDatasetMeta(i);
+                            meta.data.forEach(function(bar, index) {
+                                var data = dataset.data[index];
+                                // alert(bar.y);
+                                var textY =data > 95 ? bar.y + 10 : bar.y - 5;
+                                ctx.fillText(data, bar.x - 7, textY);
+                            });
+                        }
+                    });
+                }
+            }
 
-// Selecciona todas las barras y ajusta dinámicamente su altura
+        }
+    }
+
+    function data4(dataSet) {
+        return {
+            labels: ['Cerradas', 'Pendientes'],
+            datasets: [{
+                data: dataSet,
+                backgroundColor: [
+                    'rgba(76, 175, 80, 0.8)',  // Verde para cerradas
+                    'rgba(189, 189, 189, 0.8)' // Gris para pendientes
+                ],
+                borderWidth: 2,
+                borderColor: [
+                    'rgba(255, 255, 255, 1)',
+                    'rgba(255, 255, 255, 1)'
+                ],
+            }]
+        }
+    }
+    function opciones4(){
+        return {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                tooltip: {
+                    enabled: true // Deshabilitar tooltips para que se enfoque en la visualización
+                },
+                legend: {
+                    display: false // Ocultar leyenda para simplificar el diseño
+                },
+                title: {
+                    display: true
+                }
+            },
+            cutout: '70%', // Hace que el gráfico sea un semicírculo
+            rotation: -90, // Rota el gráfico para iniciar desde la parte superior
+            circumference: 180, // Muestra solo la mitad del gráfico (semicírculo)
+            interaction: {
+                intersect: true,
+            },
+            animation: {
+                duration: 0,
+                onComplete: function() {
+                    ctx = this.ctx;
+                    ctx.font = Chart.helpers.fontString(12, 'normal', Chart.defaults.font.family);
+                    chartinst = this;
+                    this.data.datasets.forEach(function(dataset, i) {
+                        if (chartinst.isDatasetVisible(i)) {
+                            var meta = chartinst.getDatasetMeta(i);
+                            meta.data.forEach(function(bar) {
+                                var data = dataset.data[0];
+                                ctx.fillText(data, bar.x - 15, bar.y - 0);
+                            });
+                        }
+                    });
+                }
+            }
+
+        }
+    }
 
 
