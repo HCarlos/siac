@@ -174,8 +174,10 @@
                 </div>
             </div>
             <div class="card">
-                <h3>% solicitudes atendidas / rechazadas</h3>
-                <div class="chart" id="chart-attended">[Gráfico de Barras]</div>
+                <div class="chart-container">
+                    <h3>% solicitudes atendidas / rechazadas</h3>
+                    <canvas id="solicitudesChart"></canvas>
+                </div>
             </div>
             <div class="card">
                 <h3>% solicitudes cerradas</h3>
@@ -249,8 +251,24 @@
             options: opciones1()
         });
 
+        // % atendidas
+        const ctx7a = document.getElementById('solicitudesChart');
+        const chart7a = new Chart(ctx7a, {
+            type: 'bar',
+            data: data3([@php echo 95 @endphp, @php echo 47 @endphp]),
+            options: opciones3()
+        });
+
+        // new Chart(ctx, {
+        //     type: 'bar',
+        //     data: data,
+        //     options: options
+        // });
+
 
     });
+
+
 
 
 </script>
