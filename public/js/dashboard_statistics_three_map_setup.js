@@ -115,3 +115,39 @@ async function initMap(dataSet) {
 //     }
 // });
 //
+
+// Con OpenStreetMap
+
+// {{--    <link--}}
+//     {{--        rel="stylesheet"--}}
+//     {{--        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"--}}
+//     {{--        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="--}}
+//     {{--        crossorigin=""--}}
+//     {{--    />--}}
+//     {{--    <script--}}
+//     {{--        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"--}}
+//     {{--        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="--}}
+//     {{--        crossorigin=""--}}
+//     {{--    ></script>--}}
+
+
+// let isCollapsed = true; // Estado inicial de colapso
+// const map = L.map('map').setView([17.9869, -92.9303], 12); // Coordenadas de Villahermosa, Tabasco
+// L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+// }).addTo(map);
+// const marker = L.marker([17.9869, -92.9303]).addTo(map);
+// marker.bindPopup('<b>Villahermosa</b><br>Marcador de ejemplo');
+// let isExpanded = false;
+// document.getElementById('toggle-map').addEventListener('click', () => {
+//     const mapContainer = document.getElementById('map-container');
+//     isExpanded = !isExpanded;
+//     if (isExpanded) {
+//         mapContainer.classList.add('expanded'); // Expande a pantalla completa
+//         document.getElementById('toggle-map').innerText = 'Contraer';
+//     } else {
+//         mapContainer.classList.remove('expanded'); // Contrae al tamaño original
+//         document.getElementById('toggle-map').innerText = 'Expandir';
+//     }
+//     map.invalidateSize(); // Ajustar el tamaño del mapa al contenedor
+// });

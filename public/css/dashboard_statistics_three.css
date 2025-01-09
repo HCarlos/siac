@@ -407,3 +407,36 @@ main {
 dashboard-container.card.collapsed .header-2 button:hover {
     background: #388e3c;
 }
+
+.map-container {
+    position: relative;
+    width: 100% !important;
+    height: 100%;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Botón de acción */
+.toggle-button {
+    position: absolute;
+    top: 10px;
+    left: 50px;
+    z-index: 1000;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Modo expandido */
+.expanded {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: width-content !important;
+    height: 100%;
+    z-index: 1000;
+}
