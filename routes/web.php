@@ -58,6 +58,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::match(['get','put','post'],'dashboard-statistics', 'Dashboard\DashboardStaticController@index')->name('dashboard-statistics');
     Route::match(['get','put','post'],'dashboard-statistics-two', 'Dashboard\DashboardStaticTwoController@index')->name('dashboard-statistics-two');
     Route::match(['get','put','post'],'dashboard-statistics-three', 'Dashboard\DashboardStaticThreeController@index')->name('dashboard-statistics-three');
+    Route::match(['get','put','post'],'dashboard-statistics-three/month-now', 'Dashboard\DashboardStaticThreeController@monthnow')->name('dashboard-statistics-three/month-now');
+    Route::match(['get','put','post'],'dashboard-statistics-three/year-now', 'Dashboard\DashboardStaticThreeController@yearnow')->name('dashboard-statistics-three/year-now');
 
     // USUARIOS
     Route::get('edit', 'Catalogos\User\UserDataController@showEditUserData')->name('edit');

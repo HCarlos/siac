@@ -9,7 +9,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 </head>
 
 <body>
@@ -40,12 +39,12 @@
             <button class="filter-btn">Mes Actual</button>
             <button class="filter-btn">Año Actual</button>
             <div class="date-picker">
-                <label for="start-date">F. Inicial</label>
-                <input type="date" id="start-date">
+                <label for="start_date">F. Inicial</label>
+                <input type="date" id="start_date" name="start_date" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
             </div>
             <div class="date-picker">
-                <label for="end-date">F. Final</label>
-                <input type="date" id="end-date">
+                <label for="end_date">F. Final</label>
+                <input type="date" id="end_date" name="end_date" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
             </div>
             <div class="search-container">
                 <button class="search-btn">

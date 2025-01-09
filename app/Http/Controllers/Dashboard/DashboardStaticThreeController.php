@@ -12,12 +12,14 @@ use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\_viServicios;
 use App\Models\Denuncias\Denuncia;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DashboardStaticThreeController extends Controller{
 
     public function __construct(){
+        ini_set('max_execution_time', 300);
         $this->middleware('auth');
     }
 
@@ -31,31 +33,35 @@ class DashboardStaticThreeController extends Controller{
             ["pendientes" => 0, "porcentaje" => 0],
         ];
 
-        // atendidas = 3, 4, 6, 12, 13
-        // en_proceso = 1, 2, 5, 7, 9, 10, 11
-        // pendientes = 8
+        $arrEstatus = [
+            (object)["ue_id" => 16, "name"=> "RECIBIDA", "data"=> 0],
+            (object)["ue_id" => 19, "name"=> "EN PROCESO / PROGRAMADA", "data"=> 0],
+            (object)["ue_id" => 17, "name"=> "ATENDIDA", "data"=> 0],
+            (object)["ue_id" => 20, "name"=> "RECHAZADA", "data"=> 0],
+            (object)["ue_id" => 18, "name"=> "OBSERVADA", "data"=> 0],
+            (object)["ue_id" => 21, "name"=> "CERRADO", "data"=> 0],
+        ];
 
-//        dd($data);
-
-
-        ini_set('max_execution_time', 300);
         $f = new FuncionesController();
 
-        if (isset($data['fecha_inicial'])) {
-            $inicioMes = $data['fecha_inicial'];
+        if (isset($data['start_date'])) {
+            $start_date = $data['start_date'];
         } else {
-            $inicioMes = Carbon::now()->startOfMonth();
-            $inicioMes =  $inicioMes->format('Y-m-d');
+            $start_date = Carbon::now()->startOfMonth();
+            $start_date = $start_date->format('Y-m-d');
         }
-//        $inicioMes = $inicioMes.' 00:00:00';
 
-        if (isset($data['fecha_final'])) {
-            $finMes = $data['fecha_final'];
+        $start_date = DateTime::createFromFormat('m-d-Y', '01-12-2024')->format('Y-m-d');
+
+//                $start_date = $start_date.' 00:00:00';
+
+        if (isset($data['end_date'])) {
+            $end_date = $data['end_date'];
         } else {
-            $finMes = Carbon::now()->endOfMonth();
-            $finMes =  $finMes->format('Y-m-d');
+            $end_date = Carbon::now()->endOfMonth();
+            $end_date =  $end_date->format('Y-m-d');
         }
-//        $finMes = $finMes.' 23:59:59';
+//        $end_date = $end_date.' 23:59:59';
 
         if (isset($data['servicio_id'])) {
             $servicio_id = $data['servicio_id'];
@@ -64,27 +70,27 @@ class DashboardStaticThreeController extends Controller{
         }
 
 
-        $fechaInicioAño = Carbon::now()->startOfYear();
-        $fechaFinAño = Carbon::now()->endOfYear();
+        $start_year = Carbon::now()->startOfYear();
+        $end_year = Carbon::now()->endOfYear();
 
         $srvOp = _viDDSs::query()
             ->select('dependencia_id')
             ->whereIn('dependencia_id',[48,49])
-            ->whereBetween('fecha_ingreso',[$inicioMes,$finMes])
+            ->whereBetween('fecha_ingreso',[$start_date,$end_date])
             ->where('is_visible_nombre_corto_ss',true)
             ->count();
 
         $srvSAS = _viDDSs::query()
             ->select('dependencia_id')
             ->where('dependencia_id',47)
-            ->whereBetween('fecha_ingreso',[$inicioMes,$finMes])
+            ->whereBetween('fecha_ingreso',[$start_date,$end_date])
             ->where('is_visible_nombre_corto_ss',true)
             ->count();
 
         $srvLimpia = _viDDSs::query()
             ->select('dependencia_id')
             ->where('dependencia_id',50)
-            ->whereBetween('fecha_ingreso',[$inicioMes,$finMes])
+            ->whereBetween('fecha_ingreso',[$start_date,$end_date])
             ->where('is_visible_nombre_corto_ss',true)
             ->count();
 
@@ -111,7 +117,7 @@ class DashboardStaticThreeController extends Controller{
         }
         $srv3 = DB::table("_viddss")
             ->select('estatus_id','estatus as name', DB::raw('count(estatus_id) as data'))
-            ->whereBetween('fecha_ingreso',[$inicioMes,$finMes])
+            ->whereBetween('fecha_ingreso',[$start_date,$end_date])
             ->where("ambito_dependencia",2)
             ->whereIn('servicio_id',$arrIntoServicios)
             ->where('is_visible_nombre_corto_ss',true)
@@ -144,8 +150,8 @@ class DashboardStaticThreeController extends Controller{
             $totalReg += $d->data;
         }
 
-//        $inicioMes = $f->fechaEspanol($inicioMes);
-//        $finMes    = $f->fechaEspanol($finMes);
+//        $start_date = $f->fechaEspanol($start_date);
+//        $end_date    = $f->fechaEspanol($end_date);
 
         $arrPorStatus[0]["porcentaje"] = $arrPorStatus[0]["atendidas"] > 0 ? number_format(($arrPorStatus[0]["atendidas"] / $totalReg) * 100, 2, '.',',') : 0;
         $arrPorStatus[1]["porcentaje"] = $arrPorStatus[1]["en_proceso"] > 0 ? number_format(($arrPorStatus[1]["en_proceso"] / $totalReg) * 100, 2, '.',',') : 0;
@@ -163,24 +169,32 @@ class DashboardStaticThreeController extends Controller{
             ->select('nombre_corto_ss as name', DB::raw('count(servicio_id) as data'))
             ->where('ambito_dependencia',2)
             ->where('is_visible_nombre_corto_ss',true)
-            ->whereBetween('fecha_ingreso',[$inicioMes,$finMes])
+            ->whereBetween('fecha_ingreso',[$start_date,$end_date])
             ->groupBy('nombre_corto_ss')
             ->get();
 
 //        dd($srv1);
 
-//        dd($finMes);
+//        dd($end_date);
         // Grááfico de Estatus de solicitudes atendidas
         $srv2 = DB::table("_viddss")
-            ->select("ultimo_estatus_resuelto as name", DB::raw("count(estatus_id) as data"))
+            ->select(["ultimo_estatus as name", "ue_id", DB::raw("count(ue_id) as data")])
             ->where("ambito_dependencia",2)
-            ->where('is_visible_nombre_corto_ss',true)
-            ->whereBetween("fecha_ingreso", [$inicioMes,$finMes])
-            ->whereIn('servicio_id',$arrIntoServicios)
-            ->groupBy("ultimo_estatus_resuelto")
+            ->whereBetween('fecha_ingreso',[$start_date,$end_date])
+            ->groupBy(["ultimo_estatus","ue_id"])
             ->get();
 
 //        dd($srv2);
+        foreach ($arrEstatus as $a) {
+            foreach ($srv2 as $d){
+                if ($d->ue_id === $a->ue_id) {
+                    $a->data = $d->data;
+                }
+            }
+        }
+
+//        dd($arrEstatus);
+
 
         $r0 = isset($srv2[0]) ? $srv2[0]->data :0;
         $r1 = isset($srv2[1]) ? $srv2[1]->data : 0;
@@ -195,7 +209,7 @@ class DashboardStaticThreeController extends Controller{
         // Tabla de Servicios Vencidos
         $srv4 = DB::table("_viddss")
             ->select('*')
-            ->whereBetween('fecha_ingreso',[$inicioMes,$finMes])
+            ->whereBetween('fecha_ingreso',[$start_date,$end_date])
             ->where('fecha_ejecucion','<=',now()->format('Y-m-d'))
             ->where("ambito_dependencia",2)
             ->where('is_visible_nombre_corto_ss',true)
@@ -209,7 +223,7 @@ class DashboardStaticThreeController extends Controller{
         // Tabla de Servicios Urgentes
         $srv5 = DB::table("_viddss")
             ->select('*')
-            ->whereBetween('fecha_ingreso',[$inicioMes,$finMes])
+            ->whereBetween('fecha_ingreso',[$start_date,$end_date])
             ->where("ambito_dependencia",2)
             ->where('is_visible_nombre_corto_ss',true)
             ->where('prioridad_id',1)
@@ -223,7 +237,7 @@ class DashboardStaticThreeController extends Controller{
         // Tabla de Servicios Prioritarios
         $srv6 = DB::table("_viddss")
             ->select('*')
-            ->whereBetween('fecha_ingreso',[$inicioMes,$finMes])
+            ->whereBetween('fecha_ingreso',[$start_date,$end_date])
             ->where("ambito_dependencia",2)
             ->where('is_visible_nombre_corto_ss',true)
             ->whereIn('prioridad_id',[1,3])
@@ -248,9 +262,9 @@ class DashboardStaticThreeController extends Controller{
                 'arrSrv6' => $srv6,
                 'atendidas' => $porcentajeAtendidos,
                 'arrPorStatus' => $arrPorStatus,
-                'rango_de_consulta' => $f->fechaEspanol($inicioMes).' - '.$f->fechaEspanol($finMes),
-                'inicio_mes' => $inicioMes,
-                'fin_mes' => $finMes,
+                'rango_de_consulta' => $f->fechaEspanol($start_date).' - '.$f->fechaEspanol($end_date),
+                'inicio_mes' => $start_date,
+                'fin_mes' => $end_date,
             ]);
 
     }
