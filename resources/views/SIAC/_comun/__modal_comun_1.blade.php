@@ -9,4 +9,5 @@
     @slot('items', $items ?? null)
     @slot('formData', 'formFullModal')
     @slot('user',$user ?? null)
+    @slot('ambito',$ambito ?? null)
 @endcomponent

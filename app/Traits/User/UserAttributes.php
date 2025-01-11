@@ -220,6 +220,10 @@ trait UserAttributes
         return $this->origenes->contains('id',$origenes);
     }
 
+    public function hasPrioridades($prioridad): bool{
+        return $this->prioridades->contains('id',$prioridad);
+    }
+
     public function hasServiciosCategorias($categoria_servicios): bool{
         return $this->servicioscategorias->contains('id',$categoria_servicios);
     }

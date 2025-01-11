@@ -1,0 +1,259 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+.hero-section {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Altura total de la pantalla */
+    overflow: hidden;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 10%;
+    left: 5%;
+    z-index: 2;
+    color: white;
+    text-align: left;
+}
+
+.hero-overlay h1 {
+    font-size: 3rem;
+    margin: 0;
+}
+
+.hero-overlay p {
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+}
+
+.hero-overlay span {
+    font-weight: bold;
+}
+
+.hero-overlay h2 {
+    font-size: 1.2rem;
+    margin-top: 1rem;
+}
+
+/* Card Styles */
+.card {
+    position: absolute;
+    top: 50%;
+    right: 7em; /* Ajusta el margen derecho */
+    transform: translateY(-50%);
+    z-index: 3;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* Sombra oscura que simula flotación */
+    width: 90%;
+    max-width: 400px;
+    overflow: hidden; /* Evita que los elementos desborden */
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Suaviza el efecto */
+}
+
+.card:hover {
+    transform: translateY(-52%); /* Eleva ligeramente el card al pasar el cursor */
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4); /* Intensifica la sombra al pasar el cursor */
+}
+
+.card-header {
+    background: #870606; /* Rojo intenso */
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.card-body {
+    padding: 2rem;
+    display: flex;
+    justify-content: center; /* Centra el formulario horizontalmente */
+    align-items: center; /* Centra los elementos verticalmente */
+    flex-direction: column;
+}
+
+.card-body form {
+    width: 100%; /* El formulario ocupa todo el ancho del card-body */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra los elementos del formulario */
+}
+
+.card-body label {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    width: 100%; /* Para que se alinee con los inputs */
+    text-align: left;
+    font-weight: bold;
+}
+
+.card-body input[type="text"],
+.card-body input[type="password"] {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.card-body a {
+    font-size: 0.8rem;
+    color: #870606;
+    text-decoration: none;
+    align-self: flex-end; /* Alinea el enlace a la derecha */
+}
+
+.card-body .captcha-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Espaciado entre checkbox y etiqueta */
+    width: 100%; /* Alineado con los inputs */
+}
+
+.card-body .options {
+    display: flex;
+    align-items: center; /* Alinea el checkbox y el label en el mismo nivel */
+    gap: 0.5rem; /* Espaciado entre el checkbox y el label */
+    width: 100%; /* Mantén el mismo ancho que los inputs */
+}
+
+.card-body .options label {
+    color: #870606; /* Color rojo intenso */
+    font-size: 0.9rem; /* Ajusta el tamaño del texto */
+    cursor: pointer; /* Cambia el cursor a "mano" cuando pasas sobre el label */
+    position: relative; /* Permite ajustar la posición del label */
+    top: 4px; /* Baja un poco el label para alinearlo mejor */
+}
+
+.card-body .options input[type="checkbox"] {
+    margin: 0; /* Elimina márgenes adicionales del checkbox */
+}
+
+.card-body button {
+    width: 100%;
+    padding: 0.8rem;
+    background: #870606;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.card-body button:hover {
+    background: #c9302c;
+}
+
+.card-body p {
+    width: width-con;
+    text-align: justify;
+    font-size: 0.9rem;
+}
+
+.card-body p a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .card {
+        top: 50%;
+        right: 5%; /* Ajusta el margen derecho para pantallas pequeñas */
+        left: 5%; /* Centra horizontalmente en pantallas pequeñas */
+        transform: translateY(-50%);
+    }
+
+    .hero-overlay h1 {
+        font-size: 2rem;
+    }
+
+    .hero-overlay p {
+        font-size: 1rem;
+    }
+
+    .hero-overlay h2 {
+        font-size: 0.9rem;
+    }
+}
+
+.text-danger{
+    color: red;
+}
+
+.text-rojo-morena-bold{
+    color: #870606;
+    font-weight: bold;
+}
+
+.text-verde-morena-bold{
+    color: #085108;
+    font-weight: bold;
+}
+
+.text-default{
+    color: #1b1919;
+}
+
+.text-white{
+    color: white;
+}
+
+.has-error .form-control{
+    border-width: 3px;
+    border-color: red !important;
+}
+
+.mt-2{
+    margin-top: 2rem;
+}
+
+.mb-2{
+    margin-bottom: 2rem;
+}
+
+.mt-1{
+    margin-top: 1rem;
+}
+
+.mb-1{
+    margin-bottom: 1rem;
+}
+
+.privacy-notice {
+    position: absolute;
+        bottom: 0; /* Pegado al borde inferior */
+        left: 0; /* Pegado al borde izquierdo */
+    color: white; /* Texto blanco para contraste */
+    font-size: 0.9rem; /* Tamaño de texto */
+    background-color: #a67c52; /* Color marrón similar al ejemplo */
+    padding: 0.5rem 1rem; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2); /* Agrega una leve sombra para darle dimensión */
+    z-index: 3; /* Asegura que esté sobre la imagen */
+
+}
+
+.privacy-notice a {
+    color: white; /* Texto blanco para contraste */
+    text-decoration: none; /* Subrayado */
+}
+

@@ -7,6 +7,7 @@ use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Domicilios\Ubicacion;
 use App\Models\Catalogos\Estatu;
 use App\Models\Catalogos\Origen;
+use App\Models\Catalogos\Prioridad;
 use App\Models\Catalogos\ServicioCategoria;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Imagene;
@@ -121,6 +122,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function origenes(){
         return $this->belongsToMany(Origen::class,'origene_user','user_id','origene_id')
+            ->withPivot('orden','predeterminado');
+    }
+
+    public function prioridades(){
+        return $this->belongsToMany(Prioridad::class,'prioridade_user','user_id','prioridad_id')
             ->withPivot('orden','predeterminado');
     }
 

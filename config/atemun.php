@@ -127,6 +127,7 @@ return [
             'servicioscategorias'                   => 'servicioscategorias',
             'servicioscategoria_user'               => 'servicioscategoria_user',
             'origene_user'                          => 'origene_user',
+            'prioridade_user'                       => 'prioridade_user',
         ],
         'domicilios' => [
             'users'             => 'users',

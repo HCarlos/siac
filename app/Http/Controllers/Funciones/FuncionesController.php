@@ -255,7 +255,7 @@ class FuncionesController extends Controller
                         'cerrado','origen_id','ciudadano_id','ultimo_estatus','firmado','latitud','longitud',
                         'clave_identificadora','estatus_general','ambito_sas','fecha_ultimo_estatus',
                         'creadopor_id','modificadopor_id','dias_ejecucion','dias_maximos_ejecucion',
-                        'search_google','gd_ubicacion',
+                        'search_google','gd_ubicacion','prioridad_id',
                         'ue_id'
                     ];
     }

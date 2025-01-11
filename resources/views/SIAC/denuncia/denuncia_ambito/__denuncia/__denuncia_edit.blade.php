@@ -70,7 +70,7 @@
         <div class="grid-container">
             <div class="form-group row mb-1">
                 <label for = "origen_id" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Fuente:</label>
-                <div class="col-lg-10">
+                <div class="col-lg-5">
                     <select id="origen_id" name="origen_id" class="form-control" size="1">
                         <option value="0" >Seleccione una fuente</option>
                         @foreach($origenes as $t)
@@ -78,6 +78,15 @@
                         @endforeach
                     </select>
                 </div>
+                <label for = "prioridad_id" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Prioridad: </label>
+                <div class="col-lg-3">
+                    <select id="prioridad_id" name="prioridad_id" class="form-control" size="1" >
+                        @foreach($prioridades as $t)
+                            <option value="{{$t->id}}" {{ $t->id === $items->prioridad_id ? 'selected': '' }} >{{ $t->prioridad }} </option>
+                        @endforeach
+                    </select>
+                </div>
+
             </div>
 
             <div class="form-group row mb-1">
@@ -244,11 +253,9 @@
 
 <input type="hidden" name="clave_identificadora" id="clave_identificadora" value="{{$items->clave_identificadora}}" >
 
-<input type="hidden" name="prioridad_id" id="prioridad_id" value="{{$items->prioridad_id}}" >
 <input type="hidden" name="estatus_id" id="estatus_id" value="{{$items->estatus_id}}" >
 
 <input type="hidden" name="observaciones" id="observaciones" value="{{$items->observaciones}}" >
-{{--<input type="hidden" name="ambito" id="ambito" value="{{$items->ambito}}" >--}}
 
 <input type="hidden" name="isFechaIngresoView" id="isFechaIngresoView" value="{{ config('atemun.modificar_fecha_ingreso') }}" >
 

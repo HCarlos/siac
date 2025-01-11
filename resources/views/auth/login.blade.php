@@ -1,99 +1,77 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Integral de Atención Ciudadana</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ config('app.name') }}</title>
 
-@section('styles')
-<script async src="https://www.google.com/recaptcha/api.js"></script>
-{{--<script async src="{{ asset('js/recaptcha-api.js') }}"></script>--}}
+    <link href="{{ asset('images/favicon/favicon.png') }}" rel="shortcut icon">
+    <link href="{{ asset('images/favicon/favicon-32-32.png') }}" rel="shortcut icon" sizes="32x32">
+    <link href="{{ asset('images/favicon/favicon-114-114.png') }}" rel="apple-touch-icon" sizes="114x114">
+    <link href="{{ asset('images/favicon/favicon-157-157.png') }}" rel="apple-touch-icon" sizes="157x157">
+    <link href="{{ asset('images/favicon/favicon-180-180.png') }}" rel="apple-touch-icon" sizes="180x180">
+    <link href="{{ asset('images/favicon/favicon-192-192.png') }}" rel="apple-touch-icon" sizes="192x192">
+    <link href="{{ asset('images/favicon/favicon-270-270.png') }}" rel="apple-touch-icon" sizes="270x270">
+    <link href="https://fonts.googleapis.com/css?family=Raleway|PT+Sans+Narrow|Roboto:400,400i,500,500i|Roboto+Mono|Roboto+Condensed|Kaushan+Script&effect=3d-float" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous"><!-- third party css -->
 
-@endsection
+    <link rel="stylesheet" href="{{ asset('css/login_v2.css') }}">
 
-@section('content')
-
-
-<body class="auth-fluid-pages bg-registry  pb-0 m-0" >
-
-    <div class="auth-fluid m-0 p-0">
-        <!--Auth fluid left content -->
-        <div class=" p-0 m-0 bg-form" >
-            <div class="d-flex h-15 " >
-                @include('shared.code.__logo_guest')
-            </div>
-            <div class="align-items-center " >
-                <div class="card-body">
-                    <!-- title-->
-{{--                        <div class="auth-fluid p-2">--}}
-
-                    <h4 class="mt-0 color-title text-white">Ingresar</h4>
-                    <p class="text-muted mb-3"></p>
-                    <!-- form -->
-                    <form method="POST" action="{{ route('login') }}" class="mt-0">
-                        @csrf
-                        <div class="form-group">
-                            <label for="username" class="{{$errors->has('username')?'text-danger':'text-white'}}">CURP, Username ó Correo Electrónico</label>
-                            <input class="form-control {{$errors->has('username')?'has-error form-error':''}}" type="text" id="username" name="username" value="{{ old('username') }}" required placeholder="CURP, Username o Correo Electrónico">
-                            @if ($errors->has('username'))
-                                <span class="has-error">
-                                        <strong class="text-danger">{{ $errors->first('username') }}</strong>
-                                    </span>
-                            @endif
-                        </div>
-                        <div class="form-group">
-                            <a href="{{ route('password.request') }}" class=" float-right text-danger"><strong>¿Olvidaste tu contraseña?</strong></a>
-                            <label for="password" class="{{$errors->has('password')?'text-danger':'text-white'}}">Contraseña</label>
-                            <input class="form-control {{$errors->has('password')?'has-error form-error':''}}" type="password" required="" id="password" name="password" placeholder="Contraseña">
-                            @if ($errors->has('password'))
-                                <span class="has-error">
-                                        <strong class="text-danger">{{ $errors->first('password') }}</strong>
-                                    </span>
-                            @endif
-                        </div>
-                        <div class="form-group">
-                        <div class="g-recaptcha mt-4" data-sitekey={{config('services.recaptcha.key')}}></div>
-                        </div>
-
-                        <div class="form-group mb-3">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="checkbox-signin">
-                                <label class="custom-control-label  text-danger" for="checkbox-signin">Recordar</label>
-                            </div>
-                        </div>
-                        <div class="form-group mb-4 text-center">
-                            <button class="btn btn-danger btn-danger-primary btn-block" type="submit"
-                            ><i class="mdi mdi-login"></i> INICIAR SESIÓN </button>
-                        </div>
-                        <div class="clearfix"></div>
-                        <div class="form-group  mt-2">
-                            <p class="text-white float-left">¿No tienes cuenta?</p>
-                            <a href="{{ route('register') }}" class="text-danger-light float-right  text-danger"><strong>Regístrate aquí</strong></a>
-                        </div>
-
-                    </form>
-                    <!-- end form-->
-{{--                        </div>--}}
-                </div> <!-- end .card-body -->
-            </div> <!-- end .align-items-center.d-flex.h-100-->
+    <script async src="https://www.google.com/recaptcha/api.js"></script>
+</head>
+<body>
+<div class="hero-section">
+    <img src="{{ asset('images/background_v2.png') }}" alt="Fondo" class="hero-image">
+    <div class="card">
+        <div class="card-header">
+            <span>Ingreso</span>
         </div>
-        <!-- end auth-fluid-form-box-->
+        <div class="card-body">
+            <form action="{{ route('login') }}" method="POST">
+                @csrf
+                    <label for="username" class="{{$errors->has('username')?'text-danger':'text-default'}}">CURP, Username o Correo Electrónico</label>
+                    <input type="text" id="username" name="username" class="{{$errors->has('username')?'has-error form-error':''}}" required>
+                    @if ($errors->has('username'))
+                        <span class="has-error">
+                            <strong class="text-danger">{{ $errors->first('username') }}</strong>
+                        </span>
+                    @endif
 
-        <!-- Auth fluid right content -->
-        <div class="auth-fluid-right  m-0 p-0" >
-            <img src="/images/web/bg-auth-login.png" height="100%" width="100%"  />
+                <label for="password" class="{{$errors->has('password')?'text-danger':'text-default'}}">Contraseña</label>
+                <input type="password" id="password" name="password" class="{{$errors->has('password')?'has-error form-error':''}}" required>
+                @if ($errors->has('password'))
+                    <span class="has-error">
+                        <strong class="text-danger">{{ $errors->first('password') }}</strong>
+                    </span>
+                @endif
+
+{{--                <a href="{{ route('password.request') }}">¿Olvidaste tu contraseña?</a>--}}
+                <a href="{{ route('password.request') }}" class=" float-right text-danger "><strong>¿Olvidaste tu contraseña?</strong></a>
+
+{{--                <div class="captcha-container">--}}
+{{--                    <input type="checkbox" id="captcha" required>--}}
+{{--                    <label for="captcha">No soy un robot</label>--}}
+{{--                </div>--}}
+
+                <div class="captcha-container mt-1 mb-1">
+                    <div class="g-recaptcha " data-sitekey={{config('services.recaptcha.key')}}></div>
+                </div>
+
+                <div class="options mb-1">
+                    <input type="checkbox" id="remember" name="remember">
+                    <label for="remember">Recordar</label>
+                </div>
+                <button type="submit">Iniciar Sesión</button>
+            </form>
+{{--            <p><span>¿No tienes cuenta?</span>          <a href="{{ route('register') }}">Regístrate aquí</a></p>--}}
+
         </div>
-        <!-- end Auth fluid right content -->
     </div>
-    <!-- end auth-fluid-->
-
-    <!-- App js -->
-    @include('partials/script_footer')
-
-    <!-- Replace the variables below. -->
-    <script>
-        function onSubmit(token) {
-            document.getElementById("demo-form").submit();
-        }
-    </script>
-
-    </body>
-
-
-@endsection
-
+    <div class="privacy-notice">
+        <span class="aviso_privacidad text-verde-morena-bold">Versión 2.0 </span>   | <a href="/privacidad" class="aviso_privacidad"  target="_blank">Aviso de Privacidad</a>
+    </div>
+</div>
+</body>
+</html>

@@ -34,8 +34,10 @@ Auth::routes(['verify' => false]);
 
 // Authentication Routes...
 // $this
+
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
+
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 // Registration Routes...
@@ -414,6 +416,12 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
     Route::post('unAssignOrigenToUser','Catalogos\User\OrigenesUserController@desasignarOrigen')->name('unAssignOrigenToUser');
     Route::get('getOrigenesUser/{Id}','Catalogos\User\OrigenesUserController@getItems')->name('getOrigenesUser');
 
+    // USUARIOS PRIORIDADES
+    Route::get('asignaPrioridadesList/{Id}','Catalogos\User\PrioridadesUserController@index')->name('asignaPrioridadesList');
+    Route::post('assignPrioridadToUser','Catalogos\User\PrioridadesUserController@asignarPrioridad')->name('assignPrioridadToUser');
+    Route::post('unAssignPrioridadToUser','Catalogos\User\PrioridadesUserController@desasignarPrioridad')->name('unAssignPrioridadToUser');
+    Route::get('getPrioridadesUser/{Id}','Catalogos\User\PrioridadesUserController@getItems')->name('getPrioridadesUser');
+
 
     // EXTERNAL FILES
     Route::get('archivosConfig','Storage\StorageExternalFilesController@archivos_config')->name('archivosConfig');
@@ -625,6 +633,21 @@ Route::get('/imprimir_denuncia_ambito_respuesta/{uuid}', 'External\Denuncia\Hoja
 
     Route::get('getServiciosFromDependenciasAxios/{id}', 'Denuncia\ServicioController@getServiciosFromDependenciasAxios')->name('getServiciosFromDependenciasAxios');
 
+
+
+//Route::get('/login2', function () {
+//    return view('auth.login_v2');
+//})->name('login2');
+
+//Route::get('/register', function () {
+//    // Añadir lógica de registro
+//})->name('register');
+//
+//Route::get('/password/request', function () {
+//    // Añadir lógica para recuperar contraseña
+//})->name('password.request');
+//
+
 //    Route::get('/enviar-correo', function () {
 //        Mail::send('vendor.mail.html.mailtoenlace', [], function ($message) {
 //            $message->to('carhid@yahoo.com')
@@ -635,3 +658,4 @@ Route::get('/imprimir_denuncia_ambito_respuesta/{uuid}', 'External\Denuncia\Hoja
 
 
 //});
+

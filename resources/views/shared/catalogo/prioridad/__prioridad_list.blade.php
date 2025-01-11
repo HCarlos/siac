@@ -6,6 +6,7 @@
                     <tr role="row">
                         <th class="sorting_asc w-5-percent" aria-sort="ascending" aria-label="Name: activate to sort column descending">ID</th>
                         <th class="sorting w-75-percent" >Prioridad</th>
+                        <th class="sorting" >Ámbito</th>
                         <th class="sorting w-10-percent" >Predeterminado</th>
                         <th class=" w-10-percent"></th>
                     </tr>
@@ -15,6 +16,7 @@
                     <tr>
                         <td class="table-user">{{$item->id}}</td>
                         <td>{{$item->prioridad}}</td>
+                        <td>{{$item->ambito_prioridad}}</td>
                         <td class="text-center">
                             @if( $item->isDefault() )
                                 <i class="fas fa-check green"></i>

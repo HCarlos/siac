@@ -144,8 +144,8 @@
             </div>
             <div class="card">
                 <div class="chart-container">
-                    <h3>% solicitudes atendidas / rechazadas</h3>
-                    <canvas id="solicitudesChart"></canvas>
+                    <h3>Servicios Municipales Monitoreados</h3>
+                    <canvas id="servicesChart"></canvas>
                 </div>
             </div>
             <div class="card">
@@ -158,8 +158,13 @@
             <div class="card">
                 <h3>Por zona:</h3>
                 <div class="map-container" id="map-container">
-{{--                <div class="toggle-button" id="toggle-map">Expandir</div>--}}
                 <div id="map"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="chart-container">
+                    <h3>% solicitudes atendidas / rechazadas</h3>
+                    <canvas id="solicitudesChart"></canvas>
                 </div>
             </div>
         </div>
@@ -174,7 +179,6 @@
     async
     defer
 ></script>
-
 <script src="js/dashboard_statistics_three_map_setup.js" type="text/javascript"></script>
 
 
@@ -258,8 +262,14 @@
             { lat: 17.9919, lng: -92.9303, color: "orange" }, // Zona 2
             { lat: 17.9879, lng: -92.9313, color: "green" }, // Zona 3
         ];
-
         window.onload = async () => initMap(dataSetLocations);
+
+        const ctx9a = document.getElementById('servicesChart');
+        const chart9a = new Chart(ctx9a, {
+            type: 'bar',
+            data: data5([18, 5, 37, 21, 9, 10]),
+            options: opciones5()
+        });
 
 
 

@@ -66,11 +66,19 @@
         <div class="grid-container">
             <div class="form-group row mb-1">
                 <label for = "origen_id" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Fuente: </label>
-                <div class="col-lg-10">
+                <div class="col-lg-5">
                     <select id="origen_id" name="origen_id" class="form-control" size="1" value="{{ old('origen_id') }}">
                         <option value="0"  >Seleccione una fuente</option>
                         @foreach($origenes as $t)
                             <option value="{{$t->id}}" {{ $t->isDefault() ? 'selected': '' }} >{{ $t->origen }} </option>
+                        @endforeach
+                    </select>
+                </div>
+                <label for = "prioridad_id" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Prioridad: </label>
+                <div class="col-lg-3">
+                    <select id="prioridad_id" name="prioridad_id" class="form-control" size="1" >
+                        @foreach($prioridades as $t)
+                            <option value="{{$t->id}}" {{ $t->isDefault() ? 'selected': '' }} >{{ $t->prioridad }} </option>
                         @endforeach
                     </select>
                 </div>

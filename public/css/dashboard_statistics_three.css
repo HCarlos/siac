@@ -440,3 +440,14 @@ dashboard-container.card.collapsed .header-2 button:hover {
     height: 100%;
     z-index: 1000;
 }
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .chart-container {
+        padding: 1rem;
+    }
+
+    .chart-container h1 {
+        font-size: 1.2rem;
+    }
+}

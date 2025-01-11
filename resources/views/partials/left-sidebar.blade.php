@@ -407,15 +407,24 @@
                             </a>
                         </li>
                     @endif
-                        @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') || Auth::user()->can('asignar_categoria_servicios'))
-                            <li>
-                                <a href="{{route('asignaOrigenesList',['Id'=>0])}}">
-                                    <i class="fas fa-user-cog"></i>
-                                    <span class="badge badge-light float-right">{{\App\Models\Catalogos\Origen::count()}}</span>
-                                    <span>Fuentes de Captación</span>
-                                </a>
-                            </li>
-                        @endif
+                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') || Auth::user()->can('asignar_categoria_servicios'))
+                        <li>
+                            <a href="{{route('asignaOrigenesList',['Id'=>0])}}">
+                                <i class="fas fa-user-cog"></i>
+                                <span class="badge badge-light float-right">{{\App\Models\Catalogos\Origen::count()}}</span>
+                                <span>Fuentes de Captación</span>
+                            </a>
+                        </li>
+                    @endif
+                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') || Auth::user()->can('asignar_prioridades'))
+                        <li>
+                            <a href="{{route('asignaPrioridadesList',['Id'=>0])}}">
+                                <i class="fas fa-user-cog"></i>
+                                <span class="badge badge-light float-right">{{\App\Models\Catalogos\Prioridad::count()}}</span>
+                                <span>Prioridades</span>
+                            </a>
+                        </li>
+                    @endif
                 </ul>
 
             </li>

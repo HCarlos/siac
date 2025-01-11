@@ -16,11 +16,27 @@
 <div class="form-group row mb-1">
     <label for = "predeterminado" class="col-md-3 col-form-label">Predeterminado</label>
     <div class="col-md-9">
-{{--        {{ Form::select('predeterminado', array('0'=>'No','1'=>'Si'), old('predeterminado'), ['id' => 'predeterminado','class' => 'form-control']) }}--}}
         <select class="form-control" name="predeterminado" id="predeterminado" size="1">
-            <option value="1" selected >SI</option>
-            <option value="0">NO</option>
+            <option value="1">SI</option>
+            <option value="0" selected>NO</option>
         </select>
     </div>
 </div>
+<div class="form-group row mb-1">
+    <label for = "ambito_prioridad" class="col-md-3 col-form-label">Ámbito</label>
+    <div class="col-md-9">
+        <select class=" form-control "  name="ambito_prioridad" id="ambito_prioridad" size="1">
+            @foreach($ambito as $id => $valor)
+                <option value="{{ $id }}" >{{ $valor }}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
+<div class="form-group row mb-1">
+    <label for = "orden_impresion" class="col-md-3 col-form-label">Orden</label>
+    <div class="col-md-9">
+        <input type="text" name="orden_impresion" id="orden_impresion" value="{{ old('orden_impresion') }}" class="form-control" />
+    </div>
+</div>
+
 <input type="hidden" name="id" value="0" >

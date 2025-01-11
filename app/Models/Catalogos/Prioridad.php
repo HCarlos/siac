@@ -3,6 +3,7 @@
 namespace App\Models\Catalogos;
 
 use App\Filters\Catalogo\PrioridadFilter;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -14,7 +15,7 @@ class Prioridad extends Model
     protected $table = 'prioridades';
 
     protected $fillable = [
-        'id', 'prioridad','predeterminado', 'class_css','estatus_cve',
+        'id', 'prioridad','predeterminado', 'class_css','estatus_cve','ambito_prioridad','orden_impresion',
     ];
     protected $hidden = ['deleted_at','created_at','updated_at'];
     protected $casts = ['predeterminado'=>'boolean',];
@@ -26,6 +27,12 @@ class Prioridad extends Model
     public function isDefault(){
         return $this->predeterminado;
     }
+
+    public function users(){
+        return $this->belongsToMany(User::class,'prioridade_user','prioridad_id','user_id')
+            ->withPivot('orden','predeterminado');
+    }
+
 
     public static function findOrImport($prioridad,$predeterminado,$class_css){
         $obj = static::where('prioridad', trim($prioridad))->first();

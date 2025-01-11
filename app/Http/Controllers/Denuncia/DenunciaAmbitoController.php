@@ -254,6 +254,15 @@ class DenunciaAmbitoController extends Controller{
                 ->orderBy('origen')
                 ->get();
 
+            $Prioridades = Prioridad::query()
+                ->where('ambito_prioridad',$this->ambito_dependencia)
+                ->whereHas('users', function ($query) {
+                    $query->where('user_id', Auth::user()->id);
+                })
+                ->orderBy('orden_impresion')
+                ->get();
+
+
         }else{
 
             $dependencias_id = Dependencia::query()->select('id')
@@ -266,6 +275,11 @@ class DenunciaAmbitoController extends Controller{
             $Origenes = Origen::query()
                 ->where("estatus_cve", 1)
                 ->orderBy('origen')
+                ->get();
+
+            $Prioridades = Prioridad::query()
+                ->where('ambito_prioridad',$this->ambito_dependencia)
+                ->orderBy('orden_impresion')
                 ->get();
 
 
@@ -287,6 +301,7 @@ class DenunciaAmbitoController extends Controller{
                 'user'                 => Auth::user(),
                 'editItemTitle'        => 'Nuevo',
                 'servicios'            => $Servicios,
+                'prioridades'          => $Prioridades,
                 'postNew'              => 'createDenunciaAmbito2',
                 'titulo_catalogo'      => ucwords($this->tableName) . " de " . $th,
                 'titulo_header'        => 'Folio Nuevo',
@@ -460,6 +475,14 @@ class DenunciaAmbitoController extends Controller{
                 ->orderBy('origen')
                 ->get();
 
+            $Prioridades = Prioridad::query()
+                ->where('ambito_prioridad',$this->ambito_dependencia)
+                ->whereHas('users', function ($query) {
+                    $query->where('user_id', Auth::user()->id);
+                })
+                ->orderBy('orden_impresion')
+                ->get();
+
 
         }else{
             $dependencias_id = Dependencia::query()
@@ -473,6 +496,11 @@ class DenunciaAmbitoController extends Controller{
             $Origenes = Origen::query()
                 ->where("estatus_cve", 1)
                 ->orderBy('origen')
+                ->get();
+
+            $Prioridades = Prioridad::query()
+                ->where('ambito_prioridad',$this->ambito_dependencia)
+                ->orderBy('orden_impresion')
                 ->get();
 
 
@@ -521,6 +549,7 @@ class DenunciaAmbitoController extends Controller{
                 'titulo_catalogo'      => ucwords($this->tableName) . " de " . $th,
                 'titulo_header'        => 'Editando el Folio: '.$Id,
                 'origenes'             => $Origenes,
+                'prioridades'          => $Prioridades,
                 'msg'                  => $this->msg,
                 'pregunta1'            => $pregunta1,
                 'ambito'               => $ServCat, //FuncionesController::arrAmbitosSM(),

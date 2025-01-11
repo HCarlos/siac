@@ -6,6 +6,7 @@
 namespace App\Http\Requests\Denuncia;
 
 use App\Classes\MessageAlertClass;
+use App\Models\Catalogos\Estatu;
 use App\Models\Catalogos\Prioridad;
 use App\Rules\Uppercase;
 use Illuminate\Database\QueryException;
@@ -56,15 +57,22 @@ class PrioridadRequest extends FormRequest
     {
 
         $Item = [
-            'prioridad' => strtoupper($this->prioridad),
-            'class_css' => $this->class_css,
-            'predeterminado' => $this->predeterminado==1?true:false,
+            'prioridad'        => strtoupper($this->prioridad),
+            'class_css'        => $this->class_css,
+            'predeterminado'   => $this->predeterminado==1?true:false,
+            'orden_impresion'  => $this->orden_impresion,
+            'ambito_prioridad' => $this->ambito_prioridad,
         ];
 
         try {
             if ($this->predeterminado==1) {
-                $items = Prioridad::where("predeterminado",true);
-                $items->update(["predeterminado" => false]);
+//                $items = Prioridad::where("predeterminado",true);
+//                $items->update(["predeterminado" => false]);
+
+                Prioridad::where('predeterminado',true)
+                    ->where('ambito_prioridad',$this->ambito_prioridad)
+                    ->update(['predeterminado'=>false]);
+
             }
             if ($this->id == 0) {
                 $item = Prioridad::create($Item);

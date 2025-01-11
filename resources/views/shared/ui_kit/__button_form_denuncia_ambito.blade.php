@@ -1,7 +1,7 @@
 @isset($item)
     @if ($item->id == 0)
         @if($item->cerrado==false )
-            @canany(['all','guardar_expediente'])
+            @canany(['all','guardar_expediente','guardar_expediente'])
                 <button type="submit" class="btn btn-lg btn-rounded btn-primary float-right btnGuardarDenuncia">
                     <i class="fas fa-check-circle"></i> Guardar
                 </button>
@@ -9,7 +9,7 @@
         @endif
      @else
         @if($item->cerrado==false )
-            @canany(['all','modificar_expediente'])
+            @canany(['all','modificar_expediente','guardar_expediente'])
                 <button type="submit" class="btn btn-lg btn-rounded btn-primary float-right btnGuardarDenuncia">
                     <i class="fas fa-check-circle"></i> Guardar
                 </button>
@@ -18,7 +18,7 @@
     @endif
 @else
 
-    @canany(['all','guardar_expediente','guardar_respuesta'])
+    @canany(['all','guardar_expediente','guardar_respuesta','guardar_expediente'])
         <button type="submit" class="btn btn-lg btn-rounded btn-primary float-right btnGuardarDenuncia">
             <i class="fas fa-check-circle"></i> Guardar
         </button>

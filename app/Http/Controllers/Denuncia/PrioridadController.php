@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Denuncia;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Funciones\FuncionesController;
 use App\Http\Requests\Denuncia\PrioridadRequest;
 use App\Models\Catalogos\Prioridad;
 use Illuminate\Http\Request;
@@ -71,6 +72,7 @@ class PrioridadController extends Controller
     protected function newItemV2()
     {
         $user = Auth::user();
+        $ambito = FuncionesController::arrAmbitosDependencia();
         return view('SIAC._comun.__modal_comun_1',
             [
                 'Titulo'      => 'Nuevo',
@@ -79,7 +81,7 @@ class PrioridadController extends Controller
                 'items_forms' => 'SIAC.estructura.prioridad.__prioridad.__prioridad_new',
                 'IsNew'       => true,
                 'user'        => $user,
-
+                'ambito'      => $ambito,
             ]
         );
     }
@@ -130,6 +132,7 @@ class PrioridadController extends Controller
     {
         $item = Prioridad::find($Id);
         $user = Auth::user();
+        $ambito = FuncionesController::arrAmbitosDependencia();
         return view('SIAC._comun.__modal_comun_1',
             [
                 'Titulo'      => isset($item->prioridad) ? $item->prioridad : 'Nuevo',
@@ -140,7 +143,7 @@ class PrioridadController extends Controller
                 'IsNew'       => false,
                 'IsModal'     => true,
                 'user'        => $user,
-
+                'ambito'      => $ambito,
             ]
         );
     }

@@ -281,3 +281,84 @@
     }
 
 
+function data5(dataSet) {
+    return {
+        labels: [
+            'Bacheo en vialidades',
+            'Desazolve de drenaje',
+            'Fuga de agua potable',
+            'Recolección de residuos sólidos',
+            'Reparación de alcantarilla',
+            'Reparación de luminarias',
+        ],
+        datasets: [{
+            label: 'Cantidad de servicios',
+            data: dataSet,
+            backgroundColor: [
+                '#6a0dad', // Morado
+                '#0044cc', // Azul oscuro
+                '#00bfff', // Cian
+                '#32cd32', // Verde
+                '#ffc107', // Amarillo
+                '#dc3545', // Rojo
+            ],
+            borderWidth: 1,
+            borderColor: '#ffffff', // Bordes blancos
+            borderRadius: 3, // Bordes redondeados
+            barPercentage: 0.8, // Grosor de las barras
+        }]
+    }
+}
+function opciones5(){
+    return {
+        responsive: true,
+        maintainAspectRatio: false,
+        indexAxis: 'y',
+        scales: {
+            x: {
+                stacked: true,
+                ticks: {
+                    font: {
+                        size: 8
+                    }
+                }
+            },
+            y: {
+                stacked: true,
+                ticks: {
+                    font: {
+                        size: 8
+                    }
+                }
+            },
+        },
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        interaction: {
+            intersect: true,
+        },
+        animation: {
+            duration: 0,
+            onComplete: function() {
+                ctx = this.ctx;
+                ctx.font = Chart.helpers.fontString(8, 'normal', Chart.defaults.font.family);
+                chartinst = this;
+                this.data.datasets.forEach(function(dataset, i) {
+                    if (chartinst.isDatasetVisible(i)) {
+                        var meta = chartinst.getDatasetMeta(i);
+                        meta.data.forEach(function(bar, index) {
+                            var data = dataset.data[index];
+                            // alert(bar.x);
+                            var textX = bar.x > 180 ? bar.x - 12 : bar.x + 4;
+                            ctx.fillText(data, textX, bar.y + 4);
+                        });
+                    }
+                });
+            }
+        }
+    }
+}
+
