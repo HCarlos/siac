@@ -17,7 +17,12 @@
 
             @foreach($items as $item)
                 <tr class="@if($item->cerrado) bg-coral-denuncia-cerrada @endif" id="tr_{{$item->id}}">
-                    <td class="table-user @if($item->origen_id == config('atemun.pagina_web_id')) text-danger @endif">{{$item->id}}</td>
+                    <td class="table-user @if($item->origen_id == config('atemun.pagina_web_id')) text-danger @endif">
+                        {{$item->id}}
+                        @if($item->prioridad_id === 1 || $item->prioridad_id === 8)
+                            <i class="fas fa-exclamation-triangle text-danger blinking-icon"></i><i class="fas fa-exclamation-circle text-danger"></i>
+                        @endif
+                    </td>
                     <td class="w-25">
                         {{$item->ciudadano}} <br>
                         <small>{{$item->curp_ciudadano}}</small>

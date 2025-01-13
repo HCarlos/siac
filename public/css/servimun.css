@@ -256,3 +256,18 @@ div.help-box2  p  {
     right: 10px;
     top: 10px;
 }
+
+.blinking-icon {
+    /*font-size: 3rem; !* Tamaño del ícono *!*/
+    /*color: #dc3545; !* Color rojo *!*/
+    animation: blink 1s infinite; /* Animación parpadeante */
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1; /* Totalmente visible */
+    }
+    50% {
+        opacity: 0; /* Oculto */
+    }
+}
