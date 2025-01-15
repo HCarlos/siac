@@ -186,7 +186,8 @@
                 const data = await response.json();
 
                 // Llama a la función para renderizar los datos
-                initLoadData(data);
+                // alert(data[0].estatus[0].Unidades[0].Total);
+                initLoadData(data[0]);
             } catch (error) {
                 console.error(error);
             }

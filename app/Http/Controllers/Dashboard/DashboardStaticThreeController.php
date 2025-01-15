@@ -143,9 +143,9 @@ class DashboardStaticThreeController extends Controller{
 
 
             $arrJson = [
-                "estatus" => $arrEstatus,
-                "unidades" => $vectorUnidades,
-                "servicios" => $vectorServicios,
+                (object)["estatus" => $arrEstatus],
+                (object)["unidades" => $vectorUnidades],
+                (object)["servicios" => $vectorServicios],
             ];
 
 
