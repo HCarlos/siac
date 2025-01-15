@@ -174,7 +174,7 @@
         async function loadJSON(file_output) {
             try {
                 // Solicita el archivo JSON (cámbialo al nombre de tu archivo)
-                alert(file_output);
+                // alert(file_output);
                 const response = await fetch(file_output);
 
                 // Verifica si la solicitud fue exitosa
@@ -313,10 +313,10 @@
         }
 
         // Llama a la función para cargar el JSON al iniciar
-        let urlFile = "{{ Storage::disk('public')->url($file_output) }}";
+        {{--let urlFile = "{{ Storage::disk('public')->url($file_output) }}";--}}
 
-        // alert( urlFile );
-        loadJSON( urlFile );
+        {{--alert("/storage/{{ $file_output }}" );--}}
+        loadJSON( "/storage/{{ $file_output }}" );
 
 
     });
