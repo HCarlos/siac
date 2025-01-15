@@ -312,6 +312,7 @@
 
         // Llama a la función para cargar el JSON al iniciar
         loadJSON( "{{ $file_output }}" );
+        {{--alert( "{{ $file_output }}" );--}}
 
 
     });

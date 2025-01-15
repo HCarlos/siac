@@ -48,7 +48,7 @@ class DashboardStaticThreeController extends Controller{
         }
 
         $file_out = "file_".$start_date.'_'.$end_date.'.json';
-        $isExistFile = Storage::disk('public')->exists($file_out);
+        $isExistFile = false; //Storage::disk('public')->exists($file_out);
 
         if ( ! $isExistFile) {
 
@@ -142,7 +142,7 @@ class DashboardStaticThreeController extends Controller{
 
 
 
-            $arrJson = (object)[
+            $arrJson = [
                 "estatus" => $arrEstatus,
                 "unidades" => $vectorUnidades,
                 "servicios" => $vectorServicios,
