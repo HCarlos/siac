@@ -107,7 +107,12 @@ class Servicio extends Model
             $suba = trim($item->subarea) === "GENERAL" ? "" : trim($item->subarea).' - ';
             $area = trim($item->area) === "GENERAL" ? "" : trim($item->area).' - ';
             $depe = trim($item->abreviatura_dependencia) === "GENERAL" ? "" : trim($item->abreviatura_dependencia);
-            $data[]=array('id'=>$item->id,'servicio'=>$item->servicio.' - '.$suba.$area.$depe);
+            $data[]=array(
+                'id'=>$item->id,
+                'servicio'=>$item->servicio.' - '.$suba.$area.$depe,
+                'dias_ejecucion' => $item->dias_ejecucion,
+                'dias_maximos_ejecucion' => $item->dias_maximos_ejecucion,
+            );
         }
 
         return json_decode( json_encode($data));

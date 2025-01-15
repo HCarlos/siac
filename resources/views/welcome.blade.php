@@ -1,126 +1,57 @@
-<!doctype html>
-<html lang="{{ app()->getLocale() }}">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=yes">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name') }}</title>
-
-
-    <link href="{{ asset('images/favicon/favicon.png') }}" rel="shortcut icon">
-    <link href="{{ asset('images/favicon/favicon-32-32.png') }}" rel="shortcut icon" sizes="32x32">
-    <link href="{{ asset('images/favicon/favicon-114-114.png') }}" rel="apple-touch-icon" sizes="114x114">
-    <link href="{{ asset('images/favicon/favicon-157-157.png') }}" rel="apple-touch-icon" sizes="157x157">
-    <link href="{{ asset('images/favicon/favicon-180-180.png') }}" rel="apple-touch-icon" sizes="180x180">
-    <link href="{{ asset('images/favicon/favicon-192-192.png') }}" rel="apple-touch-icon" sizes="192x192">
-    <link href="{{ asset('images/favicon/favicon-270-270.png') }}" rel="apple-touch-icon" sizes="270x270">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Raleway|Roboto+Condensed|Tangerine&effect=3d-float" rel="stylesheet">
-    <link href="{{ asset('css/atemun.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/servimun.css') }}" rel="stylesheet">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botón con Redirección</title>
     <style>
-        html, body {
-            background-color: #fff;
-            background: url('{{asset("images/bg-auth.png")}}') no-repeat center;
-            background-size: cover;
-            min-height: 100vh;
-            color: #fff;
-            font-family: 'Raleway', sans-serif;
-            font-weight: 100;
-            height: 100vh;
+        /* Estilo del body con la imagen de fondo */
+        body {
             margin: 0;
-        }
-
-        .full-height {
-            height: 100vh;
-        }
-
-        .flex-center {
-            align-items: center;
+            padding: 0;
+            height: 100vh; /* Ocupa toda la altura de la pantalla */
+            background: url('/images/background_v2.png') no-repeat center center/cover; /* Imagen de fondo */
+            position: relative; /* Para posicionar el botón correctamente */
             display: flex;
             justify-content: center;
+            align-items: center;
         }
 
-        .position-ref {
-            position: relative;
+        /* Botón estilizado */
+        .modern-button {
+            position: absolute; /* Para superponerlo sobre la imagen */
+            top: 20px; /* Espaciado desde el borde superior */
+            right: 20px; /* Espaciado desde el borde derecho */
+            padding: 15px 30px; /* Tamaño del botón */
+            font-size: 18px; /* Tamaño del texto */
+            font-weight: bold; /* Negrita para el texto */
+            color: white; /* Texto blanco */
+            background: linear-gradient(135deg, #ff7eb3, #ff758c); /* Gradiente vibrante */
+            border: none; /* Sin bordes */
+            border-radius: 12px; /* Bordes redondeados */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(255, 118, 173, 0.4); /* Sombras */
+            cursor: pointer; /* Cursor de mano al pasar */
+            text-transform: uppercase; /* Texto en mayúsculas */
+            letter-spacing: 1px; /* Espaciado entre letras */
+            transition: all 0.4s ease; /* Animación suave */
         }
 
-        .top-right {
-            position: absolute;
-            width: 98%;
-            text-align: right;
-            background: transparent;
+        /* Efecto hover */
+        .modern-button:hover {
+            transform: translateY(-5px); /* Elevación */
+            background: linear-gradient(135deg, #ff758c, #ff7eb3); /* Gradiente inverso */
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4), 0 6px 8px rgba(255, 118, 173, 0.5); /* Sombras más intensas */
         }
 
-        .content {
-            text-align: center;
-        }
-
-        .title {
-            font-size: 84px;
-        }
-        .subtitle {
-            font-size: 42px;
-        }
-        lu, li{
-            list-style: none;
-            background-size: cover !important;
-            background-color: transparent !important;
-        }
-        .links a {
-            color: darkred !important;
-            padding: 0 25px;
-            font-family: 'Raleway', sans-serif;
-            font-size: 20px;
-            font-weight: bold !important;
-            letter-spacing: .1rem;
-            text-decoration: none !important;;
-            list-style:none !important;
-            text-transform: uppercase;
-            background-size: cover;
-            text-shadow: white 2px 0px 5px;
-        }
-        .m-b-md {
-            margin-bottom: 30px;
-        }
-        .navbar, .navbar-nav{
-            background-size: cover !important;
-            background-color: transparent !important;
-        }
-        .aviso_privacidad {
-            color: floralwhite !important;
-            padding: 0 2px;
-            font-size: 16px;
-            font-weight: 600;
-            letter-spacing: .1rem;
-            text-decoration: none !important;;
-            list-style:none !important;
-            text-transform: uppercase;
-            background-size: cover;
+        /* Efecto activo (clic) */
+        .modern-button:active {
+            transform: translateY(2px); /* Botón baja ligeramente */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(255, 118, 173, 0.3); /* Reduce sombras */
         }
     </style>
-
 </head>
-
 <body>
-<div class="flex-center position-ref full-height">
-    @if (Route::has('login'))
-        <ul class="navbar navbar-nav">
-            <li class="links top-right " >
-                @auth
-                    <a href="{{ url('/home') }}" class="" ><strong>Entrar</strong></a>
-                @else
-                    <a href="{{ route('login') }}" class="text-white "><strong>Iniciar sesión</strong></a>
-                @endauth
-            </li>
-        </ul>
-    @endif
-    <div class="content" style="margin-top: -15em;">
-        <span class="text-cafe  font-effect-3d-float font_Tangerine_700"></span>
-    </div>
-    <p class="wellcome-pos-version font_Open_Sans_Condensed_300">v 1.0   | <a href="/privacidad" class="aviso_privacidad"  target="_blank">Aviso de Privacidad</a></p>
-</div>
+<!-- Botón Resaltado con Redirección -->
+<button class="modern-button" onclick="window.location.href='{{ route('login') }}'">¡Ingresar al sistema!</button>
 </body>
 </html>

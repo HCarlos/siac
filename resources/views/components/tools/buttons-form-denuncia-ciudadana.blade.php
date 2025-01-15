@@ -7,8 +7,8 @@
     </div>
     <div class="col-lg-6">
         <div class="grid-container">
-            <button type="submit" class="btn btn-lg btn-rounded btn-primary float-right btnGuardarDenuncia">
-                <i class="fas fa-check-circle"></i> Guardar
+            <button type="submit" class="btn btn-lg btn-rounded btn-primary float-right shadow btnGuardarDenuncia">
+                <i class="fas fa-check-circle"></i> Guardar Solicitud
             </button>
         </div>
     </div>

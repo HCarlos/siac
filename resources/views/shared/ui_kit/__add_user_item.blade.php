@@ -6,7 +6,7 @@
        class="action-icon text-center icon_usuarios_interno btnFullModal"
        data-toggle="modal"
        data-target="#modalFull"
-       title="Ver/vincular usuarios"
+       title="Ver/vincular solicitud"
     >
 {{--        <i class="fas fa-users text-info"></i>--}}
         @include('.shared.svgs.__usuarios')
@@ -16,7 +16,7 @@
     <a href="{{route($showAddUser,['Id'=>$item->id])}}"
        class="action-icon text-center icon_usuarios_interno "
        data-toggle="tooltip"
-       title="Ver/vincular usuarios"
+       title="Ver/vincular solicitud"
     >
 {{--        <i class="fas fa-users text-info"></i>--}}
         @include('.shared.svgs.__usuarios')

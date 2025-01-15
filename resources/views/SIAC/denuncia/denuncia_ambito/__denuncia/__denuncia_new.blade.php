@@ -114,7 +114,7 @@
             <div class="form-group row mb-1">
                 <div class="col-lg-3"></div>
                 <div class="col-lg-9">
-                    <a href="#" class="btn btn-block btn-danger-primary w-50 text-center text-white searchIdenticalAmbito"><i class="fas fa-search"></i> Buscar coincidencias  </a>
+                    <a href="#" class="btn btn-block btn-danger-primary text-center btn-rounded shadow text-white searchIdenticalAmbito"><i class="fas fa-search"></i> Buscar coincidencias  </a>
                 </div>
             </div>
             <div class="form-group row mb-1">

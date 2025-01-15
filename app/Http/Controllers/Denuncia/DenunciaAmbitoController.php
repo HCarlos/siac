@@ -801,7 +801,7 @@ class DenunciaAmbitoController extends Controller{
     }
 
 // ***************** ELIMINA EL ITEM VIA AJAX ++++++++++++++++++++ //
-    protected function getServiciosFromDependencias($id= 0){
+    protected function getServiciosFromDependenciasAmbito($id= 0){
 
         $item = Servicio::getQueryServiciosFromDependencias($id);
 

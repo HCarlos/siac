@@ -662,11 +662,12 @@ jQuery(function($) {
 
 
 
-ú
 
 
+        $(".preloader").hide();
         $(".formData").on('submit',function(event){
             $(".btnGuardarDenuncia").prop('disabled', true);
+            $(".preloader").show();
         });
 
         if ( $(".fecha_ingreso") ){

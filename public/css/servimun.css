@@ -263,6 +263,18 @@ div.help-box2  p  {
     animation: blink 1s infinite; /* Animación parpadeante */
 }
 
+.btn-amarillo-morena{
+    background-color: #997423 !important;
+    font-weight: bold !important;
+    border: 2px #edb606 !important;
+    padding-bottom: 0.0em !important;
+}
+
+.btn-amarillo-morena:hover{
+    background-color: #edb606 !important;
+    color: #585c5f !important;
+}
+
 @keyframes blink {
     0%, 100% {
         opacity: 1; /* Totalmente visible */
