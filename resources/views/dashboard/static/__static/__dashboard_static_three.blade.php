@@ -312,8 +312,10 @@
         }
 
         // Llama a la función para cargar el JSON al iniciar
-        loadJSON( "{{ $file_output }}" );
-        {{--alert( "{{ $file_output }}" );--}}
+        let urlFile = "{{ Storage::disk('public')->url($file_output) }}";
+
+        // alert( urlFile );
+        loadJSON( urlFile );
 
 
     });

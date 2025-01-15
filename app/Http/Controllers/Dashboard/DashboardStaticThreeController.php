@@ -162,7 +162,7 @@ class DashboardStaticThreeController extends Controller{
                 'rango_de_consulta' => $f->fechaEspanol($start_date).' - '.$f->fechaEspanol($end_date),
                 'inicio_mes' => $start_date,
                 'fin_mes' => $end_date,
-                'file_output' => Storage::disk('public')->url($file_out) ?? null,
+                'file_output' => $file_out ?? null,
             ]);
 
     }
