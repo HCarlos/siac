@@ -174,6 +174,7 @@
         async function loadJSON(file_output) {
             try {
                 // Solicita el archivo JSON (cámbialo al nombre de tu archivo)
+                alert(file_output);
                 const response = await fetch(file_output);
 
                 // Verifica si la solicitud fue exitosa
