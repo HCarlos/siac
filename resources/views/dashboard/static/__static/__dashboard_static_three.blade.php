@@ -1,530 +1,320 @@
-<div class="col-lg-12">
-    <div class="row">
-        <div class="col-lg-4" style="padding: 0 !important;">
-            <div class="card rounded-bottom rounded-top  card-force-1" style="height: 400px !important;">
-                <div class="card-body rounde-bottom rounded-top " style="padding: 0 !important;">
-                    <div class="title-bar-block title-bar-block-primary " >
-                        <h5 class="float-left text-white mt-2">Solicitudes: <small class="ml-1">{{ $rango_de_consulta }}</small></h5>
-                        <h5 class="float-right text-white text-150 mt-1 ">{{ $srvTotal }}</h5>
+<div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <h1>CENTRO</h1>
+            <p>Honestidad y Resultados<br>2024-2027</p>
+        </div>
+        <nav class="menu">
+            <button class="menu-item active">Inicio</button>
+            <button class="menu-item">Alumbrado</button>
+            <button class="menu-item">Espacios Públicos</button>
+            <button class="menu-item">Limpia</button>
+            <button class="menu-item">Obras</button>
+            <button class="menu-item">SAS</button>
+            <button class="menu-item">Encuestas</button>
+            <button class="menu-item">Reportes</button>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main id="contenedor">
+        <!-- Header -->
+        <header class="header">
+            <button class="filter-btn active">Hoy</button>
+            <button class="filter-btn">Mes Actual</button>
+            <button class="filter-btn">Año Actual</button>
+            <div class="date-picker">
+                <label for="start_date">F. Inicial</label>
+                <input type="date" id="start_date" name="start_date" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+            </div>
+            <div class="date-picker">
+                <label for="end_date">F. Final</label>
+                <input type="date" id="end_date" name="end_date" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+            </div>
+            <div class="search-container">
+                <button class="search-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="search-icon">
+                        <path d="M10 2a8 8 0 105.29 14.29l4.35 4.35a1 1 0 001.42-1.42l-4.35-4.35A8 8 0 0010 2zm0 2a6 6 0 014.66 9.74 1 1 0 00-.14 1.41l4.35 4.35a1 1 0 001.42-1.42l-4.35-4.35a1 1 0 00-1.41.14A6 6 0 1110 4z" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Stats -->
+        <section class="stats">
+            <div class="stat">
+                <h2 id="h2Recibidas">0</h2>
+                <p>Recibidas</p>
+            </div>
+            <div class="stat">
+                <h2 id="h2EnProceso">0</h2>
+                <p>En Proceso / Programadas</p>
+            </div>
+            <div class="card-stat">
+                <div class="card-left">
+                    <h1 class="count green" id="h2Atendidas">435</h1>
+                    <p>Atendidas</p>
+                </div>
+                <div class="card-right">
+                    <p><strong>281</strong> EN TIEMPO</p>
+                    <p><strong>154</strong> CON REZAGO</p>
+                </div>
+            </div>
+            <div class="stat">
+                <h2 style="color: red;" id="h2Rechazadas">0</h2>
+                <p>Rechazadas</p>
+            </div>
+            <div class="stat">
+                <h2 id="h2Cerradas">0</h2>
+                <p>Cerradas</p>
+            </div>
+            <div class="stat">
+                <h2 id="h2Observadas">0</h2>
+                <p>Observadas</p>
+            </div>
+        </section>
+
+        <div class="dashboard-container">
+            <!-- Sección de solicitudes por área -->
+            <div class="section">
+                <div class="card">
+                    <h3>Recibidas:</h3>
+                    <div class="chart">
+                        <canvas id="chart-area-1"></canvas>
                     </div>
-                    <div class="title-bar-block title-bar-block-lightgray " >
-                        <strong class="float-left">Solicitudes por área</strong>
+                </div>
+                <div class="card">
+                    <h3>En proceso / programadas:</h3>
+                    <div class="chart">
+                        <canvas id="chart-area-2">[Gráfico de Barras]</canvas>
                     </div>
-                    <ul class="circle-fill radius-round text-center align-items-center w-100 p-0 mb-3">
-                        <li>
-                            <div>
-                                <span class="d-inline-block bgc-primary p-3 w-100 radius-round text-center border-4 brc-primary-l2">
-                                     <span class="text-white text-170 w-10">{{ $srvLimpia }}</span>
-                                 </span>
-                            </div>
-                            <strong>Solicitudes <br>de limpia</strong>
-                        </li>
-                        <li>
-                            <div>
-                                <span class="d-inline-block bgc-orange p-3 w-100 radius-round text-center border-4 brc-orange-l2">
-                                     <span class="text-white text-170 ">{{ $srvOP }}</span>
-                                </span>
-                            </div>
-                            <strong>Solicitudes <br>de Obras</strong>
-                        </li>
-                        <li>
-                            <div>
-                                <span class="d-inline-block bgc-green p-3 w-100 radius-round text-center border-4 brc-green-l2">
-                                     <span class="text-white text-170 w-10">{{ $srvSAS }}</span>
-                                </span>
-                            </div>
-                            <strong>Solicitudes <br>del SAS</strong>
-                        </li>
-                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Atendidas:</h3>
+                    <div class="chart">
+                        <canvas id="chart-area-3">[Gráfico de Barras]</canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Rechazadas:</h3>
+                    <div class="chart">
+                        <canvas id="chart-area-4">[Gráfico de Barras]</canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Cerradas:</h3>
+                    <div class="chart">
+                        <canvas id="chart-area-5">[Gráfico de Barras]</canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Observadas:</h3>
+                    <div class="chart">
+                        <canvas id="chart-area-6">[Gráfico de Barras]</canvas>
+                    </div>
                 </div>
             </div>
 
-            <div class="card rounded-bottom rounded-top card-force-1" style="height: 500px !important;" >
-                <div class="card-body rounde-bottom rounded-top " style="padding: 0 !important;">
-                    <ul class="charts-1  text-center align-items-center ">
-{{--                        <li>--}}
-{{--                            <div class="mt-3" >--}}
-{{--                                <div id="apex-chart-bar-1" ></div>--}}
-{{--                            </div>--}}
-{{--                            <strong class="font-bold font-18">Solicitud por tipo de servicio</strong>--}}
-{{--                        </li>--}}
-                        <li>
-                            <div class="mt-3"  >
-                                <div id="apex-chart-radialbar-1" ></div>
-                                <strong class="font-bold font-18">Estatus de solicitudes atendidas</strong><br>
-                                <small>{{ $selServ }} : <strong>{{ $srvTotal }}</strong></small>
-                            </div>
-                        </li>
-                    </ul>
+            <!-- Charts Section -->
+            <div class="section">
+                <div class="card">
+                    <h3>Top de solicitudes</h3>
+                    <div class="top-requests">
+                        <div><span>1 SAS</span><span>74%</span></div>
+                        <div><span>2 Obras</span><span>54%</span></div>
+                        <div><span>3 Alumbrado</span><span>21%</span></div>
+                        <div><span>4 Limpia</span><span>8%</span></div>
+                        <div><span>5 Espacios públicos</span><span>2%</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="chart-container">
+                        <h3>Servicios Municipales Monitoreados</h3>
+                        <canvas id="servicesChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="chart-container">
+                        <h3>% solicitudes cerradas</h3>
+                        <canvas id="closedRequestsChart" class="canvas_uno"></canvas>
+                    </div>
+
+                </div>
+                <div class="card">
+                    <h3>Por zona:</h3>
+                    <div class="map-container" id="map-container">
+                        <div id="map"></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="chart-container">
+                        <h3>% solicitudes atendidas / rechazadas</h3>
+                        <canvas id="solicitudesChart"></canvas>
+                    </div>
                 </div>
             </div>
 
         </div>
-        <div class="col-lg-4">
-            <div class="card rounded-bottom rounded-top  card-force-1" >
-                <div class="card-body rounde-bottom rounded-top " style="padding: 0 !important;">
-                    <div class="form-row mb-1 col-sm-12">
-                        <div class="col-sm-9 ml-1 mt-1">{{ $selServ }}</div>
-                        <div class="col-sm-1">
-                            <button type="button" class="btn btn-xs px-2 btn-green mb-1 btnFullModal float-right mr-1" data-toggle="modal" data-target="#optionsModal">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </div>
-                        <div class="col-sm-1">
-                            <a href="{{route('home')}}" class="btn btn-xs px-2 btn-orange mb-1  float-right mr-1" >
-                                <i class="fa fa-home"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <ul class="charts-2 text-center align-items-center w-100 p-0 mb-3">
-                        <li>
-                            <div id="apex-chart-bar-column-1"></div>
-                            <strong class="font-bold font-18">Estatus de solicitudes : <strong>{{ $srvTotal }}</strong></strong>
-                        </li>
-                    </ul>
-                </div>
-            </div>
 
-            <div class="card rounded-bottom rounded-top card-force-1" >
-                <div class="card-body rounde-bottom rounded-top " style="padding: 0 !important;">
-                    <ul class="charts-2  text-center align-items-center ">
-                        <li>
-                            <div class="w-100 h-100 mb-3" >
-                                <div>
-                                    <div class="mt-3" >
-                                        <div id="apex-chart-bar-1" ></div>
-                                    </div>
-                                    <strong class="font-bold font-18">Solicitud por tipo de servicio : <strong>{{ $srvTotal }}</strong></strong>
-                                </div>
-{{--                                <div id="map"></div>--}}
-                            </div>
-{{--                            <strong class="font-bold font-18">Ubicaciones</strong>--}}
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-    </div>
-        <div class="col-lg-4">
-            <div class="card rounded-bottom rounded-top  card-force-1" >
-                <div class="card-body rounde-bottom rounded-top " style="padding: 0 !important;">
-                    <div class="orm-row mb-1 col-sm-12" >
-
-                        <div class="col-sm-10 ml-1 mt-1">{{ $selServ }}</div>
-                        <div class="col-sm-1">
-                        </div>
-
-                    </div>
-                    <ul class="table-one text-left align-items-center w-100 p-0 mb-3">
-                        <li class="w-100">
-                            <div class="btn-strong-filter-1 font-bold font-14 w-100-center">Solicitudes próximas a vencer: {{ $arrSrv4->count() }}</div>
-                            <div id="table-0" class="w-100">
-                                <div class="table-n-dashboard-statistics" >
-                                    <table class=" table table-bordered table-striped dt-responsive nowrap font-14" >
-                                        <thead>
-                                        <tr class="">
-                                            <th>Servicio</th>
-                                            <th>Unidad</th>
-                                            <th>F. Lim.</th>
-                                            <th>Status</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody >
-                                        @foreach($arrSrv4 as $item)
-                                            <tr class="@if ( date('Y-m-d') > $item->fecha_ejecucion ) bgc-danger-l3 @endif">
-                                                <td><small> {{ $item->nombre_corto_ss }} </small>
-                                                    <small class="chikirimbita text-blue ">
-                                                        <a href="{{route($item->firmado == true ? 'imprimir_denuncia_archivo' . '/' : 'imprimir_denuncia_respuesta' . '/', ['uuid'=>$item->uuid])}}" target="_blank">
-                                                            {{ $item->id }}
-                                                        </a>
-                                                    </small>
-                                                </td>
-                                                <td><small> {{ $item->abreviatura }} </small></td>
-                                                <td><small> {{ $item->fecha_ejecucion }} </small></td>
-                                                <td><small> {{ $item->estatus }} </small></td>
-                                            </tr>
-                                        @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="w-100">
-                            <div class="btn-strong-filter-1 font-bold font-14 w-100-center">Solicitudes urgentes: {{ $arrSrv5->count() }}</div>
-                            <div id="table-1" class="w-100">
-                                <div class="table-n-dashboard-statistics">
-                                    <table class=" table table-bordered table-striped dt-responsive nowrap font-14" >
-                                        <thead>
-                                        <tr class="">
-                                            <th>Servicio</th>
-                                            <th>Unidad</th>
-                                            <th>F. Lim.</th>
-                                            <th>Status</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody >
-                                        @foreach($arrSrv5 as $item)
-                                            <tr class="@if ( date('Y-m-d') > $item->fecha_ejecucion ) bgc-danger-l3 @endif">
-                                                <td><small> {{ $item->nombre_corto_ss }} </small>
-                                                    <small class="chikirimbita text-blue ">
-                                                        <a href="{{route($item->firmado == true ? 'imprimir_denuncia_archivo' . '/' : 'imprimir_denuncia_respuesta' . '/', ['uuid'=>$item->uuid])}}" target="_blank">
-                                                            {{ $item->id }}
-                                                        </a>
-                                                    </small>
-                                                </td>
-                                                <td><small> {{ $item->abreviatura }} </small></td>
-                                                <td><small> {{ $item->fecha_ingreso }} </small></td>
-                                                <td><small> {{ $item->estatus }} </small></td>
-                                            </tr>
-                                        @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="w-100">
-                            <div class="btn-strong-filter-1 font-bold font-14 w-100-center">Solicitudes prioritarias: {{ $arrSrv6->count() }}</div>
-                            <div id="table-2" class="w-100">
-                                <div class="table-n-dashboard-statistics">
-                                    <table class=" table table-bordered table-striped dt-responsive nowrap font-14" >
-                                        <thead>
-                                        <tr class="">
-                                            <th>Servicio</th>
-                                            <th>Unidad</th>
-                                            <th>F. Lim.</th>
-                                            <th>Status</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody >
-                                        @foreach($arrSrv6 as $item)
-                                            <tr class="@if ( date('Y-m-d') > $item->fecha_ejecucion ) bgc-danger-l3 @endif">
-                                                <td><small> {{ $item->nombre_corto_ss }} </small>
-                                                    <small class="chikirimbita text-blue ">
-                                                        <a href="{{route($item->firmado == true ? 'imprimir_denuncia_archivo' . '/' : 'imprimir_denuncia_respuesta' . '/', ['uuid'=>$item->uuid])}}" target="_blank">
-                                                            {{ $item->id }}
-                                                        </a>
-                                                    </small>
-                                                </td>
-                                                <td><small> {{ $item->abreviatura }} </small></td>
-                                                <td><small> {{ $item->fecha_ingreso }} </small></td>
-                                                <td><small> {{ $item->estatus }} </small></td>
-                                            </tr>
-                                        @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-    </div>
+    </main>
 </div>
 
-<!-- Modal de Opciones -->
-<div class="modal fade m-0 p-0" id="optionsModal" tabindex="-1" role="dialog" aria-labelledby="optionsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 640px; padding: 0px !important;">
-        <div class="modal-content shadow border-none radius-2 ">
-            <div class="modal-header modal-colored-header bg-info m">
-                <h4 class="modal-title" id="modalHeaderFull">Opciones de Consulta</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            </div>
-            <div class="modal-body col-sm-12">
-                <form method="POST" action="dashboard-statistics" id="formFullModal" class="row">
-                    {{ csrf_field() }}
-                    <div class="form-group row col-sm-12">
-                        <label for = "fecha_inicial" class="col-form-label col-sm-2">F. Inicial</label>
-                        <input type="date" class="form-control col-sm-4" name="fecha_inicial" id="fecha_inicial" value="{{ $inicio_mes }}" />
-                        <label for = "fecha_final" class="col-form-label col-sm-2">F. Final</label>
-                        <input type="date" class="form-control col-sm-4" name="fecha_final" id="fecha_final" value="{{ $fin_mes }}" />
-                    </div>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_KEY')}}&libraries=marker&v=weekly"
+    async
+    defer
+></script>
+<script src="js/dashboard_statistics_three_map_setup.js" type="text/javascript"></script>
 
-                    <div class="form-group row col-sm-12">
-                        <label for = "servicio_id" class="col-form-label col-sm-2">Servicio</label>
-                        <select id="servicio_id" name="servicio_id" class="form-control col-sm-10" size="1">
-                            <option value="0" selected >Todos los servicio</option>
-                            @foreach($servicios as $t)
-                                <option value="{{$t->id}}" >{{ $t->nombre_corto_ss.' ('.$t->abreviatura_dependencia.')'  }} </option>
-                            @endforeach
-                        </select>
-                    </div>
+<script>
 
-                    <div class="form-group col-12">
-                        <button type="submit" class="btn btn-sm btn-primary btn-block px-4 text-600 radius-1 ">
-                            Consultar
-                        </button>
-                    </div>
+    document.addEventListener('DOMContentLoaded', () => {
 
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+        async function loadJSON(file_output) {
+            try {
+                // Solicita el archivo JSON (cámbialo al nombre de tu archivo)
+                const response = await fetch(file_output);
+
+                // Verifica si la solicitud fue exitosa
+                if (!response.ok) {
+                    throw new Error(`Error al cargar JSON: ${response.statusText}`);
+                }
 
 
-<script type="text/javascript" >
+                // Convierte la respuesta a JSON
+                const data = await response.json();
 
-    /* Solicitudes por tipo de Servicio */
-
-    var sts1data = [@foreach($arrSrv1 as $d){{ $d->data }},@endforeach];
-    var sts1cate = [@foreach($arrSrv1 as $d)"{{ $d->name }}",@endforeach];
-    var optionsHorizontalBars = {
-        series: [{
-            name: 'Solicitudes',
-            data: sts1data
-        }],
-        chart: {
-            type: 'bar',
-            height: 400,
-            toolbar: {
-                show: false,
-            },
-        },
-        plotOptions: {
-            bar: {
-                borderRadius: 4,
-                borderRadiusApplication: 'end',
-                horizontal: true,
+                // Llama a la función para renderizar los datos
+                initLoadData(data);
+            } catch (error) {
+                console.error(error);
             }
-        },
-        colors: ['#EFB9A5D8', '#E91E63'],
-        dataLabels: {
-            enabled: true,
-            textAnchor: 'middle',
-            style: {
-                colors: ['#737171']
-            },
-            distributed: false,
-        },
-        xaxis: {
-            categories: sts1cate,
         }
-    };
-    var chart = new ApexCharts(document.querySelector("#apex-chart-bar-1"), optionsHorizontalBars);
-    chart.render();
 
-    /* Estatus de solicitud */
-    var optionsRadialBar = {
-        series: [ {{ $atendidas }} ],
-        chart: {
-            height: 300,
-            type: 'radialBar',
-            offsetY: -20,
-            sparkline: {
-                enabled: false
-            },
-        },
-        plotOptions: {
-            radialBar: {
-                startAngle: -90,
-                endAngle: 90,
-                track: {
-                    background: "#e7e7e7",
-                    strokeWidth: '97%',
-                    margin: 5, // margin is in pixels
-                    dropShadow: {
-                        enabled: true,
-                        top: 2,
-                        left: 0,
-                        color: '#999',
-                        opacity: 1,
-                        blur: 2
-                    }
-                },
-                dataLabels: {
-                    name: {
-                        show: false
-                    },
-                    value: {
-                        offsetY: -2,
-                        fontSize: '22px'
-                    }
-                }
-            }
-        },
-        grid: {
-            padding: {
-                top: -10
-            },
-        },
-        fill: {
-            type: 'solid',
-            colors: ['#35b324'],
-            gradient: {
-                shade: 'dark',
-                shadeIntensity: 0.4,
-                inverseColors: true,
-                opacityFrom: 1,
-                opacityTo: 1,
-                stops: [0, 50, 53, 91],
-            },
-        },
-        labels: ['Atendidas','Pendientes'],
-        title: {
-            text: 'Atendidas',
-            align: 'center',
-            floating: true,
-            offsetX: 0,
-            style: {
-                fontSize: '12px',
-                color: undefined,
-                fontFamily: undefined,
-                color:  '#263238',
-            }
-        },
-        tooltip: {
-            enabled: false,
-        },
-    };
-    var chart = new ApexCharts(document.querySelector("#apex-chart-radialbar-1"), optionsRadialBar);
-    chart.render();
 
-    /* Estatus por mes */
-    var colors = ["#24aa03", "#edb606", "#870606"];
-    var optionsBarColumn1 = {
-        series: [{
-            name: 'Solicitudes',
-            data: [{{$arrPorStatus[0]['porcentaje']}}, {{$arrPorStatus[1]['porcentaje']}}, {{$arrPorStatus[2]['porcentaje']}}],
-        }],
-        chart: {
-            height: 250,
-            type: 'bar',
-            events: {
-                click: function(chart, w, e) {
-                    // console.log(chart, w, e)
-                }
-            },
-            toolbar: {
-                show: false,
-            },
-        },
-        colors: colors,
-        plotOptions: {
-            bar: {
-                columnWidth: '80%',
-                height:'auto',
-                borderRadius: 5,
-                dataLabels: {
-                    position: 'top', // top, center, bottom
-                },
-                distributed: true,
-            }
-        },
-        dataLabels: {
-            enabled: true,
-            formatter: function (val) {
-                return val + "%";
-            },
-            offsetY: -25,
-            style: {
-                fontSize: '12px',
-                colors: ["#304758"]
-            }
-        },
-        legend: {
-            show: false
+        function initLoadData(data) {
 
-        },
-        xaxis: {
-            categories: ["Atendidas: "+{{$arrPorStatus[0]['atendidas']}}, "En Proceso: "+{{$arrPorStatus[1]['en_proceso']}}, "Pendientes: "+{{$arrPorStatus[2]['pendientes']}}],
-            position: 'bottom',
-            axisBorder: {
-                show: false
-            },
-            axisTicks: {
-                show: false
-            },
-            crosshairs: {
-                fill: {
-                    type: 'gradient',
-                    gradient: {
-                        colorFrom: '#D8E3F0',
-                        colorTo: '#BED1E6',
-                        stops: [0, 100],
-                        opacityFrom: 0.4,
-                        opacityTo: 0.5,
-                    }
-                }
-            },
-            tooltip: {
-                enabled: false,
-            }
-        },
-        yaxis: {
-            axisBorder: {
-                show: false
-            },
-            axisTicks: {
-                show: false,
-            },
-            labels: {
-                show: true,
-                formatter: function (val) {
-                    return val + "%";
-                }
-            }
+            // alert(data.estatus[0].Unidades[0].Total);
 
-        },
-    };
-    var chart = new ApexCharts(document.querySelector("#apex-chart-bar-column-1"), optionsBarColumn1);
-    chart.render();
-
-    /* Inicia mapa */
-    async function initMap() {
-        // The location of Uluru
-        const Data = [];
-        Data.push([{lat:17.984446, lng:-92.948792}, "Juanita Ramos",12588,"Recibió apoyos de láminas"]);
-        Data.push([{lat:17.985481666299027, lng:-92.94758644733166}, "Juan Lopez",854178,"Se reparó un bache en su calle"]);
-        Data.push([{lat:17.984593866561635, lng:-92.94830527932858}, "Arnulfo Sánchez Acosta",52548,"Se le apoyó con Cemento"]);
-        Data.push([{lat:17.984527042023625, lng:-92.94802163672213}, "Tiburcio Hernandez Rus",12588,"Se le apoyó con Pollitas ponedoras"]);
-        Data.push([{lat:17.984838282787656, lng:-92.94864390919706}, "Macario Contreras",12588,"Recibió un molino eléctrico como apoyo"]);
-        Data.push([{lat:17.98436513451899, lng:-92.94846748271176}, "Benancio Montesinos",12588,"Se arregló una fuga de agua frente a su domicilio"]);
-        Data.push([{lat:17.984203266353163, lng:-92.94889836470196}, "Justina Hernández Pérez",12588,"Se cambió las luminarias que estaban apagadas enm su calle por nuevas."]);
-        // Request needed libraries.
-        //@ts-ignore
-        const { Map, InfoWindow } = await google.maps.importLibrary("maps");
-        const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary(
-            "marker",
-        );
-        // The map, centered at Data
-        const map = new Map(document.getElementById("map"), {
-            zoom: 18.5,
-            center: Data[0][0],
-            mapId: "{{ env('GOOGLE_MAPS_KEY') }}",
-        });
-        const infoWindow = new InfoWindow();
-
-        Data.forEach(([position, title, id, apoyo], i) => {
-            const pin = new PinElement({
-                glyph: `${i + 1}`,
-                scale: 1.5,
+            // Recibidas
+            data.estatus.forEach((estatus) => {
+                console.log(`Estatus: ${estatus.Estatus}`);
+                console.log("Unidades:");
+                estatus.Unidades.forEach((unidad) => {
+                    console.log(`- ${unidad.Unidad}: Total = ${unidad.Total}, Porcentaje = ${unidad.Porcentaje}%`);
+                });
             });
-            const marker = new AdvancedMarkerElement({
-                map: map,
-                position: position,
-                title: "<h3>"+id+" "+title+"</h3><br><h4>"+apoyo+"</h4>",
-                content:pin.element,
-                gmpClickable: true,
-                gmpDraggable: true,
-            });
-            marker.addListener("click", ({ domEvent, latLng }) => {
-                const { target } = domEvent;
-                infoWindow.close();
-                infoWindow.setContent(marker.title);
-                infoWindow.open(marker.map, marker);
-                google.maps.event.removeListener(clickListener);
+            let data1data = [];
+            let data2data = [];
+            let data3data = [];
+            let data4data = [];
+            let data5data = [];
+            let data6data = [];
+
+            document.getElementById("h2Recibidas").innerHTML = data.estatus[0].Total;
+            document.getElementById("h2EnProceso").innerHTML = data.estatus[1].Total;
+            document.getElementById("h2Atendidas").innerHTML = data.estatus[2].Total;
+            document.getElementById("h2Rechazadas").innerHTML = data.estatus[3].Total;
+            document.getElementById("h2Cerradas").innerHTML = data.estatus[4].Total;
+            document.getElementById("h2Observadas").innerHTML = data.estatus[5].Total;
+
+            data.estatus[0].Unidades.forEach( (unidad) => {data1data.push(unidad.Total); });
+            data.estatus[1].Unidades.forEach( (unidad) => {data2data.push(unidad.Total); });
+            data.estatus[2].Unidades.forEach( (unidad) => {data3data.push(unidad.Total); });
+            data.estatus[3].Unidades.forEach( (unidad) => {data4data.push(unidad.Total); });
+            data.estatus[4].Unidades.forEach( (unidad) => {data5data.push(unidad.Total); });
+            data.estatus[5].Unidades.forEach( (unidad) => {data6data.push(unidad.Total); });
+
+            const ctx1a = document.getElementById('chart-area-1');
+            const chart1a = new Chart(ctx1a, {
+                type: 'bar',
+                data: data1(data1data),
+                options: opciones1()
             });
 
-        });
-    }
-    if (document.getElementById("map")){
-        initMap();
-    }
-    /* Finaliza mapa */
+            // En Proceso
+            const ctx2a = document.getElementById('chart-area-2');
+            const chart2a = new Chart(ctx2a, {
+                type: 'bar',
+                data: data1(data2data),
+                options: opciones1()
+            });
+
+            var ds_atendidas = [
+                {type: 'bar',label: 'En tiempo', data: [5,45,25,75,45], backgroundColor: 'rgba(54, 162, 235, 0.6)', borderColor: 'rgba(54, 162, 235, 1)', borderWidth: 1, hoverBackgroundColor: 'rgba(54, 162, 235, 0.6)', hoverBorderColor: 'rgba(54, 162, 235, 1)' },
+                {type: 'bar',label: 'Con rezago', data: [95,55,75,25,55], backgroundColor: 'rgba(255, 99, 132, 0.2)', borderColor: 'rgba(255, 99, 132, 1)', borderWidth: 1, hoverBackgroundColor: 'rgba(255, 99, 132, 0.4)', hoverBorderColor: 'rgba(255, 99, 132, 1)'},
+            ];
+
+            // Atendidas
+            const ctx3a = document.getElementById('chart-area-3');
+            const chart3a = new Chart(ctx3a, {
+                type: 'bar',
+                data: data2(ds_atendidas),
+                options: opciones2()
+            });
+
+            // Rechazadas
+            const ctx4a = document.getElementById('chart-area-4');
+            const chart4a = new Chart(ctx4a, {
+                type: 'bar',
+                data: data1(data4data),
+                options: opciones1()
+            });
+
+            // Cerradas
+            const ctx5a = document.getElementById('chart-area-5');
+            const chart5a = new Chart(ctx5a, {
+                type: 'bar',
+                data: data1(data5data),
+                options: opciones1()
+            });
+
+            // Observadas
+            const ctx6a = document.getElementById('chart-area-6');
+            const chart6a = new Chart(ctx6a, {
+                type: 'bar',
+                data: data1(data6data),
+                options: opciones1()
+            });
+
+            // % Atendidas vs Rechazadas
+            const ctx7a = document.getElementById('solicitudesChart');
+            const chart7a = new Chart(ctx7a, {
+                type: 'bar',
+                data: data3([@php echo 93 @endphp, @php echo 47 @endphp]),
+                options: opciones3()
+            });
+
+            const ctx8a = document.getElementById('closedRequestsChart');
+            const chart8a = new Chart(ctx8a, {
+                type: 'doughnut',
+                data: data4([@php echo 12.69 @endphp, @php echo 100 - 12.69 @endphp]),
+                options: opciones4()
+            });
+
+            // Llamar a la función de inicialización cuando la página cargue
+            const dataSetLocations = [
+                { lat: 17.9889, lng: -92.9283, color: "red" }, // Zona 1
+                { lat: 17.9919, lng: -92.9303, color: "orange" }, // Zona 2
+                { lat: 17.9879, lng: -92.9313, color: "green" }, // Zona 3
+            ];
+            window.onload = async () => initMap(dataSetLocations);
+
+            const ctx9a = document.getElementById('servicesChart');
+            const chart9a = new Chart(ctx9a, {
+                type: 'bar',
+                data: data5([18, 5, 37, 21, 9, 10]),
+                options: opciones5()
+            });
+
+        }
+
+        // Llama a la función para cargar el JSON al iniciar
+        loadJSON( "{{ $file_output }}" );
 
 
+    });
 
 </script>
 

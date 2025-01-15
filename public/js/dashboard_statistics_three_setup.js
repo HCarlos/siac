@@ -1,5 +1,4 @@
 // Example: Generate simple bar charts using Chart.js
-
     function data1(dataSet) {
         // console.log(dataSet);
         return {
