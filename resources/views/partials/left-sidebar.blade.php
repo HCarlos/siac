@@ -18,10 +18,8 @@
         <ul class="metismenu side-nav mb-0">
             @if (Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_SAS_CAP|USER_SAS_ADMIN|USER_DIF_CAP|USER_DIF_ADMIN|ENLACE') )
                 <li class="side-nav-item">
-                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin|SERVICIOS_MUNICIPALES') )
+                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') )
                         <a href="{{ url('dashboard-statistics-three') }}" class="side-nav-link">
-{{--                    @else--}}
-{{--                        <a href="{{ url(Auth::user()->hasRole('ENLACE') ? 'dashboard' : 'dashboard') }}" class="side-nav-link">--}}
                     @endif
                         @include('.shared.svgs.__dashboard')
                         <span class="badge badge-light float-right"></span>
