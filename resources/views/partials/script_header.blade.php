@@ -42,3 +42,6 @@
 
 
 @yield("styles")
+
+@yield("styles_maps")
+

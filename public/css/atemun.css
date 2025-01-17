@@ -901,9 +901,33 @@ ul.table-one > li {
  * element that contains the map. */
 
 
+/*#map {*/
+/*    height: 400px !important; !* The height is 400 pixels *!*/
+/*    width: 100% !important; !* The width is the width of the web page *!*/
+/*}*/
+
+/*#map {*/
+/*    height: 400px !important; !* The height is 400 pixels *!*/
+/*    width: 100% !important; !* The width is the width of the web page *!*/
+/*}*/
+
+#map-container {
+    display: block;
+    position: relative; /* Relativo para que sus hijos se posicionen dentro */
+    width: 100%;        /* Ancho dinámico */
+    height: 100%;       /* Alto dinámico */
+}
+
 #map {
-    height: 400px !important; /* The height is 400 pixels */
-    width: 100% !important; /* The width is the width of the web page */
+    width: 100%;        /* Ancho dinámico */
+    height: 100%;       /* Alto dinámico */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;  /* Asegurar ancho completo */
+    height: 100%; /* Asegurar alto completo */
 }
 
 gmp-map {

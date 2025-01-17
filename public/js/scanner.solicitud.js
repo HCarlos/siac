@@ -22,6 +22,7 @@
 
 
 function scanWithoutAspriseDialog() {
+    $(".addImage").prop('disabled', true);
     scanner.scan(displayImagesOnPage, {
         "twain_cap_setting" : {
             "ICAP_PIXELTYPE" : "TWPT_RGB",

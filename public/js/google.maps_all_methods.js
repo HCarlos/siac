@@ -6,7 +6,6 @@
 let lat = 17.998887170641467;
 let lon = -92.94474352674484;
 let siExiste = false;
-let fullScreenControl = false;
 
 if (
     parseFloat($("#latitud").val()) !== 0 &&
@@ -31,7 +30,6 @@ async function initMap(lat, lon, siExiste) {
         zoom: 18.5,
         center: plaza[0],
         mapId: localStorage.apikeymps,
-        fullscreenControl: fullScreenControl
     });
 
     const infoWindow = new InfoWindow();
@@ -54,15 +52,20 @@ async function initMap(lat, lon, siExiste) {
             fields: ["name", "formatted_address", "geometry"],
         };
 
+    // , "formatted_address"
+
+        // alert(request.query);
+
         service = new google.maps.places.PlacesService(map);
         service.findPlaceFromQuery(request, (results, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+//      for (let i = 0; i < results.length; i++) {
                 createMarker(results[0], infoWindow, PinElement, AdvancedMarkerElement, map);
+//      }
                 map.setCenter(results[0].geometry.location);
                 geocodePosition(results[0].geometry.location)
             }
         });
-
 
     }else{
         createMarker(plaza[0], infoWindow, PinElement, AdvancedMarkerElement, map);
@@ -92,6 +95,7 @@ async function initMap(lat, lon, siExiste) {
 
         setLatLng(_Lat, _Lng);
 
+        // position: siExiste ? place : place.geometry.location,
         const marker = new advancedMarkerElement({
             map: map,
             position: siExiste ? place : place.geometry.location,
@@ -109,19 +113,64 @@ async function initMap(lat, lon, siExiste) {
             google.maps.event.removeListener();
         });
 
+        let isDragging = false;
+
+        // google.maps.event.addListener(marker, "dragstart", () => {
+        //     isDragging = true;
+        //     //marker.position = map.getCenter(); // Asegurarse de que el marcador esté en el centro
+        // });
+        //
+        // google.maps.event.addListener(marker, "drag", () => {
+        //     if (isDragging) {
+        //         geocodePosition(marker.position);
+        //     }
+        // });
+
+
+        // google.maps.event.addListener(marker, "dragend", () => {
         marker.addListener("dragend", (event) => {
             setLatLng(marker.position.lat, marker.position.lng)
+            // marker.position = map.getCenter(); // Sincronizar posición con el centro
             geocodePosition(marker.position);
+            isDragging = false;
         });
 
-        // Create the DIV to hold the control.
-        const centerControlDiv = document.createElement('div');
-        // Create the control.
-        const centerControl = createCenterControl(map,marker);
-        // Append the control to the DIV.
-        centerControlDiv.appendChild(centerControl);
+        //
+        // google.maps.event.addListener(marker, "center_changed", () => {
+        //     marker.position = map.getCenter();
+        // });
+        //
+        // google.maps.event.addListener(marker, "zoom_changed", () => {
+        //     marker.position = map.getCenter();
+        // });
+        //
+        // google.maps.event.addListener(marker, "idle", () => {
+        //     marker.position = map.getCenter();
+        // });
 
-        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(centerControlDiv);
+
+        // google.maps.event.addListener(marker, "mousedown", () => {
+        // // map.addListener("mousedown", (event) => {
+        //     isDragging = true;
+        //     updateMarkerPosition(event.latLng); // Posicionar marcador al inicio
+        // });
+        //
+        // google.maps.event.addListener(marker, "mousemove", () => {
+        // // map.addListener("mousemove", (event) => {
+        //     if (isDragging) {
+        //         setLatLng(marker.position.lat, marker.position.lng)
+        //         geocodePosition(marker.position);
+        //     }
+        // });
+        //
+        // // Cuando el usuario deja de interactuar
+        // google.maps.event.addListener(marker, "mouseup", () => {
+        // // map.addListener("mouseup", () => {
+        //     isDragging = false;
+        //         setLatLng(marker.position.lat, marker.position.lng)
+        //         geocodePosition(marker.position);
+        //
+        // });
 
 
     }
@@ -156,74 +205,8 @@ async function initMap(lat, lon, siExiste) {
         $("#longitud").val(lng);
     }
 
-
 }
 
-function createCenterControl(map, marker) {
-    const controlButton = document.createElement('button');
-
-    // Set CSS for the control.
-    controlButton.style.backgroundColor = 'rgba(239,185,165)';
-    controlButton.style.border = '2px solid #fff';
-    controlButton.style.borderRadius = '3px';
-    controlButton.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-    controlButton.style.color = 'rgb(54,47,47)';
-    controlButton.style.cursor = 'pointer';
-    controlButton.style.fontFamily = 'Roboto,Arial,sans-serif';
-    controlButton.style.fontSize = '16px';
-    controlButton.style.lineHeight = '32px';
-    controlButton.style.fontWeight = 'bold';
-    controlButton.style.margin = '10px 10px';
-    controlButton.style.padding = '0 5px';
-    controlButton.style.textAlign = 'center';
-
-    controlButton.textContent = 'Ampliar';
-    controlButton.title = 'Haga click para ampliar el mapa';
-    controlButton.type = 'button';
-
-    // Setup the click event listeners: simply set the map to Chicago.
-    controlButton.addEventListener('click', (event) => {
-
-        const mapContainer = document.getElementById("map");
-
-        if (!document.fullscreenElement) {
-            // Entra en modo pantalla completa
-            if (mapContainer.requestFullscreen) {
-                mapContainer.requestFullscreen();
-            } else if (mapContainer.webkitRequestFullscreen) { /* Safari */
-                mapContainer.webkitRequestFullscreen();
-            } else if (mapContainer.msRequestFullscreen) { /* IE11 */
-                mapContainer.msRequestFullscreen();
-            }
-
-            controlButton.textContent = 'Contraer';
-            controlButton.title = 'Haga click para contraer el mapa';
-        } else {
-            // Sale del modo pantalla completa
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.webkitExitFullscreen) { /* Safari */
-                document.webkitExitFullscreen();
-            } else if (document.msExitFullscreen) { /* IE11 */
-                document.msExitFullscreen();
-            }
-
-            controlButton.textContent = 'Ampliar';
-            controlButton.title = 'Haga click para ampliar el mapa';
-        }
-
-        // Obtén el título del botón
-        console.log(`Título actual del botón: ${controlButton.title}`);
-
-        fullScreenControl = !fullScreenControl;
-        console.log(fullScreenControl);
-
-    });
-
-    return controlButton;
-}
-
-document.getElementById("map-container").style.height = "400px"; // Cambiar el tamaño dinámicamente
 
 if  ( document.getElementById("map") ){
     $("#map").hide();

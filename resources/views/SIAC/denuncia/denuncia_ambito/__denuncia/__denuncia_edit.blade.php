@@ -58,7 +58,10 @@
             <hr>
             <div class="form-group row mb-1 mt-2">
                 <div class="col-lg-12 ">
-                    <div id="map" class="hidden"></div>
+{{--                    <div id="map" class="hidden"></div>--}}
+                    <div id="map-container">
+                        <div id="map" class="hidden"></div>
+                    </div>
                 </div>
             </div>
             <hr>
@@ -180,8 +183,8 @@
         </div>
         <hr>
         <div class="form-group row mb-1 ml-1">
-                @if ( Auth::user()->hasRole('Administrator|test_admin|ENLACE') )
-                    <button type="button" class="btn btn-sm btn-default float-left" id="addImage"  onclick="scanWithoutAspriseDialog();">Scanear Imagen</button>
+                @if ( Auth::user()->hasRole('Administrator|ENLACE|escanear') )
+                    <button type="button" class="btn btn-sm btn-amarillo-morena btn-rounded text-white pb-3px float-left" id="addImage"  onclick="scanWithoutAspriseDialog();" style="padding-bottom: 0.3em !important;">Escanear documento</button>
                     <div id="scannerImages" name="scannerImages"></div><br><br>
                 @endif
         </div>
