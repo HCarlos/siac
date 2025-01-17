@@ -38,7 +38,7 @@ class DashboardStaticThreeController extends Controller{
             $start_date = $start_date->format('Y-m-d');
         }
 
-        $start_date = DateTime::createFromFormat('m-d-Y', '01-12-2024')->format('Y-m-d');
+        $start_date = DateTime::createFromFormat('m-d-Y', '01-01-2025')->format('Y-m-d');
 
         if (isset($data['end_date'])) {
             $end_date = $data['end_date'];
@@ -52,19 +52,13 @@ class DashboardStaticThreeController extends Controller{
 
         if ( ! $isExistFile) {
 
-
-            $arrPorStatus = [
-                ["atendidas" => 0, "porcentaje" => 0],
-                ["en_proceso" => 0, "porcentaje" => 0],
-                ["pendientes" => 0, "porcentaje" => 0],
-            ];
-
+            // INICIA EL MODULO DE UNIDADES
             $vectorUnidades = [
-                (object)["Unidad" => "ALUMBRADO", "Unidad_Id" => 46,"Total" => 0,"Porcentaje" => 0],
-                (object)["Unidad" => "ESPACIOS PÚBLICOS", "Unidad_Id" => 49,"Total" => 0,"Porcentaje" => 0],
-                (object)["Unidad" => "LIMPIA", "Unidad_Id" => 50,"Total" => 0,"Porcentaje" => 0],
-                (object)["Unidad" => "OBRAS PÚBLICAS", "Unidad_Id" => 48,"Total" => 0,"Porcentaje" => 0],
-                (object)["Unidad" => "SAS", "Unidad_Id" => 47,"Total" => 0,"Porcentaje" => 0],
+                (object)["Unidad" => "ALUMBRADO", "Unidad_Id" => 46,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                (object)["Unidad" => "ESPACIOS PÚBLICOS", "Unidad_Id" => 49,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                (object)["Unidad" => "LIMPIA", "Unidad_Id" => 50,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                (object)["Unidad" => "OBRAS PÚBLICAS", "Unidad_Id" => 48,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                (object)["Unidad" => "SAS", "Unidad_Id" => 47,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
             ];
             $totalServ = 0;
             foreach ($vectorUnidades as $key => $value) {
@@ -78,18 +72,17 @@ class DashboardStaticThreeController extends Controller{
             }
             foreach ($vectorUnidades as $key => $value) {
                 $total = $vectorUnidades[$key]->Total > 0 ? (($vectorUnidades[$key]->Total / $totalServ) * 100)  : 0;
-                $vectorUnidades[$key]->Porcentaje = $total;
+                $vectorUnidades[$key]->Porcentaje = (int) number_format($total, 0);
             }
 
-    //        dd($vectorUnidades);
-
+            // INICIA EL MODULO DE ESTATUS
             $arrEstatus = [
-                (object)["ue_id" => 16, "Estatus"=> "RECIBIDA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0],
-                (object)["ue_id" => 19, "Estatus"=> "EN PROCESO / PROGRAMADA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0],
-                (object)["ue_id" => 17, "Estatus"=> "ATENDIDA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0],
-                (object)["ue_id" => 20, "Estatus"=> "RECHAZADA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0],
-                (object)["ue_id" => 18, "Estatus"=> "OBSERVADA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0],
-                (object)["ue_id" => 21, "Estatus"=> "CERRADO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0],
+                (object)["ue_id" => 16, "Estatus"=> "RECIBIDA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                (object)["ue_id" => 19, "Estatus"=> "EN_PROCESO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                (object)["ue_id" => 17, "Estatus"=> "ATENDIDA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                (object)["ue_id" => 20, "Estatus"=> "RECHAZADA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                (object)["ue_id" => 18, "Estatus"=> "OBSERVADA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                (object)["ue_id" => 21, "Estatus"=> "CERRADO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
             ];
 
 
@@ -100,26 +93,37 @@ class DashboardStaticThreeController extends Controller{
                     if ($d->ue_id === $a->ue_id) {
                         $a->Total = $d->data;
                         $arrU = [];
+                        $ta = 0;
+                        $tr = 0;
                         foreach ($vectorUnidades as $b) {
                             $f = static::getEstatusDependencia($start_date,$end_date,$b->Unidad_Id,$d->ue_id);
                             if ($f !== null) {
-    //                            $b->Unidad = $f->label;
                                 $b->Total = $f->data;
+                            }
+                            if ($a->ue_id === 17) {
+                                $arr = static::getAtiempoVsDestiempo($start_date,$end_date,$b->Unidad_Id,$a->ue_id);
+                                $b->a_tiempo = $arr->atiempo ?? 0;
+                                $b->con_rezago = $arr->conrezago ?? 0;
+                                $ta += $arr->atiempo ?? 0;
+                                $tr += $arr->conrezago ?? 0;
                             }
                             $arrU[] = $b;
                         }
                         $a->Unidades = $arrU;
+                        $a->a_tiempo = $ta;
+                        $a->con_rezago = $tr;
                     }
                 }
             }
 
+            // INICIA EL MODULO DE SERVICIOS
             $vectorServicios = [
-                (object)["sue_id" => 483, "Servicio"=> "BACHEO DE VIALIDADES", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 508, "Servicio"=> "DESAZOLVE DE DRENAJE", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 476, "Servicio"=> "FUGA DE AGUA POTABLE", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 503, "Servicio"=> "RECOLECCIÓN DE RESIDUOS SÓLIDOS", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 476, "Servicio"=> "REPARACIÓN DE ALCANTARILLA", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 466, "Servicio"=> "REPARACIÓN DE LUMINARIAS", "Total"=> 0,"Porcentaje" => 0],
+                (object)["sue_id" => 483, "Servicio"=> "BACHEO_DE_VIALIDADES", "Total"=> 0,"Porcentaje" => 0],
+                (object)["sue_id" => 508, "Servicio"=> "DESAZOLVE_DE_DRENAJE", "Total"=> 0,"Porcentaje" => 0],
+                (object)["sue_id" => 476, "Servicio"=> "FUGA_DE_AGUA_POTABLE", "Total"=> 0,"Porcentaje" => 0],
+                (object)["sue_id" => 503, "Servicio"=> "RECOLECCION_DE_RESIDUOS_SOLIDOS", "Total"=> 0,"Porcentaje" => 0],
+                (object)["sue_id" => 476, "Servicio"=> "REPARACION_DE_ALCANTARILLA", "Total"=> 0,"Porcentaje" => 0],
+                (object)["sue_id" => 466, "Servicio"=> "REPARACION_DE_LUMINARIAS", "Total"=> 0,"Porcentaje" => 0],
             ];
 
             $totalServ = 0;
@@ -135,18 +139,18 @@ class DashboardStaticThreeController extends Controller{
 
             foreach ($vectorServicios as $key => $value) {
                 $total = $vectorServicios[$key]->Total > 0 ? (($vectorServicios[$key]->Total / $totalServ) * 100)  : 0;
-                $vectorServicios[$key]->Porcentaje = $total;
+                $vectorServicios[$key]->Porcentaje = (int) number_format($total, 0);
             }
 
-    //        dd($vectorServicios);
 
-
-
+            // SE CONSTRUYE EL JSON GENERAL
             $arrJson = [
                 (object)["estatus" => $arrEstatus],
-                (object)["unidades" => $vectorUnidades],
+                (object)["unidades" =>  collect($vectorUnidades)->sortByDesc('Total')->values()->all()],
                 (object)["servicios" => $vectorServicios],
             ];
+
+//            dd($arrJson);
 
 
             $jsonData = json_encode($arrJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
@@ -167,6 +171,8 @@ class DashboardStaticThreeController extends Controller{
 
     }
 
+
+// INICIA EL MODULO DE FUNCIONES AUXILIARES
 
 static function getUltimoEstatus($start_date,$end_date){
     return DB::table("_viddss")
@@ -189,11 +195,11 @@ static function getEstatusDependencia($start_date,$end_date,$dependencia_id,$ue_
 }
 static function getEstatus($start_date,$end_date,$dependencia_id){
     return DB::table("_viddss")
-        ->select('sue_id as label', DB::raw('count(dependencia_id) as total'))
+        ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
         ->where('ambito_dependencia',2)
         ->whereBetween('fecha_ingreso',[$start_date,$end_date])
         ->where('dependencia_id',$dependencia_id)
-        ->groupBy('sue_id')
+        ->groupBy('dependencia_id')
         ->first();
 }
 
@@ -204,6 +210,22 @@ static function getEstatus($start_date,$end_date,$dependencia_id){
             ->whereBetween('fecha_ingreso',[$start_date,$end_date])
             ->where('sue_id',$sue_id)
             ->groupBy('abreviatura')
+            ->first();
+    }
+
+//DB::raw("SUM(CASE WHEN fecha_dias_ejecucion <= CURRENT_DATE THEN DATE_PART('day', CURRENT_DATE - fecha_dias_ejecucion) ELSE 0 END) AS atiempo"),
+//DB::raw("SUM(CASE WHEN fecha_dias_ejecucion > CURRENT_DATE THEN DATE_PART('day', fecha_dias_ejecucion - CURRENT_DATE ) ELSE 0 END) AS conrezago")
+    static function getAtiempoVsDestiempo($start_date,$end_date,$unidad_id,$ue_id){
+        return DB::table("_viddss")
+            ->select(
+                DB::raw("SUM(CASE WHEN fecha_dias_ejecucion <= CURRENT_DATE THEN 1 ELSE 0 END) AS atiempo"),
+                DB::raw("SUM(CASE WHEN fecha_dias_ejecucion > CURRENT_DATE THEN 1 ELSE 0 END) AS conrezago")
+            )
+            ->where('ambito_dependencia', 2)
+            ->whereBetween('fecha_ingreso', [$start_date, $end_date])
+            ->where('dependencia_id', $unidad_id)
+            ->where('ue_id', $ue_id)
+            ->groupBy('ue_id')
             ->first();
     }
 

@@ -53,12 +53,12 @@
             </div>
             <div class="card-stat">
                 <div class="card-left">
-                    <h1 class="count green" id="h2Atendidas">435</h1>
+                    <h1 class="count green" id="h2Atendidas">0</h1>
                     <p>Atendidas</p>
                 </div>
                 <div class="card-right">
-                    <p><strong>281</strong> EN TIEMPO</p>
-                    <p><strong>154</strong> CON REZAGO</p>
+                    <p><strong id="h2Aatendidas">0</strong> A TIEMPO</p>
+                    <p><strong id="h2Abtendidas">0</strong> CON REZAGO</p>
                 </div>
             </div>
             <div class="stat">
@@ -121,11 +121,11 @@
                 <div class="card">
                     <h3>Top de solicitudes</h3>
                     <div class="top-requests">
-                        <div><span>1 SAS</span><span>74%</span></div>
-                        <div><span>2 Obras</span><span>54%</span></div>
-                        <div><span>3 Alumbrado</span><span>21%</span></div>
-                        <div><span>4 Limpia</span><span>8%</span></div>
-                        <div><span>5 Espacios públicos</span><span>2%</span></div>
+                        <div><span id="u0"></span><span id="u0p"></span></div>
+                        <div><span id="u1"></span><span id="u1p"></span></div>
+                        <div><span id="u2"></span><span id="u2p"></span></div>
+                        <div><span id="u3"></span><span id="u3p"></span></div>
+                        <div><span id="u4"></span><span id="u4p"></span></div>
                     </div>
                 </div>
                 <div class="card">
@@ -187,26 +187,26 @@
                 const data = await response.json();
 
                 // Llama a la función para renderizar los datos
-                // alert(data[0].estatus[0].Unidades[0].Total);
-                initLoadData(data[0]);
+                console.log(data);
+                initLoadData(data[0],data[1],data[2]);
             } catch (error) {
                 console.error(error);
             }
         }
 
 
-        function initLoadData(data) {
+        function initLoadData(Estatus,Unidades,Servicios) {
 
             // alert(data.estatus[0].Unidades[0].Total);
 
             // Recibidas
-            data.estatus.forEach((estatus) => {
-                console.log(`Estatus: ${estatus.Estatus}`);
-                console.log("Unidades:");
-                estatus.Unidades.forEach((unidad) => {
-                    console.log(`- ${unidad.Unidad}: Total = ${unidad.Total}, Porcentaje = ${unidad.Porcentaje}%`);
-                });
-            });
+            // data.unidades.forEach((estatus) => {
+            //     console.log(`Estatus: ${estatus.Estatus}`);
+            //     console.log("Unidades:");
+            //     estatus.Unidades.forEach((unidad) => {
+            //         console.log(`- ${unidad.Unidad}: Total = ${unidad.Total}, Porcentaje = ${unidad.Porcentaje}%`);
+            //     });
+            // });
             let data1data = [];
             let data2data = [];
             let data3data = [];
@@ -214,19 +214,40 @@
             let data5data = [];
             let data6data = [];
 
-            document.getElementById("h2Recibidas").innerHTML = data.estatus[0].Total;
-            document.getElementById("h2EnProceso").innerHTML = data.estatus[1].Total;
-            document.getElementById("h2Atendidas").innerHTML = data.estatus[2].Total;
-            document.getElementById("h2Rechazadas").innerHTML = data.estatus[3].Total;
-            document.getElementById("h2Cerradas").innerHTML = data.estatus[4].Total;
-            document.getElementById("h2Observadas").innerHTML = data.estatus[5].Total;
+            let dataatiempo = [];
+            let datarezago = [];
 
-            data.estatus[0].Unidades.forEach( (unidad) => {data1data.push(unidad.Total); });
-            data.estatus[1].Unidades.forEach( (unidad) => {data2data.push(unidad.Total); });
-            data.estatus[2].Unidades.forEach( (unidad) => {data3data.push(unidad.Total); });
-            data.estatus[3].Unidades.forEach( (unidad) => {data4data.push(unidad.Total); });
-            data.estatus[4].Unidades.forEach( (unidad) => {data5data.push(unidad.Total); });
-            data.estatus[5].Unidades.forEach( (unidad) => {data6data.push(unidad.Total); });
+            document.getElementById("h2Recibidas").innerHTML = Estatus.estatus[0].Total;
+            document.getElementById("h2EnProceso").innerHTML = Estatus.estatus[1].Total;
+
+            document.getElementById("h2Atendidas").innerHTML = Estatus.estatus[2].Total;
+            document.getElementById("h2Aatendidas").innerHTML = Estatus.estatus[2].a_tiempo;
+            document.getElementById("h2Abtendidas").innerHTML = Estatus.estatus[2].con_rezago;
+
+            document.getElementById("h2Rechazadas").innerHTML = Estatus.estatus[3].Total;
+            document.getElementById("h2Cerradas").innerHTML = Estatus.estatus[4].Total;
+            document.getElementById("h2Observadas").innerHTML = Estatus.estatus[5].Total;
+
+            Estatus.estatus[0].Unidades.forEach( (unidad) => {data1data.push(unidad.Total); });
+            Estatus.estatus[1].Unidades.forEach( (unidad) => {data2data.push(unidad.Total); });
+            Estatus.estatus[2].Unidades.forEach( (unidad) => {data3data.push(unidad.Total); });
+            Estatus.estatus[3].Unidades.forEach( (unidad) => {data4data.push(unidad.Total); });
+            Estatus.estatus[4].Unidades.forEach( (unidad) => {data5data.push(unidad.Total); });
+            Estatus.estatus[5].Unidades.forEach( (unidad) => {data6data.push(unidad.Total); });
+
+            Estatus.estatus[2].Unidades.forEach( (unidad) => {
+                dataatiempo.push(unidad.a_tiempo);
+                datarezago.push(unidad.con_rezago);
+            });
+
+            var i = 0;
+            Unidades.unidades.forEach( (unidad) => {
+                document.getElementById("u" + i).innerHTML = unidad.Unidad;
+                document.getElementById("u" + i + "p").innerHTML = unidad.Porcentaje+"%";
+                i++;
+            });
+
+            // alert(data.unidades);
 
             const ctx1a = document.getElementById('chart-area-1');
             const chart1a = new Chart(ctx1a, {
@@ -244,9 +265,10 @@
             });
 
             var ds_atendidas = [
-                {type: 'bar',label: 'En tiempo', data: [5,45,25,75,45], backgroundColor: 'rgba(54, 162, 235, 0.6)', borderColor: 'rgba(54, 162, 235, 1)', borderWidth: 1, hoverBackgroundColor: 'rgba(54, 162, 235, 0.6)', hoverBorderColor: 'rgba(54, 162, 235, 1)' },
-                {type: 'bar',label: 'Con rezago', data: [95,55,75,25,55], backgroundColor: 'rgba(255, 99, 132, 0.2)', borderColor: 'rgba(255, 99, 132, 1)', borderWidth: 1, hoverBackgroundColor: 'rgba(255, 99, 132, 0.4)', hoverBorderColor: 'rgba(255, 99, 132, 1)'},
+                {type: 'bar',label: 'En tiempo', data: dataatiempo, backgroundColor: 'rgba(54, 162, 235, 0.6)', borderColor: 'rgba(54, 162, 235, 1)', borderWidth: 1, hoverBackgroundColor: 'rgba(54, 162, 235, 0.6)', hoverBorderColor: 'rgba(54, 162, 235, 1)' },
+                {type: 'bar',label: 'Con rezago', data: datarezago, backgroundColor: 'rgba(255, 99, 132, 0.2)', borderColor: 'rgba(255, 99, 132, 1)', borderWidth: 1, hoverBackgroundColor: 'rgba(255, 99, 132, 0.4)', hoverBorderColor: 'rgba(255, 99, 132, 1)'},
             ];
+
 
             // Atendidas
             const ctx3a = document.getElementById('chart-area-3');
@@ -303,10 +325,18 @@
             ];
             window.onload = async () => initMap(dataSetLocations);
 
+            let Services = [];
+            let LabelServices = [];
+            Servicios.servicios.forEach( (servicio) => {
+                Services.push(servicio.Total);
+                LabelServices.push(servicio.Servicio);
+                i++;
+            });
+
             const ctx9a = document.getElementById('servicesChart');
             const chart9a = new Chart(ctx9a, {
                 type: 'bar',
-                data: data5([18, 5, 37, 21, 9, 10]),
+                data: data5(LabelServices,Services),
                 options: opciones5()
             });
 

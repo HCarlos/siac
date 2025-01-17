@@ -280,16 +280,17 @@
     }
 
 
-function data5(dataSet) {
+// labels: [
+//     'Bacheo en vialidades',
+//     'Desazolve de drenaje',
+//     'Fuga de agua potable',
+//     'Recolección de residuos sólidos',
+//     'Reparación de alcantarilla',
+//     'Reparación de luminarias',
+// ],
+function data5(dataSetLabels,dataSet) {
     return {
-        labels: [
-            'Bacheo en vialidades',
-            'Desazolve de drenaje',
-            'Fuga de agua potable',
-            'Recolección de residuos sólidos',
-            'Reparación de alcantarilla',
-            'Reparación de luminarias',
-        ],
+        labels: dataSetLabels,
         datasets: [{
             label: 'Cantidad de servicios',
             data: dataSet,
