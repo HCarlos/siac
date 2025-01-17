@@ -648,7 +648,7 @@ jQuery(function($) {
                                 "<strong class='text-primary-dark'>"+value.ultimo_estatus+"</strong> " + TC +
                                 "</td>"+
                                 "<td>"+
-                                "<a href='/updateAddUserDenunciaGet/"+value.id+"/"+ciudadano_id+"' class='btn btn-danger btn-rounded ' id='btnSearchIdenticalAmbito'>Vincular</a>"+
+                                "<a href='/updateAddUserDenunciaGet/"+value.id+"/"+ciudadano_id+"' class='btn btn-danger btn-rounded btnSearchIdenticalAmbito' >Vincular</a>"+
                                 "</td>";
                             Tbl += "</tr>";
                         });
@@ -660,8 +660,9 @@ jQuery(function($) {
         });
 
 
-
-
+        $(".btnSearchIdenticalAmbito").on('click',function(event){
+            $(".btnSearchIdenticalAmbito").prop('disabled', true);
+        });
 
 
         $(".preloader").hide();
