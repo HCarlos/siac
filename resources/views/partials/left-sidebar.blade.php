@@ -16,17 +16,20 @@
     @else()
         <!--- Sidemenu -->
         <ul class="metismenu side-nav mb-0">
-            @if (Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_SAS_CAP|USER_SAS_ADMIN|USER_DIF_CAP|USER_DIF_ADMIN|ENLACE') )
+
+            @if (
+                (Auth::user()->hasRole('Administrator|SysOp|test_admin')) ||
+                (Gate::check('all') || Gate::check('dashboard'))
+                 )
                 <li class="side-nav-item">
-                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') )
-                        <a href="{{ url('dashboard-statistics-three') }}" class="side-nav-link">
-                    @endif
+                    <a href="{{ url('dashboard-statistics-three') }}" class="side-nav-link">
                         @include('.shared.svgs.__dashboard')
                         <span class="badge badge-light float-right"></span>
                         <span>Dashboard</span>
-                        </a>
+                    </a>
                 </li>
             @endif
+
             <li class="side-nav-item">
                 <a href="{{route('listDenuncias')}}" class="side-nav-link">
                     @include('.shared.svgs.__solicitudes')
