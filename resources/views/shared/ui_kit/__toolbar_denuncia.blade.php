@@ -1,7 +1,7 @@
 <div class="button-list pt-2 pb-0">
     @isset($newItem)
 {{--        @php dd(\Illuminate\Support\Facades\Auth::user()->isPermission('csd_sas|consultar|all')) @endphp--}}
-        @if( \Illuminate\Support\Facades\Auth::user()->isPermission('crear_expediente|all') )
+        @if( \Illuminate\Support\Facades\Auth::user()->isPermission('crear_expediente|crear_expediente_servicios_municipales|crear_expediente_apoyos_sociales|all') )
             <a href="{{route($newItem)}}" class="btn btn-outline-white btn-rounded btn-sm ml-1" data-toggle="tooltip" data-placement="top" data-original-title="Nueva Solicitud">
                 <i class="fas fa-plus"></i>
             </a>
