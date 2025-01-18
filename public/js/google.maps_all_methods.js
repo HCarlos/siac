@@ -218,6 +218,7 @@ if  ( document.getElementById("map") ){
 
 $("#searchGoogleBtn").click(event => {
     event.preventDefault();
+    alert("hola");
     if ( $("#search_google").val() !== "" ) {
         $("#map").show();
         initMap(lat, lon, siExiste);

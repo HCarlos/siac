@@ -114,15 +114,10 @@ async function initMap(lat, lon, siExiste) {
             geocodePosition(marker.position);
         });
 
-        // Create the DIV to hold the control.
         const centerControlDiv = document.createElement('div');
-        // Create the control.
         const centerControl = createCenterControl(map,marker);
-        // Append the control to the DIV.
         centerControlDiv.appendChild(centerControl);
-
         map.controls[google.maps.ControlPosition.TOP_RIGHT].push(centerControlDiv);
-
 
     }
 
@@ -132,17 +127,6 @@ async function initMap(lat, lon, siExiste) {
             if (status === google.maps.GeocoderStatus.OK) {
                 $("#gd_ubicacion").val(results[0].formatted_address);
                 $("#searchGoogleResult").html(results[0].formatted_address).show(100);
-
-                // $("#g_calle").val(results[1].formatted_address ?? "");
-                // $("#g_num_ext").val(results[0].formatted_address ?? "");
-                // $("#g_num_int").val("");
-                // $("#g_colonia").val(results[2].formatted_address ?? "");
-                // $("#g_comunidad").val(results[3].formatted_address ?? "");
-                // $("#g_municipio").val(results[4].formatted_address ?? "");
-                // $("#g_estado").val(results[6].formatted_address ?? "");
-                // $("#g_cp").val(results[6].formatted_address ?? "");
-
-                // console.log(results[0].address_components[6]["long_name"]);
 
             } else {
                 $("#searchGoogleError").html('Cannot determine address at this location.' + status).show(100);

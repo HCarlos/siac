@@ -55,7 +55,10 @@
             <hr>
             <div class="form-group row mb-1 mt-2">
                 <div class="col-lg-12 ">
-                    <div id="map" class="hidden"></div>
+{{--                    <div id="map" class="hidden"></div>--}}
+                    <div id="map-container">
+                        <div id="map" class="hidden"></div>
+                    </div>
                 </div>
             </div>
             <hr>
