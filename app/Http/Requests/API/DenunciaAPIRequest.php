@@ -146,12 +146,12 @@ class DenunciaAPIRequest extends FormRequest{
                 'altitud'                      => $this->altitud ?? 0.0000,
                 'search_google'                => $this->ubicacion_google ?? '',
                 'gd_ubicacion'                 => $this->ubicacion_google ?? '',
-                'prioridad_id'                 => 2,
+                'prioridad_id'                 => 7,
                 'origen_id'                    => 24,
                 'dependencia_id'               => $Ser->dependencia_id,
                 'ubicacion_id'                 => $Ubi->id,
                 'servicio_id'                  => $Ser->servicio_id,
-                'estatus_id'                   => 8,
+                'estatus_id'                   => 16,
                 'ciudadano_id'                 => $this->user_id,
                 'creadopor_id'                 => $this->user_id,
                 'modificadopor_id'             => $this->user_id,
@@ -160,7 +160,7 @@ class DenunciaAPIRequest extends FormRequest{
                 'ip'                           => "",
                 'host'                         => "",
                 'denunciamobile_id'            => $this->DenMobGen->id,
-                'ambito'                       => $this->ambito ?? 2,
+                'ambito'                       => $this->ambito ?? 0,
             ];
 
             $obj = $this->guardarDenunciaMobileADenuncia($Item);

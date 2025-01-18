@@ -50,8 +50,6 @@
             </li>
             @endif
 
-
-
             @if (Auth::user()->hasRole('Administrator|SysOp|test_admin|SERVICIOS_MUNICIPALES'))
                 <li class="side-nav-item">
                     <a href="javascript: void(0);" class="side-nav-link">
@@ -355,33 +353,29 @@
             </li>
             @endif
 
-            <li class="side-nav-item">
-                <a href="javascript: void(0);" class="side-nav-link">
-                    <i class="fas fa-users"></i>
-                    <span> Asignaciones</span>
-                    <span class="menu-arrow"></span>
-                </a>
+            @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') || Auth::user()->can('asignar_roles'))
+                <li class="side-nav-item">
+                    <a href="javascript: void(0);" class="side-nav-link">
+                        <i class="fas fa-users"></i>
+                        <span> Asignaciones</span>
+                        <span class="menu-arrow"></span>
+                    </a>
 
-                <ul class="side-nav-second-level" aria-expanded="false">
-                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') || Auth::user()->can('asignar_roles'))
-                    <li>
-                        <a href="{{route('asignaRoleList',['Id'=>0])}}">
-                            <i class="fas fa-users-cog"></i>
-                            <span class="badge badge-light float-right">{{\App\Role::count()}}</span>
-                            <span>Roles</span>
-                        </a>
-                    </li>
-                    @endif
-                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') || Auth::user()->can('asignar_permisos'))
-                    <li>
-                        <a href="{{route('asignaPermissionList',['Id'=>0])}}">
-                            <i class="fas fa-user-cog"></i>
-                            <span class="badge badge-light float-right">{{\App\Permission::count()}}</span>
-                            <span>Permisos</span>
-                        </a>
-                    </li>
-                    @endif
-                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') || Auth::user()->can('asignar_dependencias'))
+                    <ul class="side-nav-second-level" aria-expanded="false">
+                        <li>
+                            <a href="{{route('asignaRoleList',['Id'=>0])}}">
+                                <i class="fas fa-users-cog"></i>
+                                <span class="badge badge-light float-right">{{\App\Role::count()}}</span>
+                                <span>Roles</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{route('asignaPermissionList',['Id'=>0])}}">
+                                <i class="fas fa-user-cog"></i>
+                                <span class="badge badge-light float-right">{{\App\Permission::count()}}</span>
+                                <span>Permisos</span>
+                            </a>
+                        </li>
                         <li>
                             <a href="{{route('asignaDependenciaList',['Id'=>0])}}">
                                 <i class="fas fa-user-cog"></i>
@@ -389,8 +383,6 @@
                                 <span>Unidades Administrativas</span>
                             </a>
                         </li>
-                    @endif
-                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') || Auth::user()->can('asignar_estatus'))
                         <li>
                             <a href="{{route('asignaEstatusList',['Id'=>0])}}">
                                 <i class="fas fa-user-cog"></i>
@@ -398,8 +390,6 @@
                                 <span>Estatus</span>
                             </a>
                         </li>
-                    @endif
-                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') || Auth::user()->can('asignar_categoria_servicios'))
                         <li>
                             <a href="{{route('asignaServCatList',['Id'=>0])}}">
                                 <i class="fas fa-user-cog"></i>
@@ -407,8 +397,6 @@
                                 <span>Categoría de Servicios</span>
                             </a>
                         </li>
-                    @endif
-                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') || Auth::user()->can('asignar_categoria_servicios'))
                         <li>
                             <a href="{{route('asignaOrigenesList',['Id'=>0])}}">
                                 <i class="fas fa-user-cog"></i>
@@ -416,8 +404,6 @@
                                 <span>Fuentes de Captación</span>
                             </a>
                         </li>
-                    @endif
-                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin') || Auth::user()->can('asignar_prioridades'))
                         <li>
                             <a href="{{route('asignaPrioridadesList',['Id'=>0])}}">
                                 <i class="fas fa-user-cog"></i>
@@ -425,10 +411,9 @@
                                 <span>Prioridades</span>
                             </a>
                         </li>
-                    @endif
-                </ul>
-
-            </li>
+                    </ul>
+                </li>
+            @endif
 
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
