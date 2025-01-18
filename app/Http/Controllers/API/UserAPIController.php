@@ -15,6 +15,15 @@ use Illuminate\Support\Facades\Hash;
 
 class UserAPIController extends Controller{
 
+    protected $usuarios_permitidos = [
+    'SASR821123HTCLNM05','ZALA710103MTCPPR01','LODA900318HTCPZN07','COMK970121MTCRNR06','NIDL890105MTCTZD01',
+    'BOFG960807HTCRNR08','GURS671021HSLZYL08','LAHC880114MTCZRN08','ZASC930417MTCVRR02','BOFE800113HTCRNN08',
+    'AAGV910919MTCLMR00','CAPG591222MTCSDL01','SAZM820826MTCNCL08','ZAPA700425HTCRRL06','PAVA680726MDFLRN08',
+    'RECE710501HTCYSP04','HERJ830801HTCRVN00','MABE691026HTCGXV01','CABC510519HTCSRR00','DOFP760524HTCMLL17',
+    'FARW831103HTCRML07','JUGA540727HTCRRP05','LAMA701102HCSSND01','MEFL650821HVZRLS08','VAMM890403MTCLNY02',
+    'GAOA790113MTCMCZ05','VELK800112MTCRPR11','Admin','SysOp','TUBI910216MNEFRS07','REAC790214HTCYBR04',
+    ];
+
     public function users():JsonResponse {
         $Users = User::query()->take(10)->get();
         return response()->json($Users);
@@ -38,16 +47,7 @@ class UserAPIController extends Controller{
             $data->username = strtoupper(trim($data->username));
         }
 
-        $usuarios_permitidos = [
-            'SASR821123HTCLNM05','ZALA710103MTCPPR01','LODA900318HTCPZN07','COMK970121MTCRNR06','NIDL890105MTCTZD01',
-            'BOFG960807HTCRNR08','GURS671021HSLZYL08','LAHC880114MTCZRN08','ZASC930417MTCVRR02','BOFE800113HTCRNN08',
-            'AAGV910919MTCLMR00','CAPG591222MTCSDL01','SAZM820826MTCNCL08','ZAPA700425HTCRRL06','PAVA680726MDFLRN08',
-            'RECE710501HTCYSP04','HERJ830801HTCRVN00','MABE691026HTCGXV01','CABC510519HTCSRR00','DOFP760524HTCMLL17',
-            'FARW831103HTCRML07','JUGA540727HTCRRP05','LAMA701102HCSSND01','MEFL650821HVZRLS08','VAMM890403MTCLNY02',
-            'GAOA790113MTCMCZ05','VELK800112MTCRPR11','Admin','SysOp','TUBI910216MNEFRS07','REAC790214HTCYBR04',
-            ];
-
-        if ( ! in_array($data->username, $usuarios_permitidos) ) {
+        if ( !in_array($data->username, $this->usuarios_permitidos, true)) {
             $response["msg"] = "Acceso denegado!";
             return response()->json($response);
         }
@@ -190,6 +190,12 @@ class UserAPIController extends Controller{
         if (trim($data->username) !== "Admin" && trim($data->username) !== "SysOp") {
             $data->username = strtoupper(trim($data->username));
         }
+
+        if ( !in_array($data->username, $this->usuarios_permitidos, true)) {
+            $response["msg"] = "Acceso denegado!";
+            return response()->json($response);
+        }
+
         $user = User::where("username",trim($data->username))->first();
         if ($user){
             $pwd = $data->password;
