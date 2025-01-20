@@ -4,7 +4,7 @@
 
 @component('components.denuncia_ambito')
     @slot('contenido')
-        @component('components.card')
+        @component('components.card_ambito')
             @slot('title_card',$titulo_header ?? "")
             @slot('body_card')
                 @include('shared.code.__errors')
