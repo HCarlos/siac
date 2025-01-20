@@ -19,40 +19,33 @@
 
                 <!-- Header -->
                 <tr>
-
-{{--                    <td style="background-color: rgba(239,185,165,0.85); padding: 20px; text-align: center; color: #870606;">--}}
-{{--                        <h1 style="margin: 0; font-size: 24px; font-weight: bold; box-shadow:">Servicios Municipales - Centro Tabasco</h1>--}}
-{{--                    </td>--}}
-
-                        <td style="
-                            background-color: rgba(239, 185, 165, 0.85);
-                            padding: 20px;
-                            text-align: center;
-                            color: #870606;
-                            font-family: 'Poppins', sans-serif;
+                    <td style="
+                        background-color: rgba(239, 185, 165, 0.85);
+                        padding: 20px;
+                        text-align: center;
+                        color: #870606;
+                        font-family: 'Poppins', sans-serif;
+                    ">
+                        <h1 style="
+                           margin: 0;
+                            font-size: 28px;
+                            font-weight: bold;
+                            text-shadow: 2px 2px 4px rgb(48,45,45);
+                            line-height: 1.2;
                         ">
-                            <h1 style="
-                               margin: 0;
-                                font-size: 28px;
-                                font-weight: bold;
-                                text-shadow: 2px 2px 4px rgb(48,45,45);
-                                line-height: 1.2;
-                            ">
-                                Servicios Municipales
-                            </h1>
-                            <h2 style="
-                               margin: 0;
-                                font-size: 22px;
-                                font-weight: bold;
-                                text-shadow: 2px 2px 4px rgb(48,45,45);
-                                line-height: 1.2;
-                            ">
-                                Centro Tabasco
-                            </h2>
-                        </td>
-
+                            Servicios Municipales
+                        </h1>
+                        <h2 style="
+                           margin: 0;
+                            font-size: 22px;
+                            font-weight: bold;
+                            text-shadow: 2px 2px 4px rgb(48,45,45);
+                            line-height: 1.2;
+                        ">
+                            Centro Tabasco
+                        </h2>
+                    </td>
                 </tr>
-
                 <!-- Body -->
                 <tr>
                     <td style="padding: 20px; text-align: left; font-size: 16px; color: #333;">

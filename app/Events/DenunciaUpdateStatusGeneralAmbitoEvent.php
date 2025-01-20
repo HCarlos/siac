@@ -66,16 +66,19 @@ class DenunciaUpdateStatusGeneralAmbitoEvent  implements ShouldBroadcast{
 
         foreach ($usuariosEnlace as $usuario) {
             try {
-//                ->bcc("manager@tabascoweb.com")
-                Mail::to($usuario->email)
-                    ->send(new SendMailToEnlace(
-                        'Notification',
-                            $usuario,
-                            $den,
-                            $type
-                        )
-                    );
-
+                if (
+                    strpos($usuario->email, "@mail.com") === false &&
+                    $usuario->email !== ""
+                ) {
+                    Mail::to($usuario->email)
+                        ->send(new SendMailToEnlace(
+                                'Notification',
+                                $usuario,
+                                $den,
+                                $type
+                            )
+                        );
+                }
             } catch (\Exception $e) {
                 Log::error('Error sending email in sendMailToEnlace: ' . $e->getMessage());
             }

@@ -582,8 +582,6 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|DELEGADO|CIUDADANO|
 
     Route::post('searchIdenticalAmbito', 'Denuncia\DenunciaAmbitoController@searchIdenticalAmbito')->name('searchIdenticalAmbito');
 
-
-
 });
 
 Route::get('getNotificationDependencias/{dependencia_id_str}', 'External\Denuncia\AjaxController@getNotificationDependencias')->name('getNotificationDependencias');
@@ -591,15 +589,15 @@ Route::get('getNotificationDependencias/{dependencia_id_str}', 'External\Denunci
 Route::get('getServiciosFromDependencias/{id}', 'Denuncia\DenunciaController@getServiciosFromDependencias')->name('getServiciosFromDependencias');
 
 
-Route::get('enviar', ['as' => 'enviar', function () {
-    $data = ['link' => 'https://servimun.mx'];
-    Mail::send('emails.notificacion', $data, function ($message) {
-        $message->from('logydes@gmail.com', 'villahermosa.gob.mx');
-        $message->to('sentauro@gmail.com')->subject('Notificación');
-    });
-    return "Se envío el email";
-}]);
-
+//Route::get('enviar', ['as' => 'enviar', function () {
+//    $data = ['link' => 'https://servimun.mx'];
+//    Mail::send('emails.notificacion', $data, function ($message) {
+//        $message->from('logydes@gmail.com', 'villahermosa.gob.mx');
+//        $message->to('sentauro@gmail.com')->subject('Notificación');
+//    });
+//    return "Se envío el email";
+//}]);
+//
 Route::get('/imprimir_denuncia/{uuid}', 'External\Denuncia\HojaDenunciaController@imprimirDenuncia')->name('imprimir_denuncia/');
 Route::get('/imprimir_denuncia_respuesta/{uuid}', 'External\Denuncia\HojaDenunciaController@imprimirDenunciaConRespuestas')->name('imprimir_denuncia_respuesta/');
 Route::get('/imprimir_denuncia_archivo/{uuid}', 'External\Denuncia\HojaDenunciaArchivoController@imprimirDenuncia')->name('imprimir_denuncia_archivo/');
