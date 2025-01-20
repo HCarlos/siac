@@ -897,20 +897,6 @@ ul.table-one > li {
     margin: 1em auto;
 }
 
-/* Always set the map height explicitly to define the size of the div
- * element that contains the map. */
-
-
-/*#map {*/
-/*    height: 400px !important; !* The height is 400 pixels *!*/
-/*    width: 100% !important; !* The width is the width of the web page *!*/
-/*}*/
-
-/*#map {*/
-/*    height: 400px !important; !* The height is 400 pixels *!*/
-/*    width: 100% !important; !* The width is the width of the web page *!*/
-/*}*/
-
 #map-container {
     display: block;
     position: relative; /* Relativo para que sus hijos se posicionen dentro */
@@ -921,13 +907,6 @@ ul.table-one > li {
 #map {
     width: 100%;        /* Ancho dinámico */
     height: 100%;       /* Alto dinámico */
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    width: 100%;  /* Asegurar ancho completo */
-    height: 100%; /* Asegurar alto completo */
 }
 
 gmp-map {
