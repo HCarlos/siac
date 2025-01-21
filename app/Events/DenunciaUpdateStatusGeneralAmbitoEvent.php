@@ -68,7 +68,10 @@ class DenunciaUpdateStatusGeneralAmbitoEvent  implements ShouldBroadcast{
             try {
                 if (
                     strpos($usuario->email, "@mail.com") === false &&
-                    $usuario->email !== ""
+                    strpos($usuario->email, "@mail.com") === false &&
+                    strpos($usuario->email, "@example.com") === false &&
+                    $usuario->email !== "" &&
+                    $usuario->email !== null
                 ) {
                     Mail::to($usuario->email)
                         ->send(new SendMailToEnlace(

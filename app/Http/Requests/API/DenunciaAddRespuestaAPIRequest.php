@@ -66,7 +66,8 @@ class DenunciaAddRespuestaAPIRequest extends FormRequest{
                     event(new APIDenunciaEvent($DenMob->id, $DenMob->user_id));
                     $imm->denuncias()->attach($DenMob);
                     $imm->users()->attach($this->user_id);
-                    return $imm;
+
+                    return ["status"=>1, "msg"=>$imm];
                 }
             }else{
                 return ["status"=>0, "msg"=>"Ocurrió un error desconocido."];

@@ -47,11 +47,7 @@ class SendNotificationFCM{
             return null;
         }
 
-//        dd($response);
-
         if ( isset($response->name) ) {
-
-//            dd($response->name);
 
             $umm = UserMobileMessage::create([
                 'usermobile_id' => $usermobile_id,

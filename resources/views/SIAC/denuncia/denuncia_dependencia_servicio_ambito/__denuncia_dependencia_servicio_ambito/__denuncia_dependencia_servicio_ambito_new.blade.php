@@ -65,17 +65,15 @@
             event.preventDefault();
 
             var requiere_imagen = $(this).find("option:selected").attr('data-require');
-            //var obj = $(this).find("option:selected");
 
-            if ( requiere_imagen === '1' ) {
-                //obj.prop('required', true);
-                $( "#requiereImagen" ).html(getFileHTML());
-                $( "#requiereImagen" ).show();
-            } else {
-                //obj.prop('required', false);
-                $( "#requiereImagen" ).empty();
-                $( "#requiereImagen" ).hide();
-            }
+            // if ( requiere_imagen === '1' ) {
+            //     $( "#requiereImagen" ).html(getFileHTML());
+            //     $( "#requiereImagen" ).show();
+            // } else {
+            //     $( "#requiereImagen" ).empty();
+            //     $( "#requiereImagen" ).hide();
+            // }
+
         });
 
         function getFileHTML() {

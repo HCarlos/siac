@@ -99,9 +99,10 @@ class DenunciaAPIController extends Controller{
     public function addRespuestaDenunciaMobile(DenunciaAddRespuestaAPIRequest $request):JsonResponse {
         $response = ["status"=>0, "msg"=>"Ha ocurrido un error al subir la respuesta"];
         $den = (object)  $request->manage();
+
         if ($den){
             $response["status"] = 1;
-            $response["msg"] = "Su respuesta fue agregada correctamente!";
+            $response["msg"] = " Su respuesta fue agregada correctamente!";
         }
         return response()->json($response);
     }

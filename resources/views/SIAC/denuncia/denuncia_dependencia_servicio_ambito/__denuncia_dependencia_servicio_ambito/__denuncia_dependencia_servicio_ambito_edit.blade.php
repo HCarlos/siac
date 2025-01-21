@@ -102,13 +102,12 @@
 
                 var requiere_imagen = $(this).find("option:selected").attr('data-require');
 
-                if ( requiere_imagen === '1' ) {
-                    // $( "#requiereImagen" ).html(getFileHTML());
-                    $( "#requiereImagen" ).show();
-                } else {
-                    // $( "#requiereImagen" ).empty();
-                    $( "#requiereImagen" ).hide();
-                }
+                // if ( requiere_imagen === '1' ) {
+                //     $( "#requiereImagen" ).show();
+                // } else {
+                //     $( "#requiereImagen" ).hide();
+                // }
+
             });
 
             function getFileHTML() {

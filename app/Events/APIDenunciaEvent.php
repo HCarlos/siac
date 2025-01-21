@@ -74,7 +74,7 @@ class APIDenunciaEvent  implements ShouldBroadcast {
         $DenMob = Denunciamobile::find($this->denuncia_id);
 
         $vid = new VistaDenunciaClass();
-        $vid->vistaDenuncia($DenMob->denuncia_id);
+        $vid->vistaDenuncia($this->denuncia_id);
 
         return [
             'denuncia_id'  => $this->denuncia_id,
@@ -84,16 +84,6 @@ class APIDenunciaEvent  implements ShouldBroadcast {
             'status'       => $this->status,
             'power'        => 10,
         ];
-
-
-//        return [
-//            'denuncia_id'  => 1,
-//            'user_id'      => 2,
-//            'msg'          => "msg",
-//            'icon'         => "icon",
-//            'status'       => 200,
-//        ];
-//
 
 
     }
