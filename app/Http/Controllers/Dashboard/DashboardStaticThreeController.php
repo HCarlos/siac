@@ -116,6 +116,8 @@ class DashboardStaticThreeController extends Controller{
                 }
             }
 
+//            dd($arrEstatus);
+
             // INICIA EL MODULO DE SERVICIOS
             $vectorServicios = [
                 (object)["sue_id" => 483, "Servicio"=> "BACHEO_DE_VIALIDADES", "Total"=> 0,"Porcentaje" => 0],
@@ -142,16 +144,45 @@ class DashboardStaticThreeController extends Controller{
                 $vectorServicios[$key]->Porcentaje = (int) number_format($total, 0);
             }
 
+            // INICIA EL MODULO DE GEOLOCALIZACIÓN
+            $arrGeos = [];
+            $arrG = static::getGeoDenuncias($start_date,$end_date,0,0);
+            foreach ($arrG as $g) {
+                $fe = Carbon::parse($g->fecha_dias_ejecucion);
+                $fi = Carbon::parse($g->fecha_ingreso);
+                $ueid = $g->ue_id;
+                if ( now() <= $fe ) {
+                    $semaforo = "green";
+                }else if ( (now() > $fi && now() <= $fe) ) {
+                    $semaforo = "orange";
+                }else{
+                    $semaforo = "red";
+                }
+                $arrGeos[] = (object)[
+                    "denuncia_id"=> $g->id,
+                    "denuncia"=> $g->denuncia,
+                    "latitud"=> (float) $g->latitud,
+                    "longitud"=> (float) $g->longitud,
+                    "abreviatura"=> $g->abreviatura,
+                    "nombre_corto_ss" => $g->nombre_corto_ss,
+                    "ciudadano" => $g->ciudadano,
+                    "fecha_ingreso" => Carbon::parse($g->fecha_ingreso)->format('d-m-Y H:i:s'),
+                    "fecha_ejecucion_minima" => Carbon::parse($g->fecha_dias_ejecucion)->format('d-m-Y H:i:s'),
+                    "dias_a_tiempo" => Carbon::parse($g->fecha_dias_ejecucion)->diffInDays(Carbon::parse($g->fecha_ingreso)),
+                    "semaforo" => $semaforo,
+                ];
+            }
+
 
             // SE CONSTRUYE EL JSON GENERAL
             $arrJson = [
                 (object)["estatus" => $arrEstatus],
                 (object)["unidades" =>  collect($vectorUnidades)->sortByDesc('Total')->values()->all()],
                 (object)["servicios" => $vectorServicios],
+                (object)["georeferencias" => $arrGeos],
             ];
 
-//            dd($arrJson);
-
+//           dd($arrJson);
 
             $jsonData = json_encode($arrJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
             Storage::disk('public')->put($file_out, $jsonData);
@@ -218,8 +249,8 @@ static function getEstatus($start_date,$end_date,$dependencia_id){
     static function getAtiempoVsDestiempo($start_date,$end_date,$unidad_id,$ue_id){
         return DB::table("_viddss")
             ->select(
-                DB::raw("SUM(CASE WHEN fecha_dias_ejecucion <= CURRENT_DATE THEN 1 ELSE 0 END) AS atiempo"),
-                DB::raw("SUM(CASE WHEN fecha_dias_ejecucion > CURRENT_DATE THEN 1 ELSE 0 END) AS conrezago")
+                DB::raw("SUM(CASE WHEN fecha_dias_ejecucion >= CURRENT_DATE THEN 1 ELSE 0 END) AS atiempo"),
+                DB::raw("SUM(CASE WHEN CURRENT_DATE > fecha_dias_ejecucion THEN 1 ELSE 0 END) AS conrezago")
             )
             ->where('ambito_dependencia', 2)
             ->whereBetween('fecha_ingreso', [$start_date, $end_date])
@@ -227,6 +258,19 @@ static function getEstatus($start_date,$end_date,$dependencia_id){
             ->where('ue_id', $ue_id)
             ->groupBy('ue_id')
             ->first();
+    }
+
+    static function getGeoDenuncias($start_date,$end_date,$unidad_id,$ue_id){
+
+        return DB::table("_viddss")
+            ->select(
+                'id','denuncia','latitud','longitud','abreviatura',
+                'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
+                'ue_id'
+            )
+            ->where('ambito_dependencia', 2)
+            ->whereBetween('fecha_ingreso', [$start_date, $end_date])
+            ->get();
     }
 
 

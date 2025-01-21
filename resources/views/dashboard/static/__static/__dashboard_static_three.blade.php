@@ -187,15 +187,15 @@
                 const data = await response.json();
 
                 // Llama a la función para renderizar los datos
-                console.log(data);
-                initLoadData(data[0],data[1],data[2]);
+                // console.log(data);
+                initLoadData(data[0],data[1],data[2],data[3]);
             } catch (error) {
                 console.error(error);
             }
         }
 
 
-        function initLoadData(Estatus,Unidades,Servicios) {
+        function initLoadData(Estatus,Unidades,Servicios,Georeferencias) {
 
             // alert(data.estatus[0].Unidades[0].Total);
 
@@ -318,11 +318,25 @@
             });
 
             // Llamar a la función de inicialización cuando la página cargue
-            const dataSetLocations = [
-                { lat: 17.9889, lng: -92.9283, color: "red" }, // Zona 1
-                { lat: 17.9919, lng: -92.9303, color: "orange" }, // Zona 2
-                { lat: 17.9879, lng: -92.9313, color: "green" }, // Zona 3
-            ];
+
+            // const dataSetLocations = [
+            //     { lat: 17.9889, lng: -92.9283, color: "red" }, // Zona 1
+            //     { lat: 17.9919, lng: -92.9303, color: "orange" }, // Zona 2
+            //     { lat: 17.9879, lng: -92.9313, color: "green" }, // Zona 3
+            // ];
+            //
+
+            let dataSetLocations = [];
+
+            Georeferencias.georeferencias.forEach( (geo) => {
+                dataSetLocations.push({
+                    id:geo.denuncia_id, lat: geo.latitud, lng: geo.longitud, color: geo.semaforo,
+                    denuncia: geo.denuncia, ciudadano: geo.ciudadano
+                });
+            });
+
+            console.log(dataSetLocations);
+
             window.onload = async () => initMap(dataSetLocations);
 
             let Services = [];
