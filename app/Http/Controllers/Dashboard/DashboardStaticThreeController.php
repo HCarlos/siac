@@ -173,7 +173,7 @@ class DashboardStaticThreeController extends Controller{
                     "latitud"=> (float) $g->latitud,
                     "longitud"=> (float) $g->longitud,
                     "abreviatura"=> $g->abreviatura,
-                    "nombre_corto_ss" => $g->nombre_corto_ss,
+                    "servicio" => $g->nombre_corto_ss,
                     "ciudadano" => $g->ciudadano,
                     "ultimo_estatus" => $g->ultimo_estatus,
                     "fecha_ingreso" => Carbon::parse($g->fecha_ingreso)->format('d-m-Y H:i:s'),
