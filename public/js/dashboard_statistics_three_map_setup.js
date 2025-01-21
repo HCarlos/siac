@@ -41,7 +41,12 @@ async function initMap(dataSet) {
         });
         let srcHtml = "<b>Solicitud:</b> "+dataSet.denuncia+"<br>"+
                              "<b>Solicitante:</b> "+dataSet.ciudadano+"<br>"+
+                             "<b>Unidad:</b> "+dataSet.ciudadano+"<br>"+
+                             "<b>Servicio:</b> "+dataSet.servicio+"<br>"+
+                             "<b>Último estatus:</b> "+dataSet.ultimo_estatus+"<br>"+
+                             "<b>Fecha de Ingreso:</b> "+dataSet.fecha_ingreso+"<br>"+
                              "<b>ID:</b> "+dataSet.denuncia_id;
+
         const marker = new google.maps.marker.AdvancedMarkerElement({
             map: map,
             position: { lat: dataSet.lat, lng: dataSet.lng },

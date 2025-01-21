@@ -160,6 +160,8 @@
     </main>
 </div>
 
+{{--<b style="color: #f50606"></b>--}}
+
 <script
     src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_KEY')}}&libraries=marker&v=weekly"
     async
@@ -330,8 +332,10 @@
 
             Georeferencias.georeferencias.forEach( (geo) => {
                 dataSetLocations.push({
-                    id:geo.denuncia_id, lat: geo.latitud, lng: geo.longitud, color: geo.semaforo,
-                    denuncia: geo.denuncia, ciudadano: geo.ciudadano
+                    denuncia_id:geo.denuncia_id, lat: geo.latitud, lng: geo.longitud, color: geo.semaforo,
+                    denuncia: geo.denuncia, ciudadano: geo.ciudadano, unidad: geo.abreviatura,
+                    servicio: geo.nombre_corto_ss, fecha_ingreso: geo.fecha_ingreso,
+                    ultimo_estatus: geo.ultimo_estatus,
                 });
             });
 

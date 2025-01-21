@@ -148,13 +148,22 @@ class DashboardStaticThreeController extends Controller{
             $arrGeos = [];
             $arrG = static::getGeoDenuncias($start_date,$end_date,0,0);
             foreach ($arrG as $g) {
-                $fe = Carbon::parse($g->fecha_dias_ejecucion);
+                $fme1 = Carbon::parse($g->fecha_dias_ejecucion);
+                $fme2 = Carbon::parse($g->fecha_dias_maximos_ejecucion);
                 $fi = Carbon::parse($g->fecha_ingreso);
                 $ueid = $g->ue_id;
-                if ( now() <= $fe ) {
+                if ( now() <= $fme1 && $ueid !== 17) {
                     $semaforo = "green";
-                }else if ( (now() > $fi && now() <= $fe) ) {
+                }else if ( now() <= $fme1 && $ueid === 17) {
+                        $semaforo = "#35b324";
+                }else if ( (now() > $fi && now() <= $fme2 && $ueid !== 17) ) {
                     $semaforo = "orange";
+                }else if ( (now() > $fi && now() <= $fme2 && $ueid === 17) ) {
+                    $semaforo = "#edb606";
+                }else if ( (now() > $fme2 && $ueid !== 17) ) {
+                    $semaforo = "red";
+                }else if ( (now() > $fme2 && $ueid === 17) ) {
+                    $semaforo = "#f50606";
                 }else{
                     $semaforo = "red";
                 }
@@ -166,9 +175,11 @@ class DashboardStaticThreeController extends Controller{
                     "abreviatura"=> $g->abreviatura,
                     "nombre_corto_ss" => $g->nombre_corto_ss,
                     "ciudadano" => $g->ciudadano,
+                    "ultimo_estatus" => $g->ultimo_estatus,
                     "fecha_ingreso" => Carbon::parse($g->fecha_ingreso)->format('d-m-Y H:i:s'),
                     "fecha_ejecucion_minima" => Carbon::parse($g->fecha_dias_ejecucion)->format('d-m-Y H:i:s'),
-                    "dias_a_tiempo" => Carbon::parse($g->fecha_dias_ejecucion)->diffInDays(Carbon::parse($g->fecha_ingreso)),
+                    "fecha_ejecucion_maxima" => Carbon::parse($g->fecha_dias_maximos_ejecucion)->format('d-m-Y H:i:s'),
+                    "dias_a_tiempo" => Carbon::parse($g->fecha_dias_maximos_ejecucion)->diffInDays(Carbon::parse($g->fecha_ingreso)),
                     "semaforo" => $semaforo,
                 ];
             }
@@ -266,6 +277,7 @@ static function getEstatus($start_date,$end_date,$dependencia_id){
             ->select(
                 'id','denuncia','latitud','longitud','abreviatura',
                 'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
+                'fecha_dias_maximos_ejecucion','ultimo_estatus',
                 'ue_id'
             )
             ->where('ambito_dependencia', 2)
