@@ -334,11 +334,15 @@
             //     ultimo_estatus: geo.ultimo_estatus, fecha_ejecucion_minima: geo.fecha_ejecucion_minima,
             //     fecha_ejecucion_maxima: geo.fecha_ejecucion_maxima
 
+            var i = 0;
             Georeferencias.georeferencias.forEach( (geo) => {
-                dataSetLocations.push({
-                    denuncia_id:geo.denuncia_id, lat: geo.latitud, lng: geo.longitud, color: geo.semaforo,
-                    denuncia: geo.denuncia, ciudadano: geo.ciudadano, unidad: geo.abreviatura
-                });
+                if (i < 100){
+                    dataSetLocations.push({
+                        denuncia_id:geo.denuncia_id, lat: geo.latitud, lng: geo.longitud, color: geo.semaforo,
+                        denuncia: geo.denuncia, ciudadano: geo.ciudadano, unidad: geo.abreviatura
+                    });
+                }
+                i++;
             });
 
             // console.log(dataSetLocations);
