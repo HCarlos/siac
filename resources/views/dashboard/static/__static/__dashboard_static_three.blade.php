@@ -160,26 +160,25 @@
     </main>
 </div>
 
-{{--<b style="color: #f50606"></b>--}}
-
-{{--<script--}}
-{{--    src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_KEY')}}&libraries=marker&v=weekly"--}}
-{{--    async--}}
-{{--    defer--}}
-{{--></script>--}}
 
 
 
-<script>
-    (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
-        key: "{{ env('GOOGLE_MAPS_KEY') }}",
-        v: "beta",
-        // Use the 'v' parameter to indicate the version to use (weekly, beta, alpha, etc.).
-        // Add other bootstrap parameters as needed, using camel case.
-    });
-    localStorage.apikeymps = "{{ env('GOOGLE_MAPS_KEY') }}";
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_KEY') }}&libraries=places"> </script>
+{{--<script>--}}
+{{--    (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({--}}
+{{--        key: "{{ env('GOOGLE_MAPS_KEY') }}",--}}
+{{--        v: "beta",--}}
+{{--        // Use the 'v' parameter to indicate the version to use (weekly, beta, alpha, etc.).--}}
+{{--        // Add other bootstrap parameters as needed, using camel case.--}}
+{{--    });--}}
+{{--    localStorage.apikeymps = "{{ env('GOOGLE_MAPS_KEY') }}";--}}
+{{--</script>--}}
+{{--<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_KEY') }}&libraries=places"> </script>--}}
+
+<script
+    src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_KEY')}}&libraries=marker&v=weekly"
+    async
+    defer
+></script>
 
 <script src="js/dashboard_statistics_three_map_setup.js" type="text/javascript"></script>
 
@@ -344,19 +343,19 @@
 
             let dataSetLocations = [];
 
-            // servicio: geo.servicio, fecha_ingreso: geo.fecha_ingreso,dias_a_tiempo: geo.dias_a_tiempo,
-            //     ultimo_estatus: geo.ultimo_estatus, fecha_ejecucion_minima: geo.fecha_ejecucion_minima,
-            //     fecha_ejecucion_maxima: geo.fecha_ejecucion_maxima
 
             var i = 0;
             Georeferencias.georeferencias.forEach( (geo) => {
-                if (i < 5){
+                // if (i < 5){
                     dataSetLocations.push({
                         denuncia_id:geo.denuncia_id, lat: geo.latitud, lng: geo.longitud, color: geo.semaforo,
-                        ciudadano: geo.ciudadano, unidad: geo.abreviatura
+                        ciudadano: geo.ciudadano, unidad: geo.abreviatura,
+                        servicio: geo.servicio, fecha_ingreso: geo.fecha_ingreso,dias_a_tiempo: geo.dias_a_tiempo,
+                        ultimo_estatus: geo.ultimo_estatus, fecha_ejecucion_minima: geo.fecha_ejecucion_minima,
+                        fecha_ejecucion_maxima: geo.fecha_ejecucion_maxima
                     });
-                }
-                i++;
+                // }
+                // i++;
             });
 
             console.log(dataSetLocations);

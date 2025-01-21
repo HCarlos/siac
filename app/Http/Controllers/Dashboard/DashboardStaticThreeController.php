@@ -155,15 +155,15 @@ class DashboardStaticThreeController extends Controller{
                 if ( now() <= $fme1 && $ueid !== 17) {
                     $semaforo = "green";
                 }else if ( now() <= $fme1 && $ueid === 17) {
-                        $semaforo = "green";
+                        $semaforo = "#35b324";
                 }else if ( (now() > $fi && now() <= $fme2 && $ueid !== 17) ) {
                     $semaforo = "orange";
                 }else if ( (now() > $fi && now() <= $fme2 && $ueid === 17) ) {
-                    $semaforo = "orange";
+                    $semaforo = "#edb606";
                 }else if ( (now() > $fme2 && $ueid !== 17) ) {
                     $semaforo = "red";
                 }else if ( (now() > $fme2 && $ueid === 17) ) {
-                    $semaforo = "red";
+                    $semaforo = "#f50606";
                 }else{
                     $semaforo = "red";
                 }
@@ -173,7 +173,7 @@ class DashboardStaticThreeController extends Controller{
                     "latitud"=> (float) $g->latitud,
                     "longitud"=> (float) $g->longitud,
                     "abreviatura"=> $g->abreviatura,
-                    "servicio" => $g->nombre_corto_ss,
+                    "servicio" => $g->servicio,
                     "ciudadano" => $g->ciudadano,
                     "ultimo_estatus" => $g->ultimo_estatus,
                     "fecha_ingreso" => Carbon::parse($g->fecha_ingreso)->format('d-m-Y H:i:s'),
@@ -277,7 +277,7 @@ static function getEstatus($start_date,$end_date,$dependencia_id){
             ->select(
                 'id','denuncia','latitud','longitud','abreviatura',
                 'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
-                'fecha_dias_maximos_ejecucion','ultimo_estatus',
+                'fecha_dias_maximos_ejecucion','ultimo_estatus','servicio',
                 'ue_id'
             )
             ->where('ambito_dependencia', 2)
