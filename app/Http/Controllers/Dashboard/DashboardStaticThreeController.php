@@ -155,15 +155,15 @@ class DashboardStaticThreeController extends Controller{
                 if ( now() <= $fme1 && $ueid !== 17) {
                     $semaforo = "green";
                 }else if ( now() <= $fme1 && $ueid === 17) {
-                        $semaforo = "#35b324";
+                        $semaforo = "green";
                 }else if ( (now() > $fi && now() <= $fme2 && $ueid !== 17) ) {
                     $semaforo = "orange";
                 }else if ( (now() > $fi && now() <= $fme2 && $ueid === 17) ) {
-                    $semaforo = "#edb606";
+                    $semaforo = "orange";
                 }else if ( (now() > $fme2 && $ueid !== 17) ) {
                     $semaforo = "red";
                 }else if ( (now() > $fme2 && $ueid === 17) ) {
-                    $semaforo = "#f50606";
+                    $semaforo = "red";
                 }else{
                     $semaforo = "red";
                 }

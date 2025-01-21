@@ -330,17 +330,18 @@
 
             let dataSetLocations = [];
 
+            // servicio: geo.servicio, fecha_ingreso: geo.fecha_ingreso,dias_a_tiempo: geo.dias_a_tiempo,
+            //     ultimo_estatus: geo.ultimo_estatus, fecha_ejecucion_minima: geo.fecha_ejecucion_minima,
+            //     fecha_ejecucion_maxima: geo.fecha_ejecucion_maxima
+
             Georeferencias.georeferencias.forEach( (geo) => {
                 dataSetLocations.push({
                     denuncia_id:geo.denuncia_id, lat: geo.latitud, lng: geo.longitud, color: geo.semaforo,
-                    denuncia: geo.denuncia, ciudadano: geo.ciudadano, unidad: geo.abreviatura,
-                    servicio: geo.servicio, fecha_ingreso: geo.fecha_ingreso,dias_a_tiempo: geo.dias_a_tiempo,
-                    ultimo_estatus: geo.ultimo_estatus, fecha_ejecucion_minima: geo.fecha_ejecucion_minima,
-                    fecha_ejecucion_maxima: geo.fecha_ejecucion_maxima
+                    denuncia: geo.denuncia, ciudadano: geo.ciudadano, unidad: geo.abreviatura
                 });
             });
 
-            console.log(dataSetLocations);
+            // console.log(dataSetLocations);
 
             window.onload = async () => initMap(dataSetLocations);
 
