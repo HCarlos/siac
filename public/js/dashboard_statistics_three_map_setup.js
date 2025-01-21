@@ -40,14 +40,15 @@ async function initMap(dataSet) {
 
         });
 
+        // "<b>Solicitante:</b> "+dataSet.ciudadano+"<br>"+
+        // "<b>Unidad:</b> "+dataSet.unidad+"<br>"+
+        // "<b>Servicio:</b> "+dataSet.servicio+"<br>"+
+        // "<b>Último estatus:</b> "+dataSet.ultimo_estatus+"<br>"+
+        // "<b>Fecha de Ingreso:</b> "+dataSet.fecha_ingreso+"<br>"+
+        // "<b>Fecha de Ejecución Mínima:</b> "+dataSet.fecha_ejecucion_minima+"<br>"+
+        // "<b>Fecha de Ejecución Máxima:</b> "+dataSet.fecha_ejecucion_maxima+"<br>"+
+
         let srcHtml = "<b>Solicitud:</b> "+dataSet.denuncia+"<br>"+
-                             "<b>Solicitante:</b> "+dataSet.ciudadano+"<br>"+
-                             "<b>Unidad:</b> "+dataSet.unidad+"<br>"+
-                             "<b>Servicio:</b> "+dataSet.servicio+"<br>"+
-                             "<b>Último estatus:</b> "+dataSet.ultimo_estatus+"<br>"+
-                             "<b>Fecha de Ingreso:</b> "+dataSet.fecha_ingreso+"<br>"+
-                             "<b>Fecha de Ejecución Mínima:</b> "+dataSet.fecha_ejecucion_minima+"<br>"+
-                             "<b>Fecha de Ejecución Máxima:</b> "+dataSet.fecha_ejecucion_maxima+"<br>"+
                              "<b>Id:</b> "+dataSet.denuncia_id;
 
         const marker = new google.maps.marker.AdvancedMarkerElement({
