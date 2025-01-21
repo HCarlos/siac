@@ -167,7 +167,7 @@
 {{--    async--}}
 {{--    defer--}}
 {{--></script>--}}
-{{--<script src="js/dashboard_statistics_three_map_setup.js" type="text/javascript"></script>--}}
+
 
 
 <script>
@@ -181,6 +181,7 @@
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_KEY') }}&libraries=places"> </script>
 
+<script src="js/dashboard_statistics_three_map_setup.js" type="text/javascript"></script>
 
 <script>
 
@@ -349,13 +350,13 @@
 
             var i = 0;
             Georeferencias.georeferencias.forEach( (geo) => {
-                // if (i < 100){
+                if (i < 5){
                     dataSetLocations.push({
                         denuncia_id:geo.denuncia_id, lat: geo.latitud, lng: geo.longitud, color: geo.semaforo,
-                        denuncia: geo.denuncia, ciudadano: geo.ciudadano, unidad: geo.abreviatura
+                        ciudadano: geo.ciudadano, unidad: geo.abreviatura
                     });
-                // }
-                // i++;
+                }
+                i++;
             });
 
             console.log(dataSetLocations);
@@ -379,10 +380,6 @@
 
         }
 
-        // Llama a la función para cargar el JSON al iniciar
-        {{--let urlFile = "{{ Storage::disk('public')->url($file_output) }}";--}}
-
-        {{--alert("/storage/{{ $file_output }}" );--}}
         loadJSON( "/storage/{{ $file_output }}" );
 
 
