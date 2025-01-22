@@ -17,15 +17,15 @@ async function initMap(dataSet) {
     });
 
     for (const property of dataSet) {
-        const AdvancedMarkerElement = new google.maps.marker.AdvancedMarkerElement({
+        const Marker = new AdvancedMarkerElement({
             map,
             content: buildContent(property),
             position: property.position,
             title: property.description,
         });
 
-        AdvancedMarkerElement.addListener("click", () => {
-            toggleHighlight(AdvancedMarkerElement, property);
+        Marker.addListener("click", () => {
+            toggleHighlight(Marker, property);
         });
     }
 
@@ -88,10 +88,13 @@ async function initMap(dataSet) {
 
 function toggleHighlight(markerView, property) {
     if (markerView.content.classList.contains("highlight")) {
+        markerView.content.classList.remove("div-property");
         markerView.content.classList.remove("highlight");
         markerView.zIndex = null;
     } else {
+        markerView.content.classList.add("div-property");
         markerView.content.classList.add("highlight");
+
         markerView.zIndex = 1;
     }
 }
@@ -100,6 +103,7 @@ function buildContent(property) {
     const content = document.createElement("div");
 
     content.classList.add("property");
+
     content.innerHTML = `
     <div class="icon">
         <i aria-hidden="true" class="fa fa-icon fa-${property.type}" title="${property.type}"></i>

@@ -23,9 +23,6 @@
         <form action="{{ url('/dashboard-statistics-three') }}" method="POST" id="formFilter">
             @csrf
             <header class="header">
-    {{--            <button class="filter-btn active">Hoy</button>--}}
-    {{--            <button class="filter-btn">Mes Actual</button>--}}
-    {{--            <button class="filter-btn">Año Actual</button>--}}
                     <div class="radio-group">
                         <label class="radio-button">
                             <input type="radio" name="filter" value="hoy" @if(  $filter === 'hoy') checked @endif >
@@ -48,8 +45,6 @@
                         <label for="start_date">F. Inicial</label>
                         <input type="date" id="start_date" name="start_date" value="{{ $start_date }}">
                     </div>
-                {{ $start_date }}
-
                 <div class="date-picker">
                         <label for="end_date">F. Final</label>
                         <input type="date" id="end_date" name="end_date" value="{{ $end_date }}">

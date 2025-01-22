@@ -81,6 +81,7 @@ class DashboardStaticThreeController extends Controller{
             $filter = $data['filter'];
 
         }
+
         $data['start_date'] = $start_date;
         $data['end_date'] = $end_date;
         $data['filter'] = $filter;
@@ -286,7 +287,7 @@ class DashboardStaticThreeController extends Controller{
         return DB::table("_viddss")
             ->select(["ultimo_estatus as name", "ue_id", DB::raw("count(ue_id) as data")])
             ->where("ambito_dependencia",2)
-            ->whereBetween('fecha_ingreso',[$start_date,$end_date])
+            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->groupBy(["ultimo_estatus","ue_id"])
             ->get();
     }
@@ -295,7 +296,7 @@ class DashboardStaticThreeController extends Controller{
         return DB::table("_viddss")
             ->select('abreviatura as label', DB::raw('count(dependencia_id) as data'))
             ->where('ambito_dependencia',2)
-            ->whereBetween('fecha_ingreso',[$start_date,$end_date])
+            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->where('dependencia_id',$dependencia_id)
             ->where('ue_id',$ue_id)
             ->groupBy('abreviatura')
@@ -305,7 +306,7 @@ class DashboardStaticThreeController extends Controller{
         return DB::table("_viddss")
             ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
             ->where('ambito_dependencia',2)
-            ->whereBetween('fecha_ingreso',[$start_date,$end_date])
+            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->where('dependencia_id',$dependencia_id)
             ->groupBy('dependencia_id')
             ->first();
@@ -314,7 +315,7 @@ class DashboardStaticThreeController extends Controller{
         return DB::table("_viddss")
             ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
             ->where('ambito_dependencia',2)
-            ->whereBetween('fecha_ingreso',[$start_date,$end_date])
+            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->where('dependencia_id',$dependencia_id)
             ->where('sue_id',$sue_id)
             ->groupBy('dependencia_id')
@@ -325,7 +326,7 @@ class DashboardStaticThreeController extends Controller{
         return DB::table("_viddss")
             ->select('abreviatura as label', DB::raw('count(sue_id) as total'))
             ->where('ambito_dependencia',2)
-            ->whereBetween('fecha_ingreso',[$start_date,$end_date])
+            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->where('sue_id',$sue_id)
             ->groupBy('abreviatura')
             ->first();
@@ -340,7 +341,7 @@ class DashboardStaticThreeController extends Controller{
                 DB::raw("SUM(CASE WHEN CURRENT_DATE > fecha_dias_ejecucion THEN 1 ELSE 0 END) AS conrezago")
             )
             ->where('ambito_dependencia', 2)
-            ->whereBetween('fecha_ingreso', [$start_date, $end_date])
+            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->where('dependencia_id', $unidad_id)
             ->where('ue_id', $ue_id)
             ->groupBy('ue_id')
@@ -357,7 +358,7 @@ class DashboardStaticThreeController extends Controller{
                 'ue_id'
             )
             ->where('ambito_dependencia', 2)
-            ->whereBetween('fecha_ingreso', [$start_date, $end_date])
+            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->get();
     }
 
