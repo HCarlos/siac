@@ -10,14 +10,29 @@ async function initMap(dataSet) {
     const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker",);
     const infoWindow = new InfoWindow();
 
-    map = new google.maps.Map(document.getElementById("map"), {
+    map = new Map(document.getElementById("map"), {
         center: { lat: 17.9869, lng: -92.9303 }, // Coordenadas de Villahermosa (modifícalas según sea necesario)
         zoom: 15,
         mapId: localStorage.apikeymps,
     });
 
+    for (const property of dataSet) {
+        const AdvancedMarkerElement = new google.maps.marker.AdvancedMarkerElement({
+            map,
+            content: buildContent(property),
+            position: property.position,
+            title: property.description,
+        });
+
+        AdvancedMarkerElement.addListener("click", () => {
+            toggleHighlight(AdvancedMarkerElement, property);
+        });
+    }
+
+
+/*
     const url = new URL("https://refugios.villahermosa.gob.mx:445/images/z1.png");
-    const pin = new google.maps.marker.PinElement({
+    const pin = new PinElement({
         scale: 1.25,
         background: "#F7D32F",
         glyph: url,
@@ -29,9 +44,9 @@ async function initMap(dataSet) {
     dataSet.forEach((dataSet) => {
 
         const icon = document.createElement("div");
-        icon.innerHTML = '<i class="fa fa-map-marker fa-lg"></i>';
+        icon.innerHTML = '<i class="fa fa-map-marker fa-lg text-danger"></i>';
 
-        const pin = new google.maps.marker.PinElement({
+        const pin = new PinElement({
             scale: 1.25,
             background: dataSet.color,
             borderColor: "#FFFFFF",
@@ -39,7 +54,6 @@ async function initMap(dataSet) {
             glyph: icon,
 
         });
-
 
         let srcHtml = "<b>Solicitud:</b> "+dataSet.denuncia+"<br>"+
                              "<b>Solicitante:</b> "+dataSet.ciudadano+"<br>"+
@@ -51,7 +65,7 @@ async function initMap(dataSet) {
                              "<b>Fecha de Ejecución Máxima:</b> "+dataSet.fecha_ejecucion_maxima+"<br>"+
                              "<b>Id:</b> "+dataSet.denuncia_id;
 
-        const marker = new google.maps.marker.AdvancedMarkerElement({
+        const marker = new AdvancedMarkerElement({
             map: map,
             position: { lat: dataSet.lat, lng: dataSet.lng },
             title:  srcHtml,
@@ -68,6 +82,72 @@ async function initMap(dataSet) {
         });
 
     });
+*/
 
 }
 
+function toggleHighlight(markerView, property) {
+    if (markerView.content.classList.contains("highlight")) {
+        markerView.content.classList.remove("highlight");
+        markerView.zIndex = null;
+    } else {
+        markerView.content.classList.add("highlight");
+        markerView.zIndex = 1;
+    }
+}
+
+function buildContent(property) {
+    const content = document.createElement("div");
+
+    content.classList.add("property");
+    content.innerHTML = `
+    <div class="icon">
+        <i aria-hidden="true" class="fa fa-icon fa-${property.type}" title="${property.type}"></i>
+        <span class="fa-sr-only">${property.type}</span>
+    </div>
+    <div class="details">
+        <div class="servicio">${property.servicio}</div>
+        <div class="denuncia">${property.denuncia}</div>
+        <div class="features">
+            <div>
+                <i aria-hidden="true" class="fa fa-id-card fa-lg bed" title="bedroom"></i>
+                <span class="fa-sr-only">denuncia_id</span>
+                <span>${property.denuncia_id}</span>
+            </div>
+            <div>
+                <i aria-hidden="true" class="fa fa-calendar fa-lg bath" title="bathroom"></i>
+                <span class="fa-sr-only">fecha_ingreso</span>
+                <span>${property.fecha_ingreso}</span>
+            </div>
+            <div>
+                <i aria-hidden="true" class="fa fa-building fa-lg size" title="size"></i>
+                <span class="fa-sr-only">unidad</span>
+                <span>${property.unidad} </span>
+            </div>
+        </div>
+    </div>
+    `;
+    return content;
+
+
+/*
+    <div className="features">
+        <div>
+            <i aria-hidden="true" className="fa fa-bed fa-lg bed" title="bedroom"></i>
+            <span className="fa-sr-only">bedroom</span>
+            <span>${property.bed}</span>
+        </div>
+        <div>
+            <i aria-hidden="true" className="fa fa-bath fa-lg bath" title="bathroom"></i>
+            <span className="fa-sr-only">bathroom</span>
+            <span>${property.bath}</span>
+        </div>
+        <div>
+            <i aria-hidden="true" className="fa fa-ruler fa-lg size" title="size"></i>
+            <span className="fa-sr-only">size</span>
+            <span>${property.size} ft<sup>2</sup></span>
+        </div>
+    </div>
+*/
+
+}

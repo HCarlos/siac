@@ -198,11 +198,15 @@
 {{--<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_KEY') }}&libraries=places"> </script>--}}
 
 {{--src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_KEY')}}&libraries=marker&v=weekly"--}}
-<script
-    src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_KEY')}}&libraries=places&v=beta"
-    async
-    defer
-></script>
+
+{{--<script--}}
+{{--    src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_KEY')}}&libraries=places&v=beta"--}}
+{{--    async--}}
+{{--    defer--}}
+{{--></script>--}}
+
+<script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+({key: "{{env('GOOGLE_MAPS_KEY')}}", v: "weekly"});</script>
 
 <script src="js/dashboard_statistics_three_map_setup.js" type="text/javascript"></script>
 
@@ -358,15 +362,7 @@
 
             // Llamar a la función de inicialización cuando la página cargue
 
-            // const dataSetLocations = [
-            //     { lat: 17.9889, lng: -92.9283, color: "red" }, // Zona 1
-            //     { lat: 17.9919, lng: -92.9303, color: "orange" }, // Zona 2
-            //     { lat: 17.9879, lng: -92.9313, color: "green" }, // Zona 3
-            // ];
-            //
-
             let dataSetLocations = [];
-
 
             let Services = [];
             let LabelServices = [];
@@ -384,24 +380,42 @@
             });
 
             Georeferencias.georeferencias.forEach( (geo) => {
+                // dataSetLocations.push({
+                //     denuncia_id:geo.denuncia_id, lat: geo.latitud, lng: geo.longitud, color: geo.semaforo,
+                //     ciudadano: geo.ciudadano, unidad: geo.abreviatura, denuncia: geo.denuncia,
+                //     servicio: geo.servicio, fecha_ingreso: geo.fecha_ingreso,dias_a_tiempo: geo.dias_a_tiempo,
+                //     ultimo_estatus: geo.ultimo_estatus, fecha_ejecucion_minima: geo.fecha_ejecucion_minima,
+                //     fecha_ejecucion_maxima: geo.fecha_ejecucion_maxima
+                // });
+
                 dataSetLocations.push({
-                    denuncia_id:geo.denuncia_id, lat: geo.latitud, lng: geo.longitud, color: geo.semaforo,
-                    ciudadano: geo.ciudadano, unidad: geo.abreviatura, denuncia: geo.denuncia,
-                    servicio: geo.servicio, fecha_ingreso: geo.fecha_ingreso,dias_a_tiempo: geo.dias_a_tiempo,
-                    ultimo_estatus: geo.ultimo_estatus, fecha_ejecucion_minima: geo.fecha_ejecucion_minima,
-                    fecha_ejecucion_maxima: geo.fecha_ejecucion_maxima
+                    denuncia_id:geo.denuncia_id,
+                    fecha_ingreso: geo.fecha_ingreso,
+                    unidad: geo.abreviatura,
+                    denuncia: geo.denuncia,
+                    description: geo.ciudadano,
+                    servicio: geo.servicio,
+                    type: "warehouse",
+                    bed: 5,
+                    bath: 4.5,
+                    size: 300,
+                    position: {
+                        lat: geo.latitud,
+                        lng: geo.longitud,
+                    }
                 });
+
             });
 
             // console.log(dataSetLocations);
 
-            // window.onload = async () => initMap(dataSetLocations);
+            window.onload = async () => initMap(dataSetLocations);
             initMap(dataSetLocations);
 
 
         }
 
-        loadJSON( "/storage/{{ $file_output }}" );
+        window.onload = loadJSON( "/storage/{{ $file_output }}" );
 
 
         document.querySelectorAll('.radio-button input').forEach((input) => {
