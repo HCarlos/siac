@@ -20,26 +20,49 @@
     <!-- Main Content -->
     <main id="contenedor">
         <!-- Header -->
-        <header class="header">
-            <button class="filter-btn active">Hoy</button>
-            <button class="filter-btn">Mes Actual</button>
-            <button class="filter-btn">Año Actual</button>
-            <div class="date-picker">
-                <label for="start_date">F. Inicial</label>
-                <input type="date" id="start_date" name="start_date" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
-            </div>
-            <div class="date-picker">
-                <label for="end_date">F. Final</label>
-                <input type="date" id="end_date" name="end_date" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
-            </div>
-            <div class="search-container">
-                <button class="search-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="search-icon">
-                        <path d="M10 2a8 8 0 105.29 14.29l4.35 4.35a1 1 0 001.42-1.42l-4.35-4.35A8 8 0 0010 2zm0 2a6 6 0 014.66 9.74 1 1 0 00-.14 1.41l4.35 4.35a1 1 0 001.42-1.42l-4.35-4.35a1 1 0 00-1.41.14A6 6 0 1110 4z" />
-                    </svg>
-                </button>
-            </div>
-        </header>
+        <form action="{{ url('/dashboard-statistics-three') }}" method="POST" id="formFilter">
+            @csrf
+            <header class="header">
+    {{--            <button class="filter-btn active">Hoy</button>--}}
+    {{--            <button class="filter-btn">Mes Actual</button>--}}
+    {{--            <button class="filter-btn">Año Actual</button>--}}
+                    <div class="radio-group">
+                        <label class="radio-button">
+                            <input type="radio" name="filter" value="hoy" @if(  $filter === 'hoy') checked @endif >
+                            <span>Hoy</span>
+                        </label>
+                        <label class="radio-button">
+                            <input type="radio" name="filter" value="mes" @if(  $filter === 'mes') checked @endif >
+                            <span>Mes Actual</span>
+                        </label>
+                        <label class="radio-button">
+                            <input type="radio" name="filter" value="anio" @if( $filter === 'anio') checked @endif >
+                            <span>Año Actual</span>
+                        </label>
+                        <label class="radio-button">
+                            <input type="radio" name="filter" value="free" @if( $filter === 'free') checked @endif>
+                            <span>Rango de fecha</span>
+                        </label>
+                    </div>
+                    <div class="date-picker">
+                        <label for="start_date">F. Inicial</label>
+                        <input type="date" id="start_date" name="start_date" value="{{ $start_date }}">
+                    </div>
+                {{ $start_date }}
+
+                <div class="date-picker">
+                        <label for="end_date">F. Final</label>
+                        <input type="date" id="end_date" name="end_date" value="{{ $end_date }}">
+                    </div>
+                    <div class="search-container">
+                        <button class="search-btn" type="submit" >
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="search-icon">
+                                <path d="M10 2a8 8 0 105.29 14.29l4.35 4.35a1 1 0 001.42-1.42l-4.35-4.35A8 8 0 0010 2zm0 2a6 6 0 014.66 9.74 1 1 0 00-.14 1.41l4.35 4.35a1 1 0 001.42-1.42l-4.35-4.35a1 1 0 00-1.41.14A6 6 0 1110 4z" />
+                            </svg>
+                        </button>
+                    </div>
+            </header>
+        </form>
 
         <!-- Stats -->
         <section class="stats">
@@ -174,8 +197,9 @@
 {{--</script>--}}
 {{--<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_KEY') }}&libraries=places"> </script>--}}
 
+{{--src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_KEY')}}&libraries=marker&v=weekly"--}}
 <script
-    src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_KEY')}}&libraries=marker&v=weekly"
+    src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_KEY')}}&libraries=places&v=beta"
     async
     defer
 ></script>
@@ -344,24 +368,6 @@
             let dataSetLocations = [];
 
 
-            var i = 0;
-            Georeferencias.georeferencias.forEach( (geo) => {
-                // if (i < 5){
-                    dataSetLocations.push({
-                        denuncia_id:geo.denuncia_id, lat: geo.latitud, lng: geo.longitud, color: geo.semaforo,
-                        ciudadano: geo.ciudadano, unidad: geo.abreviatura, denuncia: geo.denuncia,
-                        servicio: geo.servicio, fecha_ingreso: geo.fecha_ingreso,dias_a_tiempo: geo.dias_a_tiempo,
-                        ultimo_estatus: geo.ultimo_estatus, fecha_ejecucion_minima: geo.fecha_ejecucion_minima,
-                        fecha_ejecucion_maxima: geo.fecha_ejecucion_maxima
-                    });
-                // }
-                // i++;
-            });
-
-            console.log(dataSetLocations);
-
-            window.onload = async () => initMap(dataSetLocations);
-
             let Services = [];
             let LabelServices = [];
             Servicios.servicios.forEach( (servicio) => {
@@ -377,9 +383,36 @@
                 options: opciones5()
             });
 
+            Georeferencias.georeferencias.forEach( (geo) => {
+                dataSetLocations.push({
+                    denuncia_id:geo.denuncia_id, lat: geo.latitud, lng: geo.longitud, color: geo.semaforo,
+                    ciudadano: geo.ciudadano, unidad: geo.abreviatura, denuncia: geo.denuncia,
+                    servicio: geo.servicio, fecha_ingreso: geo.fecha_ingreso,dias_a_tiempo: geo.dias_a_tiempo,
+                    ultimo_estatus: geo.ultimo_estatus, fecha_ejecucion_minima: geo.fecha_ejecucion_minima,
+                    fecha_ejecucion_maxima: geo.fecha_ejecucion_maxima
+                });
+            });
+
+            // console.log(dataSetLocations);
+
+            // window.onload = async () => initMap(dataSetLocations);
+            initMap(dataSetLocations);
+
+
         }
 
         loadJSON( "/storage/{{ $file_output }}" );
+
+
+        document.querySelectorAll('.radio-button input').forEach((input) => {
+            input.addEventListener('change', function (event) {
+                // Envía el formulario cuando se selecciona una opción
+                if (event.currentTarget.value !== 'free') {
+                    document.getElementById('formFilter').submit();
+                }
+            });
+        });
+
 
 
     });

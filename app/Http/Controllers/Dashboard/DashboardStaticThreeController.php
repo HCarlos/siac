@@ -27,30 +27,137 @@ class DashboardStaticThreeController extends Controller{
     protected function index(Request $request){
 
         $data = $request->all();
-        $arrJson = [];
+
+//        $arrJson = [];
 
         $f = new FuncionesController();
 
-        if (isset($data['start_date'])) {
-            $start_date = $data['start_date'];
-        } else {
-            $start_date = Carbon::now()->startOfMonth();
+        if ($data === []){
+//            if (isset($data['start_date'])) {
+//                $start_date = $data['start_date'];
+//            } else {
+//                $start_date = Carbon::now()->startOfMonth();
+//                $start_date = $start_date->format('Y-m-d');
+//            }
+//            $start_date = DateTime::createFromFormat('m-d-Y', '01-01-2025')->format('Y-m-d');
+//
+//            if (isset($data['end_date'])) {
+//                $end_date = $data['end_date'];
+//            } else {
+//                $end_date = Carbon::now()->endOfMonth();
+//                $end_date =  $end_date->format('Y-m-d');
+//            }
+
+            $start_date = Carbon::now();
             $start_date = $start_date->format('Y-m-d');
-        }
+            $end_date = $start_date;
+            $filter = 'hoy';
 
-        $start_date = DateTime::createFromFormat('m-d-Y', '01-01-2025')->format('Y-m-d');
 
-        if (isset($data['end_date'])) {
-            $end_date = $data['end_date'];
-        } else {
-            $end_date = Carbon::now()->endOfMonth();
-            $end_date =  $end_date->format('Y-m-d');
+        }else{
+            switch ($data['filter']) {
+                case 'hoy':
+                    $start_date = Carbon::now();
+                    $start_date = $start_date->format('Y-m-d');
+                    $end_date = $start_date;
+                    break;
+                case 'mes':
+                    $start_date = Carbon::now()->startOfMonth();
+                    $start_date = $start_date->format('Y-m-d');
+                    $end_date = Carbon::now()->endOfMonth();
+                    $end_date =  $end_date->format('Y-m-d');
+                    break;
+                case 'anio':
+                    $start_date = Carbon::now()->startOfYear();
+                    $start_date = $start_date->format('Y-m-d');
+                    $end_date = Carbon::now()->endOfYear();
+                    $end_date =  $end_date->format('Y-m-d');
+                    break;
+                default:
+                    $start_date = $data['start_date'];
+                    $end_date = $data['end_date'];
+                    break;
+            }
+            $filter = $data['filter'];
+
         }
+        $data['start_date'] = $start_date;
+        $data['end_date'] = $end_date;
+        $data['filter'] = $filter;
+
+//        dd($data);
 
         $file_out = "file_".$start_date.'_'.$end_date.'.json';
         $isExistFile = false; //Storage::disk('public')->exists($file_out);
 
         if ( ! $isExistFile) {
+
+
+            // INICIA EL MODULO DE ESTATUS
+            $arrEstatus = [
+                (object)["ue_id" => 16, "Estatus"=> "RECIBIDA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                (object)["ue_id" => 19, "Estatus"=> "EN_PROCESO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                (object)["ue_id" => 17, "Estatus"=> "ATENDIDA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                (object)["ue_id" => 20, "Estatus"=> "RECHAZADA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                (object)["ue_id" => 18, "Estatus"=> "OBSERVADA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                (object)["ue_id" => 21, "Estatus"=> "CERRADO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+            ];
+
+
+            $srv2 = static::getUltimoEstatus($start_date,$end_date);
+
+            foreach ($arrEstatus as $a) {
+                foreach ($srv2 as $d){
+                    if ($d->ue_id === $a->ue_id) {
+                        $a->Total = $d->data;
+                        $arrU = [];
+                        $ta = 0;
+                        $tr = 0;
+
+                        $vectorUnidades = [
+                            (object)["Unidad" => "ALUMBRADO", "Unidad_Id" => 46,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                            (object)["Unidad" => "ESPACIOS PÚBLICOS", "Unidad_Id" => 49,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                            (object)["Unidad" => "LIMPIA", "Unidad_Id" => 50,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                            (object)["Unidad" => "OBRAS PÚBLICAS", "Unidad_Id" => 48,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                            (object)["Unidad" => "SAS", "Unidad_Id" => 47,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                        ];
+                        $totalServ = 0;
+                        foreach ($vectorUnidades as $key => $value) {
+                            $f = static::getEstatusUE($start_date,$end_date,$value->Unidad_Id,$a->ue_id);
+                            if ($f) {
+                                if ($f->total > 0) {
+                                    $vectorUnidades[$key]->Total = $f->total;
+                                    $totalServ += $f->total;
+                                }
+                            }
+                        }
+                        foreach ($vectorUnidades as $key => $value) {
+                            $total = $vectorUnidades[$key]->Total > 0 ? (($vectorUnidades[$key]->Total / $totalServ) * 100)  : 0;
+                            $vectorUnidades[$key]->Porcentaje = (int) number_format($total, 0);
+                        }
+
+                        foreach ($vectorUnidades as $b) {
+                            $f = static::getEstatusDependencia($start_date,$end_date,$b->Unidad_Id,$d->ue_id);
+                            if ($f !== null) {
+                                $b->Total = $f->data;
+                            }
+//                            if ($a->ue_id === 17) {
+                                $arr = static::getAtiempoVsDestiempo($start_date,$end_date,$b->Unidad_Id,$a->ue_id);
+                                $b->a_tiempo = $arr->atiempo ?? 0;
+                                $b->con_rezago = $arr->conrezago ?? 0;
+                                $ta += $arr->atiempo ?? 0;
+                                $tr += $arr->conrezago ?? 0;
+//                            }
+                            $arrU[] = $b;
+                        }
+                        $a->Unidades = $arrU;
+                        $a->a_tiempo = $ta;
+                        $a->con_rezago = $tr;
+                    }
+                }
+            }
+
+//            dd($arrEstatus);
 
             // INICIA EL MODULO DE UNIDADES
             $vectorUnidades = [
@@ -75,48 +182,6 @@ class DashboardStaticThreeController extends Controller{
                 $vectorUnidades[$key]->Porcentaje = (int) number_format($total, 0);
             }
 
-            // INICIA EL MODULO DE ESTATUS
-            $arrEstatus = [
-                (object)["ue_id" => 16, "Estatus"=> "RECIBIDA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["ue_id" => 19, "Estatus"=> "EN_PROCESO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["ue_id" => 17, "Estatus"=> "ATENDIDA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["ue_id" => 20, "Estatus"=> "RECHAZADA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["ue_id" => 18, "Estatus"=> "OBSERVADA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["ue_id" => 21, "Estatus"=> "CERRADO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-            ];
-
-
-            $srv2 = static::getUltimoEstatus($start_date,$end_date);
-
-            foreach ($arrEstatus as $a) {
-                foreach ($srv2 as $d){
-                    if ($d->ue_id === $a->ue_id) {
-                        $a->Total = $d->data;
-                        $arrU = [];
-                        $ta = 0;
-                        $tr = 0;
-                        foreach ($vectorUnidades as $b) {
-                            $f = static::getEstatusDependencia($start_date,$end_date,$b->Unidad_Id,$d->ue_id);
-                            if ($f !== null) {
-                                $b->Total = $f->data;
-                            }
-                            if ($a->ue_id === 17) {
-                                $arr = static::getAtiempoVsDestiempo($start_date,$end_date,$b->Unidad_Id,$a->ue_id);
-                                $b->a_tiempo = $arr->atiempo ?? 0;
-                                $b->con_rezago = $arr->conrezago ?? 0;
-                                $ta += $arr->atiempo ?? 0;
-                                $tr += $arr->conrezago ?? 0;
-                            }
-                            $arrU[] = $b;
-                        }
-                        $a->Unidades = $arrU;
-                        $a->a_tiempo = $ta;
-                        $a->con_rezago = $tr;
-                    }
-                }
-            }
-
-//            dd($arrEstatus);
 
             // INICIA EL MODULO DE SERVICIOS
             $vectorServicios = [
@@ -184,7 +249,6 @@ class DashboardStaticThreeController extends Controller{
                 ];
             }
 
-
             // SE CONSTRUYE EL JSON GENERAL
             $arrJson = [
                 (object)["estatus" => $arrEstatus],
@@ -203,47 +267,59 @@ class DashboardStaticThreeController extends Controller{
 
 //        dd( Storage::disk('public')->url($file_out) );
 
+//        'rango_de_consulta' => $f->fechaEspanol($start_date).' - '.$f->fechaEspanol($end_date),
+
         return view('dashboard.static.dashboard_static_three',
             [
-                'rango_de_consulta' => $f->fechaEspanol($start_date).' - '.$f->fechaEspanol($end_date),
-                'inicio_mes' => $start_date,
-                'fin_mes' => $end_date,
+                'filter' => $filter,
+                'start_date' => $start_date,
+                'end_date' => $end_date,
                 'file_output' => $file_out ?? null,
             ]);
 
     }
 
 
-// INICIA EL MODULO DE FUNCIONES AUXILIARES
+    // INICIA EL MODULO DE FUNCIONES AUXILIARES
 
-static function getUltimoEstatus($start_date,$end_date){
-    return DB::table("_viddss")
-        ->select(["ultimo_estatus as name", "ue_id", DB::raw("count(ue_id) as data")])
-        ->where("ambito_dependencia",2)
-        ->whereBetween('fecha_ingreso',[$start_date,$end_date])
-        ->groupBy(["ultimo_estatus","ue_id"])
-        ->get();
-}
+    static function getUltimoEstatus($start_date,$end_date){
+        return DB::table("_viddss")
+            ->select(["ultimo_estatus as name", "ue_id", DB::raw("count(ue_id) as data")])
+            ->where("ambito_dependencia",2)
+            ->whereBetween('fecha_ingreso',[$start_date,$end_date])
+            ->groupBy(["ultimo_estatus","ue_id"])
+            ->get();
+    }
 
-static function getEstatusDependencia($start_date,$end_date,$dependencia_id,$ue_id){
-    return DB::table("_viddss")
-        ->select('abreviatura as label', DB::raw('count(dependencia_id) as data'))
-        ->where('ambito_dependencia',2)
-        ->whereBetween('fecha_ingreso',[$start_date,$end_date])
-        ->where('dependencia_id',$dependencia_id)
-        ->where('ue_id',$ue_id)
-        ->groupBy('abreviatura')
-        ->first();
-}
-static function getEstatus($start_date,$end_date,$dependencia_id){
-    return DB::table("_viddss")
-        ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
-        ->where('ambito_dependencia',2)
-        ->whereBetween('fecha_ingreso',[$start_date,$end_date])
-        ->where('dependencia_id',$dependencia_id)
-        ->groupBy('dependencia_id')
-        ->first();
-}
+    static function getEstatusDependencia($start_date,$end_date,$dependencia_id,$ue_id){
+        return DB::table("_viddss")
+            ->select('abreviatura as label', DB::raw('count(dependencia_id) as data'))
+            ->where('ambito_dependencia',2)
+            ->whereBetween('fecha_ingreso',[$start_date,$end_date])
+            ->where('dependencia_id',$dependencia_id)
+            ->where('ue_id',$ue_id)
+            ->groupBy('abreviatura')
+            ->first();
+    }
+    static function getEstatus($start_date,$end_date,$dependencia_id){
+        return DB::table("_viddss")
+            ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
+            ->where('ambito_dependencia',2)
+            ->whereBetween('fecha_ingreso',[$start_date,$end_date])
+            ->where('dependencia_id',$dependencia_id)
+            ->groupBy('dependencia_id')
+            ->first();
+    }
+    static function getEstatusUE($start_date,$end_date,$dependencia_id,$sue_id){
+        return DB::table("_viddss")
+            ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
+            ->where('ambito_dependencia',2)
+            ->whereBetween('fecha_ingreso',[$start_date,$end_date])
+            ->where('dependencia_id',$dependencia_id)
+            ->where('sue_id',$sue_id)
+            ->groupBy('dependencia_id')
+            ->first();
+    }
 
     static function getServiciosDependencia($start_date,$end_date,$sue_id){
         return DB::table("_viddss")
