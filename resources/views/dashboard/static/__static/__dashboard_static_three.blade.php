@@ -2,8 +2,13 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="logo">
-            <h1>CENTRO</h1>
-            <p>Honestidad y Resultados<br>2024-2027</p>
+{{--            <h1><a href="/home">CENTRO</a></h1>--}}
+{{--            <p>Honestidad y Resultados<br>2024-2027</p>--}}
+            <!-- LOGO -->
+            <a href="/listDenunciasAmbito2"  >
+                <img src="{{asset('images/web/logo-0.png')}}" alt="" >
+            </a>
+
         </div>
         <nav class="menu">
             <button class="menu-item active">Inicio</button>

@@ -103,7 +103,6 @@ function buildContent(property) {
     const content = document.createElement("div");
 
     content.classList.add("property");
-    // <i aria-hidden="true" className="fs fs--solid fs--${property.icon} text-white" title="${property.icon}"></i>
 
     content.innerHTML = `
     <div class="icon">
