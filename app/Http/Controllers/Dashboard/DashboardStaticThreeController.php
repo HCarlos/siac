@@ -213,26 +213,59 @@ class DashboardStaticThreeController extends Controller{
             // INICIA EL MODULO DE GEOLOCALIZACIÓN
             $arrGeos = [];
             $arrG = static::getGeoDenuncias($start_date,$end_date,0,0);
+
             foreach ($arrG as $g) {
                 $fme1 = Carbon::parse($g->fecha_dias_ejecucion);
                 $fme2 = Carbon::parse($g->fecha_dias_maximos_ejecucion);
                 $fi = Carbon::parse($g->fecha_ingreso);
-                $ueid = $g->ue_id;
-                if ( now() <= $fme1 && $ueid !== 17) {
-                    $semaforo = "green";
-                }else if ( now() <= $fme1 && $ueid === 17) {
-                        $semaforo = "#35b324";
-                }else if ( (now() > $fi && now() <= $fme2 && $ueid !== 17) ) {
-                    $semaforo = "orange";
-                }else if ( (now() > $fi && now() <= $fme2 && $ueid === 17) ) {
-                    $semaforo = "#edb606";
-                }else if ( (now() > $fme2 && $ueid !== 17) ) {
-                    $semaforo = "red";
-                }else if ( (now() > $fme2 && $ueid === 17) ) {
-                    $semaforo = "#f50606";
-                }else{
-                    $semaforo = "red";
+                $fue = Carbon::parse($g->fecha_ultimo_estatus);
+
+                $icon = "";
+                foreach ($vectorUnidades as $u) {
+                    if ($u->Unidad_Id = $g->dependencia_id) {
+                        switch ($u->Unidad_Id) {
+                            case 46:
+                                $icon = "lightbulb";
+                                break;
+                            case 49:
+                                $icon = "tree";
+                                break;
+                            case 50:
+                                $icon = "trash";
+                                break;
+                            case 48:
+                                $icon = "person-digging";
+                                break;
+                            case 47:
+                                $icon = "droplet";
+                                break;
+                        }
+                    }
                 }
+
+                $status = "white";
+                $dias_vencidos = 0;
+                switch ( $g->ue_id ) {
+                    case 16:
+                    case 19:
+                            $fex = Carbon::parse(now())->diffInDays(Carbon::parse($fme2),false);
+                            if ($fex >= 0) {
+                                $status = "amarillo";
+                            }else{
+                                $status = "rojo";
+                                $dias_vencidos = abs($fex);
+                            }
+                            break;
+                    case 17:
+                    case 20:
+                    case 21:
+                            $status = "verde";
+                            break;
+                    default:
+                            $status = "amarillo";
+                            break;
+                }
+
                 $arrGeos[] = (object)[
                     "denuncia_id"=> $g->id,
                     "denuncia"=> $g->denuncia,
@@ -241,14 +274,41 @@ class DashboardStaticThreeController extends Controller{
                     "abreviatura"=> $g->abreviatura,
                     "servicio" => $g->servicio,
                     "ciudadano" => $g->ciudadano,
+                    "ue_id" => $g->ue_id,
                     "ultimo_estatus" => $g->ultimo_estatus,
+                    "fecha_ultimo_estatus" => Carbon::parse($g->fecha_ultimo_estatus)->format('d-m-Y H:i:s'),
                     "fecha_ingreso" => Carbon::parse($g->fecha_ingreso)->format('d-m-Y H:i:s'),
                     "fecha_ejecucion_minima" => Carbon::parse($g->fecha_dias_ejecucion)->format('d-m-Y H:i:s'),
                     "fecha_ejecucion_maxima" => Carbon::parse($g->fecha_dias_maximos_ejecucion)->format('d-m-Y H:i:s'),
                     "dias_a_tiempo" => Carbon::parse($g->fecha_dias_maximos_ejecucion)->diffInDays(Carbon::parse($g->fecha_ingreso)),
-                    "semaforo" => $semaforo,
+                    "type" => $status,
+                    "icon" => $icon,
+                    "dependencia_id" => $g->dependencia_id,
+                    "dias_vencidos" => $dias_vencidos,
                 ];
             }
+
+//            dd($arrGeos);
+
+            // INICIA EL MODULO DE OTROS DATOS
+            $arrGeos = collect($arrGeos);
+            $total_geodenuncias = count($arrGeos);
+            $cerradas = count($arrGeos->where('ue_id', 21));
+            $atendidas = count($arrGeos->where('ue_id', 17));
+            $rechazadas = count($arrGeos->where('ue_id', 20));
+            $porcAtendidas = $total_geodenuncias > 0 ? (($atendidas / $total_geodenuncias) * 100)  : 0;
+            $porcPendientes = 100 - $porcAtendidas;
+            $porcAtendidas = number_format($porcAtendidas, 2, '.', '');
+            $porcPendientes = number_format($porcPendientes, 2, '.', '');
+
+            $otrosDatos = [
+                (object)["total_geodenuncias" => $total_geodenuncias,
+                "cerradas" => $cerradas,
+                "atendidas" => $atendidas,
+                "rechazadas" => $rechazadas,
+                "porcAtendidas" => $porcAtendidas,
+                "porcPendientes" => $porcPendientes]
+            ];
 
             // SE CONSTRUYE EL JSON GENERAL
             $arrJson = [
@@ -256,6 +316,7 @@ class DashboardStaticThreeController extends Controller{
                 (object)["unidades" =>  collect($vectorUnidades)->sortByDesc('Total')->values()->all()],
                 (object)["servicios" => $vectorServicios],
                 (object)["georeferencias" => $arrGeos],
+                (object)["otros" => $otrosDatos],
             ];
 
 //           dd($arrJson);
@@ -354,8 +415,8 @@ class DashboardStaticThreeController extends Controller{
             ->select(
                 'id','denuncia','latitud','longitud','abreviatura',
                 'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
-                'fecha_dias_maximos_ejecucion','ultimo_estatus','servicio',
-                'ue_id'
+                'fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','ultimo_estatus',
+                'servicio','ue_id','dependencia_id',
             )
             ->where('ambito_dependencia', 2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])

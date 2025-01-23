@@ -226,14 +226,14 @@
 
                 // Llama a la función para renderizar los datos
                 // console.log(data);
-                initLoadData(data[0],data[1],data[2],data[3]);
+                initLoadData(data[0],data[1],data[2],data[3],data[4]);
             } catch (error) {
                 console.error(error);
             }
         }
 
 
-        function initLoadData(Estatus,Unidades,Servicios,Georeferencias) {
+        function initLoadData(Estatus,Unidades,Servicios,Georeferencias,Otros) {
 
             // alert(data.estatus[0].Unidades[0].Total);
 
@@ -344,14 +344,14 @@
             const ctx7a = document.getElementById('solicitudesChart');
             const chart7a = new Chart(ctx7a, {
                 type: 'bar',
-                data: data3([@php echo 93 @endphp, @php echo 47 @endphp]),
+                data: data3([Otros.otros[0].atendidas, Otros.otros[0].rechazadas]),
                 options: opciones3()
             });
 
             const ctx8a = document.getElementById('closedRequestsChart');
             const chart8a = new Chart(ctx8a, {
                 type: 'doughnut',
-                data: data4([@php echo 12.69 @endphp, @php echo 100 - 12.69 @endphp]),
+                data: data4([Otros.otros[0].porcAtendidas, Otros.otros[0].porcPendientes]),
                 options: opciones4()
             });
 
@@ -390,10 +390,10 @@
                     denuncia: geo.denuncia,
                     description: geo.ciudadano,
                     servicio: geo.servicio,
-                    type: "warehouse",
-                    bed: 5,
-                    bath: 4.5,
-                    size: 300,
+                    estatus: geo.ultimo_estatus,
+                    type: geo.type,
+                    icon: geo.icon,
+                    dias_vencidos: geo.dias_vencidos,
                     position: {
                         lat: geo.latitud,
                         lng: geo.longitud,

@@ -103,10 +103,11 @@ function buildContent(property) {
     const content = document.createElement("div");
 
     content.classList.add("property");
+    // <i aria-hidden="true" className="fs fs--solid fs--${property.icon} text-white" title="${property.icon}"></i>
 
     content.innerHTML = `
     <div class="icon">
-        <i aria-hidden="true" class="fa fa-icon fa-${property.type}" title="${property.type}"></i>
+        <i class="fa-solid fa-${property.icon} fa-${property.type}"></i>
         <span class="fa-sr-only">${property.type}</span>
     </div>
     <div class="details">
@@ -114,19 +115,31 @@ function buildContent(property) {
         <div class="denuncia">${property.denuncia}</div>
         <div class="features">
             <div>
-                <i aria-hidden="true" class="fa fa-id-card fa-lg bed" title="bedroom"></i>
-                <span class="fa-sr-only">denuncia_id</span>
-                <span>${property.denuncia_id}</span>
+                <a href="/editDenunciaAmbito/${property.denuncia_id}" class="open_solicitud" title="Haga click para abrir esta solicitud">
+                <i aria-hidden="true" class="fa fa-id-card fa-lg bed" title="Haga click para abrir esta solicitud"></i>
+                <span class="fa-sr-only" title="Haga click para abrir esta solicitud">denuncia_id</span>
+                <span title="Haga click para abrir esta solicitud">${property.denuncia_id}</span>
+                </a>
             </div>
             <div>
-                <i aria-hidden="true" class="fa fa-calendar fa-lg bath" title="bathroom"></i>
-                <span class="fa-sr-only">fecha_ingreso</span>
-                <span>${property.fecha_ingreso}</span>
+                <i aria-hidden="true" class="fa fa-calendar fa-lg bath" title="Fecha de ingreso"></i>
+                <span class="fa-sr-only" title="Fecha de ingreso">fecha_ingreso</span>
+                <span title="Fecha de ingreso">${property.fecha_ingreso}</span>
             </div>
             <div>
-                <i aria-hidden="true" class="fa fa-building fa-lg size" title="size"></i>
-                <span class="fa-sr-only">unidad</span>
-                <span>${property.unidad} </span>
+                <i aria-hidden="true" class="fa fa-building fa-lg size" title="Unidad administrativa"></i>
+                <span class="fa-sr-only" title="Unidad administrativa">unidad</span>
+                <span title="Unidad administrativa">${property.unidad} </span>
+            </div>
+            <div>
+                <i class="fa-solid fa-traffic-light fa-shop fa-lg estatus" title="Estatus"></i>
+                <span class="fa-sr-only" title="Estatus">estatus</span>
+                <span title="Estatus">${property.estatus} </span>
+            </div>
+            <div>
+                <i aria-hidden="true" class="fa-solid fa-exclamation-triangle fa-rojo fa-lg dias_vencidos" title="Díías vencidos"></i>
+                <span class="fa-sr-only" title="Días vencidos">dias_vencidos</span>
+                <span  title="Días vencidos">${property.dias_vencidos} </span>
             </div>
         </div>
     </div>
@@ -134,24 +147,24 @@ function buildContent(property) {
     return content;
 
 
-/*
-    <div className="features">
-        <div>
-            <i aria-hidden="true" className="fa fa-bed fa-lg bed" title="bedroom"></i>
-            <span className="fa-sr-only">bedroom</span>
-            <span>${property.bed}</span>
+    /*
+        <div className="features">
+            <div>
+                <i aria-hidden="true" className="fa fa-bed fa-lg bed" title="bedroom"></i>
+                <span className="fa-sr-only">bedroom</span>
+                <span>${property.bed}</span>
+            </div>
+            <div>
+                <i aria-hidden="true" className="fa fa-bath fa-lg bath" title="bathroom"></i>
+                <span className="fa-sr-only">bathroom</span>
+                <span>${property.bath}</span>
+            </div>
+            <div>
+                <i aria-hidden="true" className="fa fa-ruler fa-lg size" title="size"></i>
+                <span className="fa-sr-only">size</span>
+                <span>${property.size} ft<sup>2</sup></span>
+            </div>
         </div>
-        <div>
-            <i aria-hidden="true" className="fa fa-bath fa-lg bath" title="bathroom"></i>
-            <span className="fa-sr-only">bathroom</span>
-            <span>${property.bath}</span>
-        </div>
-        <div>
-            <i aria-hidden="true" className="fa fa-ruler fa-lg size" title="size"></i>
-            <span className="fa-sr-only">size</span>
-            <span>${property.size} ft<sup>2</sup></span>
-        </div>
-    </div>
-*/
+    */
 
 }

@@ -514,6 +514,9 @@ dashboard-container.card.collapsed .header-2 button:hover {
     --house-color: #0288D1;
     --shop-color: #7B1FA2;
     --warehouse-color: #558B2F;
+    --rojo-color: #870606;
+    --amarillo-color: #f1c022;
+    --verde-color: #085108;
 }
 
 .div-property {
@@ -534,12 +537,13 @@ dashboard-container.card.collapsed .header-2 button:hover {
     position: relative;
     transition: all 0.3s ease-out;
     width: 30px;
+    border: 2px solid rgba(54, 47, 47, 0.85);
 }
 
 .property::after {
-    border-left: 9px solid transparent;
-    border-right: 9px solid transparent;
-    border-top: 9px solid #FFFFFF;
+    /*border-left: 9px solid transparent;*/
+    /*border-right: 9px solid transparent;*/
+    /*border-top: 9px solid #FFFFFF;*/
     content: "";
     height: 0;
     left: 50%;
@@ -549,6 +553,7 @@ dashboard-container.card.collapsed .header-2 button:hover {
     transition: all 0.3s ease-out;
     width: 0;
     z-index: 1;
+    border: 1px solid rgba(54, 47, 47, 0.85);
 }
 
 .property .icon {
@@ -633,6 +638,15 @@ dashboard-container.card.collapsed .header-2 button:hover {
     color: #03A9F4;
 }
 
+.property .estatus {
+    color: #b003f4;
+}
+
+.property .dias_vencidos {
+    color: rgba(255, 127, 80, 0.85);
+}
+
+
 .property .size {
     color: #388E3C;
 }
@@ -695,4 +709,55 @@ dashboard-container.card.collapsed .header-2 button:hover {
 
 .property:not(.highlight):has(.fa-shop)::after {
     border-top: 9px solid var(--shop-color);
+}
+
+/*
+ * Rojo icon colors.
+ */
+.property.highlight:has(.fa-rojo) .icon {
+    color: var(--rojo-color);
+}
+
+.property:not(.highlight):has(.fa-rojo) {
+    background-color: var(--rojo-color);
+}
+
+.property:not(.highlight):has(.fa-rojo)::after {
+    border-top: 9px solid var(--rojo-color);
+}
+
+/*
+ * Amarillo icon colors.
+ */
+.property.highlight:has(.fa-amarillo) .icon {
+    color: var(--amarillo-color);
+}
+
+.property:not(.highlight):has(.fa-amarillo) {
+    background-color: var(--amarillo-color);
+}
+
+.property:not(.highlight):has(.fa-amarillo)::after {
+    border-top: 9px solid var(--amarillo-color);
+}
+
+/*
+ * Verde icon colors.
+ */
+.property.highlight:has(.fa-verde) .icon {
+    color: var(--verde-color);
+}
+
+.property:not(.highlight):has(.fa-verde) {
+    background-color: var(--verde-color);
+}
+
+.property:not(.highlight):has(.fa-verde)::after {
+    border-top: 9px solid var(--verde-color);
+}
+
+.open_solicitud{
+    text-decoration: none;
+    color: rgba(54, 47, 47, 0.85);
+    font-weight: bold;
 }
