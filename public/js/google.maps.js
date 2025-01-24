@@ -38,7 +38,7 @@ async function initMap(lat, lon, siExiste) {
 
     if (!siExiste) {
 
-        let search_google = document.getElementById("search_google").value;
+        let search_google = document.getElementById("search_google").value ;
         let positionString = search_google.search('centro')
         if (positionString === -1) {
             search_google += ' centro';
@@ -91,6 +91,9 @@ async function initMap(lat, lon, siExiste) {
         });
 
         setLatLng(_Lat, _Lng);
+        // position: siExiste ? place : place.geometry.location,
+
+        // alert(siExiste ? place : place.geometry.location);
 
         const marker = new advancedMarkerElement({
             map: map,
@@ -161,8 +164,8 @@ function createCenterControl(map, marker) {
     controlButton.style.padding = '0 5px';
     controlButton.style.textAlign = 'center';
 
-    controlButton.textContent = 'Ampliar';
-    controlButton.title = 'Haga click para ampliar el mapa';
+    controlButton.textContent = 'Expandir';
+    controlButton.title = 'Haga click para expandir el mapa';
     controlButton.type = 'button';
 
     // Setup the click event listeners: simply set the map to Chicago.
@@ -180,8 +183,8 @@ function createCenterControl(map, marker) {
                 mapContainer.msRequestFullscreen();
             }
 
-            controlButton.textContent = 'Contraer';
-            controlButton.title = 'Haga click para contraer el mapa';
+            controlButton.textContent = 'Reducir';
+            controlButton.title = 'Haga click para reducir el mapa';
         } else {
             // Sale del modo pantalla completa
             if (document.exitFullscreen) {
@@ -192,8 +195,8 @@ function createCenterControl(map, marker) {
                 document.msExitFullscreen();
             }
 
-            controlButton.textContent = 'Ampliar';
-            controlButton.title = 'Haga click para ampliar el mapa';
+            controlButton.textContent = 'Expandir';
+            controlButton.title = 'Haga click para expandir el mapa';
         }
 
         // Obtén el título del botón
@@ -209,6 +212,7 @@ function createCenterControl(map, marker) {
 
 document.getElementById("map-container").style.height = "400px"; // Cambiar el tamaño dinámicamente
 
+
 if  ( document.getElementById("map") ){
     $("#map").hide();
     if (siExiste){
@@ -217,9 +221,12 @@ if  ( document.getElementById("map") ){
     }
 }
 
+// alert("hola");
+
 $("#searchGoogleBtn").click(event => {
     event.preventDefault();
     if ( $("#search_google").val() !== "" ) {
+        siExiste = false;
         $("#map").show();
         initMap(lat, lon, siExiste);
     }else {
@@ -233,3 +240,4 @@ $("#search_google").change(event => {
         $("#map").hide();
     }
 });
+
