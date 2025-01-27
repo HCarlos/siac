@@ -123,6 +123,9 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 }
             }
 
+            $gdu = explode(',',trim($item->gd_ubicacion));
+            $cadgdu = $gdu[1] ?? '';
+
             $sh
                 ->setCellValue('A'.$C, $item->id ?? 0)
                 ->setCellValue('B'.$C, trim($item->curp_ciudadano ?? ''))
@@ -136,29 +139,28 @@ class ListDenunciaAmbitoXLSXController extends Controller
 //                ->setCellValue('I'.$C, trim($item->colonia ?? ''))
 //                ->setCellValue('J'.$C, trim($item->cp ?? ''))
 
-                ->setCellValue('F'.$C, trim($item->gd_ubicacion ?? ''))
+                ->setCellValue('F'.$C, trim($item->gd_ubicacion) ?? '')
+                ->setCellValue('G'.$C, $cadgdu ?? '')
 
-//                ->setCellValue('K'.$C, $item->ubicacion ?? '')
-
-                ->setCellValue('G'.$C, $cadcel ?? '')
-                ->setCellValue('H'.$C, $fechaIngreso ?? '')
-                ->setCellValue('I'.$C, $item->dependencia_ultimo_estatus ?? '')
-                ->setCellValue('J'.$C, $item->area ?? '')
-                ->setCellValue('K'.$C, $item->subarea ?? '')
-                ->setCellValue('L'.$C, $item->servicio_ultimo_estatus ?? '')
+                ->setCellValue('H'.$C, $cadcel ?? '')
+                ->setCellValue('I'.$C, $fechaIngreso ?? '')
+                ->setCellValue('J'.$C, $item->dependencia_ultimo_estatus ?? '')
+                ->setCellValue('K'.$C, $item->area ?? '')
+                ->setCellValue('L'.$C, $item->subarea ?? '')
+                ->setCellValue('M'.$C, $item->servicio_ultimo_estatus ?? '')
 
 //                ->setCellValue('R'.$C, $item->denuncia ?? '')
 //                ->setCellValue('S'.$C, $item->referencia ?? '')
-                ->setCellValue('M'.$C, $item->denuncia ?? '')
+                ->setCellValue('N'.$C, $item->denuncia ?? '')
 
-                ->setCellValue('N'.$C, $item->prioridad ?? '')
-                ->setCellValue('O'.$C, $item->origen ?? '')
-                ->setCellValue('P'.$C, $arrUltimoEstatus->estatus ?? '')
-                ->setCellValue('Q'.$C, $fechaUntiloEstatus ?? '')
-                ->setCellValue('R'.$C, $respuesta )
-                ->setCellValue('S'.$C, $favorable ? "SI" : "NO" )
-                ->setCellValue('T'.$C, $item->clave_identificadora )
-                ->setCellValue('U'.$C, trim($item->genero_ciudadano ?? ''));
+                ->setCellValue('O'.$C, $item->prioridad ?? '')
+                ->setCellValue('P'.$C, $item->origen ?? '')
+                ->setCellValue('Q'.$C, $arrUltimoEstatus->estatus ?? '')
+                ->setCellValue('R'.$C, $fechaUntiloEstatus ?? '')
+                ->setCellValue('S'.$C, $respuesta )
+                ->setCellValue('T'.$C, $favorable ? "SI" : "NO" )
+                ->setCellValue('U'.$C, $item->clave_identificadora )
+                ->setCellValue('V'.$C, trim($item->genero_ciudadano ?? ''));
             $C++;
         }
 //        ->setCellValue('N'.$C, $servicio->subarea->area->dependencia->dependencia ?? '')
@@ -246,21 +248,22 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 }
             }
 
+            $gdu = explode(',',trim($item->gd_ubicacion));
+            $cadgdu = $gdu[1] ?? '';
+
+
             $sh
                 ->setCellValue('A'.$C, $item->id ?? 0)
                 ->setCellValue('B'.$C, trim($item->ultimo_servicio ?? ''))
                 ->setCellValue('C'.$C, $fechaIngreso ?? '')
                 ->setCellValue('D'.$C, trim($item->ciudadano ?? ''))
                 ->setCellValue('E'.$C, $cadcel)
-//                ->setCellValue('F'.$C, trim($item->calle ?? ''))
-//                ->setCellValue('G'.$C, trim($item->num_ext ?? ''))
-//                ->setCellValue('H'.$C, trim($item->num_int ?? ''))
-//                ->setCellValue('I'.$C, trim($item->colonia ?? ''))
                 ->setCellValue('F'.$C, trim($item->gd_ubicacion ?? ''))
-                ->setCellValue('G'.$C, $item->denuncia ?? '')
-                ->setCellValue('H'.$C, $item->ambito_sas ?? '')
-                ->setCellValue('I'.$C, $item->ultimo_estatus ?? '')
-                ->setCellValue('J'.$C, $item->fecha_ultimo_estatus ?? '');
+                ->setCellValue('G'.$C, trim($cadgdu ?? ''))
+                ->setCellValue('H'.$C, $item->denuncia ?? '')
+                ->setCellValue('I'.$C, $item->ambito_sas ?? '')
+                ->setCellValue('J'.$C, $item->ultimo_estatus ?? '')
+                ->setCellValue('K'.$C, $item->fecha_ultimo_estatus ?? '');
 
             $C++;
         }
