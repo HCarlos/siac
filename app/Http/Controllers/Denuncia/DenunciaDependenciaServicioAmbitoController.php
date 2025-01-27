@@ -68,7 +68,7 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
                 'newItem'                             => 'addDenunciaDependenciaServicioAmbito',
                 'tableName'                           => $this->tableName,
                 'showEdit'                            => 'editDenunciaDependenciaServicioAmbito',
-                'showProcess1'                        => 'showDataListDenunciaRespuestaExcel1A',
+                'showProcess1'                        => 'showDataListDenunciaAmbitoRespuestaExcel1A',
                 'postNew'                             => 'postAddDenunciaDependenciaServicioAmbito',
                 'addItem'                             => 'addDenunciaDependenciaServicioAmbito',
                 'removeItem'                          => 'removeDenunciaDependenciaServicio',

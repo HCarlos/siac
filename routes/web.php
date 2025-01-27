@@ -457,6 +457,7 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
     Route::match(['get','put','post'],'findDataInDenuncia/', 'Denuncia\DenunciaController@findDataInDenuncia')->name('findDataInDenuncia');
     Route::post('showDataListDenunciaExcel1A/', 'External\Denuncia\ListDenunciaXLSXController@getListDenunciaXLSX')->name('showDataListDenunciaExcel1A');
     Route::post('showDataListDenunciaRespuestaExcel1A/', 'External\Denuncia\ListDenunciaXLSXController@showDataListDenunciaRespuestaExcel1A')->name('showDataListDenunciaRespuestaExcel1A');
+
     Route::get('cerrarDenuncia/{id}', 'Denuncia\DenunciaController@closeItem')->name('cerrarDenuncia');
     Route::get('firmarDenuncia/{id}', 'Denuncia\DenunciaController@signItem')->name('firmarDenuncia');
 
@@ -486,8 +487,10 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
     Route::get('getUbiAmbito/{IdUbi}', 'Denuncia\DenunciaAmbitoController@getUbi')->name('getUbiAmbito');
     Route::get('showModalSearchDenunciaAmbito/', 'Denuncia\DenunciaAmbitoController@showModalSearchDenuncia')->name('showModalSearchDenunciaAmbito');
     Route::match(['get','put','post'],'findDataInDenunciaAmbito/', 'Denuncia\DenunciaAmbitoController@findDataInDenuncia')->name('findDataInDenunciaAmbito');
-    Route::post('showDataListDenunciaAmbitoExcel1A/', 'External\Denuncia\ListDenunciaXLSXController@getListDenunciaXLSX')->name('showDataListDenunciaAmbitoExcel1A');
-    Route::post('showDataListDenunciaAmbitoRespuestaExcel1A/', 'External\Denuncia\ListDenunciaXLSXController@showDataListDenunciaRespuestaExcel1A')->name('showDataListDenunciaAmbitoRespuestaExcel1A');
+
+    Route::post('showDataListDenunciaAmbitoExcel1A/', 'External\Denuncia\ListDenunciaAmbitoXLSXController@getListDenunciaAmbitoXLSX')->name('showDataListDenunciaAmbitoExcel1A');
+    Route::post('showDataListDenunciaAmbitoRespuestaExcel1A/', 'External\Denuncia\ListDenunciaAmbitoXLSXController@showDataListDenunciaAmbitoRespuestaExcel1A')->name('showDataListDenunciaAmbitoRespuestaExcel1A');
+
     Route::get('cerrarDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@closeItem')->name('cerrarDenunciaAmbito');
     Route::get('firmarDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@signItem')->name('firmarDenunciaAmbito');
 
