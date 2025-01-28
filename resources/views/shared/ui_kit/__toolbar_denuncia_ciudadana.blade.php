@@ -6,8 +6,8 @@
         </a>
     @endisset
 
-        <a href="" class="btn btn-icon btn-outline-white btn-rounded float-right" data-toggle="tooltip" data-placement="top" data-original-title="Actualizar" onclick="window.location.reload(true);">
-            <i class="fas fa-sync-alt"></i>
-        </a>
+{{--        <a href="" class="btn btn-icon btn-outline-white btn-rounded float-right" data-toggle="tooltip" data-placement="top" data-original-title="Actualizar" onclick="window.location.reload(true);">--}}
+{{--            <i class="fas fa-sync-alt"></i>--}}
+{{--        </a>--}}
 
 </div>

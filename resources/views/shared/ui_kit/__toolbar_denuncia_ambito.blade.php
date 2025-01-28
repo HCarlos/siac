@@ -24,8 +24,8 @@
             </a>
         </span>
     @endisset
-    <a href="" class="btn btn-icon btn-outline-white ml-1 btn-rounded" data-toggle="tooltip" data-placement="top" data-original-title="Actualizar" onclick="window.location.reload(true);">
-        <i class="fas fa-sync-alt"></i>
-    </a>
+{{--    <a href="" class="btn btn-icon btn-outline-white ml-1 btn-rounded" data-toggle="tooltip" data-placement="top" data-original-title="Actualizar" onclick="window.location.reload();">--}}
+{{--        <i class="fas fa-sync-alt"></i>--}}
+{{--    </a>--}}
 </div>
 

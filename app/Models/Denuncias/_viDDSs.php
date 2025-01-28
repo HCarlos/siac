@@ -7,7 +7,9 @@ namespace App\Models\Denuncias;
 //use App\Traits\Catalogos\Estructura\Servicio\ServicioTrait;
 use App\Filters\Denuncia\DenunciaAmbitoFilter;
 use App\Filters\Denuncia\DenunciaFilter;
+use App\Filters\Denuncia\GetDenunciasAmbitoFilterCount;
 use App\Filters\Denuncia\GetDenunciasAmbitoItemCustomFilter;
+use App\Filters\Denuncia\GetDenunciasFilterCount;
 use App\Filters\Denuncia\GetDenunciasItemCustomFilter;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Domicilios\Ubicacion;
@@ -39,7 +41,7 @@ class _viDDSs extends Model{
     ];
 
     public function scopeFilterBy($query, $filters){
-        return (new DenunciaFilter())->applyTo($query, $filters);
+        return (new DenunciaAmbitoFilter())->applyTo($query, $filters);
     }
     public function scopeGetDenunciasItemCustomFilter($query, $filters){
         return (new GetDenunciasItemCustomFilter())->applyTo($query, $filters);
@@ -50,6 +52,9 @@ class _viDDSs extends Model{
     }
     public function scopeGetDenunciasAmbitoItemCustomFilter($query, $filters){
         return (new GetDenunciasAmbitoItemCustomFilter())->applyTo($query, $filters);
+    }
+    public function scopeGetDenunciasAmbitoFilterCount($query, $filters){
+        return (new GetDenunciasAmbitoFilterCount())->applyTo($query, $filters);
     }
 
     public function prioridad(){

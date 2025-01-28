@@ -251,7 +251,6 @@ class ListDenunciaAmbitoXLSXController extends Controller
             $gdu = explode(',',trim($item->gd_ubicacion));
             $cadgdu = $gdu[1] ?? '';
 
-
             $sh
                 ->setCellValue('A'.$C, $item->id ?? 0)
                 ->setCellValue('B'.$C, trim($item->ultimo_servicio ?? ''))
@@ -264,9 +263,9 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 ->setCellValue('I'.$C, $item->ambito_sas ?? '')
                 ->setCellValue('J'.$C, $item->ultimo_estatus ?? '')
                 ->setCellValue('K'.$C, $item->fecha_ultimo_estatus ?? '');
-
             $C++;
         }
+
         $Cx = $C  - 1;
         $oVal = $sh->getCell('G1')->getValue();
         $sh->setCellValue('B'.$C, 'TOTAL DE REGISTROS')

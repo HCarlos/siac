@@ -44,7 +44,8 @@
                 <a href="{{route('listDenunciasAmbito1')}}" class="side-nav-link">
                     @include('.shared.svgs.__apoyos_sociales')
                     @php $filters['filterdata']=""; @endphp
-                    <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',1)->count()}}</span>
+                    @php session(['ambito_dependencia' => 1]); @endphp
+                    <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->GetDenunciasAmbitoFilterCount($filters)->where('ambito_dependencia',1)->count()}}</span>
                     <span>Apoyos Soc.</span>
                 </a>
             </li>
@@ -52,10 +53,12 @@
 
             @if (Auth::user()->hasRole('Administrator|SysOp|test_admin|SERVICIOS_MUNICIPALES'))
                 <li class="side-nav-item">
+                    @php session(['ambito_dependencia' => 2]); @endphp
                     <a href="javascript: void(0);" class="side-nav-link">
                         @include('.shared.svgs.__servicios_municipales')
+                        @php $filters['filterdata']=""; @endphp
                         <span> Serv. Mun. </span>
-                        <span class="badge badge-light float-right mr-3">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->count()}}</span>
+                        <span class="badge badge-light float-right mr-3">{{\App\Models\Denuncias\_viDDSs::query()->GetDenunciasAmbitoFilterCount($filters)->where('ambito_dependencia',2)->count()}}</span>
                         <span class="menu-arrow"></span>
                     </a>
                     <ul class="side-nav-second-level" aria-expanded="false">
@@ -63,7 +66,7 @@
                             <a href="{{route('listDenunciasAmbito2')}}">
                                 @php $filters['filterdata']=""; @endphp
                                 <i class="mdi dripicons-archive"></i>
-                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->count()}}</span>
+                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->GetDenunciasAmbitoFilterCount($filters)->where('ambito_dependencia',2)->count()}}</span>
                                 <span>Todas</span>
                             </a>
                         </li>
@@ -71,7 +74,7 @@
                             <a href="{{route('listDenunciasAmbito16')}}">
                                 @php $filters['filterdata']=""; @endphp
                                 <i class="mdi dripicons-archive"></i>
-                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',16)->count()}}</span>
+                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->GetDenunciasAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',16)->count()}}</span>
                                 <span>Recibidas</span>
                             </a>
                         </li>
@@ -79,7 +82,7 @@
                             <a href="{{route('listDenunciasAmbito19')}}">
                                 @php $filters['filterdata']=""; @endphp
                                 <i class="mdi dripicons-archive"></i>
-                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',19)->count()}}</span>
+                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->GetDenunciasAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',19)->count()}}</span>
                                 <span>En proceso / Programadas</span>
                             </a>
                         </li>
@@ -87,7 +90,7 @@
                             <a href="{{route('listDenunciasAmbito17')}}">
                                 @php $filters['filterdata']=""; @endphp
                                 <i class="mdi dripicons-archive"></i>
-                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',17)->count()}}</span>
+                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->GetDenunciasAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',17)->count()}}</span>
                                 <span>Atendidas</span>
                             </a>
                         </li>
@@ -95,7 +98,7 @@
                             <a href="{{route('listDenunciasAmbito20')}}">
                                 @php $filters['filterdata']=""; @endphp
                                 <i class="mdi dripicons-archive"></i>
-                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',20)->count()}}</span>
+                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->GetDenunciasAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',20)->count()}}</span>
                                 <span>Rechazadas</span>
                             </a>
                         </li>
@@ -103,7 +106,7 @@
                             <a href="{{route('listDenunciasAmbito18')}}">
                                 @php $filters['filterdata']=""; @endphp
                                 <i class="mdi dripicons-archive"></i>
-                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',18)->count()}}</span>
+                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->GetDenunciasAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',18)->count()}}</span>
                                 <span>Observadas</span>
                             </a>
                         </li>
@@ -111,7 +114,7 @@
                             <a href="{{route('listDenunciasAmbito21')}}">
                                 @php $filters['filterdata']=""; @endphp
                                 <i class="mdi dripicons-archive"></i>
-                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->where('ambito_dependencia',2)->where('ue_id',21)->count()}}</span>
+                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->GetDenunciasAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',21)->count()}}</span>
                                 <span>Cerradas</span>
                             </a>
                         </li>
