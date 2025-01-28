@@ -407,16 +407,6 @@ main {
     background: #e64a19;
 }
 
-#map {
-    height: 80% !important;
-    width: width-content !important;
-    transition: height 0.3s ease;
-    max-width: 800px;
-    border-radius: 10px;
-    background: #ffffff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
 .dashboard-container.card.collapsed #map {
     height: 0;
 }
@@ -432,10 +422,18 @@ dashboard-container.card.collapsed .header-2 button:hover {
 .map-container {
     position: relative;
     width: 100% !important;
-    height: 100%;
     overflow: hidden;
     transition: all 0.3s ease;
 }
+#map {
+    height: 600px !important;
+    width: width-content !important;
+    transition: height 0.3s ease;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
 
 /* Botón de acción */
 .toggle-button {

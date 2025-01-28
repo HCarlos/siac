@@ -142,7 +142,14 @@
                     </div>
                 </div>
             </div>
-
+            <div class="section">
+                <div class="card" >
+                    <h3>Por zona:</h3>
+                    <div class="map-container" id="map-container">
+                        <div id="map"></div>
+                    </div>
+                </div>
+            </div>
             <!-- Charts Section -->
             <div class="section">
                 <div class="card">
@@ -168,12 +175,12 @@
                     </div>
 
                 </div>
-                <div class="card">
-                    <h3>Por zona:</h3>
-                    <div class="map-container" id="map-container">
-                        <div id="map"></div>
-                    </div>
-                </div>
+{{--                <div class="card">--}}
+{{--                    <h3>Por zona:</h3>--}}
+{{--                    <div class="map-container" id="map-container">--}}
+{{--                        <div id="map"></div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
                 <div class="card">
                     <div class="chart-container">
                         <h3>% solicitudes atendidas / rechazadas</h3>
@@ -183,7 +190,6 @@
             </div>
 
         </div>
-
     </main>
 </div>
 
