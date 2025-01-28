@@ -62,6 +62,13 @@ trait UserAttributes
         return $this->dependencias()->allRelatedIds('id')->implode('|','id');
     }
 
+    public function getDelegadosIdStrArrayAttribute(){
+        $roles = $this->whereHas('roles', function($q){
+            $q->where('name','DELEGADOS');
+        })->get()->toArray();
+        return $roles;
+    }
+
     public function getDependenciaNameStrArrayAttribute(){
         return $this->dependencias()->pluck('dependencia')->implode('|','dependencia');
     }

@@ -109,9 +109,21 @@
                 </div>
             </div>
             <div class="form-group row mb-3 mt-3">
-                <label for="file1" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Archivo:</label>
+                <label for="file1" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Archivo 1:</label>
                 <div class="col-lg-10">
                     <input type="file" id="file1" name="file1" class="form-control-file">
+                </div>
+            </div>
+            <div class="form-group row mb-3 mt-3">
+                <label for="file2" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Archivo 2:</label>
+                <div class="col-lg-10">
+                    <input type="file" id="file2" name="file2" class="form-control-file">
+                </div>
+            </div>
+            <div class="form-group row mb-3 mt-3">
+                <label for="file3" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Archivo 3:</label>
+                <div class="col-lg-10">
+                    <input type="file" id="file3" name="file3" class="form-control-file">
                 </div>
             </div>
             <div class="form-group row mb-1">

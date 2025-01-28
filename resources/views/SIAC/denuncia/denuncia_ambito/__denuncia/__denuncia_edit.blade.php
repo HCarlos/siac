@@ -114,16 +114,6 @@
                 </div>
             </div>
 
-{{--            <div class="form-group row mb-1">--}}
-{{--                <label for = "referencia" class="col-lg-2 col-form-label has-referencia labelDenuncia text-right m-0 p-0">Referencia:</label>--}}
-{{--                <div class="col-lg-10">--}}
-{{--                    <textarea name="referencia" id="referencia" class="form-control">{{ old('referencia',$items->referencia) }}</textarea>--}}
-{{--                    <span class="has-referencia">--}}
-{{--                        <strong class="text-danger"></strong>--}}
-{{--                    </span>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
             <div class="form-group row mb-1">
                 <label for = "ambito" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Categoría:</label>
                 <div class="col-lg-10">

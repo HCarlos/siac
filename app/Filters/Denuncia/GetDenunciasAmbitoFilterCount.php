@@ -37,6 +37,11 @@ class GetDenunciasAmbitoFilterCount extends QueryFilter{
             $filters['dependencia_id'] = $DependenciaIdArray;
         }elseif ( Auth::user()->isRole('CIUDADANO|DELEGADO') && !Auth::user()->isRole('Administrator|SysOp|test_admin') ){
             $filters['ciudadano_id'] = Auth::user()->id;
+        }elseif ( Auth::user()->isRole('DELEGADOS') ){
+            $filters['creadopor_id'] = Auth::user()->id;
+        }elseif ( Auth::user()->isRole('DELEGADOS') ){
+            $DelegadosIdArray = Auth::user()->DelegadosIdArray;
+            $filters['creadopor_id'] = $DelegadosIdArray;
         }else{
             $filters['search'] = "";
         }
