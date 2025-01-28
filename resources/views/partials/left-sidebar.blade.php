@@ -30,6 +30,7 @@
                 </li>
             @endif
 
+            @if (Auth::user()->hasRole('Administrator|SysOp|test_admin|SOLICITUDES_V1'))
             <li class="side-nav-item">
                 <a href="{{route('listDenuncias')}}" class="side-nav-link">
                     @include('.shared.svgs.__solicitudes')
@@ -38,6 +39,7 @@
                     <span>Solicitudes</span>
                 </a>
             </li>
+            @endif
 
             @if (Auth::user()->hasRole('Administrator|SysOp|test_admin|APOYOS_SOCIALES'))
             <li class="side-nav-item">
