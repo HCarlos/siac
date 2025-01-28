@@ -96,6 +96,10 @@
                 <h2 id="h2Observadas">0</h2>
                 <p>Observadas</p>
             </div>
+            <div class="stat">
+                <h2 id="h2Total">0</h2>
+                <p>Todas</p>
+            </div>
         </section>
 
         <div class="dashboard-container">
@@ -270,6 +274,8 @@
             document.getElementById("h2Rechazadas").innerHTML = Estatus.estatus[3].Total;
             document.getElementById("h2Cerradas").innerHTML = Estatus.estatus[4].Total;
             document.getElementById("h2Observadas").innerHTML = Estatus.estatus[5].Total;
+
+            document.getElementById("h2Total").innerHTML = Estatus.estatus[0].Total + Estatus.estatus[1].Total + Estatus.estatus[2].Total + Estatus.estatus[3].Total + Estatus.estatus[4].Total + Estatus.estatus[5].Total;
 
             Estatus.estatus[0].Unidades.forEach( (unidad) => {data1data.push(unidad.Total); });
             Estatus.estatus[1].Unidades.forEach( (unidad) => {data2data.push(unidad.Total); });
