@@ -81,6 +81,11 @@ class DenunciaAmbitoController extends Controller{
 
         $request->session()->put('items', $items);
 
+        session(['ambito_dependencia' => $ambito_dependencia]);
+
+//        dd(session::get('ambito_dependencia'));
+
+
         session(['msg' => '']);
 
         $user = Auth::User();
@@ -89,7 +94,7 @@ class DenunciaAmbitoController extends Controller{
             [
                 'items'                               => $items,
                 'titulo_catalogo'                     => "Catálogo de " . ucwords($this->tableName),
-                'titulo_header'                       => $this->ambito_dependencia == 1 ? "Apoyos Sociales" : "Servicios Municipales",
+                'titulo_header'                       => $this->ambito_dependencia === 1 ? "Apoyos Sociales" : "Servicios Municipales",
                 'user'                                => $user,
                 'searchInListDenuncia'                => 'listDenunciasAmbito'.$this->ambito_dependencia,
                 'newWindow'                           => true,
@@ -98,7 +103,7 @@ class DenunciaAmbitoController extends Controller{
                 'showAddUser'                         => 'addUserDenunciaAmbito',
                 'showEditDenunciaDependenciaServicio' => $this->ambito_dependencia === 2 ? 'listDenunciaDependenciaServicioAmbito' : 'listDenunciaDependenciaServicio',
                 'showProcess1'                        => 'showDataListDenunciaAmbitoExcel1A',
-                'newItem'                             => 'newDenunciaAmbito',
+                'newItem'                             => 'newDenunciaAmbito/'.$this->ambito_dependencia.'/'.$this->ambito_estatus,
                 'removeItem'                          => 'removeDenunciaAmbito',
                 'respuestasDenunciaItem'              => 'listRespuestas',
                 'respuestasDenunciaCiudadanaItem'     => 'listRespuestasCiudadanasAmbito',
@@ -225,6 +230,8 @@ class DenunciaAmbitoController extends Controller{
                 'exportModel'          => 23,
                 'msg'                  => $this->msg,
                 'ambito'               => FuncionesController::arrAmbitosSM(),
+                'ambito_dependencia'   => $this->ambito_dependencia,
+                'ambito_estatus'       => $this->ambito_estatus,
             ]
         );
     }
@@ -310,12 +317,15 @@ class DenunciaAmbitoController extends Controller{
                 'exportModel'          => 23,
                 'msg'                  => $this->msg,
                 'ambito'               => null, //FuncionesController::arrAmbitosSM(),
+                'ambito_dependencia'   => $this->ambito_dependencia,
+                'ambito_estatus'       => $this->ambito_estatus,
             ]
         );
     }
 
-    protected function newItem(){
-        $this->ambito_dependencia = Session::get('ambito_dependencia');
+    protected function newItem($ambito_dependencia, $ambito_estatus){
+        $this->ambito_dependencia = $ambito_dependencia;
+        $this->ambito_estatus = $ambito_estatus;
         return ($this->ambito_dependencia == 1)
             ? $this->newItem1($this->ambito_dependencia, $this->ambito_estatus)
             : $this->newItem2($this->ambito_dependencia, $this->ambito_estatus);
@@ -323,26 +333,30 @@ class DenunciaAmbitoController extends Controller{
 
     // ***************** CREAR NUEVO ++++++++++++++++++++ //
     protected function createItem1(DenunciaRequest $request){
-        $this->ambito_dependencia = Session::get('ambito_dependencia');
+        $data = $request->all();
+        $this->ambito_dependencia = $data['ambito_dependencia'];
+
         $item = $request->manage();
         if (!isset($item->id)) {
             abort(422);
         }
         $this->msg = "Registro Guardado con éxito!";
         session(['msg' => $this->msg]);
-        return Redirect::to('editDenunciaAmbito/'.$item->id);
+        return Redirect::to('editDenunciaAmbito/'.$this->ambito_dependencia.'/'.$item->id);
 
     }
 
     protected function createItem2(DenunciaAmbitoRequest $request){
-        $this->ambito_dependencia = Session::get('ambito_dependencia');
+        $data = $request->all();
+        $this->ambito_dependencia = $data['ambito_dependencia'];
+
         $item = $request->manage($this->ambito_dependencia);
         if (!isset($item->id)) {
             abort(422);
         }
         $this->msg = "Registro Guardado con éxito!";
         session(['msg' => $this->msg]);
-        return Redirect::to('editDenunciaAmbito/'.$item->id);
+        return Redirect::to('editDenunciaAmbito/'.$this->ambito_dependencia.'/'.$item->id);
 
     }
 
@@ -443,6 +457,8 @@ class DenunciaAmbitoController extends Controller{
                 'msg'                  => $this->msg,
                 'pregunta1'            => $pregunta1,
                 'ambito'               => FuncionesController::arrAmbitosSM(),
+                'ambito_dependencia'   => $this->ambito_dependencia,
+                'ambito_estatus'       => $this->ambito_estatus,
             ]
         );
     }
@@ -553,13 +569,16 @@ class DenunciaAmbitoController extends Controller{
                 'msg'                  => $this->msg,
                 'pregunta1'            => $pregunta1,
                 'ambito'               => $ServCat, //FuncionesController::arrAmbitosSM(),
+                'ambito_dependencia'   => $this->ambito_dependencia,
+                'ambito_estatus'       => $this->ambito_estatus,
             ]
         );
     }
 
 
-    protected function editItem($Id){
-        $this->ambito_dependencia = Session::get('ambito_dependencia');
+    protected function editItem($ambito_dependencia,$Id){
+        $this->ambito_dependencia = (int)$ambito_dependencia;
+//        dd($this->ambito_dependencia);
         return ($this->ambito_dependencia === 1)
             ? $this->editItem1($Id,$this->ambito_dependencia,$this->ambito_estatus)
             : $this->editItem2($Id,$this->ambito_dependencia,$this->ambito_estatus);
@@ -569,26 +588,29 @@ class DenunciaAmbitoController extends Controller{
 
 // ***************** GUARDA LOS CAMBIOS ++++++++++++++++++++ //
     protected function updateItem1(DenunciaRequest $request){
-        $this->ambito_dependencia = Session::get('ambito_dependencia');
+        $data = $request->all();
+        $this->ambito_dependencia = $data['ambito_dependencia'];
+
         $item = $request->manage();
         if (!isset($item->id)) {
             abort(422);
         }
         $this->msg = "Registro Guardado con éxito!";
         session(['msg' => $this->msg]);
-        return Redirect::to('editDenunciaAmbito/'.$item->id);
+        return Redirect::to('editDenunciaAmbito/'.$this->ambito_dependencia.'/'.$item->id);
     }
 
     protected function updateItem2(DenunciaAmbitoRequest $request){
-        $this->ambito_dependencia = Session::get('ambito_dependencia');
-//        dd($request->all());
+        $data = $request->all();
+        $this->ambito_dependencia = $data['ambito_dependencia'];
+
         $item = $request->manage($this->ambito_dependencia);
         if (!isset($item->id)) {
             abort(422);
         }
         $this->msg = "Registro Guardado con éxito!";
         session(['msg' => $this->msg]);
-        return Redirect::to('editDenunciaAmbito/'.$item->id);
+        return Redirect::to('editDenunciaAmbito/'.$this->ambito_dependencia.'/'.$item->id);
     }
 
 // ***************** ELIMINA EL ITEM VIA AJAX ++++++++++++++++++++ //

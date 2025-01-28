@@ -59,7 +59,7 @@
                                 @include('shared.ui_kit.__remove_item')
                             @endif
                             @include('shared.ui_kit.__add_user_item')
-                            @include('shared.ui_kit.__edit_item')
+                            @include('shared.ui_kit.__edit_ambito_item')
                             @if($item->ambito_dependencia === 2)
                                 @include('shared.ui_kit.__print_denuncia_ambito_item')
                             @else

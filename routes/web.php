@@ -472,14 +472,14 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
     Route::get('listDenunciasAmbito19', 'Denuncia\DenunciaAmbitoController@index19')->name('listDenunciasAmbito19');
     Route::get('listDenunciasAmbito20', 'Denuncia\DenunciaAmbitoController@index20')->name('listDenunciasAmbito20');
     Route::get('listDenunciasAmbito21', 'Denuncia\DenunciaAmbitoController@index21')->name('listDenunciasAmbito21');
-    Route::get('editDenunciaAmbito/{Id}', 'Denuncia\DenunciaAmbitoController@editItem')->name('editDenunciaAmbito');
+    Route::get('editDenunciaAmbito/{ambito_dependencia}/{Id}', 'Denuncia\DenunciaAmbitoController@editItem')->name('editDenunciaAmbito');
     Route::put('updateDenunciaAmbito1', 'Denuncia\DenunciaAmbitoController@updateItem1')->name('updateDenunciaAmbito1');
     Route::put('updateDenunciaAmbito2', 'Denuncia\DenunciaAmbitoController@updateItem2')->name('updateDenunciaAmbito2');
     Route::get('addUserDenunciaAmbito/{Id}', 'Denuncia\DenunciaAmbitoController@addUserItem')->name('addUserDenunciaAmbito');
     Route::put('updateAddUserDenunciaAmbito', 'Denuncia\DenunciaAmbitoController@updateAddUserDenuncia')->name('updateAddUserDenunciaAmbito');
     Route::get('updateAddUserDenunciaAmbitoGet/{id}/{usuario_id}', 'Denuncia\DenunciaAmbitoController@updateAddUserDenunciaGet')->name('updateAddUserDenunciaAmbitoGet');
     Route::get('removeAddUserDenunciaAmbito/{id0}/{id1}', 'Denuncia\DenunciaAmbitoController@removeAddUserDenuncia')->name('removeAddUserDenunciaAmbito');
-    Route::get('newDenunciaAmbito', 'Denuncia\DenunciaAmbitoController@newItem')->name('newDenunciaAmbito');
+    Route::get('newDenunciaAmbito/{ambito_dependencia}/{ambito_estatus}', 'Denuncia\DenunciaAmbitoController@newItem')->name('newDenunciaAmbito');
     Route::post('createDenunciaAmbito1', 'Denuncia\DenunciaAmbitoController@createItem1')->name('createDenunciaAmbito1');
     Route::post('createDenunciaAmbito2', 'Denuncia\DenunciaAmbitoController@createItem2')->name('createDenunciaAmbito2');
     Route::get('removeDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@removeItem')->name('removeDenunciaAmbito');

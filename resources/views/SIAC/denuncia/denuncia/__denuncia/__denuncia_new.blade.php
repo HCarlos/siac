@@ -275,14 +275,5 @@
 <input type="hidden" name="usuario_id" id="usuario_id" value="0" >
 <input type="hidden" name="isFechaIngresoView" id="isFechaIngresoView" value="{{ config('atemun.modificar_fecha_ingreso') }}" >
 
-{{--<input type="hidden" name="g_calle" id="g_calle" value="{{ old('g_calle') }}" >--}}
-{{--<input type="hidden" name="g_num_ext" id="g_num_ext" value="{{ old('g_num_ext') }}" >--}}
-{{--<input type="hidden" name="g_num_int" id="g_num_int" value="{{ old('g_num_int') }}" >--}}
-{{--<input type="hidden" name="g_colonia" id="g_colonia" value="{{ old('g_colonia') }}" >--}}
-{{--<input type="hidden" name="g_comunidad" id="g_comunidad" value="{{ old('g_comunidad') }}" >--}}
-{{--<input type="hidden" name="g_municipio" id="g_municipio" value="{{ old('g_municipio') }}" >--}}
-{{--<input type="hidden" name="g_estado" id="g_estado" value="{{ old('g_estado') }}" >--}}
-{{--<input type="hidden" name="g_cp" id="g_cp" value="{{ old('g_cp') }}" >--}}
-{{--<input type="hidden" name="g_altitud" id="g_altitud" value="{{ old('g_altitud') }}" >--}}
-{{--<input type="hidden" name="g_ubicacion" id="g_ubicacion" value="{{ old('gd_ubicacion') }}" >--}}
-
+<input type="hidden" name="ambito_dependencia" id="ambito_dependencia" value="{{ old('ambito_dependencia',$ambito_dependencia) }}" >
+<input type="hidden" name="ambito_estatus" id="ambito_estatus" value="{{ old('ambito_estatus',$ambito_estatus) }}" >

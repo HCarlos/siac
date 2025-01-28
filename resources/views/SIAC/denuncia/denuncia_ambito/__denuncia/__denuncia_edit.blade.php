@@ -157,7 +157,7 @@
                                 </td>
                             </tr>
                         @endforeach
-                        @for($it=$items->imagenes->count()+1;$it<=1;$it++)
+                        @for($it=$items->imagenes->count()+1;$it<=3;$it++)
                             <tr>
                                 <td colspan="2">
                                     <label for="file{{$it}}"><strong>Archivo {{$it}}</strong>: Subir archivo</label>
@@ -257,6 +257,9 @@
 <input type="hidden" name="altitud" id="altitud" value="{{ old('altitud',$items->altitud) }}" >
 <input type="hidden" name="gd_ubicacion" id="gd_ubicacion" value="{{ old('gd_ubicacion',$items->gd_ubicacion) }}" >
 <input type="hidden" name="referencia" id="referencia" value="{{ old('referencia',$items->referencia) }}" >
+
+<input type="hidden" name="ambito_dependencia" id="ambito_dependencia" value="{{ old('ambito_dependencia',$ambito_dependencia) }}" >
+<input type="hidden" name="ambito_estatus" id="ambito_estatus" value="{{ old('ambito_estatus',$ambito_estatus) }}" >
 
 @include('shared/code/__modal_denuncia_user_data')
 

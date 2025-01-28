@@ -120,13 +120,6 @@ class DenunciaAmbitoFilter extends QueryFilter
                 $search = Auth::user()->DependenciaIdArray;
             }
         }
-//        return $query->whereHas('dependencias', function ($q) use ($query, $search) {
-//                if ( is_array($search) ){
-//                    return $q->whereIn('dependencia_id', $search);
-//                }else{
-//                    return $q->where('dependencia_id', (int)$search);
-//                }
-//        });
 
         if ( is_array($search) ){
             return $query->whereIn('due_id', $search);
@@ -206,7 +199,15 @@ class DenunciaAmbitoFilter extends QueryFilter
 
     public function creadopor_id($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "0") {return $query;}
-        return $query->where('creadopor_id', $search);
+//        return $query->where('creadopor_id', $search);
+
+        if ( is_array($search) ){
+            return $query->whereIn('creadopor_id', $search);
+        }else{
+            return $query->where('creadopor_id', (int)$search);
+        }
+
+
     }
 
     public function dependencia($query, $search){

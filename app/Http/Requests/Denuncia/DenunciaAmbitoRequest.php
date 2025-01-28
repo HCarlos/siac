@@ -336,9 +336,9 @@ class DenunciaAmbitoRequest extends FormRequest
     {
         $url = $this->redirector->getUrlGenerator();
         if ($this->id > 0){
-            return $url->route($this->redirectRoute,['Id'=>$this->id]);
+            return $url->route($this->redirectRoute,['ambito_dependencia'=>$this->ambito_dependencia,'Id'=>$this->id]);
         }else{
-            return $url->route('newDenunciaAmbito');
+            return $url->route('newDenunciaAmbito/'.$this->ambito_dependencia.'/0');
         }
     }
 
