@@ -485,7 +485,7 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
     Route::get('removeDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@removeItem')->name('removeDenunciaAmbito');
     Route::get('searchAdressAmbito/', 'Denuncia\DenunciaAmbitoController@searchAdress')->name('searchAdressAmbito');
     Route::get('getUbiAmbito/{IdUbi}', 'Denuncia\DenunciaAmbitoController@getUbi')->name('getUbiAmbito');
-    Route::get('showModalSearchDenunciaAmbito/', 'Denuncia\DenunciaAmbitoController@showModalSearchDenuncia')->name('showModalSearchDenunciaAmbito');
+    Route::get('showModalSearchDenunciaAmbito/{ambito_dependencia}', 'Denuncia\DenunciaAmbitoController@showModalSearchDenuncia')->name('showModalSearchDenunciaAmbito');
     Route::match(['get','put','post'],'findDataInDenunciaAmbito/', 'Denuncia\DenunciaAmbitoController@findDataInDenuncia')->name('findDataInDenunciaAmbito');
 
     Route::post('showDataListDenunciaAmbitoExcel1A/', 'External\Denuncia\ListDenunciaAmbitoXLSXController@getListDenunciaAmbitoXLSX')->name('showDataListDenunciaAmbitoExcel1A');

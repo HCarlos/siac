@@ -19,7 +19,7 @@
     @endisset
     @isset($showModalSearchDenuncia)
         <span data-toggle="modal" data-target="#modalFull" >
-            <a href="{{route($showModalSearchDenuncia)}}" id="{{$showModalSearchDenuncia}}" class="btn btn-icon btn-outline-white ml-1 btn-rounded  btnFullModal" data-toggle="tooltip" data-placement="top" title="" data-original-title="Búsqueda Avanzada">
+            <a href="{{url($showModalSearchDenuncia)}}" id="{{$showModalSearchDenuncia}}" class="btn btn-icon btn-outline-white ml-1 btn-rounded  btnFullModal" data-toggle="tooltip" data-placement="top" title="" data-original-title="Búsqueda Avanzada">
                 <i class="fas fa-search"></i>
             </a>
         </span>

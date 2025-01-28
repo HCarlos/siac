@@ -37,9 +37,9 @@ class DenunciaAmbitoController extends Controller{
     protected $tableName = "solicitudes";
     protected $paginationTheme = 'bootstrap';
     protected $msg = "";
-    protected $max_item_for_query = 150;
-    protected $ambito_dependencia = 0;
-    protected $ambito_estatus = 0;
+    private $max_item_for_query = 150;
+    private $ambito_dependencia = 0;
+    private $ambito_estatus = 0;
 
     // ***************** MUESTRA EL LISTADO DE USUARIOS ++++++++++++++++++++ //
 
@@ -56,9 +56,21 @@ class DenunciaAmbitoController extends Controller{
         $search = $request->only(['search']);
 
         $filters['filterdata'] = $search;
-        session(['ambito_dependencia' => $ambito_dependencia]);
-        session(['ambito_estatus' => $ambito_estatus]);
-        session(['is_pagination' => true]);
+
+        if (Session::has('ambito_dependencia')){
+            Session::forget('ambito_dependencia');
+            Session::forget('ambito_estatus');
+            Session::forget('is_pagination');
+            Session::put('ambito_dependencia', $ambito_dependencia);
+            Session::put('ambito_estatus', $ambito_estatus);
+            Session::put('is_pagination', true);
+
+        }
+
+//        Session(['ambito_dependencia' => $ambito_dependencia]);
+//        session(['ambito_estatus' => $ambito_estatus]);
+//        session(['is_pagination' => true]);
+
         $this->ambito_dependencia = $ambito_dependencia;
         $this->ambito_estatus = $ambito_estatus;
 
@@ -81,10 +93,11 @@ class DenunciaAmbitoController extends Controller{
 
         $request->session()->put('items', $items);
 
-        session(['ambito_dependencia' => $ambito_dependencia]);
+//        session(['ambito_dependencia' => $ambito_dependencia]);
 
 //        dd(session::get('ambito_dependencia'));
 
+//        dd(Session::get('ambito_dependencia'),Session::get('ambito_dependencia'));
 
         session(['msg' => '']);
 
@@ -109,7 +122,7 @@ class DenunciaAmbitoController extends Controller{
                 'respuestasDenunciaCiudadanaItem'     => 'listRespuestasCiudadanasAmbito',
                 'imagenesDenunciaItem'                => 'listImagenes',
                 'searchAdressDenuncia'                => 'listDenunciasAmbito'.$this->ambito_dependencia,
-                'showModalSearchDenuncia'             => 'showModalSearchDenunciaAmbito',
+                'showModalSearchDenuncia'             => 'showModalSearchDenunciaAmbito/'.$this->ambito_dependencia,
                 'findDataInDenunciaAmbito'            => 'findDataInDenunciaAmbito',
                 'imprimirDenuncia'                    => "imprimir_denuncia_archivo/",
                 'IsEnlace'                            => session('IsEnlace'),
@@ -683,9 +696,11 @@ class DenunciaAmbitoController extends Controller{
 
     }
 
-    protected function showModalSearchDenuncia(){
+    protected function showModalSearchDenuncia($ambito_dependencia){
 
-        $this->ambito_dependencia = Session::get('ambito_dependencia');
+
+        $this->ambito_dependencia = $ambito_dependencia ??session()->get('ambito_dependencia');
+
         if (Auth::user()->isRole('ENLACE')){
 
             $DependenciaIdArray = Auth::user()->DependenciaIdArray;
@@ -706,7 +721,7 @@ class DenunciaAmbitoController extends Controller{
 
         }
 
-        $Est = $this->ambito_dependencia == 1
+        $Est = $this->ambito_dependencia === 1
             ? FuncionesController::arrAmbitosViejitos()
             : FuncionesController::arrAmbitosServiciosMunicipales();
 
@@ -745,8 +760,10 @@ class DenunciaAmbitoController extends Controller{
                     ->orderBy('clave_identificadora')
                     ->pluck('clave_identificadora','clave_identificadora');
 
-        $this->ambito_dependencia = session::get('ambito_dependencia');
-        $this->ambito_estatus = session::get('ambito_estatus');
+//        $this->ambito_dependencia = Session::get('ambito_dependencia');
+        $this->ambito_estatus = Session::get('ambito_estatus');
+
+//        dd("Session : ".Session::get('ambito_dependencia'),$this->ambito_estatus);
 
         $user = Auth::user();
         return view ('SIAC.denuncia.search_ambito.denuncia_search_panel',
@@ -770,6 +787,9 @@ class DenunciaAmbitoController extends Controller{
     protected function findDataInDenuncia(Request $request){
 
         $filters = new FiltersRules();
+        $data = $request->all();
+//        dd($data);
+
 
         $queryFilters = $filters->filterRulesDenuncia($request);
 
@@ -792,8 +812,9 @@ class DenunciaAmbitoController extends Controller{
         $user = Auth::User();
 
         $request->session()->put('items', $items);
-        $this->ambito_dependencia = session::get('ambito_dependencia');
-        $this->ambito_estatus = session::get('ambito_estatus');
+        $this->ambito_dependencia = (int)$data['ambito_dependencia']; //Session::get('ambito_dependencia');
+        $this->ambito_estatus = Session::get('ambito_estatus');
+//        dd($this->ambito_dependencia,$this->ambito_estatus);
         return view('SIAC.denuncia.denuncia_ambito.denuncia_list',
             [
                 'items'                               => $items,
@@ -811,7 +832,7 @@ class DenunciaAmbitoController extends Controller{
                 'removeItem'                          => 'removeDenunciaAmbito',
                 'showProcess1'                        => 'showDataListDenunciaAmbitoExcel1A',
                 'searchAdressDenuncia'                => 'listDenunciasAmbito'.$this->ambito_dependencia,
-                'showModalSearchDenuncia'             => 'showModalSearchDenunciaAmbito',
+                'showModalSearchDenuncia'             => 'showModalSearchDenunciaAmbito/'.$this->ambito_dependencia,
                 'findDataInDenunciaAmbito'            => 'findDataInDenunciaAmbito',
                 'showEditDenunciaDependenciaServicio' => $this->ambito_dependencia == 2 ? 'listDenunciaDependenciaServicioAmbito' : 'listDenunciaDependenciaServicio',
                 'imagenesDenunciaItem'                => 'listImagenes',
@@ -971,7 +992,7 @@ class DenunciaAmbitoController extends Controller{
     }
 
     public function vistaDenuncia($denuncia_id){
-        $this->ambito_dependencia = session::get('ambito_dependencia');
+        $this->ambito_dependencia = Session::get('ambito_dependencia');
         $viDen = new VistaDenunciaClass();
         $viDen->vistaDenuncia($denuncia_id);
         return \redirect()->route('listDenunciasAmbito'.$this->ambito_dependencia);
