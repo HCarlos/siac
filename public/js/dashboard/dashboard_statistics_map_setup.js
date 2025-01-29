@@ -70,7 +70,7 @@ function buildContent(property) {
         <div class="denuncia">${property.denuncia}</div>
         <div class="features">
             <div>
-                <a href="/editDenunciaAmbito/${property.denuncia_id}" class="open_solicitud" title="Haga click para abrir esta solicitud">
+                <a href="/editDenunciaAmbito/2/${property.denuncia_id}" class="open_solicitud" title="Haga click para abrir esta solicitud">
                 <i aria-hidden="true" class="fa fa-id-card fa-lg bed" title="Haga click para abrir esta solicitud"></i>
                 <span class="fa-sr-only" title="Haga click para abrir esta solicitud">denuncia_id</span>
                 <span title="Haga click para abrir esta solicitud">${property.denuncia_id}</span>
@@ -100,27 +100,6 @@ function buildContent(property) {
     </div>
     `;
     return content;
-
-
-    /*
-        <div className="features">
-            <div>
-                <i aria-hidden="true" className="fa fa-bed fa-lg bed" title="bedroom"></i>
-                <span className="fa-sr-only">bedroom</span>
-                <span>${property.bed}</span>
-            </div>
-            <div>
-                <i aria-hidden="true" className="fa fa-bath fa-lg bath" title="bathroom"></i>
-                <span className="fa-sr-only">bathroom</span>
-                <span>${property.bath}</span>
-            </div>
-            <div>
-                <i aria-hidden="true" className="fa fa-ruler fa-lg size" title="size"></i>
-                <span className="fa-sr-only">size</span>
-                <span>${property.size} ft<sup>2</sup></span>
-            </div>
-        </div>
-    */
 
 }
 
