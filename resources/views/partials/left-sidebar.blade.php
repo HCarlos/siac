@@ -22,7 +22,8 @@
                 (Gate::check('all') || Gate::check('dashboard'))
                  )
                 <li class="side-nav-item">
-                    <a href="{{ url('dashboard-statistics-servicios-principales') }}" class="side-nav-link">
+{{--                    <a href="{{ url('dashboard-statistics-servicios-principales') }}" class="side-nav-link">--}}
+                        <a href="{{ url('dashboard-statistics-general') }}" class="side-nav-link">
                         @include('.shared.svgs.__dashboard')
                         <span class="badge badge-light float-right"></span>
                         <span>Dashboard</span>
