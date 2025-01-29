@@ -115,7 +115,7 @@ class DenunciaAmbitoController extends Controller{
                 'showEdit'                            => 'editDenunciaAmbito',
                 'showAddUser'                         => 'addUserDenunciaAmbito',
                 'showEditDenunciaDependenciaServicio' => $this->ambito_dependencia === 2 ? 'listDenunciaDependenciaServicioAmbito' : 'listDenunciaDependenciaServicio',
-                'showProcess1'                        => 'showDataListDenunciaAmbitoExcel1A',
+                'showProcess1'                        => $this->ambito_dependencia === 1 ? 'showDataListDenunciaExcel1A' : 'showDataListDenunciaAmbitoExcel1A',
                 'newItem'                             => 'newDenunciaAmbito/'.$this->ambito_dependencia.'/'.$this->ambito_estatus,
                 'removeItem'                          => 'removeDenunciaAmbito',
                 'respuestasDenunciaItem'              => 'listRespuestas',
