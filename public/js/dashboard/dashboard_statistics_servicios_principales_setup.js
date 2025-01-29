@@ -343,7 +343,7 @@
                             meta.data.forEach(function(bar, index) {
                                 var data = dataset.data[index];
                                 // alert(bar.x);
-                                var textX = bar.x > 180 ? bar.x - 12 : bar.x + 4;
+                                var textX = bar.x > 180 ? bar.x - 18 : bar.x + 4;
                                 ctx.fillText(data, textX, bar.y + 4);
                             });
                         }

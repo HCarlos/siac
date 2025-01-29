@@ -40,62 +40,6 @@ async function initMap(dataSet) {
     centerControlDiv.appendChild(centerControl);
     map.controls[google.maps.ControlPosition.TOP_RIGHT].push(centerControlDiv);
 
-
-
-    /*
-        const url = new URL("https://refugios.villahermosa.gob.mx:445/images/z1.png");
-        const pin = new PinElement({
-            scale: 1.25,
-            background: "#F7D32F",
-            glyph: url,
-
-        });
-
-
-        // Crear marcadores personalizados
-        dataSet.forEach((dataSet) => {
-
-            const icon = document.createElement("div");
-            icon.innerHTML = '<i class="fa fa-map-marker fa-lg text-danger"></i>';
-
-            const pin = new PinElement({
-                scale: 1.25,
-                background: dataSet.color,
-                borderColor: "#FFFFFF",
-                glyphColor: "white",
-                glyph: icon,
-
-            });
-
-            let srcHtml = "<b>Solicitud:</b> "+dataSet.denuncia+"<br>"+
-                                 "<b>Solicitante:</b> "+dataSet.ciudadano+"<br>"+
-                                 "<b>Unidad:</b> "+dataSet.unidad+"<br>"+
-                                 "<b>Servicio:</b> "+dataSet.servicio+"<br>"+
-                                 "<b>Último estatus:</b> "+dataSet.ultimo_estatus+"<br>"+
-                                 "<b>Fecha de Ingreso:</b> "+dataSet.fecha_ingreso+"<br>"+
-                                 "<b>Fecha de Ejecución Mínima:</b> "+dataSet.fecha_ejecucion_minima+"<br>"+
-                                 "<b>Fecha de Ejecución Máxima:</b> "+dataSet.fecha_ejecucion_maxima+"<br>"+
-                                 "<b>Id:</b> "+dataSet.denuncia_id;
-
-            const marker = new AdvancedMarkerElement({
-                map: map,
-                position: { lat: dataSet.lat, lng: dataSet.lng },
-                title:  srcHtml,
-                content: pin.element,
-                gmpClickable: true,
-                gmpDraggable: false,
-            });
-
-            marker.addListener("click", ({ domEvent, latLng }) => {
-                const { target } = domEvent;
-                infoWindow.close();
-                infoWindow.setContent(marker.title);
-                infoWindow.open(marker.map, marker);
-            });
-
-        });
-    */
-
 }
 
 function toggleHighlight(markerView, property) {

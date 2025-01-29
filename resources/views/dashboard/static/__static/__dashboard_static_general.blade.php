@@ -11,7 +11,8 @@
 
         </div>
         <nav class="menu">
-            <button class="menu-item active">Inicio</button>
+{{--            <button class="menu-item" onclick="window.location.href='/dashboard-statistics-servicios-principales'">Inicio</button>--}}
+            <button class="menu-item active">General</button>
             <button class="menu-item">Alumbrado</button>
             <button class="menu-item">Espacios Públicos</button>
             <button class="menu-item">Limpia</button>
@@ -25,7 +26,7 @@
     <!-- Main Content -->
     <main id="contenedor">
         <!-- Header -->
-        <form action="{{ url('/dashboard-statistics-three') }}" method="POST" id="formFilter">
+        <form action="{{ url('/dashboard-statistics-general') }}" method="POST" id="formFilter">
             @csrf
             <header class="header">
                     <div class="radio-group">
@@ -218,7 +219,7 @@
 <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
 ({key: "{{env('GOOGLE_MAPS_KEY')}}", v: "weekly"});</script>
 
-<script src="js/dashboard_statistics_three_map_setup.js" type="text/javascript"></script>
+<script src="js/dashboard/dashboard_statistics_map_setup.js" type="text/javascript"></script>
 
 <script>
 
@@ -392,14 +393,6 @@
             });
 
             Georeferencias.georeferencias.forEach( (geo) => {
-                // dataSetLocations.push({
-                //     denuncia_id:geo.denuncia_id, lat: geo.latitud, lng: geo.longitud, color: geo.semaforo,
-                //     ciudadano: geo.ciudadano, unidad: geo.abreviatura, denuncia: geo.denuncia,
-                //     servicio: geo.servicio, fecha_ingreso: geo.fecha_ingreso,dias_a_tiempo: geo.dias_a_tiempo,
-                //     ultimo_estatus: geo.ultimo_estatus, fecha_ejecucion_minima: geo.fecha_ejecucion_minima,
-                //     fecha_ejecucion_maxima: geo.fecha_ejecucion_maxima
-                // });
-
                 dataSetLocations.push({
                     denuncia_id:geo.denuncia_id,
                     fecha_ingreso: geo.fecha_ingreso,
@@ -442,6 +435,10 @@
 
 
     });
+
+
+    {{--document.addEventListener("DOMContentLoaded",()=>{async function e(e){try{let a=await fetch(e);if(!a.ok)throw Error(`Error al cargar JSON: ${a.statusText}`);let o=await a.json();t(o[0],o[1],o[2],o[3],o[4])}catch(r){console.error(r)}}function t(e,t,a,o,r){let n=[],s=[],d=[],i=[],l=[],u=[],c=[],h=[];document.getElementById("h2Recibidas").innerHTML=e.estatus[0].Total,document.getElementById("h2EnProceso").innerHTML=e.estatus[1].Total,document.getElementById("h2Atendidas").innerHTML=e.estatus[2].Total,document.getElementById("h2Aatendidas").innerHTML=e.estatus[2].a_tiempo,document.getElementById("h2Abtendidas").innerHTML=e.estatus[2].con_rezago,document.getElementById("h2Rechazadas").innerHTML=e.estatus[3].Total,document.getElementById("h2Cerradas").innerHTML=e.estatus[4].Total,document.getElementById("h2Observadas").innerHTML=e.estatus[5].Total,document.getElementById("h2Total").innerHTML=e.estatus[0].Total+e.estatus[1].Total+e.estatus[2].Total+e.estatus[3].Total+e.estatus[4].Total+e.estatus[5].Total,e.estatus[0].Unidades.forEach(e=>{n.push(e.Total)}),e.estatus[1].Unidades.forEach(e=>{s.push(e.Total)}),e.estatus[2].Unidades.forEach(e=>{d.push(e.Total)}),e.estatus[3].Unidades.forEach(e=>{i.push(e.Total)}),e.estatus[4].Unidades.forEach(e=>{l.push(e.Total)}),e.estatus[5].Unidades.forEach(e=>{u.push(e.Total)}),e.estatus[2].Unidades.forEach(e=>{c.push(e.a_tiempo),h.push(e.con_rezago)});var g=0;t.unidades.forEach(e=>{document.getElementById("u"+g).innerHTML=e.Unidad,document.getElementById("u"+g+"p").innerHTML=e.Porcentaje+"%",g++});let p=document.getElementById("chart-area-1");new Chart(p,{type:"bar",data:data1(n),options:opciones1()});let y=document.getElementById("chart-area-2");new Chart(y,{type:"bar",data:data1(s),options:opciones1()});let E=document.getElementById("chart-area-3");new Chart(E,{type:"bar",data:data2([{type:"bar",label:"En tiempo",data:c,backgroundColor:"rgba(54, 162, 235, 0.6)",borderColor:"rgba(54, 162, 235, 1)",borderWidth:1,hoverBackgroundColor:"rgba(54, 162, 235, 0.6)",hoverBorderColor:"rgba(54, 162, 235, 1)"},{type:"bar",label:"Con rezago",data:h,backgroundColor:"rgba(255, 99, 132, 0.2)",borderColor:"rgba(255, 99, 132, 1)",borderWidth:1,hoverBackgroundColor:"rgba(255, 99, 132, 0.4)",hoverBorderColor:"rgba(255, 99, 132, 1)"},]),options:opciones2()});let T=document.getElementById("chart-area-4");new Chart(T,{type:"bar",data:data1(i),options:opciones1()});let b=document.getElementById("chart-area-5");new Chart(b,{type:"bar",data:data1(l),options:opciones1()});let m=document.getElementById("chart-area-6");new Chart(m,{type:"bar",data:data1(u),options:opciones1()});let B=document.getElementById("solicitudesChart");new Chart(B,{type:"bar",data:data3([r.otros[0].atendidas,r.otros[0].rechazadas]),options:opciones3()});let f=document.getElementById("closedRequestsChart");new Chart(f,{type:"doughnut",data:data4([r.otros[0].porcAtendidas,r.otros[0].porcPendientes]),options:opciones4()});let I=[],_=[],v=[];a.servicios.forEach(e=>{_.push(e.Total),v.push(e.Servicio),g++});let C=document.getElementById("servicesChart");new Chart(C,{type:"bar",data:data5(v,_),options:opciones5()}),o.georeferencias.forEach(e=>{I.push({denuncia_id:e.denuncia_id,fecha_ingreso:e.fecha_ingreso,unidad:e.abreviatura,denuncia:e.denuncia,description:e.ciudadano,servicio:e.servicio,estatus:e.ultimo_estatus,type:e.type,icon:e.icon,dias_vencidos:e.dias_vencidos,position:{lat:e.latitud,lng:e.longitud}})}),window.onload=async()=>initMap(I),initMap(I)}window.onload=e("/storage/{{ $file_output }}"),document.querySelectorAll(".radio-button input").forEach(e=>{e.addEventListener("change",function(e){"free"!==e.currentTarget.value&&document.getElementById("formFilter").submit()})})});--}}
+
 
 </script>
 

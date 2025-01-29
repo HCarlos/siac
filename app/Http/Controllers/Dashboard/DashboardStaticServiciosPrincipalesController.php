@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class DashboardStaticThreeController extends Controller{
+class DashboardStaticServiciosPrincipalesController extends Controller{
 
     public function __construct(){
         ini_set('max_execution_time', 300);
@@ -33,27 +33,10 @@ class DashboardStaticThreeController extends Controller{
         $f = new FuncionesController();
 
         if ($data === []){
-//            if (isset($data['start_date'])) {
-//                $start_date = $data['start_date'];
-//            } else {
-//                $start_date = Carbon::now()->startOfMonth();
-//                $start_date = $start_date->format('Y-m-d');
-//            }
-//            $start_date = DateTime::createFromFormat('m-d-Y', '01-01-2025')->format('Y-m-d');
-//
-//            if (isset($data['end_date'])) {
-//                $end_date = $data['end_date'];
-//            } else {
-//                $end_date = Carbon::now()->endOfMonth();
-//                $end_date =  $end_date->format('Y-m-d');
-//            }
-
             $start_date = Carbon::now();
             $start_date = $start_date->format('Y-m-d');
             $end_date = $start_date;
             $filter = 'hoy';
-
-
         }else{
             switch ($data['filter']) {
                 case 'hoy':
@@ -88,7 +71,7 @@ class DashboardStaticThreeController extends Controller{
 
 //        dd($data);
 
-        $file_out = "file_".$start_date.'_'.$end_date.'.json';
+        $file_out = "file_servicios_principales_".$start_date.'_'.$end_date.'.json';
         $isExistFile = false; //Storage::disk('public')->exists($file_out);
 
         if ( ! $isExistFile) {
@@ -104,8 +87,11 @@ class DashboardStaticThreeController extends Controller{
                 (object)["ue_id" => 21, "Estatus"=> "CERRADO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
             ];
 
+            $ServiciosPrincipales = [483,508,476,503,479,466];
 
-            $srv2 = static::getUltimoEstatus($start_date,$end_date);
+            $srv2 = static::getUltimoEstatus($start_date,$end_date,$ServiciosPrincipales);
+
+//            dd($srv2);
 
             foreach ($arrEstatus as $a) {
                 foreach ($srv2 as $d){
@@ -124,7 +110,7 @@ class DashboardStaticThreeController extends Controller{
                         ];
                         $totalServ = 0;
                         foreach ($vectorUnidades as $key => $value) {
-                            $f = static::getEstatusUE($start_date,$end_date,$value->Unidad_Id,$a->ue_id);
+                            $f = static::getEstatusUE($start_date,$end_date,$value->Unidad_Id,$a->ue_id,$ServiciosPrincipales);
                             if ($f) {
                                 if ($f->total > 0) {
                                     $vectorUnidades[$key]->Total = $f->total;
@@ -138,12 +124,12 @@ class DashboardStaticThreeController extends Controller{
                         }
 
                         foreach ($vectorUnidades as $b) {
-                            $f = static::getEstatusDependencia($start_date,$end_date,$b->Unidad_Id,$d->ue_id);
+                            $f = static::getEstatusDependencia($start_date,$end_date,$b->Unidad_Id,$d->ue_id,$ServiciosPrincipales);
                             if ($f !== null) {
                                 $b->Total = $f->data;
                             }
 //                            if ($a->ue_id === 17) {
-                                $arr = static::getAtiempoVsDestiempo($start_date,$end_date,$b->Unidad_Id,$a->ue_id);
+                                $arr = static::getAtiempoVsDestiempo($start_date,$end_date,$b->Unidad_Id,$a->ue_id,$ServiciosPrincipales);
                                 $b->a_tiempo = $arr->atiempo ?? 0;
                                 $b->con_rezago = $arr->conrezago ?? 0;
                                 $ta += $arr->atiempo ?? 0;
@@ -170,7 +156,7 @@ class DashboardStaticThreeController extends Controller{
             ];
             $totalServ = 0;
             foreach ($vectorUnidades as $key => $value) {
-                $f = static::getEstatus($start_date,$end_date,$value->Unidad_Id);
+                $f = static::getEstatus($start_date,$end_date,$value->Unidad_Id,$ServiciosPrincipales);
                 if ($f) {
                     if ($f->total > 0) {
                         $vectorUnidades[$key]->Total = $f->total;
@@ -178,11 +164,11 @@ class DashboardStaticThreeController extends Controller{
                     }
                 }
             }
+
             foreach ($vectorUnidades as $key => $value) {
                 $total = $vectorUnidades[$key]->Total > 0 ? (($vectorUnidades[$key]->Total / $totalServ) * 100)  : 0;
                 $vectorUnidades[$key]->Porcentaje = (int) number_format($total, 0);
             }
-
 
             // INICIA EL MODULO DE SERVICIOS
             $vectorServicios = [
@@ -212,7 +198,7 @@ class DashboardStaticThreeController extends Controller{
 
             // INICIA EL MODULO DE GEOLOCALIZACIÓN
             $arrGeos = [];
-            $arrG = static::getGeoDenuncias($start_date,$end_date,0,0);
+            $arrG = static::getGeoDenuncias($start_date,$end_date,0,0,$ServiciosPrincipales);
 
             foreach ($arrG as $g) {
                 $fme1 = Carbon::parse($g->fecha_dias_ejecucion);
@@ -331,7 +317,7 @@ class DashboardStaticThreeController extends Controller{
 
 //        'rango_de_consulta' => $f->fechaEspanol($start_date).' - '.$f->fechaEspanol($end_date),
 
-        return view('dashboard.static.dashboard_static_three',
+        return view('dashboard.static.dashboard_static_servicios_principales',
             [
                 'filter' => $filter,
                 'start_date' => $start_date,
@@ -344,41 +330,45 @@ class DashboardStaticThreeController extends Controller{
 
     // INICIA EL MODULO DE FUNCIONES AUXILIARES
 
-    static function getUltimoEstatus($start_date,$end_date){
+    static function getUltimoEstatus($start_date,$end_date,$ServiciosPrincipales){
+//        ->where("ambito_dependencia",2)
         return DB::table("_viddss")
             ->select(["ultimo_estatus as name", "ue_id", DB::raw("count(ue_id) as data")])
-            ->where("ambito_dependencia",2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+            ->whereIn('sue_id', [483,508,476,503,479,466])
             ->groupBy(["ultimo_estatus","ue_id"])
             ->get();
     }
 
-    static function getEstatusDependencia($start_date,$end_date,$dependencia_id,$ue_id){
+    static function getEstatusDependencia($start_date,$end_date,$dependencia_id,$ue_id,$ServiciosPrincipales){
         return DB::table("_viddss")
             ->select('abreviatura as label', DB::raw('count(dependencia_id) as data'))
-            ->where('ambito_dependencia',2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+            ->where('ambito_dependencia',2)
             ->where('dependencia_id',$dependencia_id)
+            ->whereIn('sue_id', $ServiciosPrincipales)
             ->where('ue_id',$ue_id)
             ->groupBy('abreviatura')
             ->first();
     }
-    static function getEstatus($start_date,$end_date,$dependencia_id){
+    static function getEstatus($start_date,$end_date,$dependencia_id,$ServiciosPrincipales){
         return DB::table("_viddss")
             ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
             ->where('ambito_dependencia',2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->where('dependencia_id',$dependencia_id)
+            ->whereIn('sue_id', $ServiciosPrincipales)
             ->groupBy('dependencia_id')
             ->first();
     }
-    static function getEstatusUE($start_date,$end_date,$dependencia_id,$sue_id){
+    static function getEstatusUE($start_date,$end_date,$dependencia_id,$ue_id,$ServiciosPrincipales){
         return DB::table("_viddss")
             ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
             ->where('ambito_dependencia',2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->where('dependencia_id',$dependencia_id)
-            ->where('sue_id',$sue_id)
+            ->whereIn('sue_id', $ServiciosPrincipales)
+            ->where('ue_id',$ue_id)
             ->groupBy('dependencia_id')
             ->first();
     }
@@ -395,7 +385,7 @@ class DashboardStaticThreeController extends Controller{
 
 //DB::raw("SUM(CASE WHEN fecha_dias_ejecucion <= CURRENT_DATE THEN DATE_PART('day', CURRENT_DATE - fecha_dias_ejecucion) ELSE 0 END) AS atiempo"),
 //DB::raw("SUM(CASE WHEN fecha_dias_ejecucion > CURRENT_DATE THEN DATE_PART('day', fecha_dias_ejecucion - CURRENT_DATE ) ELSE 0 END) AS conrezago")
-    static function getAtiempoVsDestiempo($start_date,$end_date,$unidad_id,$ue_id){
+    static function getAtiempoVsDestiempo($start_date,$end_date,$unidad_id,$ue_id,$ServiciosPrincipales){
         return DB::table("_viddss")
             ->select(
                 DB::raw("SUM(CASE WHEN fecha_dias_ejecucion >= CURRENT_DATE THEN 1 ELSE 0 END) AS atiempo"),
@@ -404,12 +394,13 @@ class DashboardStaticThreeController extends Controller{
             ->where('ambito_dependencia', 2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->where('dependencia_id', $unidad_id)
+            ->whereIn('sue_id', $ServiciosPrincipales)
             ->where('ue_id', $ue_id)
             ->groupBy('ue_id')
             ->first();
     }
 
-    static function getGeoDenuncias($start_date,$end_date,$unidad_id,$ue_id){
+    static function getGeoDenuncias($start_date,$end_date,$unidad_id,$ue_id,$ServiciosPrincipales){
 
         return DB::table("_viddss")
             ->select(
@@ -420,6 +411,7 @@ class DashboardStaticThreeController extends Controller{
             )
             ->where('ambito_dependencia', 2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+            ->whereIn('sue_id', $ServiciosPrincipales)
             ->get();
     }
 

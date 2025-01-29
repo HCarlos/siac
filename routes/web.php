@@ -11,20 +11,20 @@
 |
 */
 
-use App\Classes\NotificationsMobile\SendNotificationFCM;
-use App\Mail\SendMailToEnlace;
-use App\Models\Denuncias\Denuncia;
-use App\User;
-use Illuminate\Notifications\Messages\MailMessage;
+//use App\Classes\NotificationsMobile\SendNotificationFCM;
+//use App\Mail\SendMailToEnlace;
+//use App\Models\Denuncias\Denuncia;
+//use App\User;
+//use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
+//use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', function () {return view('welcome');});
-Route::get('/privacidad', function () {return view('privacidad');});
-Route::get('/about_app', function () {return view("partials.others.about_app");});
-Route::get('/aviso_app', function () {return view("partials.others.aviso_app");});
+Route::get('/', static function () {return view('welcome');});
+Route::get('/privacidad', static function () {return view('privacidad');});
+Route::get('/about_app', static function () {return view("partials.others.about_app");});
+Route::get('/aviso_app', static function () {return view("partials.others.aviso_app");});
 
 Route::get('newUbicacionV2', 'Catalogos\Domicilio\UbicacionController@newItemV2')->name('newUbicacionV2');
 Route::post('createUbicacionV2', 'Catalogos\Domicilio\UbicacionController@createItemV2')->name('createUbicacionV2');
@@ -53,15 +53,22 @@ Route::get('sendVerificationAPIUrl/{id}/{hash}/{notifiable}', 'Catalogos\User\Us
 
 //Route::get('getCURP/', 'Catalogos\User\UserDataController@getCURP')->name('getCURP');
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth'], static function () {
 
     Route::match(['get','put','post'],'dashboard', 'Dashboard\DashboardController@index')->name('dashboard');
     Route::match(['get','put','post'],'dashboard_enlace', 'Dashboard\DashboardEnlaceController@index')->name('dashboard_enlace');
     Route::match(['get','put','post'],'dashboard-statistics', 'Dashboard\DashboardStaticController@index')->name('dashboard-statistics');
     Route::match(['get','put','post'],'dashboard-statistics-two', 'Dashboard\DashboardStaticTwoController@index')->name('dashboard-statistics-two');
-    Route::match(['get','put','post'],'dashboard-statistics-three', 'Dashboard\DashboardStaticThreeController@index')->name('dashboard-statistics-three');
-    Route::match(['get','put','post'],'dashboard-statistics-three/month-now', 'Dashboard\DashboardStaticThreeController@monthnow')->name('dashboard-statistics-three/month-now');
-    Route::match(['get','put','post'],'dashboard-statistics-three/year-now', 'Dashboard\DashboardStaticThreeController@yearnow')->name('dashboard-statistics-three/year-now');
+
+    // Dashboard General
+    Route::match(['get','put','post'],'dashboard-statistics-general', 'Dashboard\DashboardStaticGeneralController@index')->name('dashboard-statistics-general');
+    Route::match(['get','put','post'],'dashboard-statistics-general/month-now', 'Dashboard\DashboardStaticGeneralController@monthnow')->name('dashboard-statistics-general/month-now');
+    Route::match(['get','put','post'],'dashboard-statistics-general/year-now', 'Dashboard\DashboardStaticGeneralController@yearnow')->name('dashboard-statistics-general/year-now');
+
+    // Dashboard Servicios Principales
+    Route::match(['get','put','post'],'dashboard-statistics-servicios-principales', 'Dashboard\DashboardStaticServiciosPrincipalesController@index')->name('dashboard-statistics-servicios-principales');
+    Route::match(['get','put','post'],'dashboard-statistics-servicios-principales/month-now', 'Dashboard\DashboardStaticServiciosPrincipalesController@monthnow')->name('dashboard-statistics-servicios-principales/month-now');
+    Route::match(['get','put','post'],'dashboard-statistics-servicios-principales/year-now', 'Dashboard\DashboardStaticServiciosPrincipalesController@yearnow')->name('dashboard-statistics-servicios-principales/year-now');
 
     // USUARIOS
     Route::get('edit', 'Catalogos\User\UserDataController@showEditUserData')->name('edit');
@@ -74,7 +81,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('verificarEmailAhoraForAdmin/{id}', 'Catalogos\User\UserDataController@verificarEmailAhoraForAdmin')->name('verificarEmailAhoraForAdmin');
 });
 
-Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|ENLACE|USER_ARCHIVO_CAP|USER_ARCHIVO_ADMIN'], function () {
+Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|ENLACE|USER_ARCHIVO_CAP|USER_ARCHIVO_ADMIN'], static function () {
 
     Route::get('/home', 'HomeController@index')->name('home');
 
@@ -502,7 +509,7 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
 
 });
 
-Route::group(['middleware' => 'role:auth|Administrator|SysOp|DELEGADO|CIUDADANO|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|ENLACE|USER_ARCHIVO_CAP|USER_ARCHIVO_ADMIN'], function () {
+Route::group(['middleware' => 'role:auth|Administrator|SysOp|DELEGADO|CIUDADANO|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|ENLACE|USER_ARCHIVO_CAP|USER_ARCHIVO_ADMIN'], static function () {
 
     Route::get('/home-ciudadano', 'HomeController@index_ciudadano')->name('home-ciudadano');
 
@@ -610,27 +617,27 @@ Route::get('/imprimir_denuncia_ambito_respuesta/{uuid}', 'External\Denuncia\Hoja
 //Route::group(['middleware' => 'cors'], function(){
 
 
-    Route::get('fire', function () {
+    Route::get('fire', static function () {
         // this fires the event
         event(new App\Events\APIDenunciaEvent(1,1));
         return "event fired";
     });
 
-    Route::get('test', function () {
+    Route::get('test', static function () {
         // this checks for the event
         return "event test";
     });
 
 
-    Route::get('test_send_ios/',function (){
-        $fcm = new SendNotificationFCM();
-        $response = $fcm->sendNotification(1,1,'IPHONE','fgfGIjX4wkYvkY4m7HFHrb:APA91bE9RMFZLUSmGUTt4Glg50UDG5z3ywYqMzTC8KElviKObvIekasQihVm4ZpZvzfSSfeBRGwKE2sXvyu2le9xHJ4UQbJM0jjP1-1PAJNLXcYAsc6snyhaOxpsc_LvMDeuN5aPDnrZ','hola','carlos');
-    });
-
-    Route::get('test_send_android/',function (){
-        $fcm = new SendNotificationFCM();
-            $response = $fcm->sendNotification(1,1,'ANDROID','ezffbR76Sc6wlFKNm02ajT:APA91bH-vk23O3lmEFQCEqASli93-D4IVWkRccwRIUsmJvtxBrv_QGVNbHZ40aW-DzYOEu5zy6LpwKXx9NtPL02AVRsVJMXIAw0wdIHu3orkXaifx-H8YOZh313ObhbYjtnaS12TPEmZ','hola android','carlos android');
-    });
+//    Route::get('test_send_ios/',function (){
+//        $fcm = new SendNotificationFCM();
+//        $response = $fcm->sendNotification(1,1,'IPHONE','fgfGIjX4wkYvkY4m7HFHrb:APA91bE9RMFZLUSmGUTt4Glg50UDG5z3ywYqMzTC8KElviKObvIekasQihVm4ZpZvzfSSfeBRGwKE2sXvyu2le9xHJ4UQbJM0jjP1-1PAJNLXcYAsc6snyhaOxpsc_LvMDeuN5aPDnrZ','hola','carlos');
+//    });
+//
+//    Route::get('test_send_android/',function (){
+//        $fcm = new SendNotificationFCM();
+//            $response = $fcm->sendNotification(1,1,'ANDROID','ezffbR76Sc6wlFKNm02ajT:APA91bH-vk23O3lmEFQCEqASli93-D4IVWkRccwRIUsmJvtxBrv_QGVNbHZ40aW-DzYOEu5zy6LpwKXx9NtPL02AVRsVJMXIAw0wdIHu3orkXaifx-H8YOZh313ObhbYjtnaS12TPEmZ','hola android','carlos android');
+//    });
 
     Route::get('getServiciosFromDependenciasAxios/{id}', 'Denuncia\ServicioController@getServiciosFromDependenciasAxios')->name('getServiciosFromDependenciasAxios');
 
