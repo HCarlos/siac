@@ -129,6 +129,7 @@ class DenunciaAmbitoController extends Controller{
                 'DependenciaArray'                    => session('DependenciaArray'),
                 'is_pagination'                       => session('is_pagination'),
                 'ambito'                              => null, //FuncionesController::arrAmbitosSM(),
+                'prefijo_toolbar'                     => $this->ambito_dependencia === 1 ? 'as' : 'sm',
             ]
         );
     }
@@ -840,6 +841,7 @@ class DenunciaAmbitoController extends Controller{
                 'imagenesDenunciaItem'                => 'listImagenes',
                 'is_pagination'                       => true,
                 'ambito'                              => FuncionesController::arrAmbitosSM(),
+                'prefijo_toolbar'                     => $this->ambito_dependencia === 1 ? 'as' : 'sm',
             ]
         );
 

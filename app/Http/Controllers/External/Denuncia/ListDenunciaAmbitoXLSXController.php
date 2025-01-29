@@ -261,7 +261,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 ->setCellValue('F'.$C, trim($item->gd_ubicacion ?? ''))
                 ->setCellValue('G'.$C, trim($cadgdu ?? ''))
                 ->setCellValue('H'.$C, $item->denuncia ?? '')
-                ->setCellValue('I'.$C, $item->ambito_sas ?? '')
+                ->setCellValue('I'.$C, $item->ambito_sas === 'No Aplica' ? "" : $item->ambito_sas ?? '')
                 ->setCellValue('J'.$C, $item->ultimo_estatus ?? '')
                 ->setCellValue('K'.$C, $item->fecha_ultimo_estatus ?? '');
             $C++;

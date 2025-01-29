@@ -177,7 +177,7 @@ class ListDenunciaXLSXController extends Controller
     // Denuncia General Formato 01
     public function denunciaSASGeneral01($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
 
-        $sh->setCellValue('I1', Carbon::now()->format('d-m-Y h:m:s'));
+        $sh->setCellValue('M1', Carbon::now()->format('d-m-Y h:m:s'));
         foreach ($Items as $item){
             $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
             $fechaIngreso   = isset($item->fecha_ingreso) ? $fechaIngreso : '';
@@ -233,15 +233,14 @@ class ListDenunciaXLSXController extends Controller
                 ->setCellValue('C'.$C, $fechaIngreso ?? '')
                 ->setCellValue('D'.$C, trim($item->ciudadano ?? ''))
                 ->setCellValue('E'.$C, $cadcel)
-//                ->setCellValue('F'.$C, trim($item->calle ?? ''))
-//                ->setCellValue('G'.$C, trim($item->num_ext ?? ''))
-//                ->setCellValue('H'.$C, trim($item->num_int ?? ''))
-//                ->setCellValue('I'.$C, trim($item->colonia ?? ''))
-                ->setCellValue('F'.$C, trim($item->gd_ubicacion ?? ''))
-                ->setCellValue('G'.$C, $item->denuncia ?? '')
-                ->setCellValue('H'.$C, $item->ambito_sas ?? '')
-                ->setCellValue('I'.$C, $item->ultimo_estatus ?? '')
-                ->setCellValue('J'.$C, $item->fecha_ultimo_estatus ?? '');
+                ->setCellValue('F'.$C, trim($item->calle ?? ''))
+                ->setCellValue('G'.$C, trim($item->num_ext ?? ''))
+                ->setCellValue('H'.$C, trim($item->num_int ?? ''))
+                ->setCellValue('I'.$C, trim($item->colonia ?? ''))
+                ->setCellValue('J'.$C, $item->referencia ?? '')
+                ->setCellValue('K'.$C, $item->ambito_sas ?? '')
+                ->setCellValue('L'.$C, $item->ultimo_estatus ?? '')
+                ->setCellValue('M'.$C, $item->fecha_ultimo_estatus ?? '');
 
             $C++;
         }
