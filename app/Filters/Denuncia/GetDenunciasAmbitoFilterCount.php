@@ -28,7 +28,10 @@ class GetDenunciasAmbitoFilterCount extends QueryFilter{
         $search = isset($search['search']) ? $search['search'] : '';
         $search = strtoupper($search);
 
-        $IsEnlace =Auth::user()->isRole('ENLACE');
+        $IsEnlace               = Auth::user()->isRole('ENLACE');
+        $IsDelegados            = Auth::user()->isRole('DELEGADOS');
+        $IsCoordinadorDelegados = Auth::user()->isRole('COORDINACION_DE_DELEGADOS');
+        $DelegadosIdArray = [];
         $DependenciaIdArray = '';
         $DependenciaArray = '';
 
@@ -37,9 +40,9 @@ class GetDenunciasAmbitoFilterCount extends QueryFilter{
             $filters['dependencia_id'] = $DependenciaIdArray;
         }elseif ( Auth::user()->isRole('CIUDADANO|DELEGADO') && !Auth::user()->isRole('Administrator|SysOp|test_admin') ){
             $filters['ciudadano_id'] = Auth::user()->id;
-        }elseif ( Auth::user()->isRole('DELEGADOS') ){
+        }elseif ( $IsDelegados ){
             $filters['creadopor_id'] = Auth::user()->id;
-        }elseif ( Auth::user()->isRole('DELEGADOS') ){
+        }elseif ( $IsCoordinadorDelegados ){
             $DelegadosIdArray = Auth::user()->DelegadosIdArray;
             $filters['creadopor_id'] = $DelegadosIdArray;
         }else{
@@ -47,13 +50,12 @@ class GetDenunciasAmbitoFilterCount extends QueryFilter{
         }
         session(['IsEnlace' => $IsEnlace]);
         session(['DependenciaArray' => $DependenciaIdArray]);
-//        session(['DependenciaArray' => $DependenciaArray]);
-//        session(['DependenciaIdArray' => $DependenciaIdArray]);
+        session(['DelegadosIdArray' => $DelegadosIdArray]);
 
-//        $filters['ambito_dependencia'] = session::get('ambito_dependencia');
-//        $filters['ambito_estatus'] = session::get('ambito_estatus') ;
-//
-        //dd($filters);
+        $filters['ambito_dependencia'] = Session::get('ambito_dependencia');
+        $filters['ambito_estatus'] = Session::get('ambito_estatus');
+
+//        dd($filters);
 
         return $query->ambitoFilterBy($filters);
 

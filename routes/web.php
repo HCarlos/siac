@@ -494,7 +494,6 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
     Route::get('cerrarDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@closeItem')->name('cerrarDenunciaAmbito');
     Route::get('firmarDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@signItem')->name('firmarDenunciaAmbito');
 
-
     Route::get('showModalDenunciaUserUpdate/{Id}', 'Denuncia\DenunciaUserAmbitoController@showModalDenunciaUserUpdate')->name('showModalDenunciaUserUpdate');
     Route::post('putModalDenunciaUserUpdate', 'Denuncia\DenunciaUserAmbitoController@putModalDenunciaUserUpdate')->name('putModalDenunciaUserUpdate');
 

@@ -6,10 +6,13 @@ namespace App\Http\Controllers\Funciones;
 
 use App\Classes\MessageAlertClass;
 use App\Http\Controllers\Controller;
+use App\User;
 use Carbon\Carbon;
 use Exception;
 use http\Exception\InvalidArgumentException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Exception\NotWritableException;
@@ -279,6 +282,55 @@ class FuncionesController extends Controller
 
     public static function arrAmbitosSM(): array{
         return [0=>"No Aplica",1=>"Urbano",2=>"Rural",3=>"Desazolve Manual",4=>"Desazolve con Vactor",5=>"Desazolve con equipo almeja"];
+
+    }
+
+    public static function GetCapturistasAmbito2P(): Collection{
+
+        $IsEnlace               = Auth::user()->isRole('ENLACE');
+//        $IsAdminArchivo         = Auth::user()->isRole('USER_ARCHIVO_ADMIN');
+        $IsDelegados            = Auth::user()->isRole('DELEGADOS');
+        $IsCoordinadorDelegados = Auth::user()->isRole('COORDINACION_DE_DELEGADOS');
+
+        if ($IsEnlace) {
+            return User::query()
+                ->where("status_user", 1)
+                ->whereHas('roles', function ($q) {
+                    return $q->whereIn('name',array('ENLACE','USER_OPERATOR_SIAC','USER_OPERATOR_ADMIN') );
+                })
+                ->get()
+                ->sortBy('full_name_with_username_dependencia')
+                ->pluck('full_name_with_username_dependencia','id');
+        }
+
+        if ($IsDelegados) {
+            return User::query()
+                ->where("id", Auth::user()->id)
+                ->where("status_user", 1)
+                ->get()
+                ->sortBy('full_name_with_username_dependencia')
+                ->pluck('full_name_with_username_dependencia','id');
+        }
+
+        if ($IsCoordinadorDelegados) {
+            return User::query()
+                ->where("status_user", 1)
+                ->whereHas('roles', function ($q) {
+                    return $q->whereIn('name',array('DELEGADOS','COORDINACION_DE_DELEGADOS') );
+                })
+                ->get()
+                ->sortBy('full_name_with_username_dependencia')
+                ->pluck('full_name_with_username_dependencia','id');
+        }
+
+        return User::query()
+            ->where("status_user", 1)
+            ->whereHas('roles', function ($q) {
+                return $q->whereIn('name',array('ENLACE','USER_OPERATOR_SIAC','USER_OPERATOR_ADMIN','DELEGADOS','COORDINACION_DE_DELEGADOS') );
+            })
+            ->get()
+            ->sortBy('full_name_with_username_dependencia')
+            ->pluck('full_name_with_username_dependencia','id');
 
     }
 

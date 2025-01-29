@@ -745,14 +745,16 @@ class DenunciaAmbitoController extends Controller{
                         ->orderBy('origen')
                         ->get();
 
-        $Capturistas  = User::query()
-                        ->where("status_user", 1)
-                        ->whereHas('roles', function ($q) {
-                            return $q->whereIn('name',array('ENLACE','USER_OPERATOR_SIAC','USER_OPERATOR_ADMIN') );
-                        })
-                        ->get()
-                        ->sortBy('full_name_with_username_dependencia')
-                        ->pluck('full_name_with_username_dependencia','id');
+//        $Capturistas  = User::query()
+//                        ->where("status_user", 1)
+//                        ->whereHas('roles', function ($q) {
+//                            return $q->whereIn('name',array('ENLACE','USER_OPERATOR_SIAC','USER_OPERATOR_ADMIN') );
+//                        })
+//                        ->get()
+//                        ->sortBy('full_name_with_username_dependencia')
+//                        ->pluck('full_name_with_username_dependencia','id');
+
+        $Capturistas  = FuncionesController::GetCapturistasAmbito2P();
 
         $hashtag = Denuncia::select('clave_identificadora')
                     ->distinct('clave_identificadora')

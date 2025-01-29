@@ -22,21 +22,24 @@ class GetDenunciasAmbitoItemCustomFilter extends QueryFilter{
         $search = isset($search['search']) ? $search['search'] : '';
         $search = strtoupper($search);
 
-        $IsEnlace =Auth::user()->isRole('ENLACE');
-        $IsAdminArchivo =Auth::user()->isRole('USER_ARCHIVO_ADMIN');
+        $IsEnlace               = Auth::user()->isRole('ENLACE');
+        $IsAdminArchivo         = Auth::user()->isRole('USER_ARCHIVO_ADMIN');
+        $IsDelegados            = Auth::user()->isRole('DELEGADOS');
+        $IsCoordinadorDelegados = Auth::user()->isRole('COORDINACION_DE_DELEGADOS');
+        $DelegadosIdArray = [];
         $DependenciaArray = '';
         $DependenciaIdArray = [];
-        IF ($IsEnlace) {
+        $filters['search'] = $search;
+        if ($IsEnlace) {
             $DependenciaIdArray = Auth::user()->DependenciaIdArray;
             $filters['dependencia_id'] = $DependenciaIdArray;
-            $filters['search'] = $search;
         }elseif ($IsAdminArchivo){
                 $filters['cerrado'] = 'true';
         }elseif ( Auth::user()->isRole('CIUDADANO|DELEGADO') && !Auth::user()->isRole('Administrator|SysOp') ){
             $filters['ciudadano_id'] = Auth::user()->id;
-        }elseif ( Auth::user()->isRole('DELEGADOS') ){
+        }elseif ( $IsDelegados ){
             $filters['creadopor_id'] = Auth::user()->id;
-        }elseif ( Auth::user()->isRole('DELEGADOS') ){
+        }elseif ( $IsCoordinadorDelegados ){
             $DelegadosIdArray = Auth::user()->DelegadosIdArray;
             $filters['creadopor_id'] = $DelegadosIdArray;
         }else{
@@ -47,6 +50,7 @@ class GetDenunciasAmbitoItemCustomFilter extends QueryFilter{
         session(['IsAdminArchivo' => $IsAdminArchivo]);
         session(['DependenciaArray' => $DependenciaArray]);
         session(['DependenciaIdArray' => $DependenciaIdArray]);
+        session(['DelegadosIdArray' => $DelegadosIdArray]);
 
         $filters['status_denuncia'] = '1';
         $filters['ambito_dependencia'] = Session::get('ambito_dependencia');

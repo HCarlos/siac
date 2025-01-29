@@ -139,16 +139,7 @@ class DenunciaAmbitoFilter extends QueryFilter
 
     public function estatus_id($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "0") {return $query;}
-
-//        return $query->whereHas('denuncia_estatus', function ($q) use ($query, $search) {
-//            return $q->where('estatu_id', (int)$search);
-//        });
-
-//        return $query->whereHas('denuncia_estatus', function ($q) use ($query, $search) {
             return $query->where('ue_id', (int)$search);
-//        });
-
-
     }
 
     public function fecha_movimiento($query, $search){
@@ -198,8 +189,18 @@ class DenunciaAmbitoFilter extends QueryFilter
     }
 
     public function creadopor_id($query, $search){
-        if (is_null($search) || empty ($search) || trim($search) == "0") {return $query;}
-//        return $query->where('creadopor_id', $search);
+//        if (is_null($search) || empty ($search) || trim($search) === "0") {return $query;}
+
+        if (is_null($search) || empty($search) || (isset($search) == false)) {
+            return $query;
+        }
+
+        if ( !is_array($search) ){
+            if ((int)$search === 0){
+                $search = Auth::user()->DelegadosIdArray;
+            }
+        }
+
 
         if ( is_array($search) ){
             return $query->whereIn('creadopor_id', $search);

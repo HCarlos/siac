@@ -9,6 +9,7 @@ namespace App\Traits\User;
 
 
 use App\Role;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -62,13 +63,6 @@ trait UserAttributes
         return $this->dependencias()->allRelatedIds('id')->implode('|','id');
     }
 
-    public function getDelegadosIdStrArrayAttribute(){
-        $roles = $this->whereHas('roles', function($q){
-            $q->where('name','DELEGADOS');
-        })->get()->toArray();
-        return $roles;
-    }
-
     public function getDependenciaNameStrArrayAttribute(){
         return $this->dependencias()->pluck('dependencia')->implode('|','dependencia');
     }
@@ -92,6 +86,13 @@ trait UserAttributes
     public function getDependenciaIdArrayAttribute(){
         return $this->dependencias()->pluck('dependencia_id')->toArray();
     }
+
+    public function getDelegadosIdArrayAttribute(){
+        return User::whereHas('roles', function ($query) {
+                    $query->where('name', 'DELEGADOS');
+                })->pluck('id')->toArray();
+    }
+
 
     public function getFullNameAttribute() {
         return "{$this->ap_paterno} {$this->ap_materno} {$this->nombre}";
