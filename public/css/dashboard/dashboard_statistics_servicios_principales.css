@@ -54,6 +54,109 @@ body {
     margin-bottom: 5px;
 }
 
+/* Estilo del título principal */
+.title-wrapper {
+    text-align: center;
+    margin-bottom: 20px;
+    animation: fadeIn 1.5s ease-out;
+}
+
+.main-title {
+    font-size: 24px;
+    font-weight: bold;
+    background: linear-gradient(90deg, #870606, #f1c022, #085108);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1px;
+}
+
+.subtitle {
+    font-size: 16px;
+    color: #555;
+    margin-top: 5px;
+    animation: slideIn 1.5s ease-out;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Ocultar los radio buttons */
+.filter-btn input {
+    display: none;
+}
+
+/* Estilo base para los botones (label) */
+.filter-btn {
+    display: inline-block;
+    padding: 8px 16px; /* Tamaño reducido */
+    border: none;
+    background: linear-gradient(90deg, #555, #777); /* Tonos grises suaves */
+    color: white;
+    font-size: 14px; /* Texto más pequeño */
+    font-weight: 500; /* Menos énfasis */
+    border-radius: 8px; /* Esquinas más sutiles */
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    transition: all 0.2s ease-in-out;
+    margin: 0 8px; /* Espaciado ajustado */
+}
+
+/* Estilo del texto dentro del botón */
+.filter-btn span {
+    pointer-events: none; /* Evita que el texto sea clickeable directamente */
+}
+
+/* Efecto al pasar el mouse */
+.filter-btn:hover {
+    transform: scale(1.03); /* Escala más sutil */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Sombra un poco más intensa */
+    background: linear-gradient(90deg, #666, #888); /* Cambio leve en los colores */
+}
+
+/* Botón seleccionado */
+.filter-btn input:checked + span {
+    background: linear-gradient(90deg, #085108, #6ebd44); /* Gradiente verde suave */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra ligeramente más intensa */
+    transform: scale(1.05); /* Aumenta el tamaño un poco */
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+/* Suavizar la transición entre estados */
+.filter-btn span {
+    transition: all 0.2s ease-in-out;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
 .menu {
     display: flex;
     flex-direction: column;
@@ -89,22 +192,6 @@ main {
     gap: 10px;
     align-items: center;
     margin-bottom: 20px;
-}
-
-.filter-btn {
-    padding: 10px 15px;
-    border: none;
-    background-color: #870606;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease-in-out;
-}
-.filter-btn:hover, .filter-btn.active {
-    background-color: rgba(35, 6, 6,0.6);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
-    transform: scale(1.1);
 }
 
 .date-picker label {

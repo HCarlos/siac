@@ -12,7 +12,7 @@
         </div>
         <nav class="menu">
             <button class="menu-item active">Inicio</button>
-{{--            <button class="menu-item" onclick="window.location.href='/dashboard-statistics-general'">General</button>--}}
+            <button class="menu-item" onclick="window.location.href='/dashboard-statistics-general'">General</button>
             <button class="menu-item">Alumbrado</button>
             <button class="menu-item">Espacios Públicos</button>
             <button class="menu-item">Limpia</button>
@@ -26,24 +26,28 @@
     <!-- Main Content -->
     <main id="contenedor">
         <!-- Header -->
+        <div class="title-wrapper">
+            <h2 class="main-title">Explora las Estadísticas de los Servicios Municipales Monitoreados</h2>
+            <p class="subtitle">Selecciona un filtro de tiempo para ver los datos detallados</p>
+        </div>
         <form action="{{ url('/dashboard-statistics-servicios-principales') }}" method="POST" id="formFilter">
             @csrf
             <header class="header">
                     <div class="radio-group">
                         <label class="radio-button">
-                            <input type="radio" name="filter" value="hoy" @if(  $filter === 'hoy') checked @endif >
+                            <input type="radio" name="filter" value="hoy" class="filter-btn" @if(  $filter === 'hoy') checked @endif >
                             <span>Hoy</span>
                         </label>
                         <label class="radio-button">
-                            <input type="radio" name="filter" value="mes" @if(  $filter === 'mes') checked @endif >
+                            <input type="radio" name="filter" value="mes" class="filter-btn" @if(  $filter === 'mes') checked @endif >
                             <span>Mes Actual</span>
                         </label>
                         <label class="radio-button">
-                            <input type="radio" name="filter" value="anio" @if( $filter === 'anio') checked @endif >
+                            <input type="radio" name="filter" value="anio" class="filter-btn" @if( $filter === 'anio') checked @endif >
                             <span>Año Actual</span>
                         </label>
                         <label class="radio-button">
-                            <input type="radio" name="filter" value="free" @if( $filter === 'free') checked @endif>
+                            <input type="radio" name="filter" value="free" class="filter-btn" @if( $filter === 'free') checked @endif>
                             <span>Rango de fecha</span>
                         </label>
                     </div>

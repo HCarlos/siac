@@ -11,7 +11,7 @@
 
         </div>
         <nav class="menu">
-{{--            <button class="menu-item" onclick="window.location.href='/dashboard-statistics-servicios-principales'">Inicio</button>--}}
+            <button class="menu-item" onclick="window.location.href='/dashboard-statistics-servicios-principales'">Inicio</button>
             <button class="menu-item active">General</button>
             <button class="menu-item">Alumbrado</button>
             <button class="menu-item">Espacios Públicos</button>
@@ -26,6 +26,10 @@
     <!-- Main Content -->
     <main id="contenedor">
         <!-- Header -->
+        <div class="title-wrapper">
+            <h2 class="main-title">Explora las Estadísticas Generales</h2>
+            <p class="subtitle">Selecciona un filtro de tiempo para ver los datos detallados</p>
+        </div>
         <form action="{{ url('/dashboard-statistics-general') }}" method="POST" id="formFilter">
             @csrf
             <header class="header">
