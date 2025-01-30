@@ -345,6 +345,7 @@
                                 // alert(bar.x);
                                 var textX = bar.x > 180 ? bar.x - 18 : bar.x + 4;
                                 ctx.fillText(data, textX, bar.y + 4);
+                                ctx.font.color = '#ffffff';
                             });
                         }
                     });

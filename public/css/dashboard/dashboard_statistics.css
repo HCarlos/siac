@@ -54,28 +54,32 @@ body {
     margin-bottom: 5px;
 }
 
-/* Estilo del título principal */
+/* Contenedor del título */
 .title-wrapper {
     text-align: center;
     margin-bottom: 20px;
-    animation: fadeIn 1.5s ease-out;
+    padding: 0 10px; /* Asegurar espaciado en pantallas pequeñas */
+    animation: fadeIn 1.5s ease-out; /* Animación de entrada */
 }
 
+/* Título principal */
 .main-title {
-    font-size: 24px;
+    font-size: 1.5vw; /* Tamaño relativo al ancho de la pantalla */
     font-weight: bold;
     background: linear-gradient(90deg, #870606, #f1c022, #085108);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    letter-spacing: 1px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    margin-bottom: 5px;
+    animation: slideIn 1.5s ease-out; /* Animación de deslizamiento */
 }
 
+/* Subtítulo */
 .subtitle {
-    font-size: 16px;
+    font-size: 1.0vw; /* Tamaño relativo más pequeño */
     color: #555;
     margin-top: 5px;
-    animation: slideIn 1.5s ease-out;
+    animation: fadeIn 1.5s ease-out; /* Animación de entrada */
 }
 
 /* Animaciones */
@@ -98,6 +102,26 @@ body {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* Ajustes para pantallas pequeñas (móviles) */
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 6vw; /* Título más grande en pantallas pequeñas */
+    }
+    .subtitle {
+        font-size: 3.5vw; /* Subtítulo más grande */
+    }
+}
+
+/* Ajustes para pantallas muy pequeñas (teléfonos) */
+@media (max-width: 480px) {
+    .main-title {
+        font-size: 8vw; /* Título más prominente */
+    }
+    .subtitle {
+        font-size: 4vw; /* Subtítulo más grande */
     }
 }
 
