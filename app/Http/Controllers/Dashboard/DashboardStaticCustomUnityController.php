@@ -69,11 +69,11 @@ class DashboardStaticCustomUnityController extends Controller{
 
         }
 
-        $start_date = Carbon::now()->startOfMonth();
-        $start_date = $start_date->format('Y-m-d');
-        $end_date = Carbon::now()->endOfMonth();
-        $end_date =  $end_date->format('Y-m-d');
-
+//        $start_date = Carbon::now()->startOfMonth();
+//        $start_date = $start_date->format('Y-m-d');
+//        $end_date = Carbon::now()->endOfMonth();
+//        $end_date =  $end_date->format('Y-m-d');
+//
 
         $data['start_date'] = $start_date;
         $data['end_date'] = $end_date;
