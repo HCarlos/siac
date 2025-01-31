@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    @include('shared.ui_kit.__favicon')
     <link rel="stylesheet" href="/css/dashboard/dashboard_statistics_servicios_principales.css">
     <script src="/js/dashboard/dashboard_statistics_servicios_principales_setup.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
