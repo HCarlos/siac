@@ -313,6 +313,8 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
 
         $f = new FuncionesController();
 
+        $menu = $f->menuDashBoard(0);
+
 //        dd( Storage::disk('public')->url($file_out) );
 
 //        'rango_de_consulta' => $f->fechaEspanol($start_date).' - '.$f->fechaEspanol($end_date),
@@ -323,6 +325,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 'start_date' => $start_date,
                 'end_date' => $end_date,
                 'file_output' => $file_out ?? null,
+                'menu' => $menu,
             ]);
 
     }

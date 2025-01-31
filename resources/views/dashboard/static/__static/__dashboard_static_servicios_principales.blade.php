@@ -11,15 +11,9 @@
 
         </div>
         <nav class="menu">
-            <button class="menu-item active">Inicio</button>
-            <button class="menu-item" onclick="window.location.href='/dashboard-statistics-general'">General</button>
-            <button class="menu-item">Alumbrado</button>
-            <button class="menu-item">Espacios Públicos</button>
-            <button class="menu-item">Limpia</button>
-            <button class="menu-item">Obras</button>
-            <button class="menu-item">SAS</button>
-            <button class="menu-item">Encuestas</button>
-            <button class="menu-item">Reportes</button>
+            @foreach($menu as $m)
+                <button class="{{ $m->clase }}" onclick="window.location.href='{{ $m->url }}'">{{ $m->title_menu }}</button>
+            @endforeach
         </nav>
     </aside>
 
@@ -35,15 +29,15 @@
             <header class="header">
                     <div class="radio-group">
                         <label class="radio-button">
-                            <input type="radio" name="filter" value="hoy" class="filter-btn" @if(  $filter === 'hoy') checked @endif >
+                            <input type="radio" name="filter" value="hoy" @if(  $filter === 'hoy') checked @endif >
                             <span>Hoy</span>
                         </label>
                         <label class="radio-button">
-                            <input type="radio" name="filter" value="mes" class="filter-btn" @if(  $filter === 'mes') checked @endif >
+                            <input type="radio" name="filter" value="mes"@if(  $filter === 'mes') checked @endif >
                             <span>Mes Actual</span>
                         </label>
                         <label class="radio-button">
-                            <input type="radio" name="filter" value="anio" class="filter-btn" @if( $filter === 'anio') checked @endif >
+                            <input type="radio" name="filter" value="anio"@if( $filter === 'anio') checked @endif >
                             <span>Año Actual</span>
                         </label>
                         <label class="radio-button">
@@ -202,7 +196,7 @@
 <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
 ({key: "{{env('GOOGLE_MAPS_KEY')}}", v: "weekly"});</script>
 
-<script src="js/dashboard/dashboard_statistics_map_setup.js" type="text/javascript"></script>
+<script src="/js/dashboard/dashboard_statistics_map_setup.js" type="text/javascript"></script>
 
 <script>
 

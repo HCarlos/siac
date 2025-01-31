@@ -62,13 +62,12 @@ Route::group(['middleware' => 'auth'], static function () {
 
     // Dashboard General
     Route::match(['get','put','post'],'dashboard-statistics-general', 'Dashboard\DashboardStaticGeneralController@index')->name('dashboard-statistics-general');
-    Route::match(['get','put','post'],'dashboard-statistics-general/month-now', 'Dashboard\DashboardStaticGeneralController@monthnow')->name('dashboard-statistics-general/month-now');
-    Route::match(['get','put','post'],'dashboard-statistics-general/year-now', 'Dashboard\DashboardStaticGeneralController@yearnow')->name('dashboard-statistics-general/year-now');
 
     // Dashboard Servicios Principales
     Route::match(['get','put','post'],'dashboard-statistics-servicios-principales', 'Dashboard\DashboardStaticServiciosPrincipalesController@index')->name('dashboard-statistics-servicios-principales');
-    Route::match(['get','put','post'],'dashboard-statistics-servicios-principales/month-now', 'Dashboard\DashboardStaticServiciosPrincipalesController@monthnow')->name('dashboard-statistics-servicios-principales/month-now');
-    Route::match(['get','put','post'],'dashboard-statistics-servicios-principales/year-now', 'Dashboard\DashboardStaticServiciosPrincipalesController@yearnow')->name('dashboard-statistics-servicios-principales/year-now');
+
+    // Dashboard Servicios Principales
+    Route::match(['get','put','post'],'dashboard-statistics-custom-unity/{unity_id}', 'Dashboard\DashboardStaticCustomUnityController@index')->name('dashboard-statistics-custom-unity');
 
     // USUARIOS
     Route::get('edit', 'Catalogos\User\UserDataController@showEditUserData')->name('edit');

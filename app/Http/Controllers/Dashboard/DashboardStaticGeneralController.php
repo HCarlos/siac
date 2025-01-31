@@ -28,6 +28,9 @@ class DashboardStaticGeneralController extends Controller{
 
         $data = $request->all();
 
+
+//        dd($data);
+
 //        $arrJson = [];
 
         $f = new FuncionesController();
@@ -59,8 +62,8 @@ class DashboardStaticGeneralController extends Controller{
                     $end_date =  $end_date->format('Y-m-d');
                     break;
                 default:
-                    $start_date = $data['start_date'];
-                    $end_date = $data['end_date'];
+                    $start_date = $data['start_date'] ?? Carbon::now()->format('Y-m-d');
+                    $end_date = $data['end_date'] ?? Carbon::now()->format('Y-m-d');
                     break;
             }
             $filter = $data['filter'];
@@ -312,6 +315,9 @@ class DashboardStaticGeneralController extends Controller{
 
         $f = new FuncionesController();
 
+        $menu = $f->menuDashBoard(1);
+
+
 //        dd( Storage::disk('public')->url($file_out) );
 
 //        'rango_de_consulta' => $f->fechaEspanol($start_date).' - '.$f->fechaEspanol($end_date),
@@ -322,6 +328,7 @@ class DashboardStaticGeneralController extends Controller{
                 'start_date' => $start_date,
                 'end_date' => $end_date,
                 'file_output' => $file_out ?? null,
+                'menu' => $menu,
             ]);
 
     }
