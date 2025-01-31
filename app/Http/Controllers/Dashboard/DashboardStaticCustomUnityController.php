@@ -7,12 +7,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Funciones\FuncionesController;
-use App\Models\Catalogos\Servicio;
-use App\Models\Denuncias\_viDDSs;
-use App\Models\Denuncias\_viServicios;
-use App\Models\Denuncias\Denuncia;
 use Carbon\Carbon;
-use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -26,11 +21,19 @@ class DashboardStaticCustomUnityController extends Controller{
         $this->middleware('auth');
     }
 
-    protected function index(Request $request, $unity_id){
+    protected function index($unity_id){
+        $request = new Request();
+        $this->unity_id = $unity_id;
+        $request->replace([]);
+        return $this->indexPost($request);
+    }
+
+    protected function indexPost(Request $request){
 
         $data = $request->all();
 
-        $this->unity_id = (int) $unity_id;
+//        dd($data);
+
 
 //        $arrJson = [];
 
@@ -42,6 +45,7 @@ class DashboardStaticCustomUnityController extends Controller{
             $end_date = $start_date;
             $filter = 'hoy';
         }else{
+            $this->unity_id = $data['unity_id'];
             switch ($data['filter']) {
                 case 'hoy':
                     $start_date = Carbon::now();
@@ -341,6 +345,8 @@ class DashboardStaticCustomUnityController extends Controller{
 //        dd( Storage::disk('public')->url($file_out) );
 
 //        'rango_de_consulta' => $f->fechaEspanol($start_date).' - '.$f->fechaEspanol($end_date),
+
+
 
         return view('dashboard.static.dashboard_static_custom_unity',
             [

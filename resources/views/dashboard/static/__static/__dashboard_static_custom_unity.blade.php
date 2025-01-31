@@ -22,7 +22,7 @@
             <h2 class="main-title">{{ $titulo }}</h2>
             <p class="subtitle">Selecciona un filtro de tiempo para ver los datos detallados</p>
         </div>
-        <form action="{{ url('/dashboard-statistics-custom-unity') }}" method="POST" id="formFilter">
+        <form action="{{ url('/dashboard-statistics-custom-unity-post') }}" method="POST" id="formFilter">
             @csrf
             <header class="header">
                     <div class="radio-group">
@@ -60,7 +60,6 @@
                     </div>
             </header>
             <input type="hidden" name="unity_id" value="{{ $unity_id }}">
-            <input type="hidden" name="unity" value="{{ $unity }}">
         </form>
 
         <!-- Stats -->

@@ -67,7 +67,8 @@ Route::group(['middleware' => 'auth'], static function () {
     Route::match(['get','put','post'],'dashboard-statistics-servicios-principales', 'Dashboard\DashboardStaticServiciosPrincipalesController@index')->name('dashboard-statistics-servicios-principales');
 
     // Dashboard Servicios Principales
-    Route::match(['get','put','post'],'dashboard-statistics-custom-unity/{unity_id}', 'Dashboard\DashboardStaticCustomUnityController@index')->name('dashboard-statistics-custom-unity');
+    Route::match(['get'],'dashboard-statistics-custom-unity/{unity_id}', 'Dashboard\DashboardStaticCustomUnityController@index')->name('dashboard-statistics-custom-unity');
+    Route::match(['put','post'],'dashboard-statistics-custom-unity-post', 'Dashboard\DashboardStaticCustomUnityController@indexPost')->name('dashboard-statistics-custom-unity-post');
 
     // USUARIOS
     Route::get('edit', 'Catalogos\User\UserDataController@showEditUserData')->name('edit');
