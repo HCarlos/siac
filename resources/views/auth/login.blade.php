@@ -47,17 +47,11 @@
                     </span>
                 @endif
 
-{{--                <a href="{{ route('password.request') }}">¿Olvidaste tu contraseña?</a>--}}
                 <a href="{{ route('password.request') }}" class=" float-right text-danger "><strong>¿Olvidaste tu contraseña?</strong></a>
 
-{{--                <div class="captcha-container">--}}
-{{--                    <input type="checkbox" id="captcha" required>--}}
-{{--                    <label for="captcha">No soy un robot</label>--}}
+{{--                <div class="captcha-container mt-1 mb-1">--}}
+{{--                    <div class="g-recaptcha " data-sitekey={{config('services.recaptcha.key')}}></div>--}}
 {{--                </div>--}}
-
-                <div class="captcha-container mt-1 mb-1">
-                    <div class="g-recaptcha " data-sitekey={{config('services.recaptcha.key')}}></div>
-                </div>
 
                 <div class="options mb-1">
                     <input type="checkbox" id="remember" name="remember">

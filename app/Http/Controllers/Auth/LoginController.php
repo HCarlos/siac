@@ -52,6 +52,68 @@ class LoginController extends Controller
         }
     }
 
+//    public function login(Request $request){
+//
+//        $input = $request->all();
+//
+//        $this->validate($request, [
+//            'username' => 'required',
+//            'password' => 'required',
+//            'g-recaptcha-response' => 'required',
+//        ]);
+//
+//        $recaptcha_response = $request->input('g-recaptcha-response');
+//
+//        if (is_null($recaptcha_response)) {
+//            return redirect()->back()->with('status', 'Please Complete the Recaptcha to proceed');
+//        }
+//
+//        $url = "https://www.google.com/recaptcha/api/siteverify";
+//
+//        $body = [
+//            'secret' => config('services.recaptcha.secret'),
+//            'response' => $recaptcha_response,
+//            'remoteip' => IpUtils::anonymize($request->ip()) //anonymize the ip to be GDPR compliant. Otherwise just pass the default ip address
+//        ];
+//
+//        $response = Http::asForm()->post($url, $body);
+//
+//        $result = json_decode($response);
+//
+//        if ($response->successful() && $result->success == true) {
+//
+//
+//            $fieldType = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+//            if(auth()->attempt(array($fieldType => $input['username'], 'password' => $input['password']))) {
+//                $role1 = Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|ENLACE|USER_ARCHIVO_CAP|USER_ARCHIVO_ADMIN');
+//                $role2 = Auth::user()->hasRole('CIUDADANO|DELEGADO');
+//
+//                $user = Auth::user();
+//                $user->session_id = session()->getId();
+//                $user->logged_at = now();
+//                $user->logged = true;
+//                $user->save();
+//
+//
+//                if ($role1) {
+//                    return redirect()->route('home');
+//                } elseif($role2) {
+//                    return redirect()->route('home-ciudadano');
+//                } else {
+//                    return redirect()->route('home');
+//                }
+//            }else{
+//                return redirect()->route('login')
+//                    ->with('error','Username, email ó password incorrecto');
+//            }
+//
+//        } else {
+//            return redirect()->back()->with('status', 'Please Complete the Recaptcha Again to proceed');
+//        }
+//
+//    }
+
+
     public function login(Request $request){
 
         $input = $request->all();
@@ -59,29 +121,7 @@ class LoginController extends Controller
         $this->validate($request, [
             'username' => 'required',
             'password' => 'required',
-            'g-recaptcha-response' => 'required',
         ]);
-
-        $recaptcha_response = $request->input('g-recaptcha-response');
-
-        if (is_null($recaptcha_response)) {
-            return redirect()->back()->with('status', 'Please Complete the Recaptcha to proceed');
-        }
-
-        $url = "https://www.google.com/recaptcha/api/siteverify";
-
-        $body = [
-            'secret' => config('services.recaptcha.secret'),
-            'response' => $recaptcha_response,
-            'remoteip' => IpUtils::anonymize($request->ip()) //anonymize the ip to be GDPR compliant. Otherwise just pass the default ip address
-        ];
-
-        $response = Http::asForm()->post($url, $body);
-
-        $result = json_decode($response);
-
-        if ($response->successful() && $result->success == true) {
-
 
             $fieldType = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
             if(auth()->attempt(array($fieldType => $input['username'], 'password' => $input['password']))) {
@@ -106,13 +146,6 @@ class LoginController extends Controller
                 return redirect()->route('login')
                     ->with('error','Username, email ó password incorrecto');
             }
-
-        } else {
-            return redirect()->back()->with('status', 'Please Complete the Recaptcha Again to proceed');
-        }
-
-
-
 
     }
 
