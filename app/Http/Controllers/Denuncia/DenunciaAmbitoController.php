@@ -833,7 +833,7 @@ class DenunciaAmbitoController extends Controller{
                 'showAddUser'                         => 'addUserDenunciaAmbito',
                 'newItem'                             => 'newDenunciaAmbito',
                 'removeItem'                          => 'removeDenunciaAmbito',
-                'showProcess1'                        => 'showDataListDenunciaAmbitoExcel1A',
+                'showProcess1'                        => $this->ambito_dependencia === 1 ? 'showDataListDenunciaExcel1A' : 'showDataListDenunciaAmbitoExcel1A',
                 'searchAdressDenuncia'                => 'listDenunciasAmbito'.$this->ambito_dependencia,
                 'showModalSearchDenuncia'             => 'showModalSearchDenunciaAmbito/'.$this->ambito_dependencia,
                 'findDataInDenunciaAmbito'            => 'findDataInDenunciaAmbito',

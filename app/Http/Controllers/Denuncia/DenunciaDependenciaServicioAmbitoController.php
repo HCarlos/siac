@@ -241,7 +241,6 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
         $denuncia_id = $request["denuncia_id"];
         $this->ambito_dependencia = Session::get('ambito_dependencia');
         $Id = $request->manage();
-        //dd($item);
         if (!isset($Id)) {
             return '<script type="text/javascript">alert("'.$Id.'");</script>';
         }
