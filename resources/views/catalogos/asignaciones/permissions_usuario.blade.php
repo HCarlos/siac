@@ -34,7 +34,7 @@
     @slot('Asign0')
         @slot('titleAsign0') {{$titleAsign0}} @endslot
 {{--        {{ Form::select('lstAsigns', $lstAsigns0, '', ['multiple' => 'multiple', 'id' => 'lstAsigns', 'class'=>'lstAsigns form-control asign-lstAsigns0']) }}--}}
-        <select class="lstAsigns form-control asign-lstAsigns" name="lstAsigns" id="lstAsigns" multiple>
+        <select class="lstAsigns form-control asign-lstAsigns0" name="lstAsigns" id="lstAsigns" multiple>
             @foreach($lstAsigns0 as $i=>$value)
                 <option value="{{ $i }}" >{{ $value }}</option>
             @endforeach

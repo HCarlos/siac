@@ -281,8 +281,7 @@ class FuncionesController extends Controller
     }
 
     public static function arrAmbitosSM(): array{
-        return [0=>"No Aplica",1=>"Urbano",2=>"Rural",3=>"Desazolve Manual",4=>"Desazolve con Vactor",5=>"Desazolve con equipo almeja"];
-
+        return [0=>"No Aplica",1=>"Urbana",2=>"Rural",3=>"Desazolve Manual",4=>"Desazolve con Vactor",5=>"Desazolve con equipo almeja"];
     }
 
     public static function GetCapturistasAmbito2P(): Collection{

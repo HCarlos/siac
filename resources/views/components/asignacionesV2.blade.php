@@ -1,5 +1,5 @@
-<h4 class="page-title">{{$titulo_catalogo}} <small>{{$titulo_header}}</small></h4>
-<div class="mt-1 mb-1"></div>
+<div class="mt-3 mb-1"></div>
+{{--<h4 class="page-title">{{$titulo_catalogo}} <small>{{$titulo_header}}</small></h4>--}}
 <div class="row">
 
     <div class="col-md-4">

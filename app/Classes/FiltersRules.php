@@ -19,7 +19,7 @@ class FiltersRules
 
     public function filterRulesDenuncia(Request $request){
         $data = $request->all(['ambito_estatus','ambito_dependencia','curp','ciudadano','id','desde','hasta','dependencia_id','servicio_id','estatus_id','creadopor_id','incluirFecha','conRespuesta','clave_identificadora','uuid','incluirFechaMovto','origen_id','ciudadano_id']);
-        $data['status_denuncia']      = '1';
+        $data['status_denuncia']      = 1;
         $data['ambito_dependencia']   = $data['ambito_dependencia']   == null ? "" : $data['ambito_dependencia'];
         $data['ambito_estatus']       = $data['ambito_estatus']       == null ? "" : $data['ambito_estatus'];
         $data['curp']                 = $data['curp']                 == null ? "" : $data['curp'];

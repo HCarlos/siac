@@ -35,7 +35,7 @@ class GetDenunciasAmbitoItemCustomFilter extends QueryFilter{
             $filters['dependencia_id'] = $DependenciaIdArray;
         }elseif ($IsAdminArchivo){
                 $filters['cerrado'] = 'true';
-        }elseif ( Auth::user()->isRole('CIUDADANO|DELEGADO') && !Auth::user()->isRole('Administrator|SysOp') ){
+        }elseif ( Auth::user()->isRole('CIUDADANO|DELEGADO') && !Auth::user()->isRole('Administrator|SysOp|test_admin') ){
             $filters['ciudadano_id'] = Auth::user()->id;
         }elseif ( $IsDelegados ){
             $filters['creadopor_id'] = Auth::user()->id;

@@ -133,35 +133,25 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 ->setCellValue('D'.$C, trim($item->ap_materno_ciudadano ?? ''))
                 ->setCellValue('E'.$C, trim($item->nombre_ciudadano ?? ''))
 
-//                ->setCellValue('F'.$C, trim($item->calle ?? ''))
-//                ->setCellValue('G'.$C, trim($item->num_ext ?? ''))
-//                ->setCellValue('H'.$C, trim($item->num_int ?? ''))
-//                ->setCellValue('I'.$C, trim($item->colonia ?? ''))
-//                ->setCellValue('J'.$C, trim($item->cp ?? ''))
-
                 ->setCellValue('F'.$C, trim($item->gd_ubicacion) ?? '')
                 ->setCellValue('G'.$C, $cadgdu ?? '')
 
                 ->setCellValue('H'.$C, $cadcel ?? '')
                 ->setCellValue('I'.$C, $fechaIngreso ?? '')
                 ->setCellValue('J'.$C, $item->dependencia_ultimo_estatus ?? '')
-                ->setCellValue('K'.$C, $item->area ?? '')
-                ->setCellValue('L'.$C, $item->subarea ?? '')
-                ->setCellValue('M'.$C, $item->servicio_ultimo_estatus ?? '')
+                ->setCellValue('K'.$C, $item->servicio_ultimo_estatus ?? '')
 
-//                ->setCellValue('R'.$C, $item->denuncia ?? '')
-//                ->setCellValue('S'.$C, $item->referencia ?? '')
-                ->setCellValue('N'.$C, $item->denuncia ?? '')
+                ->setCellValue('L'.$C, $item->denuncia ?? '')
 
-                ->setCellValue('O'.$C, $item->prioridad ?? '')
-                ->setCellValue('P'.$C, $item->origen ?? '')
-                ->setCellValue('Q'.$C, $arrUltimoEstatus->estatus ?? '')
-                ->setCellValue('R'.$C, $fechaUntiloEstatus ?? '')
-                ->setCellValue('S'.$C, $respuesta )
-                ->setCellValue('T'.$C, $favorable ? "SI" : "NO" )
-                ->setCellValue('U'.$C, $item->clave_identificadora )
-                ->setCellValue('V'.$C, trim($item->genero_ciudadano ?? ''))
-                ->setCellValue('W'.$C, $item->ambito_sas === 'No Aplica' ? "" : $item->ambito_sas ?? '');
+                ->setCellValue('M'.$C, $item->prioridad ?? '')
+                ->setCellValue('N'.$C, $item->origen ?? '')
+                ->setCellValue('O'.$C, $arrUltimoEstatus->estatus ?? '')
+                ->setCellValue('P'.$C, $fechaUntiloEstatus ?? '')
+                ->setCellValue('Q'.$C, $respuesta )
+                ->setCellValue('R'.$C, $favorable ? "SI" : "NO" )
+                ->setCellValue('S'.$C, $item->clave_identificadora )
+                ->setCellValue('T'.$C, trim($item->genero_ciudadano ?? ''))
+                ->setCellValue('U'.$C, $item->ambito_sas === 'No Aplica' ? "" : $item->ambito_sas ?? '');
             $C++;
         }
 //        ->setCellValue('N'.$C, $servicio->subarea->area->dependencia->dependencia ?? '')

@@ -804,11 +804,16 @@ class DenunciaAmbitoController extends Controller{
             $this->max_item_for_query = session::get('items_for_query');
         }
 
+//        dd($queryFilters);
+
         $items = _viDDSs::query()
             ->select(FuncionesController::itemSelectDenuncias())
             ->ambitoFilterBy($queryFilters)
             ->orderByDesc('id')
             ->paginate($this->max_item_for_query);
+//            ->get();
+
+//        dd($items);
 
         $items->appends($queryFilters)->fragment('table');
 

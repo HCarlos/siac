@@ -11,9 +11,6 @@ namespace App\Filters\Denuncia;
 
 use App\Filters\Common\QueryFilter;
 use App\Http\Controllers\Funciones\FuncionesController;
-use App\Models\Catalogos\Dependencia;
-use App\Models\Catalogos\Domicilios\Ubicacion;
-use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -55,12 +52,15 @@ class DenunciaAmbitoFilter extends QueryFilter
 
     public function ambito_dependencia($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
-        return $query->where('ambito_dependencia', $search);
+        return $query->where('ambito_dependencia',(int)$search);
     }
 
     public function ambito_estatus($query, $search){
         if (is_null($search) || empty($search) || trim($search) === "") {return $query;}
-        return $query->where('ue_id', (int)$search );
+            if ((int)$search <> 0){
+                return $query->where('ue_id', (int)$search );
+            }
+        return $query->where('ue_id','>=', (int)$search );
     }
 
 
