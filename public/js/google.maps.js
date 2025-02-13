@@ -81,11 +81,13 @@ async function initMap(lat, lon, siExiste) {
             _Lat = place.lat;
             _Lng = place.lng;
         }
-
-        const url = new URL("https://refugios.villahermosa.gob.mx:445/images/z1.png");
+        var host = location.protocol.concat("//").concat(window.location.host);
+        console.log(host+"/images/z1.png");
+        const url = new URL(host+"/images/favicon-512-512.png");
         const pin = new google.maps.marker.PinElement({
             scale: 1.25,
-            background: "#F7D32F",
+            background: "#edb606",
+            borderColor: "#870606",
             glyph: url,
 
         });

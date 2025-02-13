@@ -2,8 +2,6 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="logo">
-{{--            <h1><a href="/home">CENTRO</a></h1>--}}
-{{--            <p>Honestidad y Resultados<br>2024-2027</p>--}}
             <!-- LOGO -->
             <a href="/listDenunciasAmbito2"  >
                 <img src="{{asset('images/web/logo-0.png')}}" alt="" >
@@ -21,7 +19,7 @@
     <main id="contenedor">
         <!-- Header -->
         <div class="title-wrapper">
-            <h2 class="main-title">Explora las Estadísticas de los Servicios Municipales Monitoreados</h2>
+            <h2 class="main-title--">Explora las Estadísticas de los Servicios Municipales Monitoreados</h2>
             <p class="subtitle">Selecciona un filtro de tiempo para ver los datos detallados</p>
         </div>
         <form action="{{ url('/dashboard-statistics-servicios-principales') }}" method="POST" id="formFilter">
@@ -40,112 +38,62 @@
                             <input type="radio" name="filter" value="anio"@if( $filter === 'anio') checked @endif >
                             <span>Año Actual</span>
                         </label>
-                        <label class="radio-button">
-                            <input type="radio" name="filter" value="free" class="filter-btn" @if( $filter === 'free') checked @endif>
-                            <span>Rango de fecha</span>
-                        </label>
-                    </div>
-                    <div class="date-picker">
-                        <label for="start_date">F. Inicial</label>
-                        <input type="date" id="start_date" name="start_date" value="{{ $start_date }}">
-                    </div>
-                <div class="date-picker">
-                        <label for="end_date">F. Final</label>
-                        <input type="date" id="end_date" name="end_date" value="{{ $end_date }}">
-                    </div>
-                    <div class="search-container">
-                        <button class="search-btn" type="submit" >
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="search-icon">
-                                <path d="M10 2a8 8 0 105.29 14.29l4.35 4.35a1 1 0 001.42-1.42l-4.35-4.35A8 8 0 0010 2zm0 2a6 6 0 014.66 9.74 1 1 0 00-.14 1.41l4.35 4.35a1 1 0 001.42-1.42l-4.35-4.35a1 1 0 00-1.41.14A6 6 0 1110 4z" />
-                            </svg>
-                        </button>
                     </div>
             </header>
         </form>
-
-        <!-- Stats -->
-        <section class="stats">
-            <div class="stat">
-                <h2 id="h2Recibidas">0</h2>
-                <p>Recibidas</p>
-            </div>
-            <div class="stat">
-                <h2 id="h2EnProceso">0</h2>
-                <p>En Proceso / Programadas</p>
-            </div>
-            <div class="card-stat">
-                <div class="card-left">
-                    <h1 class="count green" id="h2Atendidas">0</h1>
-                    <p>Atendidas</p>
-                </div>
-                <div class="card-right">
-                    <p><strong id="h2Aatendidas">0</strong> A TIEMPO</p>
-                    <p><strong id="h2Abtendidas">0</strong> CON REZAGO</p>
-                </div>
-            </div>
-            <div class="stat">
-                <h2 style="color: red;" id="h2Rechazadas">0</h2>
-                <p>Rechazadas</p>
-            </div>
-            <div class="stat">
-                <h2 id="h2Cerradas">0</h2>
-                <p>Cerradas</p>
-            </div>
-            <div class="stat">
-                <h2 id="h2Observadas">0</h2>
-                <p>Observadas</p>
-            </div>
-            <div class="stat">
-                <h2 id="h2Total">0</h2>
-                <p>Todas</p>
-            </div>
-        </section>
 
         <div class="dashboard-container">
             <!-- Sección de solicitudes por área -->
             <div class="section">
                 <div class="card">
-                    <h3>Recibidas:</h3>
+                    <div class="stat">
+                        <h2 id="h2Recibidas">0</h2>
+                        <p>Recibidas</p>
+                    </div>
                     <div class="chart">
                         <canvas id="chart-area-1"></canvas>
                     </div>
                 </div>
                 <div class="card">
-                    <h3>En proceso / programadas:</h3>
+                    <div class="stat">
+                        <h2 id="h2EnProceso">0</h2>
+                        <p>En Proceso / Programadas</p>
+                    </div>
                     <div class="chart">
                         <canvas id="chart-area-2">[Gráfico de Barras]</canvas>
                     </div>
                 </div>
                 <div class="card">
-                    <h3>Atendidas:</h3>
+                    <div class="card-stat">
+                        <div class="card-left">
+                            <h1 class="count green" id="h2Atendidas">0</h1>
+                            <p>Atendidas</p>
+                        </div>
+                        <div class="card-right">
+                            <p><strong id="h2Aatendidas">0</strong> A TIEMPO</p>
+                            <p><strong id="h2Abtendidas">0</strong> CON REZAGO</p>
+                        </div>
+                    </div>
                     <div class="chart">
                         <canvas id="chart-area-3">[Gráfico de Barras]</canvas>
                     </div>
                 </div>
                 <div class="card">
-                    <h3>Rechazadas:</h3>
+                    <div class="stat">
+                        <h2 style="color: red;" id="h2Rechazadas">0</h2>
+                        <p>Rechazadas</p>
+                    </div>
                     <div class="chart">
                         <canvas id="chart-area-4">[Gráfico de Barras]</canvas>
                     </div>
                 </div>
                 <div class="card">
-                    <h3>Cerradas:</h3>
-                    <div class="chart">
-                        <canvas id="chart-area-5">[Gráfico de Barras]</canvas>
+                    <div class="stat">
+                        <h2 id="h2Total">0</h2>
+                        <p>Todas</p>
                     </div>
-                </div>
-                <div class="card">
-                    <h3>Observadas:</h3>
                     <div class="chart">
-                        <canvas id="chart-area-6">[Gráfico de Barras]</canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="section">
-                <div class="card" >
-                    <h3>Por zona:</h3>
-                    <div class="map-container" id="map-container">
-                        <div id="map"></div>
+                        <canvas id="chart-area-7">[Gráfico de Barras]</canvas>
                     </div>
                 </div>
             </div>
@@ -174,16 +122,25 @@
                     </div>
 
                 </div>
-{{--                <div class="card">--}}
-{{--                    <h3>Por zona:</h3>--}}
-{{--                    <div class="map-container" id="map-container">--}}
-{{--                        <div id="map"></div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
+                {{--                <div class="card">--}}
+                {{--                    <h3>Por zona:</h3>--}}
+                {{--                    <div class="map-container" id="map-container">--}}
+                {{--                        <div id="map"></div>--}}
+                {{--                    </div>--}}
+                {{--                </div>--}}
                 <div class="card">
                     <div class="chart-container">
                         <h3>% solicitudes atendidas / rechazadas</h3>
                         <canvas id="solicitudesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <!-- Zona del Mapa -->
+            <div class="section">
+                <div class="card" >
+                    <h3>Por zona:</h3>
+                    <div class="map-container" id="map-container">
+                        <div id="map"></div>
                     </div>
                 </div>
             </div>
@@ -197,28 +154,22 @@
 ({key: "{{env('GOOGLE_MAPS_KEY')}}", v: "weekly"});</script>
 
 <script src="/js/dashboard/dashboard_statistics_map_setup.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 
 <script>
+
+
+/*
 
     document.addEventListener('DOMContentLoaded', () => {
 
         async function loadJSON(file_output) {
             try {
-                // Solicita el archivo JSON (cámbialo al nombre de tu archivo)
-                // alert(file_output);
                 const response = await fetch(file_output);
-
-                // Verifica si la solicitud fue exitosa
                 if (!response.ok) {
                     throw new Error(`Error al cargar JSON: ${response.statusText}`);
                 }
-
-
-                // Convierte la respuesta a JSON
                 const data = await response.json();
-
-                // Llama a la función para renderizar los datos
-                // console.log(data);
                 initLoadData(data[0],data[1],data[2],data[3],data[4]);
             } catch (error) {
                 console.error(error);
@@ -227,17 +178,6 @@
 
 
         function initLoadData(Estatus,Unidades,Servicios,Georeferencias,Otros) {
-
-            // alert(data.estatus[0].Unidades[0].Total);
-
-            // Recibidas
-            // data.unidades.forEach((estatus) => {
-            //     console.log(`Estatus: ${estatus.Estatus}`);
-            //     console.log("Unidades:");
-            //     estatus.Unidades.forEach((unidad) => {
-            //         console.log(`- ${unidad.Unidad}: Total = ${unidad.Total}, Porcentaje = ${unidad.Porcentaje}%`);
-            //     });
-            // });
             let data1data = [];
             let data2data = [];
             let data3data = [];
@@ -256,17 +196,18 @@
             document.getElementById("h2Abtendidas").innerHTML = Estatus.estatus[2].con_rezago;
 
             document.getElementById("h2Rechazadas").innerHTML = Estatus.estatus[3].Total;
-            document.getElementById("h2Cerradas").innerHTML = Estatus.estatus[4].Total;
-            document.getElementById("h2Observadas").innerHTML = Estatus.estatus[5].Total;
 
             document.getElementById("h2Total").innerHTML = Estatus.estatus[0].Total + Estatus.estatus[1].Total + Estatus.estatus[2].Total + Estatus.estatus[3].Total + Estatus.estatus[4].Total + Estatus.estatus[5].Total;
 
-            Estatus.estatus[0].Unidades.forEach( (unidad) => {data1data.push(unidad.Total); });
-            Estatus.estatus[1].Unidades.forEach( (unidad) => {data2data.push(unidad.Total); });
-            Estatus.estatus[2].Unidades.forEach( (unidad) => {data3data.push(unidad.Total); });
-            Estatus.estatus[3].Unidades.forEach( (unidad) => {data4data.push(unidad.Total); });
-            Estatus.estatus[4].Unidades.forEach( (unidad) => {data5data.push(unidad.Total); });
-            Estatus.estatus[5].Unidades.forEach( (unidad) => {data6data.push(unidad.Total); });
+            var arr = [0, 0, 0, 0, 0, 0];
+            Estatus.estatus[0].Unidades.forEach( (unidad, i=0) => {data1data.push(unidad.Total); arr[i] += unidad.Total; });
+            Estatus.estatus[1].Unidades.forEach( (unidad, i=0) => {data2data.push(unidad.Total); arr[i] += unidad.Total; });
+            Estatus.estatus[2].Unidades.forEach( (unidad, i=0) => {data3data.push(unidad.Total); arr[i] += unidad.Total; });
+            Estatus.estatus[3].Unidades.forEach( (unidad, i=0) => {data4data.push(unidad.Total); arr[i] += unidad.Total; });
+            Estatus.estatus[4].Unidades.forEach( (unidad, i=0) => {data5data.push(unidad.Total); arr[i] += unidad.Total; });
+            Estatus.estatus[5].Unidades.forEach( (unidad, i=0) => {data6data.push(unidad.Total); arr[i] += unidad.Total; });
+
+            console.log(arr);
 
             Estatus.estatus[2].Unidades.forEach( (unidad) => {
                 dataatiempo.push(unidad.a_tiempo);
@@ -319,28 +260,21 @@
                 options: opciones1()
             });
 
-            // Cerradas
-            const ctx5a = document.getElementById('chart-area-5');
-            const chart5a = new Chart(ctx5a, {
-                type: 'bar',
-                data: data1(data5data),
-                options: opciones1()
-            });
-
             // Observadas
-            const ctx6a = document.getElementById('chart-area-6');
-            const chart6a = new Chart(ctx6a, {
+            const ctx6b = document.getElementById('chart-area-7');
+            const chart6b = new Chart(ctx6b, {
                 type: 'bar',
-                data: data1(data6data),
+                data: data1(arr),
                 options: opciones1()
             });
 
             // % Atendidas vs Rechazadas
             const ctx7a = document.getElementById('solicitudesChart');
             const chart7a = new Chart(ctx7a, {
-                type: 'bar',
+                type: 'pie',
                 data: data3([Otros.otros[0].atendidas, Otros.otros[0].rechazadas]),
-                options: opciones3()
+                options: opciones3pie(),
+                plugins: [ChartDataLabels] // Registramos el plugin
             });
 
             const ctx8a = document.getElementById('closedRequestsChart');
@@ -370,13 +304,6 @@
             });
 
             Georeferencias.georeferencias.forEach( (geo) => {
-                // dataSetLocations.push({
-                //     denuncia_id:geo.denuncia_id, lat: geo.latitud, lng: geo.longitud, color: geo.semaforo,
-                //     ciudadano: geo.ciudadano, unidad: geo.abreviatura, denuncia: geo.denuncia,
-                //     servicio: geo.servicio, fecha_ingreso: geo.fecha_ingreso,dias_a_tiempo: geo.dias_a_tiempo,
-                //     ultimo_estatus: geo.ultimo_estatus, fecha_ejecucion_minima: geo.fecha_ejecucion_minima,
-                //     fecha_ejecucion_maxima: geo.fecha_ejecucion_maxima
-                // });
 
                 dataSetLocations.push({
                     denuncia_id:geo.denuncia_id,
@@ -421,9 +348,10 @@
 
     });
 
+*/
 
-    {{--document.addEventListener("DOMContentLoaded",()=>{async function e(e){try{let a=await fetch(e);if(!a.ok)throw Error(`Error al cargar JSON: ${a.statusText}`);let o=await a.json();t(o[0],o[1],o[2],o[3],o[4])}catch(r){console.error(r)}}function t(e,t,a,o,r){let n=[],s=[],d=[],i=[],l=[],u=[],c=[],h=[];document.getElementById("h2Recibidas").innerHTML=e.estatus[0].Total,document.getElementById("h2EnProceso").innerHTML=e.estatus[1].Total,document.getElementById("h2Atendidas").innerHTML=e.estatus[2].Total,document.getElementById("h2Aatendidas").innerHTML=e.estatus[2].a_tiempo,document.getElementById("h2Abtendidas").innerHTML=e.estatus[2].con_rezago,document.getElementById("h2Rechazadas").innerHTML=e.estatus[3].Total,document.getElementById("h2Cerradas").innerHTML=e.estatus[4].Total,document.getElementById("h2Observadas").innerHTML=e.estatus[5].Total,document.getElementById("h2Total").innerHTML=e.estatus[0].Total+e.estatus[1].Total+e.estatus[2].Total+e.estatus[3].Total+e.estatus[4].Total+e.estatus[5].Total,e.estatus[0].Unidades.forEach(e=>{n.push(e.Total)}),e.estatus[1].Unidades.forEach(e=>{s.push(e.Total)}),e.estatus[2].Unidades.forEach(e=>{d.push(e.Total)}),e.estatus[3].Unidades.forEach(e=>{i.push(e.Total)}),e.estatus[4].Unidades.forEach(e=>{l.push(e.Total)}),e.estatus[5].Unidades.forEach(e=>{u.push(e.Total)}),e.estatus[2].Unidades.forEach(e=>{c.push(e.a_tiempo),h.push(e.con_rezago)});var g=0;t.unidades.forEach(e=>{document.getElementById("u"+g).innerHTML=e.Unidad,document.getElementById("u"+g+"p").innerHTML=e.Porcentaje+"%",g++});let p=document.getElementById("chart-area-1");new Chart(p,{type:"bar",data:data1(n),options:opciones1()});let y=document.getElementById("chart-area-2");new Chart(y,{type:"bar",data:data1(s),options:opciones1()});let E=document.getElementById("chart-area-3");new Chart(E,{type:"bar",data:data2([{type:"bar",label:"En tiempo",data:c,backgroundColor:"rgba(54, 162, 235, 0.6)",borderColor:"rgba(54, 162, 235, 1)",borderWidth:1,hoverBackgroundColor:"rgba(54, 162, 235, 0.6)",hoverBorderColor:"rgba(54, 162, 235, 1)"},{type:"bar",label:"Con rezago",data:h,backgroundColor:"rgba(255, 99, 132, 0.2)",borderColor:"rgba(255, 99, 132, 1)",borderWidth:1,hoverBackgroundColor:"rgba(255, 99, 132, 0.4)",hoverBorderColor:"rgba(255, 99, 132, 1)"},]),options:opciones2()});let T=document.getElementById("chart-area-4");new Chart(T,{type:"bar",data:data1(i),options:opciones1()});let b=document.getElementById("chart-area-5");new Chart(b,{type:"bar",data:data1(l),options:opciones1()});let m=document.getElementById("chart-area-6");new Chart(m,{type:"bar",data:data1(u),options:opciones1()});let B=document.getElementById("solicitudesChart");new Chart(B,{type:"bar",data:data3([r.otros[0].atendidas,r.otros[0].rechazadas]),options:opciones3()});let f=document.getElementById("closedRequestsChart");new Chart(f,{type:"doughnut",data:data4([r.otros[0].porcAtendidas,r.otros[0].porcPendientes]),options:opciones4()});let I=[],_=[],v=[];a.servicios.forEach(e=>{_.push(e.Total),v.push(e.Servicio),g++});let C=document.getElementById("servicesChart");new Chart(C,{type:"bar",data:data5(v,_),options:opciones5()}),o.georeferencias.forEach(e=>{I.push({denuncia_id:e.denuncia_id,fecha_ingreso:e.fecha_ingreso,unidad:e.abreviatura,denuncia:e.denuncia,description:e.ciudadano,servicio:e.servicio,estatus:e.ultimo_estatus,type:e.type,icon:e.icon,dias_vencidos:e.dias_vencidos,position:{lat:e.latitud,lng:e.longitud}})}),window.onload=async()=>initMap(I),initMap(I)}window.onload=e("/storage/{{ $file_output }}"),document.querySelectorAll(".radio-button input").forEach(e=>{e.addEventListener("change",function(e){"free"!==e.currentTarget.value&&document.getElementById("formFilter").submit()})})});--}}
 
+document.addEventListener("DOMContentLoaded",()=>{async function e(e){try{let a=await fetch(e);if(!a.ok)throw Error(`Error al cargar JSON: ${a.statusText}`);let o=await a.json();t(o[0],o[1],o[2],o[3],o[4])}catch(r){console.error(r)}}function t(e,t,a,o,r){let n=[],s=[],d=[],i=[],l=[],u=[],c=[],h=[];document.getElementById("h2Recibidas").innerHTML=e.estatus[0].Total,document.getElementById("h2EnProceso").innerHTML=e.estatus[1].Total,document.getElementById("h2Atendidas").innerHTML=e.estatus[2].Total,document.getElementById("h2Aatendidas").innerHTML=e.estatus[2].a_tiempo,document.getElementById("h2Abtendidas").innerHTML=e.estatus[2].con_rezago,document.getElementById("h2Rechazadas").innerHTML=e.estatus[3].Total,document.getElementById("h2Total").innerHTML=e.estatus[0].Total+e.estatus[1].Total+e.estatus[2].Total+e.estatus[3].Total+e.estatus[4].Total+e.estatus[5].Total;var g=[0,0,0,0,0,0];e.estatus[0].Unidades.forEach((e,t=0)=>{n.push(e.Total),g[t]+=e.Total}),e.estatus[1].Unidades.forEach((e,t=0)=>{s.push(e.Total),g[t]+=e.Total}),e.estatus[2].Unidades.forEach((e,t=0)=>{d.push(e.Total),g[t]+=e.Total}),e.estatus[3].Unidades.forEach((e,t=0)=>{i.push(e.Total),g[t]+=e.Total}),e.estatus[4].Unidades.forEach((e,t=0)=>{l.push(e.Total),g[t]+=e.Total}),e.estatus[5].Unidades.forEach((e,t=0)=>{u.push(e.Total),g[t]+=e.Total}),console.log(g),e.estatus[2].Unidades.forEach(e=>{c.push(e.a_tiempo),h.push(e.con_rezago)});var p=0;t.unidades.forEach(e=>{document.getElementById("u"+p).innerHTML=e.Unidad,document.getElementById("u"+p+"p").innerHTML=e.Porcentaje+"%",p++});let T=document.getElementById("chart-area-1");new Chart(T,{type:"bar",data:data1(n),options:opciones1()});let y=document.getElementById("chart-area-2");new Chart(y,{type:"bar",data:data1(s),options:opciones1()});let E=document.getElementById("chart-area-3");new Chart(E,{type:"bar",data:data2([{type:"bar",label:"En tiempo",data:c,backgroundColor:"rgba(54, 162, 235, 0.6)",borderColor:"rgba(54, 162, 235, 1)",borderWidth:1,hoverBackgroundColor:"rgba(54, 162, 235, 0.6)",hoverBorderColor:"rgba(54, 162, 235, 1)"},{type:"bar",label:"Con rezago",data:h,backgroundColor:"rgba(255, 99, 132, 0.2)",borderColor:"rgba(255, 99, 132, 1)",borderWidth:1,hoverBackgroundColor:"rgba(255, 99, 132, 0.4)",hoverBorderColor:"rgba(255, 99, 132, 1)"},]),options:opciones2()});let b=document.getElementById("chart-area-4");new Chart(b,{type:"bar",data:data1(i),options:opciones1()});let $=document.getElementById("chart-area-7");new Chart($,{type:"bar",data:data1(g),options:opciones1()});let m=document.getElementById("solicitudesChart");new Chart(m,{type:"pie",data:data3([r.otros[0].atendidas,r.otros[0].rechazadas]),options:opciones3pie(),plugins:[ChartDataLabels]});let B=document.getElementById("closedRequestsChart");new Chart(B,{type:"doughnut",data:data4([r.otros[0].porcAtendidas,r.otros[0].porcPendientes]),options:opciones4()});let f=[],_=[],I=[];a.servicios.forEach(e=>{_.push(e.Total),I.push(e.Servicio),p++});let v=document.getElementById("servicesChart");new Chart(v,{type:"bar",data:data5(I,_),options:opciones5()}),o.georeferencias.forEach(e=>{f.push({denuncia_id:e.denuncia_id,fecha_ingreso:e.fecha_ingreso,unidad:e.abreviatura,denuncia:e.denuncia,description:e.ciudadano,servicio:e.servicio,estatus:e.ultimo_estatus,type:e.type,icon:e.icon,dias_vencidos:e.dias_vencidos,position:{lat:e.latitud,lng:e.longitud}})}),window.onload=async()=>initMap(f),initMap(f)}window.onload=e("/storage/{{ $file_output }}"),document.querySelectorAll(".radio-button input").forEach(e=>{e.addEventListener("change",function(e){"free"!==e.currentTarget.value&&document.getElementById("formFilter").submit()})})});
 
 </script>
 

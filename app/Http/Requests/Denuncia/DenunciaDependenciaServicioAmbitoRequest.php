@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Session;
 
 class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
 
-    protected $redirectRoute = 'editDenunciaDependenciaServicio';
+    protected $redirectRoute = 'editDenunciaDependenciaServicioAmbito';
 
     public function authorize()
     {
@@ -28,17 +28,32 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
 
     public function rules()
     {
-
         return [
             'dependencia_id' => ['required'],
             'servicio_id'    => ['required'],
             'estatus_id'     => ['required'],
+            'observaciones'  => ['required','min:10'],
         ];
     }
 
+    public function messages(){
+        return [
+
+            'observaciones.required'      => 'Se requieren los :attribute',
+            'observaciones.min'           => 'Los :attribute requieren por lo menos 10 caracteres',
+        ];
+    }
+
+    public function attributes(){
+        return [
+            'observaciones' => 'Argumentos',
+        ];
+    }
 
     public function manage(){
         try {
+//            dd($this->observaciones);
+//            return false;
 
             if ( isset($this->favorable) ){
                 $Fav = !( (int) $this->favorable === 0 );
@@ -136,7 +151,7 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
         if ($this->id > 0){
             return $url->route($this->redirectRoute,['Id'=>$this->id]);
         }else{
-            return $url->route('addDenunciaDependenciaServicio');
+            return $url->route('addDenunciaDependenciaServicioAmbito',['Id'=>$this->denuncia_id]);
         }
     }
 

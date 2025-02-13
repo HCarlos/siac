@@ -126,6 +126,8 @@
 
     }
 
+    const sliceOffsets = [0, 0, 0, 0, 0, 0];
+
     function data3(dataSet) {
         return {
             labels: ['Atendidas', 'Rechazadas (No procede)'],
@@ -136,24 +138,58 @@
                     'rgba(76, 175, 80, 0.8)',  // Verde para atendidas
                     'rgba(229, 57, 53, 0.8)'   // Rojo para rechazadas
                 ],
+                borderWidth: 2,
                 borderColor: [
-                    'rgba(76, 175, 80, 1)',
-                    'rgba(229, 57, 53, 1)'
+                    'rgba(255, 255, 255, 1)',
+                    'rgba(255, 255, 255, 1)'
                 ],
-                borderWidth: 1,
-                borderRadius: 5,
-                barThickness: 50
+                borderRadius: 1,
+                barThickness: 50,
+                maxBarThickness: 50
             }]
         }
     }
-    function opciones3(){
+    function opciones3pie(){
         return {
             responsive: true,
             maintainAspectRatio: false,
-            indexAxis: 'x',
+            elements: {
+                arc: {
+                    borderRadius: 0
+                }
+            },
+            // Evento onClick para alternar el desplazamiento del segmento clicado
+            onClick: (event, activeSegments) => {
+                const OFFSET_VALUE = 20; // Introducir constante para el valor del desplazamiento
+
+                if (activeSegments.length > 0) {
+                    const segmentIndex = activeSegments[0].index; // Renombrar a un nombre más descriptivo
+                    toggleSegmentOffset(segmentIndex); // Extraer lógica en una función
+                    //this.data.update();
+                }
+
+                function toggleSegmentOffset(index) {
+                    sliceOffsets[index] = sliceOffsets[index] === 0 ? OFFSET_VALUE : 0;
+                }
+            },
             plugins: {
+                datalabels: {
+                    color: 'rgba(54,47,47,0.85)',
+                    display: true,
+                    anchor: 'end',    // ancla la etiqueta al borde exterior del segmento
+                    align: 'start',   // posiciona la etiqueta hacia afuera
+                    offset: 10,       // separa la etiqueta un poco del borde
+                    font: {
+                        weight: 'bold',
+                        size: 12
+                    },
+                    formatter: (value, context) => {
+                        return value;  // Muestra el valor numérico de cada segmento
+                    }
+                },
                 legend: {
-                    display: false
+                    display: false,
+                    position: 'top'
                 },
                 tooltip: {
                     callbacks: {
@@ -163,59 +199,6 @@
                     }
                 }
             },
-            scales: {
-                x: {
-                    grid: {
-                        display: true
-                    },
-                    ticks: {
-                        color: '#333',
-                        font: {
-                            size: 9
-                        },
-                        display: true
-                    }
-                },
-                y: {
-                    beginAtZero: true,
-                    min: 0,
-                    max:100,
-                    grid: {
-                        color: '#e0e0e0',
-                        drawBorder: true
-                    },
-                    ticks: {
-                        stepSize: 5,
-                        color: '#333',
-                        font: {
-                            size: 8
-                        },
-                        display: true
-                    }
-                }
-            },
-            interaction: {
-                intersect: true,
-            },
-            animation: {
-                duration: 400,
-                onComplete: function() {
-                    ctx = this.ctx;
-                    ctx.font = Chart.helpers.fontString(8, 'normal', Chart.defaults.font.family);
-                    chartinst = this;
-                    this.data.datasets.forEach(function(dataset, i) {
-                        if (chartinst.isDatasetVisible(i)) {
-                            var meta = chartinst.getDatasetMeta(i);
-                            meta.data.forEach(function(bar, index) {
-                                var data = dataset.data[index];
-                                // alert(bar.y);
-                                var textY =data > 95 ? bar.y + 10 : bar.y - 5;
-                                ctx.fillText(data, bar.x - 7, textY);
-                            });
-                        }
-                    });
-                }
-            }
 
         }
     }
@@ -353,3 +336,24 @@
         }
     }
 
+function data3pie(dataSetLabels,dataSet) {
+    return {
+        labels: dataSetLabels,
+        datasets: [{
+            label: 'Cantidad de servicios',
+            data: dataSet,
+            backgroundColor: [
+                '#6a0dad', // Morado
+                '#0044cc', // Azul oscuro
+                '#00bfff', // Cian
+                '#32cd32', // Verde
+                '#ffc107', // Amarillo
+                '#dc3545', // Rojo
+            ],
+            borderWidth: 1,
+            borderColor: '#ffffff', // Bordes blancos
+            borderRadius: 3, // Bordes redondeados
+            barPercentage: 0.8, // Grosor de las barras
+        }]
+    }
+}
