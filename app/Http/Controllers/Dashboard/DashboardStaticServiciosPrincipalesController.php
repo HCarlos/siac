@@ -172,12 +172,12 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
 
             // INICIA EL MODULO DE SERVICIOS
             $vectorServicios = [
-                (object)["sue_id" => 483, "Servicio"=> "BACHEO_DE_VIALIDADES", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 508, "Servicio"=> "DESAZOLVE_DE_DRENAJE", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 476, "Servicio"=> "FUGA_DE_AGUA_POTABLE", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 503, "Servicio"=> "RECOLECCION_DE_RESIDUOS_SOLIDOS", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 479, "Servicio"=> "REPARACION_DE_ALCANTARILLA", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 466, "Servicio"=> "REPARACION_DE_LUMINARIAS", "Total"=> 0,"Porcentaje" => 0],
+                (object)["sue_id" => 483, "Servicio"=> "BACHEO DE VIALIDADES", "Total"=> 0,"Porcentaje" => 0],
+                (object)["sue_id" => 508, "Servicio"=> "DESAZOLVE DE DRENAJE", "Total"=> 0,"Porcentaje" => 0],
+                (object)["sue_id" => 476, "Servicio"=> "FUGA DE AGUA POTABLE", "Total"=> 0,"Porcentaje" => 0],
+                (object)["sue_id" => 503, "Servicio"=> "RECOLECCIÓN DE RESIDUOS SÓLIDOS", "Total"=> 0,"Porcentaje" => 0],
+                (object)["sue_id" => 479, "Servicio"=> "REPARACIÓÓN DE ALCANTARILLA", "Total"=> 0,"Porcentaje" => 0],
+                (object)["sue_id" => 466, "Servicio"=> "REPARACIÓN DE LUMINARIAS", "Total"=> 0,"Porcentaje" => 0],
             ];
 
             $totalServ = 0;

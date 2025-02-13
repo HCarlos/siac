@@ -284,9 +284,8 @@ main {
 .stat-2 {
     background-color: white;
     text-align: center;
-    padding: 20px;
-    /*border-radius: 8px;*/
-    /*box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);*/
+    padding: 1em;
+    font-family: Arial, sans-serif;
 }
 
 .card-stat-2 {
@@ -294,9 +293,7 @@ main {
     justify-content: space-between;
     align-items: center;
     background-color: white;
-    /*border-radius: 8px;*/
-    padding: 16px;
-    /*box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);*/
+    padding: 1em;
     font-family: Arial, sans-serif;
 }
 
@@ -324,6 +321,14 @@ main {
 
 .green {
     color: #28a745;
+}
+
+.red {
+    color: red;
+}
+
+.yellow {
+    color: #edb606;
 }
 
 .card-right {
@@ -355,7 +360,7 @@ main {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    height: 200px;
+    height: 220px !important;
     background-color: white;
     padding: 20px;
     border-radius: 8px;
