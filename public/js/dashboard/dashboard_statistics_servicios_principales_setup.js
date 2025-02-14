@@ -78,7 +78,7 @@
             indexAxis: 'y',
             scales: {
                 x: {
-                    stacked: true,
+                    stacked: false,
                     ticks: {
                         font: {
                             size: 8
@@ -86,7 +86,7 @@
                     }
                 },
                 y: {
-                    stacked: true,
+                    stacked: false,
                     ticks: {
                         font: {
                             size: 8

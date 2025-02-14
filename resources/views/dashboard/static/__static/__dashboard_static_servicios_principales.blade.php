@@ -174,6 +174,10 @@
                                     <option value="0">Todos</option>
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="items">Items:</label>
+                                <input type="text" name="items" id="items" value="0" class="totalItems" disabled>
+                            </div>
                             <button type="button" id="frmFilter" class="btn btn-primary btn-submit ms-auto">Filtrar</button>
                         </form>
                     </div>
@@ -229,16 +233,17 @@
             let dataatiempo = [];
             let datarezago = [];
 
-            document.getElementById("h2Recibidas").innerHTML = Estatus.estatus[0].Total;
-            document.getElementById("h2EnProceso").innerHTML = Estatus.estatus[1].Total;
 
-            document.getElementById("h2Atendidas").innerHTML = Estatus.estatus[2].Total;
-            document.getElementById("h2Aatendidas").innerHTML = Estatus.estatus[2].a_tiempo;
-            document.getElementById("h2Abtendidas").innerHTML = Estatus.estatus[2].con_rezago;
+            document.getElementById("h2Recibidas").innerHTML  = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[0].Total);
+            document.getElementById("h2EnProceso").innerHTML  = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[1].Total);
 
-            document.getElementById("h2Rechazadas").innerHTML = Estatus.estatus[3].Total;
+            document.getElementById("h2Atendidas").innerHTML  = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[2].Total);
+            document.getElementById("h2Aatendidas").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[2].a_tiempo);
+            document.getElementById("h2Abtendidas").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[2].con_rezago);
 
-            document.getElementById("h2Total").innerHTML = Estatus.estatus[0].Total + Estatus.estatus[1].Total + Estatus.estatus[2].Total + Estatus.estatus[3].Total + Estatus.estatus[4].Total + Estatus.estatus[5].Total;
+            document.getElementById("h2Rechazadas").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[3].Total);
+
+            document.getElementById("h2Total").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[0].Total + Estatus.estatus[1].Total + Estatus.estatus[2].Total + Estatus.estatus[3].Total + Estatus.estatus[4].Total + Estatus.estatus[5].Total);
 
             var arr = [0, 0, 0, 0, 0, 0];
             Estatus.estatus[0].Unidades.forEach( (unidad, i=0) => {data1data.push(unidad.Total); arr[i] += unidad.Total; });
@@ -280,8 +285,8 @@
             });
 
             var ds_atendidas = [
-                {type: 'bar',label: 'En tiempo', data: dataatiempo, backgroundColor: 'rgba(54, 162, 235, 0.6)', borderColor: 'rgba(54, 162, 235, 1)', borderWidth: 1, hoverBackgroundColor: 'rgba(54, 162, 235, 0.6)', hoverBorderColor: 'rgba(54, 162, 235, 1)' },
-                {type: 'bar',label: 'Con rezago', data: datarezago, backgroundColor: 'rgba(255, 99, 132, 0.2)', borderColor: 'rgba(255, 99, 132, 1)', borderWidth: 1, hoverBackgroundColor: 'rgba(255, 99, 132, 0.4)', hoverBorderColor: 'rgba(255, 99, 132, 1)'},
+                {label: 'En tiempo', data: dataatiempo, backgroundColor: 'rgba(54, 162, 235, 0.6)', borderColor: 'rgba(54, 162, 235, 1)', borderWidth: 1, hoverBackgroundColor: 'rgba(54, 162, 235, 0.6)', hoverBorderColor: 'rgba(54, 162, 235, 1)', fill: false, borderwidth: 1},
+                {label: 'Con rezago', data: datarezago, backgroundColor: 'rgba(255, 99, 132, 0.2)', borderColor: 'rgba(255, 99, 132, 1)', borderWidth: 1, hoverBackgroundColor: 'rgba(255, 99, 132, 0.4)', hoverBorderColor: 'rgba(255, 99, 132, 1)', fill: false, borderwidth: 1},
             ];
 
 
@@ -367,6 +372,7 @@
 
             const selectZona = document.getElementById('zona');
             const selectServicios = document.getElementById('servicios');
+            const items = document.getElementById('items');
 
             FiltroUnidades.filtro_unidades.forEach(zona => {
                 const opcion = document.createElement('option');
@@ -392,9 +398,10 @@
             document.getElementById('frmFilter').addEventListener('click', (event) => {
                 event.preventDefault();
                 filterMap(Georeferencias);
-            })
 
+            })
             window.onload = async () => initMap(dataSetLocations);
+            items.value = getCommaSeparatedTwoDecimalsNumber(dataSetLocations.length);
             initMap(dataSetLocations);
 
         }
@@ -421,30 +428,54 @@
         const selectedServicio = selectServicios.value;
         const dataSetLocations = [];
         Georeferencias.georeferencias.forEach( (geo) => {
-            if (geo.dependencia_id == selectedZona && geo.sue_id == selectedServicio) {
-                console.log(geo);
-                dataSetLocations.push({
-                    denuncia_id:geo.denuncia_id,
-                    fecha_ingreso: geo.fecha_ingreso,
-                    unidad: geo.abreviatura,
-                    denuncia: geo.denuncia,
-                    description: geo.ciudadano,
-                    servicio: geo.servicio,
-                    estatus: geo.ultimo_estatus,
-                    type: geo.type,
-                    icon: geo.icon,
-                    dias_vencidos: geo.dias_vencidos,
-                    position: {
-                        lat: geo.latitud,
-                        lng: geo.longitud,
+            var dep = geo.dependencia_id;
+            var ser = geo.sue_id;
+
+            if (selectedZona == 0 && selectedServicio == 0) {
+                dataSetLocations.push(setDataLocations(geo));
+            }else{
+                if (selectedZona > 0 ) {
+                    if (dep == selectedZona && selectedServicio == 0) {
+                        dataSetLocations.push(setDataLocations(geo));
+                    }else{
+                        if (dep == selectedZona && ser == selectedServicio) {
+                            dataSetLocations.push(setDataLocations(geo));
+                        }
                     }
-                });
+                }
             }
+
         });
+        items.value = getCommaSeparatedTwoDecimalsNumber(dataSetLocations.length);
         window.onload = async () => initMap(dataSetLocations);
         initMap(dataSetLocations);
+
     }
 
+    function setDataLocations(geo) {
+        return {
+            denuncia_id:geo.denuncia_id,
+            fecha_ingreso: geo.fecha_ingreso,
+            unidad: geo.abreviatura,
+            denuncia: geo.denuncia,
+            description: geo.ciudadano,
+            servicio: geo.servicio,
+            estatus: geo.ultimo_estatus,
+            type: geo.type,
+            icon: geo.icon,
+            dias_vencidos: geo.dias_vencidos,
+            position: {
+                lat: geo.latitud,
+                lng: geo.longitud,
+            }
+        };
+    }
+
+    function getCommaSeparatedTwoDecimalsNumber(number) {
+        const fixedNumber = Number.parseFloat(number).toFixed(0);
+        return String(fixedNumber).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    }
 
 
 {{--document.addEventListener("DOMContentLoaded",()=>{async function e(e){try{let a=await fetch(e);if(!a.ok)throw Error(`Error al cargar JSON: ${a.statusText}`);let o=await a.json();t(o[0],o[1],o[2],o[3],o[4])}catch(r){console.error(r)}}function t(e,t,a,o,r){let n=[],s=[],d=[],i=[],l=[],u=[],c=[],h=[];document.getElementById("h2Recibidas").innerHTML=e.estatus[0].Total,document.getElementById("h2EnProceso").innerHTML=e.estatus[1].Total,document.getElementById("h2Atendidas").innerHTML=e.estatus[2].Total,document.getElementById("h2Aatendidas").innerHTML=e.estatus[2].a_tiempo,document.getElementById("h2Abtendidas").innerHTML=e.estatus[2].con_rezago,document.getElementById("h2Rechazadas").innerHTML=e.estatus[3].Total,document.getElementById("h2Total").innerHTML=e.estatus[0].Total+e.estatus[1].Total+e.estatus[2].Total+e.estatus[3].Total+e.estatus[4].Total+e.estatus[5].Total;var g=[0,0,0,0,0,0];e.estatus[0].Unidades.forEach((e,t=0)=>{n.push(e.Total),g[t]+=e.Total}),e.estatus[1].Unidades.forEach((e,t=0)=>{s.push(e.Total),g[t]+=e.Total}),e.estatus[2].Unidades.forEach((e,t=0)=>{d.push(e.Total),g[t]+=e.Total}),e.estatus[3].Unidades.forEach((e,t=0)=>{i.push(e.Total),g[t]+=e.Total}),e.estatus[4].Unidades.forEach((e,t=0)=>{l.push(e.Total),g[t]+=e.Total}),e.estatus[5].Unidades.forEach((e,t=0)=>{u.push(e.Total),g[t]+=e.Total}),console.log(g),e.estatus[2].Unidades.forEach(e=>{c.push(e.a_tiempo),h.push(e.con_rezago)});var p=0;t.unidades.forEach(e=>{document.getElementById("u"+p).innerHTML=e.Unidad,document.getElementById("u"+p+"p").innerHTML=e.Porcentaje+"%",p++});let T=document.getElementById("chart-area-1");new Chart(T,{type:"bar",data:data1(n),options:opciones1()});let y=document.getElementById("chart-area-2");new Chart(y,{type:"bar",data:data1(s),options:opciones1()});let E=document.getElementById("chart-area-3");new Chart(E,{type:"bar",data:data2([{type:"bar",label:"En tiempo",data:c,backgroundColor:"rgba(54, 162, 235, 0.6)",borderColor:"rgba(54, 162, 235, 1)",borderWidth:1,hoverBackgroundColor:"rgba(54, 162, 235, 0.6)",hoverBorderColor:"rgba(54, 162, 235, 1)"},{type:"bar",label:"Con rezago",data:h,backgroundColor:"rgba(255, 99, 132, 0.2)",borderColor:"rgba(255, 99, 132, 1)",borderWidth:1,hoverBackgroundColor:"rgba(255, 99, 132, 0.4)",hoverBorderColor:"rgba(255, 99, 132, 1)"},]),options:opciones2()});let b=document.getElementById("chart-area-4");new Chart(b,{type:"bar",data:data1(i),options:opciones1()});let $=document.getElementById("chart-area-7");new Chart($,{type:"bar",data:data1(g),options:opciones1()});let m=document.getElementById("solicitudesChart");new Chart(m,{type:"pie",data:data3([r.otros[0].atendidas,r.otros[0].rechazadas]),options:opciones3pie(),plugins:[ChartDataLabels]});let B=document.getElementById("closedRequestsChart");new Chart(B,{type:"doughnut",data:data4([r.otros[0].porcAtendidas,r.otros[0].porcPendientes]),options:opciones4()});let f=[],_=[],I=[];a.servicios.forEach(e=>{_.push(e.Total),I.push(e.Servicio),p++});let v=document.getElementById("servicesChart");new Chart(v,{type:"bar",data:data5(I,_),options:opciones5()}),o.georeferencias.forEach(e=>{f.push({denuncia_id:e.denuncia_id,fecha_ingreso:e.fecha_ingreso,unidad:e.abreviatura,denuncia:e.denuncia,description:e.ciudadano,servicio:e.servicio,estatus:e.ultimo_estatus,type:e.type,icon:e.icon,dias_vencidos:e.dias_vencidos,position:{lat:e.latitud,lng:e.longitud}})}),window.onload=async()=>initMap(f),initMap(f)}window.onload=e("/storage/{{ $file_output }}"),document.querySelectorAll(".radio-button input").forEach(e=>{e.addEventListener("change",function(e){"free"!==e.currentTarget.value&&document.getElementById("formFilter").submit()})})});--}}
