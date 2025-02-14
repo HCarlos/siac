@@ -78,7 +78,7 @@
                 <div class="card">
                     <div class="stat-2">
                         <h1 class="count yellow" id="h2EnProceso">0</h1>
-                        <p >En Proceso</p>
+                        <p>En Proceso / Programadas</p>
                     </div>
                     <div class="chart">
                         <canvas id="chart-area-2">[Gráfico de Barras]</canvas>
@@ -158,10 +158,30 @@
             </div>
             <!-- Zona del Mapa -->
             <div class="section">
-                <div class="card" >
-                    <h3>Por zona:</h3>
-                    <div class="map-container" id="map-container">
-                        <div id="map"></div>
+                <div class="card shadow-sm" >
+
+                    <div class="card-header">
+                        <form class="form-modern">
+                            <div class="form-group">
+                                <label for="zona control-select">Unidades:</label>
+                                <select class="control-select " name="zona" id="zona">
+                                    <option value="0">Todas</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="servicios">Servicios:</label>
+                                <select class="form-select" name="servicios" id="servicios">
+                                    <option value="0">Todos</option>
+                                </select>
+                            </div>
+                            <button type="button" id="frmFilter" class="btn btn-primary btn-submit ms-auto">Filtrar</button>
+                        </form>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="map-container" id="map-container">
+                            <div id="map"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -191,14 +211,14 @@
                     throw new Error(`Error al cargar JSON: ${response.statusText}`);
                 }
                 const data = await response.json();
-                initLoadData(data[0],data[1],data[2],data[3],data[4]);
+                initLoadData(data[0],data[1],data[2],data[3],data[4],data[5],data[6]);
             } catch (error) {
                 console.error(error);
             }
         }
 
 
-        function initLoadData(Estatus,Unidades,Servicios,Georeferencias,Otros) {
+        function initLoadData(Estatus,Unidades,Servicios,Georeferencias,Otros,FiltroUnidades,FiltroServicios) {
             let data1data = [];
             let data2data = [];
             let data3data = [];
@@ -345,16 +365,43 @@
 
             });
 
-            // console.log(dataSetLocations);
+            const selectZona = document.getElementById('zona');
+            const selectServicios = document.getElementById('servicios');
+
+            FiltroUnidades.filtro_unidades.forEach(zona => {
+                const opcion = document.createElement('option');
+                opcion.value = zona.dependencia_id;
+                opcion.text = zona.dependencia;
+                selectZona.add(opcion);
+            });
+
+            selectZona.addEventListener('change', () => {
+                const selectedValue = selectZona.value;
+                selectServicios.innerHTML = '<option value="0">Todos</option>';
+                FiltroServicios.filtro_servicios.forEach(item => {
+                    if (selectedValue == item.dependencia_id) {
+                        const opcion = document.createElement('option');
+                        opcion.value = item.sue_id;
+                        opcion.text = item.servicio;
+                        selectServicios.add(opcion);
+                    }
+                });
+            });
+            selectServicios.innerHTML = '<option value="0">Todos</option>';
+
+            document.getElementById('frmFilter').addEventListener('click', (event) => {
+                event.preventDefault();
+                filterMap(Georeferencias);
+            })
 
             window.onload = async () => initMap(dataSetLocations);
             initMap(dataSetLocations);
 
-
         }
 
-        window.onload = loadJSON( "/storage/{{ $file_output }}" );
 
+
+        window.onload = loadJSON( "/storage/{{ $file_output }}" );
 
         document.querySelectorAll('.radio-button input').forEach((input) => {
             input.addEventListener('change', function (event) {
@@ -366,6 +413,37 @@
 
     });
 
+
+    function filterMap(Georeferencias) {
+        const selectZona = document.getElementById('zona');
+        const selectServicios = document.getElementById('servicios');
+        const selectedZona = selectZona.value;
+        const selectedServicio = selectServicios.value;
+        const dataSetLocations = [];
+        Georeferencias.georeferencias.forEach( (geo) => {
+            if (geo.dependencia_id == selectedZona && geo.sue_id == selectedServicio) {
+                console.log(geo);
+                dataSetLocations.push({
+                    denuncia_id:geo.denuncia_id,
+                    fecha_ingreso: geo.fecha_ingreso,
+                    unidad: geo.abreviatura,
+                    denuncia: geo.denuncia,
+                    description: geo.ciudadano,
+                    servicio: geo.servicio,
+                    estatus: geo.ultimo_estatus,
+                    type: geo.type,
+                    icon: geo.icon,
+                    dias_vencidos: geo.dias_vencidos,
+                    position: {
+                        lat: geo.latitud,
+                        lng: geo.longitud,
+                    }
+                });
+            }
+        });
+        window.onload = async () => initMap(dataSetLocations);
+        initMap(dataSetLocations);
+    }
 
 
 

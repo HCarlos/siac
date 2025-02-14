@@ -32,6 +32,8 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
 
         $f = new FuncionesController();
 
+//        $data['filter'] = 'anio';
+
         if ($data === []){
             $start_date = Carbon::now();
             $start_date = $start_date->format('Y-m-d');
@@ -87,7 +89,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 (object)["ue_id" => 21, "Estatus"=> "CERRADO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
             ];
 
-            $ServiciosPrincipales = [483,508,476,503,479,466];
+            $ServiciosPrincipales = [483,508,476,503,471,466];
 
             $srv2 = static::getUltimoEstatus($start_date,$end_date,$ServiciosPrincipales);
 
@@ -176,7 +178,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 (object)["sue_id" => 508, "Servicio"=> "DESAZOLVE DE DRENAJE", "Total"=> 0,"Porcentaje" => 0],
                 (object)["sue_id" => 476, "Servicio"=> "FUGA DE AGUA POTABLE", "Total"=> 0,"Porcentaje" => 0],
                 (object)["sue_id" => 503, "Servicio"=> "RECOLECCIÓN DE RESIDUOS SÓLIDOS", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 479, "Servicio"=> "REPARACIÓÓN DE ALCANTARILLA", "Total"=> 0,"Porcentaje" => 0],
+                (object)["sue_id" => 471, "Servicio"=> "REPARACIÓN DE ALCANTARILLA", "Total"=> 0,"Porcentaje" => 0],
                 (object)["sue_id" => 466, "Servicio"=> "REPARACIÓN DE LUMINARIAS", "Total"=> 0,"Porcentaje" => 0],
             ];
 
@@ -198,7 +200,10 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
 
             // INICIA EL MODULO DE GEOLOCALIZACIÓN
             $arrGeos = [];
-            $arrG = static::getGeoDenuncias($start_date,$end_date,0,0,$ServiciosPrincipales);
+            $arrDep = [];
+            $arrDepServ = [];
+            $arrG = static::getGeoDenuncias($start_date,$end_date,$ServiciosPrincipales);
+            $initArr = true;
 
             foreach ($arrG as $g) {
                 $fme1 = Carbon::parse($g->fecha_dias_ejecucion);
@@ -254,11 +259,13 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
 
                 $arrGeos[] = (object)[
                     "denuncia_id"=> $g->id,
-                    "denuncia"=> $g->denuncia,
                     "latitud"=> (float) $g->latitud,
                     "longitud"=> (float) $g->longitud,
+                    "dependencia_id" => $g->dependencia_id,
+                    "dependencia"=> $g->dependencia,
                     "abreviatura"=> $g->abreviatura,
-                    "servicio" => $g->servicio,
+                    "sue_id" => $g->sue_id,
+                    "servicio" => $g->nombre_corto_ss,
                     "ciudadano" => $g->ciudadano,
                     "ue_id" => $g->ue_id,
                     "ultimo_estatus" => $g->ultimo_estatus,
@@ -269,12 +276,38 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                     "dias_a_tiempo" => Carbon::parse($g->fecha_dias_maximos_ejecucion)->diffInDays(Carbon::parse($g->fecha_ingreso)),
                     "type" => $status,
                     "icon" => $icon,
-                    "dependencia_id" => $g->dependencia_id,
                     "dias_vencidos" => $dias_vencidos,
                 ];
+
+//                if ( str_contains($g->servicio_ultimo_estatus, "DESAZOLVE") ){
+//                    dd($g->servicio_ultimo_estatus);
+//                }
+
+                if (!in_array($g->dependencia_id, array_column($arrDep, 'dependencia_id'), true)) {
+                    $arrDep[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia];
+                }
+
+                if ($initArr){
+                    $arrDepServ[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia,"sue_id" => $g->sue_id,"servicio" => $g->nombre_corto_ss];
+                    $initArr = false;
+                }else{
+                    $Encontrado = false;
+                    foreach ($arrDepServ as $key => $value) {
+                        if ($value['dependencia_id'] === $g->dependencia_id && $value['sue_id'] === $g->sue_id) {
+                            $Encontrado = true;
+                        }
+                    }
+                    if (!$Encontrado) {
+                        $arrDepServ[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia,"sue_id" => $g->sue_id,"servicio" => $g->nombre_corto_ss];
+                    }
+
+                }
+
+
+
             }
 
-//            dd($arrGeos);
+//            dd($arrDepServ);
 
             // INICIA EL MODULO DE OTROS DATOS
             $arrGeos = collect($arrGeos);
@@ -296,6 +329,9 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 "porcPendientes" => $porcPendientes]
             ];
 
+
+
+
             // SE CONSTRUYE EL JSON GENERAL
             $arrJson = [
                 (object)["estatus" => $arrEstatus],
@@ -303,6 +339,8 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 (object)["servicios" => $vectorServicios],
                 (object)["georeferencias" => $arrGeos],
                 (object)["otros" => $otrosDatos],
+                (object)["filtro_unidades" => $arrDep],
+                (object)["filtro_servicios" => $arrDepServ],
             ];
 
 //           dd($arrJson);
@@ -403,14 +441,14 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
             ->first();
     }
 
-    static function getGeoDenuncias($start_date,$end_date,$unidad_id,$ue_id,$ServiciosPrincipales){
+    static function getGeoDenuncias($start_date,$end_date,$ServiciosPrincipales){
 
         return DB::table("_viddss")
             ->select(
-                'id','denuncia','latitud','longitud','abreviatura',
+                'id','latitud','longitud','dependencia','abreviatura',
                 'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
                 'fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','ultimo_estatus',
-                'servicio','ue_id','dependencia_id',
+                'sue_id','servicio_ultimo_estatus','ue_id','dependencia_id',
             )
             ->where('ambito_dependencia', 2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])

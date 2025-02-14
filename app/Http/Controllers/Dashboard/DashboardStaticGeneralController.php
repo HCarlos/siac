@@ -178,7 +178,7 @@ class DashboardStaticGeneralController extends Controller{
                 (object)["sue_id" => 508, "Servicio"=> "DESAZOLVE_DE_DRENAJE", "Total"=> 0,"Porcentaje" => 0],
                 (object)["sue_id" => 476, "Servicio"=> "FUGA_DE_AGUA_POTABLE", "Total"=> 0,"Porcentaje" => 0],
                 (object)["sue_id" => 503, "Servicio"=> "RECOLECCION_DE_RESIDUOS_SOLIDOS", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 479, "Servicio"=> "REPARACION_DE_ALCANTARILLA", "Total"=> 0,"Porcentaje" => 0],
+                (object)["sue_id" => 471, "Servicio"=> "REPARACION_DE_ALCANTARILLA", "Total"=> 0,"Porcentaje" => 0],
                 (object)["sue_id" => 466, "Servicio"=> "REPARACION_DE_LUMINARIAS", "Total"=> 0,"Porcentaje" => 0],
             ];
 

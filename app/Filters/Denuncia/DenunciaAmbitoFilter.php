@@ -78,7 +78,7 @@ class DenunciaAmbitoFilter extends QueryFilter
     public function curp($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
         $search = strtoupper($search);
-        return $query->where("curp",strtoupper(trim($search)));
+        return $query->where("curp_ciudadano",strtoupper(trim($search)));
      }
 
     public function ciudadano($query, $search){
