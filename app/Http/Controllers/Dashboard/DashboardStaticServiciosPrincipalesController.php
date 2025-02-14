@@ -376,7 +376,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
         return DB::table("_viddss")
             ->select(["ultimo_estatus as name", "ue_id", DB::raw("count(ue_id) as data")])
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-            ->whereIn('sue_id', [483,508,476,503,479,466])
+            ->whereIn('sue_id', [483,508,476,503,471,466])
             ->groupBy(["ultimo_estatus","ue_id"])
             ->get();
     }

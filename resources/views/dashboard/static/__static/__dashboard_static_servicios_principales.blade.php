@@ -401,8 +401,9 @@
 
             })
             window.onload = async () => initMap(dataSetLocations);
-            items.value = getCommaSeparatedTwoDecimalsNumber(dataSetLocations.length);
             initMap(dataSetLocations);
+
+            items.value = getCommaSeparatedTwoDecimalsNumber(dataSetLocations.length);
 
         }
 
