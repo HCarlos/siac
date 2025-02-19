@@ -259,6 +259,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
 
                 $arrGeos[] = (object)[
                     "denuncia_id"=> $g->id,
+                    "denuncia"=> $g->denuncia,
                     "latitud"=> (float) $g->latitud,
                     "longitud"=> (float) $g->longitud,
                     "dependencia_id" => $g->dependencia_id,
@@ -450,6 +451,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
                 'fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','ultimo_estatus',
                 'sue_id','servicio_ultimo_estatus','ue_id','dependencia_id','uuid',
+                'denuncia',
             )
             ->where('ambito_dependencia', 2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
