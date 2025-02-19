@@ -31,6 +31,7 @@ class DenunciaAmbitoFilter extends QueryFilter
             'desde'                  => '',
             'hasta'                  => '',
             'dependencia_id'         => '',
+            'prioridad_id'           => '',
             'servicio_id'            => '',
             'origen_id'              => '',
             'estatus_id'             => '',
@@ -131,9 +132,14 @@ class DenunciaAmbitoFilter extends QueryFilter
 
     }
 
+    public function prioridad_id($query, $search){
+        if (is_null($search) || empty ($search) || trim($search) == "0" || trim($search) == "") {return $query;}
+        return $query->where('prioridad_id', (int)$search);
+    }
+
+
     public function servicio_id($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "0" || trim($search) == "") {return $query;}
-//        dd($search);
           return $query->where('sue_id', (int)$search);
     }
 

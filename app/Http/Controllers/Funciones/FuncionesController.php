@@ -291,6 +291,8 @@ class FuncionesController extends Controller
         $IsDelegados            = Auth::user()->isRole('DELEGADOS');
         $IsCoordinadorDelegados = Auth::user()->isRole('COORDINACION_DE_DELEGADOS');
 
+        // full_name_with_username_dependencia
+
         if ($IsEnlace) {
             return User::query()
                 ->where("status_user", 1)
@@ -298,8 +300,8 @@ class FuncionesController extends Controller
                     return $q->whereIn('name',array('ENLACE','USER_OPERATOR_SIAC','USER_OPERATOR_ADMIN') );
                 })
                 ->get()
-                ->sortBy('full_name_with_username_dependencia')
-                ->pluck('full_name_with_username_dependencia','id');
+                ->sortBy('full_name')
+                ->pluck('full_name','id');
         }
 
         if ($IsDelegados) {
@@ -307,8 +309,8 @@ class FuncionesController extends Controller
                 ->where("id", Auth::user()->id)
                 ->where("status_user", 1)
                 ->get()
-                ->sortBy('full_name_with_username_dependencia')
-                ->pluck('full_name_with_username_dependencia','id');
+                ->sortBy('full_name')
+                ->pluck('full_name','id');
         }
 
         if ($IsCoordinadorDelegados) {
@@ -318,8 +320,8 @@ class FuncionesController extends Controller
                     return $q->whereIn('name',array('DELEGADOS','COORDINACION_DE_DELEGADOS') );
                 })
                 ->get()
-                ->sortBy('full_name_with_username_dependencia')
-                ->pluck('full_name_with_username_dependencia','id');
+                ->sortBy('full_name')
+                ->pluck('full_name','id');
         }
 
         return User::query()
@@ -328,8 +330,8 @@ class FuncionesController extends Controller
                 return $q->whereIn('name',array('ENLACE','USER_OPERATOR_SIAC','USER_OPERATOR_ADMIN','DELEGADOS','COORDINACION_DE_DELEGADOS') );
             })
             ->get()
-            ->sortBy('full_name_with_username_dependencia')
-            ->pluck('full_name_with_username_dependencia','id');
+            ->sortBy('full_name')
+            ->pluck('full_name','id');
 
     }
 

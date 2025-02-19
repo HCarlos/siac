@@ -174,11 +174,11 @@
                                     <option value="0">Todos</option>
                                 </select>
                             </div>
+                            <button type="button" id="frmFilter" class="btn btn-primary btn-submit ms-auto">Filtrar</button>
                             <div class="form-group">
                                 <label for="items">Items:</label>
                                 <input type="text" name="items" id="items" value="0" class="totalItems" disabled>
                             </div>
-                            <button type="button" id="frmFilter" class="btn btn-primary btn-submit ms-auto">Filtrar</button>
                         </form>
                     </div>
 
@@ -350,24 +350,7 @@
             });
 
             Georeferencias.georeferencias.forEach( (geo) => {
-
-                dataSetLocations.push({
-                    denuncia_id:geo.denuncia_id,
-                    fecha_ingreso: geo.fecha_ingreso,
-                    unidad: geo.abreviatura,
-                    denuncia: geo.denuncia,
-                    description: geo.ciudadano,
-                    servicio: geo.servicio,
-                    estatus: geo.ultimo_estatus,
-                    type: geo.type,
-                    icon: geo.icon,
-                    dias_vencidos: geo.dias_vencidos,
-                    position: {
-                        lat: geo.latitud,
-                        lng: geo.longitud,
-                    }
-                });
-
+                dataSetLocations.push(setDataLocations(geo));
             });
 
             const selectZona = document.getElementById('zona');
@@ -468,7 +451,8 @@
             position: {
                 lat: geo.latitud,
                 lng: geo.longitud,
-            }
+            },
+            uuid: geo.uuid
         };
     }
 

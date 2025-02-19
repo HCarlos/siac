@@ -108,9 +108,9 @@ class DenunciaAPIRequest extends FormRequest{
                 'denuncia'          => strtoupper(trim($this->denuncia)),
                 'tipo_mobile'       => strtoupper(trim($this->tipo_mobile)),
                 'marca_mobile'      => strtoupper(trim($this->marca_mobile)),
-                'serviciomobile_id' => $Ser ? $Ser->id : 1,
-                'dependencia_id'    => $Ser ? $Ser->dependencia_id : 1,
-                'servicio_id'       => $Ser ? $Ser->servicio_id : 1,
+                'serviciomobile_id' => $Ser->id,
+                'dependencia_id'    => $Ser->dependencia_id,
+                'servicio_id'       => $Ser->servicio_id,
                 'estatus_id'        => env('ESTATUS_DEFAULT_SERVICIOS_MUNICIPALES') ,
                 'ubicacion_id'      => $Ubi->id,
                 'ubicacion'         => strtoupper(trim($Ubi->Ubicacion ?? $this->ubicacion_google)),
@@ -285,8 +285,6 @@ class DenunciaAPIRequest extends FormRequest{
         $this->attachesDenunciaMobileADenuncia($item);
         $this->DenMobGen->denuncia_id = $item->id;
         $this->DenMobGen->save();
-//        $vid = new VistaDenunciaClass();
-//        $vid->vistaDenuncia($this->id);
         return $item;
     }
 
@@ -294,7 +292,7 @@ class DenunciaAPIRequest extends FormRequest{
         try {
                 $Obj = $Item->prioridades()->attach($Item->prioridad_id);
                 $Obj = $Item->origenes()->attach($Item->origen_id);
-                $Obj = $Item->dependencias()->attach($Item->dependencia_id,['servicio_id'=>$Item->servicio_id,'estatu_id'=>$Item->estatus_id,'fecha_movimiento' => now() ]);
+                $Obj = $Item->dependencias()->attach($Item->dependencia_id,['servicio_id'=>$Item->servicio_id,'estatu_id'=>$Item->estatus_id,'fecha_movimiento' => now(),'observaciones'=>'Se recibe la solicitud vía mobile']);
                 $Obj = $Item->ubicaciones()->attach($Item->ubicacion_id);
                 $Obj = $Item->servicios()->attach($Item->servicio_id);
                 $Obj = $Item->estatus()->attach($Item->estatus_id,['ultimo'=>true]);
@@ -302,7 +300,7 @@ class DenunciaAPIRequest extends FormRequest{
                 $Obj = $Item->creadospor()->attach($Item->creadopor_id);
                 $Obj = $Item->modificadospor()->attach($Item->modificadopor_id);
 
-        }catch (\Doctrine\DBAL\Driver\Exception $e){
+        }catch (í\Doctrine\DBAL\Driver\Exception $e){
 
         }
 

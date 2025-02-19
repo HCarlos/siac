@@ -55,8 +55,6 @@ class DenunciaMobileController extends Controller{
 
         $user = Auth::User();
 
-        // dd($items);
-
         return view('SIAC.denuncia.denuncia.denuncia_mobile_list',
             [
                 'items'                   => $items,
@@ -72,12 +70,8 @@ class DenunciaMobileController extends Controller{
 
     }
 
-
     protected function removeDenunciaMobile($id = 0){
         $trigger_type = 2;
-
-//        $DenMob = Denunciamobile::findOrFail($id);
-//        $Den = Denuncia::findOrFail($$DenMob->denuncia_id);
 
         $item = Denunciamobile::withTrashed()->findOrFail($id);
         if (isset($item)) {

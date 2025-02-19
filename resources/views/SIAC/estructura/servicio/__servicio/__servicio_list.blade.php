@@ -9,7 +9,7 @@
                         <th class="sorting w-45-percent">Servicio</th>
                         <th class="sorting w-8-percent">Unidad</th>
                         <th class="sorting w-8-percent">Es Mobile</th>
-                        <th class="sorting w-8-percent">Mobile--</th>
+                        <th class="sorting w-8-percent">Mobile</th>
                         <th class="sorting w-8-percent">Es Servicio</th>
                         <th class="sorting w-8-percent">Servicio</th>
                         <th class="w-10-percent"></th>

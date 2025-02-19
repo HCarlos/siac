@@ -35,7 +35,7 @@ class _viDDSs extends Model{
         'id','uuid','ciudadano','curp_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano',
         'fecha_ingreso','dependencia_ultimo_estatus','area','subarea','servicio_ultimo_estatus','cp',
         'telefonoscelularesemails', 'calle','num_ext','num_int','colonia','ubicacion','ambito_dependencia',
-        'denuncia','referencia', 'status_denuncia','prioridad','origen','observaciones','genero','genero_ciudadano',
+        'denuncia','referencia', 'status_denuncia','prioridad_id','prioridad','origen','observaciones','genero','genero_ciudadano',
         'cerrado','origen_id','ciudadano_id','ultimo_estatus','firmado','latitud','longitud',
         'clave_identificadora','estatus_general','ambito','ambito_sas','ue_id',
     ];
@@ -197,10 +197,17 @@ class _viDDSs extends Model{
 
         $sem = 1;
 
-        $fhoy = Carbon::now();
-        $fingreso = Carbon::parse($this->fecha_ingreso);
+        $finicio = Carbon::now();
+        $ffin = Carbon::parse($this->fecha_ingreso);
 
-        $dias = $fhoy->diffInDays($fingreso);
+        if ($this->ultimo_estatus === "ATENDIDO" ||
+            $this->ultimo_estatus === "ATENDIDA" ||
+            $this->ultimo_estatus === "RECHAZADA"
+        ){
+            $finicio = Carbon::parse($this->fecha_ingreso);
+            $ffin = Carbon::parse($this->fecha_ultimo_estatus);
+        }
+        $dias = $finicio->diffInDays($ffin);
 
         if ( $dias <= $this->dias_ejecucion ){ $sem = 1; $class_color = 'text-verde-semaforo';  }
         if ( $dias > $this->dias_ejecucion && $dias <= $this->dias_maximos_ejecucion ){ $sem = 2; $class_color = 'text-amarillo-semaforo';}

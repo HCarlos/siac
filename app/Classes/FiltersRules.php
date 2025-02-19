@@ -18,7 +18,7 @@ class FiltersRules
 {
 
     public function filterRulesDenuncia(Request $request){
-        $data = $request->all(['ambito_estatus','ambito_dependencia','curp','ciudadano','id','desde','hasta','dependencia_id','servicio_id','estatus_id','creadopor_id','incluirFecha','conRespuesta','clave_identificadora','uuid','incluirFechaMovto','origen_id','ciudadano_id']);
+        $data = $request->all(['ambito_estatus','ambito_dependencia','curp','ciudadano','id','desde','hasta','prioridad_id','dependencia_id','servicio_id','estatus_id','creadopor_id','incluirFecha','conRespuesta','clave_identificadora','uuid','incluirFechaMovto','origen_id','ciudadano_id']);
         $data['status_denuncia']      = 1;
         $data['ambito_dependencia']   = $data['ambito_dependencia']   == null ? "" : $data['ambito_dependencia'];
         $data['ambito_estatus']       = $data['ambito_estatus']       == null ? "" : $data['ambito_estatus'];
@@ -35,6 +35,7 @@ class FiltersRules
         $data['ciudadano_id']         = $data['ciudadano_id']         == null ? "" : $data['ciudadano_id'];
 
         $data['dependencia_id']       = $data['dependencia_id']       == "0" ? "" : $data['dependencia_id'];
+        $data['prioridad_id']         = $data['prioridad_id']         == "0" ? "" : $data['prioridad_id'];
         $data['origen_id']            = $data['origen_id']            == "0" ? "" : $data['origen_id'];
 
         $data['servicio_id']          = $data['servicio_id']          == "" || $data['servicio_id']    == "0'" ? "" : $data['servicio_id'];
@@ -73,6 +74,7 @@ class FiltersRules
             'origen_id'            => $data['origen_id'],
             'servicio_id'          => $data['servicio_id'],
             'estatus_id'           => $data['estatus_id'],
+            'prioridad_id'         => $data['prioridad_id'],
             'creadopor_id'         => $data['creadopor_id'],
             'conrespuesta'         => $data['conRespuesta'],
             'clave_identificadora' => $data['clave_identificadora'],

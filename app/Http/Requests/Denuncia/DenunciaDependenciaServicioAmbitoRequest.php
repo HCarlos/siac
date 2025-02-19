@@ -52,9 +52,6 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
 
     public function manage(){
         try {
-//            dd($this->observaciones);
-//            return false;
-
             if ( isset($this->favorable) ){
                 $Fav = !( (int) $this->favorable === 0 );
             }else{

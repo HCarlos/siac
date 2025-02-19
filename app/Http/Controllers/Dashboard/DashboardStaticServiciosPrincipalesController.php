@@ -277,6 +277,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                     "type" => $status,
                     "icon" => $icon,
                     "dias_vencidos" => $dias_vencidos,
+                    "uuid" => $g->uuid,
                 ];
 
 //                if ( str_contains($g->servicio_ultimo_estatus, "DESAZOLVE") ){
@@ -448,7 +449,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 'id','latitud','longitud','dependencia','abreviatura',
                 'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
                 'fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','ultimo_estatus',
-                'sue_id','servicio_ultimo_estatus','ue_id','dependencia_id',
+                'sue_id','servicio_ultimo_estatus','ue_id','dependencia_id','uuid',
             )
             ->where('ambito_dependencia', 2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])

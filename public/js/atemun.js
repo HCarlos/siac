@@ -8,6 +8,8 @@ jQuery(function($) {
                 'X-CSRF-Token': $("meta[name='csrf-token']").attr("content")
             }
         });
+        $(".preloader").hide();
+        $(".infoPreloader").html("");
 
         if ( $(".denuncuaUserModalChange").length > 0  ){
             $(".denuncuaUserModalChange").prop('disabled', true);
@@ -665,9 +667,9 @@ jQuery(function($) {
         });
 
 
-        $(".preloader").hide();
         $(".formData").on('submit',function(event){
             $(".btnGuardarDenuncia").prop('disabled', true);
+            $(".infoPreloader").html("Guardando información...")
             $(".preloader").show();
         });
 

@@ -44,6 +44,8 @@ class StorageRespuestaDenunciaController extends Controller{
                         'fecha'         => $DenunciaObject->fecha_ingreso,
                         'user__id'      => $DenunciaObject->ciudadano_id,
                         'denuncia__id'  => $DenunciaObject->id,
+                        'momento'       => 'DESPUÉS',
+                        'descripcion'   => $RespuestaObject->observaciones
                     ];
 //                    if ( $DenunciaObject->id == 0) {
                         $item = Imagene::create($Item);

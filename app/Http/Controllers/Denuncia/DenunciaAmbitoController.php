@@ -710,8 +710,17 @@ class DenunciaAmbitoController extends Controller{
             $Dependencias = Dependencia::query()
                 ->where("estatus_cve", 1)
                 ->whereIn('id',$dependencia_id_array)
-                ->orderBy('dependencia')->pluck('dependencia','id');
-//            $dep_id = $dependencia_id_array[0];
+                ->orderBy('dependencia')
+                ->pluck('dependencia','id');
+
+            $Prioridades = Prioridad::query()
+                ->where('ambito_prioridad',$this->ambito_dependencia)
+                ->whereHas('users', function ($query) {
+                    $query->where('user_id', Auth::user()->id);
+                })
+                ->orderBy('orden_impresion')
+                ->pluck('prioridad','id');
+
 
         }else{
             $Dependencias = Dependencia::query()
@@ -719,6 +728,12 @@ class DenunciaAmbitoController extends Controller{
                             ->where('ambito_dependencia',$this->ambito_dependencia)
                             ->orderBy('dependencia')
                             ->pluck('dependencia','id');
+
+            $Prioridades  = Prioridad::query()
+                ->where('ambito_prioridad',$this->ambito_dependencia)
+                ->where("estatus_cve", 1)
+                ->orderBy('prioridad')
+                ->pluck('prioridad','id');
 
         }
 
@@ -746,15 +761,6 @@ class DenunciaAmbitoController extends Controller{
                         ->orderBy('origen')
                         ->get();
 
-//        $Capturistas  = User::query()
-//                        ->where("status_user", 1)
-//                        ->whereHas('roles', function ($q) {
-//                            return $q->whereIn('name',array('ENLACE','USER_OPERATOR_SIAC','USER_OPERATOR_ADMIN') );
-//                        })
-//                        ->get()
-//                        ->sortBy('full_name_with_username_dependencia')
-//                        ->pluck('full_name_with_username_dependencia','id');
-
         $Capturistas  = FuncionesController::GetCapturistasAmbito2P();
 
         $hashtag = Denuncia::select('clave_identificadora')
@@ -763,10 +769,7 @@ class DenunciaAmbitoController extends Controller{
                     ->orderBy('clave_identificadora')
                     ->pluck('clave_identificadora','clave_identificadora');
 
-//        $this->ambito_dependencia = Session::get('ambito_dependencia');
         $this->ambito_estatus = Session::get('ambito_estatus');
-
-//        dd("Session : ".Session::get('ambito_dependencia'),$this->ambito_estatus);
 
         $user = Auth::user();
         return view ('SIAC.denuncia.search_ambito.denuncia_search_panel',
@@ -779,6 +782,7 @@ class DenunciaAmbitoController extends Controller{
                 'origenes'           => $Origenes,
                 'hashtag'            => $hashtag,
                 'items'              => $user,
+                'prioridades'        => $Prioridades,
                 'ambito_dependencia' => $this->ambito_dependencia,
                 'ambito_estatus'     => $this->ambito_estatus,
             ]

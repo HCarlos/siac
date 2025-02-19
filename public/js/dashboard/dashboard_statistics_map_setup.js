@@ -50,7 +50,6 @@ function toggleHighlight(markerView, property) {
     } else {
         markerView.content.classList.add("div-property");
         markerView.content.classList.add("highlight");
-
         markerView.zIndex = 1;
     }
 }
@@ -70,7 +69,7 @@ function buildContent(property) {
         <div class="denuncia">${property.denuncia}</div>
         <div class="features">
             <div>
-                <a href="/editDenunciaAmbito/2/${property.denuncia_id}" class="open_solicitud" title="Haga click para abrir esta solicitud">
+                <a href="/imprimir_denuncia_ambito_respuesta/${property.uuid}" class="open_solicitud" title="Haga click para abrir esta solicitud" target="_blank">
                 <i aria-hidden="true" class="fa fa-id-card fa-lg bed" title="Haga click para abrir esta solicitud"></i>
                 <span class="fa-sr-only" title="Haga click para abrir esta solicitud">denuncia_id</span>
                 <span title="Haga click para abrir esta solicitud">${property.denuncia_id}</span>
