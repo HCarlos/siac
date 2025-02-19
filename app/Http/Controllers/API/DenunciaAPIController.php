@@ -71,7 +71,7 @@ class DenunciaAPIController extends Controller{
                     'fecha'            => $fecha,
                     'latitud'          => $den->latitud,
                     'longitud'         => $den->longitud,
-                    'ubicacion'        => $den->ubicacion,
+                    'ubicacion'        => $den->ubicacion_google,
                     'ubicacion_google' => $den->ubicacion_google,
                     'servicio'         => $Ser->servicio,
                     'imagenes'         => $this->getImagenes($den->id),

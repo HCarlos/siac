@@ -161,7 +161,12 @@ class DenunciaAPIRequest extends FormRequest{
                 'host'                         => "",
                 'denunciamobile_id'            => $this->DenMobGen->id,
                 'ambito'                       => $this->ambito ?? 0,
+                'due_id'                       => $Ser->dependencia_id,
+                'sue_id'                       => $Ser->servicio_id,
+                'ue_id'                        => 16,
             ];
+
+//            dd($Item);
 
             $obj = $this->guardarDenunciaMobileADenuncia($Item);
 
@@ -282,6 +287,7 @@ class DenunciaAPIRequest extends FormRequest{
      */
     protected function guardarDenunciaMobileADenuncia($Item){
         $item = Denuncia::create($Item);
+//        dd($item);
         $this->attachesDenunciaMobileADenuncia($item);
         $this->DenMobGen->denuncia_id = $item->id;
         $this->DenMobGen->save();
