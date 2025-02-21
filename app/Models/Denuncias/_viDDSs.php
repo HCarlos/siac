@@ -3,14 +3,12 @@
 
 namespace App\Models\Denuncias;
 
-//use App\Filters\Catalogo\ServicioFilter;
-//use App\Traits\Catalogos\Estructura\Servicio\ServicioTrait;
+use App\Filters\Denuncia\Count\DenunciaAmbitoFilterCount;
+use App\Filters\Denuncia\Count\GetDenunciasAmbitoFilterCount;
+use App\Filters\Denuncia\Count\GetDenunciasEstatusAmbitoFilterCount;
+use App\Filters\Denuncia\Count\GetDenunciasItemCustomFilter;
 use App\Filters\Denuncia\DenunciaAmbitoFilter;
-use App\Filters\Denuncia\DenunciaFilter;
-use App\Filters\Denuncia\GetDenunciasAmbitoFilterCount;
 use App\Filters\Denuncia\GetDenunciasAmbitoItemCustomFilter;
-use App\Filters\Denuncia\GetDenunciasFilterCount;
-use App\Filters\Denuncia\GetDenunciasItemCustomFilter;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Domicilios\Ubicacion;
 use App\Models\Catalogos\Estatu;
@@ -55,6 +53,13 @@ class _viDDSs extends Model{
     }
     public function scopeGetDenunciasAmbitoFilterCount($query, $filters){
         return (new GetDenunciasAmbitoFilterCount())->applyTo($query, $filters);
+    }
+
+    public function scopeFilterByCount($query, $filters){
+        return (new DenunciaAmbitoFilterCount())->applyTo($query, $filters);
+    }
+    public function scopeGetDenunciasEstatusAmbitoFilterCount($query, $filters){
+        return (new GetDenunciasEstatusAmbitoFilterCount())->applyTo($query, $filters);
     }
 
     public function prioridad(){

@@ -1,8 +1,8 @@
 <div class="row">
     <div class="col-lg-12">
-        <div class="page-title-box">
+{{--        <div class="page-title-box">--}}
             {{$buttons}}
-        </div>
+{{--        </div>--}}
     </div>
 </div>
 
@@ -13,8 +13,9 @@
 <div class="row">
 
 @section('scripts')
+
+<!--
 <script src="{{ asset('js/jquery.dataTables.js') }}"></script>
-{{--<script src="{{ asset('js/dataTables.bootstrap4.js') }}"></script>--}}
 <script src="{{ asset('js/dataTables.responsive.min.js') }}"></script>
 <script src="{{ asset('js/responsive.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('js/dataTables.buttons.min.js') }}"></script>
@@ -23,4 +24,5 @@
 <script src="{{ asset('js/buttons.flash.min.js') }}"></script>
 <script src="{{ asset('js/dataTables.select.min.js') }}"></script>
 <script src="{{ asset('js/datatable.js') }}"></script>
+-->
 @endsection

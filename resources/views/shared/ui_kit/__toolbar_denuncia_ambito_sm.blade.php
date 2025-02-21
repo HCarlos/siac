@@ -1,4 +1,5 @@
-<div class="button-list pt-1 pb-1">
+{{--<div class="button-list pt-2 pb-1 tbSM">--}}
+<div class="pt-2 pb-1 tbSM">
     @isset($newItem)
         @if( \Illuminate\Support\Facades\Auth::user()->isPermission('crear_expediente_servicios_municipales|crear_expediente_apoyos_sociales|all') )
             <a href="{{url($newItem)}}" class="btn btn-outline-white btn-rounded btn-sm ml-1" data-toggle="tooltip" data-placement="top" data-original-title="Nueva Solicitud">
@@ -24,8 +25,4 @@
             </a>
         </span>
     @endisset
-{{--    <a href="" class="btn btn-icon btn-outline-white ml-1 btn-rounded" data-toggle="tooltip" data-placement="top" data-original-title="Actualizar" onclick="window.location.reload();">--}}
-{{--        <i class="fas fa-sync-alt"></i>--}}
-{{--    </a>--}}
 </div>
-

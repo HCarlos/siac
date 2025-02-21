@@ -9,7 +9,7 @@
                 <img src="{{asset('images/web/logo-0.png')}}" alt="" >
             </span>
             <span class="logo-sm">
-                <img src="{{asset('images/logo_sm.png')}}" alt="" >
+                <img src="{{asset('images/favicon/favicon-114-114.png')}}" width="32" height="32" alt="" >
             </span>
         </a>
     @guest()
@@ -36,7 +36,7 @@
                 <a href="{{route('listDenuncias')}}" class="side-nav-link">
                     @include('.shared.svgs.__solicitudes')
                     @php $filters['filterdata']=""; @endphp
-                    <span class="badge badge-light float-right">{{\App\Models\Denuncias\Denuncia::query()->GetDenunciasFilterCount($filters)->count()}}</span>
+{{--                    <span class="badge badge-light float-right">{{\App\Models\Denuncias\Denuncia::query()->GetDenunciasFilterCount($filters)->count()}}</span>--}}
                     <span>Solicitudes</span>
                 </a>
             </li>
@@ -77,7 +77,7 @@
                             <a href="{{route('listDenunciasAmbito16')}}">
                                 @php $filters['filterdata']=""; @endphp
                                 <i class="mdi dripicons-archive"></i>
-                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->GetDenunciasAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',16)->count()}}</span>
+                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->GetDenunciasEstatusAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',16)->count()}}</span>
                                 <span>Recibidas</span>
                             </a>
                         </li>
@@ -85,7 +85,7 @@
                             <a href="{{route('listDenunciasAmbito19')}}">
                                 @php $filters['filterdata']=""; @endphp
                                 <i class="mdi dripicons-archive"></i>
-                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->GetDenunciasAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',19)->count()}}</span>
+                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->GetDenunciasEstatusAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',19)->count()}}</span>
                                 <span>En proceso / Programadas</span>
                             </a>
                         </li>
@@ -93,7 +93,7 @@
                             <a href="{{route('listDenunciasAmbito17')}}">
                                 @php $filters['filterdata']=""; @endphp
                                 <i class="mdi dripicons-archive"></i>
-                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->GetDenunciasAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',17)->count()}}</span>
+                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->GetDenunciasEstatusAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',17)->count()}}</span>
                                 <span>Atendidas</span>
                             </a>
                         </li>
@@ -101,7 +101,7 @@
                             <a href="{{route('listDenunciasAmbito20')}}">
                                 @php $filters['filterdata']=""; @endphp
                                 <i class="mdi dripicons-archive"></i>
-                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->GetDenunciasAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',20)->count()}}</span>
+                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->GetDenunciasEstatusAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',20)->count()}}</span>
                                 <span>Rechazadas</span>
                             </a>
                         </li>
@@ -109,7 +109,7 @@
                             <a href="{{route('listDenunciasAmbito18')}}">
                                 @php $filters['filterdata']=""; @endphp
                                 <i class="mdi dripicons-archive"></i>
-                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->GetDenunciasAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',18)->count()}}</span>
+                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->GetDenunciasEstatusAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',18)->count()}}</span>
                                 <span>Observadas</span>
                             </a>
                         </li>
@@ -117,7 +117,7 @@
                             <a href="{{route('listDenunciasAmbito21')}}">
                                 @php $filters['filterdata']=""; @endphp
                                 <i class="mdi dripicons-archive"></i>
-                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->GetDenunciasAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',21)->count()}}</span>
+                                <span class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->GetDenunciasEstatusAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',21)->count()}}</span>
                                 <span>Cerradas</span>
                             </a>
                         </li>
@@ -138,7 +138,7 @@
                     <li>
                         <a href="{{route('listDependencias')}}">
                             <i class="mdi mdi-account-multiple-outline"></i>
-                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Dependencia::count()}}</span>
+{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Dependencia::count()}}</span>--}}
                             <span>Unidades Administrativas</span>
                         </a>
                     </li>
@@ -147,7 +147,7 @@
                     <li>
                         <a href="{{route('listAreas')}}">
                             <i class="mdi mdi-account-group"></i>
-                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Area::count()}}</span>
+{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Area::count()}}</span>--}}
                             <span>Áreas</span>
                         </a>
                     </li>
@@ -156,7 +156,7 @@
                     <li>
                         <a href="{{route('listSubareas')}}">
                             <i class="fas fa-money-check-alt"></i>
-                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Subarea::count()}}</span>
+{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Subarea::count()}}</span>--}}
                             <span>Subareas</span>
                         </a>
                     </li>
@@ -165,7 +165,7 @@
                     <li>
                         <a href="{{route('listEstatus')}}">
                             <i class="fas fa-money-check-alt"></i>
-                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Estatu::count()}}</span>
+{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Estatu::count()}}</span>--}}
                             <span>Status</span>
                         </a>
                     </li>
@@ -174,7 +174,7 @@
                     <li>
                         <a href="{{route('listMedidas')}}">
                             <i class="fas fa-money-check-alt"></i>
-                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Medida::count()}}</span>
+{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Medida::count()}}</span>--}}
                             <span>Medidas</span>
                         </a>
                     </li>
@@ -183,7 +183,7 @@
                     <li>
                         <a href="{{route('listOrigenes')}}">
                             <i class="fas fa-money-check-alt"></i>
-                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Origen::count()}}</span>
+{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Origen::count()}}</span>--}}
                             <span>Fuentes de Captación</span>
                         </a>
                     </li>
@@ -192,7 +192,7 @@
                     <li>
                         <a href="{{route('listPrioridades')}}">
                             <i class="fas fa-money-check-alt"></i>
-                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Prioridad::count()}}</span>
+{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Prioridad::count()}}</span>--}}
                             <span>Prioridades</span>
                         </a>
                     </li>
@@ -201,7 +201,7 @@
                     <li>
                         <a href="{{route('listServicios')}}">
                             <i class="fas fa-money-check-alt"></i>
-                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Servicio::count()}}</span>
+{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Servicio::count()}}</span>--}}
                             <span>Servicios</span>
                         </a>
                     </li>
@@ -210,7 +210,7 @@
                         <li>
                             <a href="{{route('listServiciosCategorias')}}">
                                 <i class="fas fa-money-check-alt"></i>
-                                <span class="badge badge-light float-right">{{\App\Models\Catalogos\ServicioCategoria::count()}}</span>
+{{--                                <span class="badge badge-light float-right">{{\App\Models\Catalogos\ServicioCategoria::count()}}</span>--}}
                                 <span>Categorías de Servicios</span>
                             </a>
                         </li>
@@ -230,8 +230,7 @@
                     <li>
                         <a href="{{route('listCalles')}}">
                             <i class="fas fa-money-check-alt"></i>
-{{--                            @include('.shared.svgs.__servicios_municipales')--}}
-                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Calle::count()}}</span>
+{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Calle::count()}}</span>--}}
                             <span>Calles</span>
                         </a>
                     </li>
@@ -240,7 +239,7 @@
                     <li>
                         <a href="{{route('listCiudades')}}">
                             <i class="fas fa-money-check-alt"></i>
-                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Ciudad::count()}}</span>
+{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Ciudad::count()}}</span>--}}
                             <span>Ciudad</span>
                         </a>
                     </li>
@@ -249,7 +248,7 @@
                     <li>
                         <a href="{{route('listLocalidades')}}">
                             <i class="fas fa-money-check-alt"></i>
-                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Localidad::count()}}</span>
+{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Localidad::count()}}</span>--}}
                             <span>Localidades</span>
                         </a>
                     </li>
@@ -258,7 +257,7 @@
                     <li>
                         <a href="{{route('listMunicipios')}}">
                             <i class="fas fa-money-check-alt"></i>
-                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Municipio::count()}}</span>
+{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Municipio::count()}}</span>--}}
                             <span>Municipios</span>
                         </a>
                     </li>
@@ -267,7 +266,7 @@
                     <li>
                         <a href="{{route('listEstados')}}">
                             <i class="fas fa-money-check-alt"></i>
-                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Estado::count()}}</span>
+{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Estado::count()}}</span>--}}
                             <span>Estados</span>
                         </a>
                     </li>
@@ -276,7 +275,7 @@
                     <li>
                         <a href="{{route('listCodigopostales')}}">
                             <i class="fas fa-money-check-alt"></i>
-                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Codigopostal::count()}}</span>
+{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Codigopostal::count()}}</span>--}}
                             <span>Códigos Postales</span>
                         </a>
                     </li>
@@ -285,7 +284,7 @@
                     <li>
                         <a href="{{route('listTipocomunidades')}}">
                             <i class="fas fa-money-check-alt"></i>
-                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Tipocomunidad::count()}}</span>
+{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Tipocomunidad::count()}}</span>--}}
                             <span>Tipo Comunidades</span>
                         </a>
                     </li>
@@ -294,7 +293,7 @@
                     <li>
                         <a href="{{route('listComunidades')}}">
                             <i class="fas fa-money-check-alt"></i>
-                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Comunidad::count()}}</span>
+{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Comunidad::count()}}</span>--}}
                             <span>Comunidades</span>
                         </a>
                     </li>
@@ -303,7 +302,7 @@
                     <li>
                         <a href="{{route('listColonias')}}">
                             <i class="fas fa-money-check-alt"></i>
-                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Colonia::count()}}</span>
+{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Colonia::count()}}</span>--}}
                             <span>Colonias</span>
                         </a>
                     </li>
@@ -312,7 +311,7 @@
                     <li>
                         <a href="{{route('listUbicaciones')}}">
                             <i class="fas fa-money-check-alt"></i>
-                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Ubicacion::count()}}</span>
+{{--                            <span class="badge badge-light float-right">{{\App\Models\Catalogos\Domicilios\Ubicacion::count()}}</span>--}}
                             <span>Ubicaciones</span>
                         </a>
                     </li>
@@ -346,7 +345,7 @@
                             </a>
                         </li>
                     @endif
-                                        @if (Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN'))
+                    @if (Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN'))
                     <li>
                         <a href="{{route('unicolcom')}}">
                             <i class="fas fa-money-check-alt"></i>
@@ -371,49 +370,49 @@
                         <li>
                             <a href="{{route('asignaRoleList',['Id'=>0])}}">
                                 <i class="fas fa-users-cog"></i>
-                                <span class="badge badge-light float-right">{{\App\Role::count()}}</span>
+{{--                                <span class="badge badge-light float-right">{{\App\Role::count()}}</span>--}}
                                 <span>Roles</span>
                             </a>
                         </li>
                         <li>
                             <a href="{{route('asignaPermissionList',['Id'=>0])}}">
                                 <i class="fas fa-user-cog"></i>
-                                <span class="badge badge-light float-right">{{\App\Permission::count()}}</span>
+{{--                                <span class="badge badge-light float-right">{{\App\Permission::count()}}</span>--}}
                                 <span>Permisos</span>
                             </a>
                         </li>
                         <li>
                             <a href="{{route('asignaDependenciaList',['Id'=>0])}}">
                                 <i class="fas fa-user-cog"></i>
-                                <span class="badge badge-light float-right">{{\App\Models\Catalogos\Dependencia::count()}}</span>
+{{--                                <span class="badge badge-light float-right">{{\App\Models\Catalogos\Dependencia::count()}}</span>--}}
                                 <span>Unidades Administrativas</span>
                             </a>
                         </li>
                         <li>
                             <a href="{{route('asignaEstatusList',['Id'=>0])}}">
                                 <i class="fas fa-user-cog"></i>
-                                <span class="badge badge-light float-right">{{\App\Models\Catalogos\Estatu::count()}}</span>
+{{--                                <span class="badge badge-light float-right">{{\App\Models\Catalogos\Estatu::count()}}</span>--}}
                                 <span>Estatus</span>
                             </a>
                         </li>
                         <li>
                             <a href="{{route('asignaServCatList',['Id'=>0])}}">
                                 <i class="fas fa-user-cog"></i>
-                                <span class="badge badge-light float-right">{{\App\Models\Catalogos\ServicioCategoria::count()}}</span>
+{{--                                <span class="badge badge-light float-right">{{\App\Models\Catalogos\ServicioCategoria::count()}}</span>--}}
                                 <span>Categoría de Servicios</span>
                             </a>
                         </li>
                         <li>
                             <a href="{{route('asignaOrigenesList',['Id'=>0])}}">
                                 <i class="fas fa-user-cog"></i>
-                                <span class="badge badge-light float-right">{{\App\Models\Catalogos\Origen::count()}}</span>
+{{--                                <span class="badge badge-light float-right">{{\App\Models\Catalogos\Origen::count()}}</span>--}}
                                 <span>Fuentes de Captación</span>
                             </a>
                         </li>
                         <li>
                             <a href="{{route('asignaPrioridadesList',['Id'=>0])}}">
                                 <i class="fas fa-user-cog"></i>
-                                <span class="badge badge-light float-right">{{\App\Models\Catalogos\Prioridad::count()}}</span>
+{{--                                <span class="badge badge-light float-right">{{\App\Models\Catalogos\Prioridad::count()}}</span>--}}
                                 <span>Prioridades</span>
                             </a>
                         </li>
@@ -449,8 +448,7 @@
                                     </g>
                                     <g id="Capa_2"></g>
                                 </svg>
-
-                                <span class="badge badge-success float-right">{{\App\User::count()}}</span>
+{{--                                <span class="badge badge-success float-right">{{\App\User::count()}}</span>--}}
                                 <span>Usuarios</span>
                             </a>
                         </li>

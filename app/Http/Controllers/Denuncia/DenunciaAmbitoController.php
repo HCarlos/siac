@@ -354,9 +354,10 @@ class DenunciaAmbitoController extends Controller{
         if (!isset($item->id)) {
             abort(422);
         }
-        $this->msg = "Registro Guardado con éxito!";
+        $this->msg = "Registro Guardado con éxito! \n\nFolio: " . $item->id;
         session(['msg' => $this->msg]);
-        return Redirect::to('editDenunciaAmbito/'.$this->ambito_dependencia.'/'.$item->id);
+//        return Redirect::to('editDenunciaAmbito/'.$this->ambito_dependencia.'/'.$item->id);
+        return Redirect::back();
 
     }
 
@@ -368,9 +369,10 @@ class DenunciaAmbitoController extends Controller{
         if (!isset($item->id)) {
             abort(422);
         }
-        $this->msg = "Registro Guardado con éxito!";
+        $this->msg = "Registro Guardado con éxito! \n\nFolio: " . $item->id;
         session(['msg' => $this->msg]);
-        return Redirect::to('editDenunciaAmbito/'.$this->ambito_dependencia.'/'.$item->id);
+//        return Redirect::to('editDenunciaAmbito/'.$this->ambito_dependencia.'/'.$item->id);
+        return Redirect::back();
 
     }
 
