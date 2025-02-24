@@ -7,6 +7,7 @@ namespace App\Classes\Denuncia;
 
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
+use Illuminate\Support\Facades\Auth;
 
 class VistaDenunciaClass{
 
@@ -99,6 +100,7 @@ class VistaDenunciaClass{
                     $den->due_id = $due_id;
                     $den->sue_id = $sue_id;
                     $den->fecha_ultimo_estatus = $fecha_ultimo_estatus;
+                    $den->modificadopor_id = Auth::user()->id;
                     $den->save();
                 }
 

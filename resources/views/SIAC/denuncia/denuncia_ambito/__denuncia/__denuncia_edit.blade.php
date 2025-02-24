@@ -217,10 +217,9 @@
 <div class="col-sm-6">
 <h6>ÚLTIMA RESPUESTA</h6>
 <address>
-    <strong class="orange">POR:</strong>  {{ $items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->dependencia->dependencia }}<br>
+    <strong class="orange">POR:</strong>  {{ $items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->creadopor->full_name }}<br>
     <strong class="info">SERVICIO:</strong>  {{ $items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->servicio->servicio }}<br>
     <strong class="seagreen">ESTATUS:</strong>  {{ $items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->estatu->estatus }}<br>
-    <strong class="red">FAVORABLE:</strong>  {{ $items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->favorable == true ? 'SI' : 'NO' }}<br>
     <strong class="purple">FECHA:</strong>  {{ date('d-m-Y H:i:s', strtotime($items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->fecha_movimiento)) }}<br>
     <strong class="coral">RESPUESTA:</strong> <small> {{ $items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->observaciones }} </small><br>
 </address>

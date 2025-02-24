@@ -885,7 +885,14 @@ class DenunciaAmbitoController extends Controller{
             $item->save();
 
             $item->estatus()->attach($estatus);
-            $item->dependencias()->attach($item->dependencia_id,['servicio_id'=>$item->servicio_id,'estatu_id'=>$estatus->id,'fecha_movimiento' => now(),'observaciones' => 'CERRADO CON ÉXITO!' ]);
+            $item->dependencias()->attach($item->dependencia_id,
+                [
+                    'servicio_id'=>$item->servicio_id,
+                    'estatu_id'=>$estatus->id,
+                    'fecha_movimiento' => now(),
+                    'observaciones'    => 'CERRADO CON ÉXITO!',
+                    'creadopor_id'     => Auth::user()->id,
+                ]);
 
             return Response::json(['mensaje' => 'Documento cerrado con éxito', 'data' => 'OK', 'status' => '200'], 200);
         } else {
