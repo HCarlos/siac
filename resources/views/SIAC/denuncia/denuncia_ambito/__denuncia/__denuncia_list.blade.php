@@ -54,7 +54,6 @@
                                         @include('shared.ui_kit.__remove_item_apoyos_sociales')
                                         @include('shared.ui_kit.__edit_den_dep_ser_ambito_as')
                                     @endif
-                                    @include('shared.ui_kit.__imagenes_list_item_ambito')
                                 @endif
                                 @if( ($item->cerrado == false && $item->firmado == false) && auth()->user()->can('elimina_denuncia_general') )
                                     @if($item->ambito_dependencia === 2)
@@ -63,6 +62,7 @@
                                         @include('shared.ui_kit.__remove_item_apoyos_sociales')
                                     @endif
                                 @endif
+                                @include('shared.ui_kit.__imagenes_list_item_ambito')
                                 @include('shared.ui_kit.__add_user_item')
                                 @include('shared.ui_kit.__edit_ambito_item')
                                 @if($item->ambito_dependencia === 2)
