@@ -110,6 +110,7 @@ class CreateRoleServicioTable extends Migration
      * @return void
      */
     public function down(){
+
         $Catalogos  = config('atemun.table_names.catalogos');
 
         Schema::dropIfExists($Catalogos['servicio_user']);
