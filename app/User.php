@@ -8,12 +8,11 @@ use App\Models\Catalogos\Domicilios\Ubicacion;
 use App\Models\Catalogos\Estatu;
 use App\Models\Catalogos\Origen;
 use App\Models\Catalogos\Prioridad;
+use App\Models\Catalogos\Servicio;
 use App\Models\Catalogos\ServicioCategoria;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Imagene;
 use App\Models\Denuncias\Respuesta;
-use App\Models\Familias\Familia;
-use App\Models\Familias\Parentesco;
 use App\Models\Users\UserAdress;
 use App\Models\Users\UserDataExtend;
 use App\Models\Users\UserMobile;
@@ -26,12 +25,10 @@ use App\Traits\User\UserImport;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-//use Laravel\Passport\HasApiTokens;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
-//use App\Notifications\MyResetPassword;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -127,6 +124,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function prioridades(){
         return $this->belongsToMany(Prioridad::class,'prioridade_user','user_id','prioridad_id')
+            ->withPivot('orden','predeterminado');
+    }
+
+    public function servicios(){
+        return $this->belongsToMany(Servicio::class,'servicio_user','user_id','servicio_id')
             ->withPivot('orden','predeterminado');
     }
 

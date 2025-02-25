@@ -139,8 +139,22 @@ class DenunciaAmbitoFilter extends QueryFilter
 
 
     public function servicio_id($query, $search){
-        if (is_null($search) || empty ($search) || trim($search) == "0" || trim($search) == "") {return $query;}
-          return $query->where('sue_id', (int)$search);
+        if (is_null($search) || empty($search) || (isset($search) == false)) {return $query;}
+
+        if ( !is_array($search) ){
+            if ((int)$search === 0){
+                $search = Auth::user()->ServicioIdArray;
+            }
+        }
+
+        if ( is_array($search) ){
+            return $query->whereIn('sue_id', $search);
+        }else{
+            return $query->where('sue_id', (int)$search);
+        }
+
+
+
     }
 
     public function estatus_id($query, $search){

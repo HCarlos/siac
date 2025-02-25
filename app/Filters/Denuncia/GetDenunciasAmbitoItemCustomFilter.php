@@ -31,8 +31,13 @@ class GetDenunciasAmbitoItemCustomFilter extends QueryFilter{
         $DependenciaIdArray = [];
         $filters['search'] = $search;
         if ($IsEnlace) {
-            $DependenciaIdArray = Auth::user()->DependenciaIdArray;
-            $filters['dependencia_id'] = $DependenciaIdArray;
+            $ServicioIdArray = Auth::user()->ServicioIdArray;
+            if (count($ServicioIdArray) > 0){
+                $filters['servicio_id'] = $ServicioIdArray;
+            }else{
+                $DependenciaIdArray = Auth::user()->DependenciaIdArray;
+                $filters['dependencia_id'] = $DependenciaIdArray;
+            }
         }elseif ($IsAdminArchivo){
                 $filters['cerrado'] = 'true';
         }elseif ( Auth::user()->isRole('CIUDADANO|DELEGADO') && !Auth::user()->isRole('Administrator|SysOp|test_admin') ){

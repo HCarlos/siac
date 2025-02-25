@@ -118,12 +118,10 @@ class DenunciaFilter extends QueryFilter
         if ( !is_array($search) ){
             if ((int)$search === 0){
                 $search = Auth::user()->DependenciaIdArray;
-//                return $query;
             }
         }
         return $query->whereHas('dependencias', function ($q) use ($query, $search) {
                 if ( is_array($search) ){
-//                    dd($search);
                     return $q->whereIn('dependencia_id', $search);
                 }else{
                     return $q->where('dependencia_id', (int)$search);
@@ -132,10 +130,28 @@ class DenunciaFilter extends QueryFilter
     }
 
     public function servicio_id($query, $search){
-        if (is_null($search) || empty ($search) || trim($search) == "0" || trim($search) == "") {return $query;}
-        return $query->whereHas('denuncia_servicios', function ($q) use ($query, $search) {
-            return $q->where('servicio_id', (int)$search);
+//        if (is_null($search) || empty ($search) || trim($search) == "0" || trim($search) == "") {return $query;}
+//        return $query->whereHas('denuncia_servicios', function ($q) use ($query, $search) {
+//            return $q->where('servicio_id', (int)$search);
+//        });
+
+        if (is_null($search) || empty($search) || (isset($search) == false)) {
+            return $query;
+        }
+        if ( !is_array($search) ){
+            if ((int)$search === 0){
+                $search = Auth::user()->ServicioIdArray;
+            }
+        }
+        return $query->whereHas('servicios', function ($q) use ($query, $search) {
+            if ( is_array($search) ){
+                return $q->whereIn('servicio_id', $search);
+            }else{
+                return $q->where('servicio_id', (int)$search);
+            }
         });
+
+
     }
 
     public function estatus_id($query, $search){

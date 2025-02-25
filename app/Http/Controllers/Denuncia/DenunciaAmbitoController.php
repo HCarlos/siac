@@ -64,7 +64,6 @@ class DenunciaAmbitoController extends Controller{
             Session::put('ambito_dependencia', $ambito_dependencia);
             Session::put('ambito_estatus', $ambito_estatus);
             Session::put('is_pagination', true);
-
         }
 
 //        Session(['ambito_dependencia' => $ambito_dependencia]);

@@ -87,6 +87,10 @@ trait UserAttributes
         return $this->dependencias()->pluck('dependencia_id')->toArray();
     }
 
+    public function getServicioIdArrayAttribute(){
+        return $this->servicios()->pluck('servicio_id')->toArray();
+    }
+
     public function getDelegadosIdArrayAttribute(){
         return User::whereHas('roles', function ($query) {
                     $query->where('name', 'DELEGADOS');
@@ -230,6 +234,10 @@ trait UserAttributes
 
     public function hasPrioridades($prioridad): bool{
         return $this->prioridades->contains('id',$prioridad);
+    }
+
+    public function hasServicios($servicio_id): bool{
+        return $this->servicios->contains('id',$servicio_id);
     }
 
     public function hasServiciosCategorias($categoria_servicios): bool{

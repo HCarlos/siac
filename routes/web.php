@@ -429,6 +429,13 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
     Route::post('unAssignPrioridadToUser','Catalogos\User\PrioridadesUserController@desasignarPrioridad')->name('unAssignPrioridadToUser');
     Route::get('getPrioridadesUser/{Id}','Catalogos\User\PrioridadesUserController@getItems')->name('getPrioridadesUser');
 
+    // USUARIOS SERVICIOS
+    Route::get('asignaServiciosList/{Id}','Catalogos\User\ServiciosUserController@index')->name('asignaServiciosList');
+    Route::post('assignServicioToUser','Catalogos\User\ServiciosUserController@asignarServicio')->name('assignServicioToUser');
+    Route::post('unAssignServicioToUser','Catalogos\User\ServiciosUserController@desasignarServicio')->name('unAssignServicioToUser');
+    Route::get('getServiciosUser/{Id}','Catalogos\User\ServiciosUserController@getItems')->name('getServiciosUser');
+
+
 
     // EXTERNAL FILES
     Route::get('archivosConfig','Storage\StorageExternalFilesController@archivos_config')->name('archivosConfig');

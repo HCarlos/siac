@@ -412,8 +412,13 @@
                         <li>
                             <a href="{{route('asignaPrioridadesList',['Id'=>0])}}">
                                 <i class="fas fa-user-cog"></i>
-{{--                                <span class="badge badge-light float-right">{{\App\Models\Catalogos\Prioridad::count()}}</span>--}}
                                 <span>Prioridades</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{route('asignaServiciosList',['Id'=>0])}}">
+                                <i class="fas fa-user-cog"></i>
+                                <span>Servicios</span>
                             </a>
                         </li>
                     </ul>

@@ -6,9 +6,9 @@ namespace App\Models\Denuncias;
 use App\Filters\Denuncia\Count\DenunciaAmbitoFilterCount;
 use App\Filters\Denuncia\Count\GetDenunciasAmbitoFilterCount;
 use App\Filters\Denuncia\Count\GetDenunciasEstatusAmbitoFilterCount;
-use App\Filters\Denuncia\Count\GetDenunciasItemCustomFilter;
 use App\Filters\Denuncia\DenunciaAmbitoFilter;
 use App\Filters\Denuncia\GetDenunciasAmbitoItemCustomFilter;
+use App\Filters\Denuncia\GetDenunciasItemCustomFilter;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Domicilios\Ubicacion;
 use App\Models\Catalogos\Estatu;
@@ -19,7 +19,6 @@ use App\Traits\Denuncia\DenunciaTrait;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class _viDDSs extends Model{
 

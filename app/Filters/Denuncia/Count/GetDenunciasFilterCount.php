@@ -30,8 +30,15 @@ class GetDenunciasFilterCount extends QueryFilter{
         $IsEnlace =Auth::user()->isRole('ENLACE');
         $DependenciaIdArray = '';
         IF ($IsEnlace){
-            $DependenciaIdArray = Auth::user()->DependenciaIdArray;
-            $filters['dependencia_id'] = $DependenciaIdArray;
+//            $DependenciaIdArray = Auth::user()->DependenciaIdArray;
+//            $filters['dependencia_id'] = $DependenciaIdArray;
+            $ServicioIdArray = Auth::user()->ServicioIdArray;
+            if (count($ServicioIdArray) > 0){
+                $filters['servicio_id'] = $ServicioIdArray;
+            }else{
+                $DependenciaIdArray = Auth::user()->DependenciaIdArray;
+                $filters['dependencia_id'] = $DependenciaIdArray;
+            }
         }elseif ( Auth::user()->isRole('CIUDADANO|DELEGADO') && !Auth::user()->isRole('Administrator|SysOp') ){
             $filters['ciudadano_id'] = Auth::user()->id;
         }else{

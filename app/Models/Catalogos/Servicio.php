@@ -7,6 +7,7 @@ use App\Http\Controllers\Funciones\FuncionesController;
 use App\Models\Denuncias\_viServicios;
 use App\Models\Denuncias\Denuncia;
 use App\Traits\Catalogos\Estructura\Servicio\ServicioTrait;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -89,6 +90,13 @@ class Servicio extends Model
         return $this->belongsToMany(Estatu::class,'denuncia_dependencia_servicio_estatus','servicio_id','estatu_id')
         ->withPivot('fecha_movimiento','observaciones','favorable','fue_leida','creadopor_id');
     }
+
+    public function users(){
+        return $this->belongsToMany(User::class,'servicio_user','servicio_id','user_id')
+            ->withPivot('orden','predeterminado');
+    }
+
+
 
     static function getQueryServiciosFromDependencias($id=0){
 

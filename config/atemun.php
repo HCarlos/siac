@@ -143,6 +143,8 @@ return [
             'origene_user'                          => 'origene_user',
             'prioridade_user'                       => 'prioridade_user',
             'servicio_user'                         => 'servicio_user',
+            'denuncia_operador'                     => 'denuncia_operador',
+            'centro_localidades'                    => 'centro_localidades',
         ],
         'domicilios' => [
             'users'             => 'users',

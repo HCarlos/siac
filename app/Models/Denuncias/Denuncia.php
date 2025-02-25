@@ -6,8 +6,8 @@
 namespace App\Models\Denuncias;
 
 use App\Filters\Denuncia\Count\GetDenunciasFilterCount;
-use App\Filters\Denuncia\Count\GetDenunciasItemCustomFilter;
 use App\Filters\Denuncia\DenunciaFilter;
+use App\Filters\Denuncia\GetDenunciasItemCustomFilter;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Domicilios\Ubicacion;
