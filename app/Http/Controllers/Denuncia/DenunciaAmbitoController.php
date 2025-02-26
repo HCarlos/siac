@@ -108,6 +108,7 @@ class DenunciaAmbitoController extends Controller{
                 'titulo_catalogo'                     => "Catálogo de " . ucwords($this->tableName),
                 'titulo_header'                       => $this->ambito_dependencia === 1 ? "Apoyos Sociales" : "Servicios Municipales",
                 'user'                                => $user,
+                'showListDenuciasOperator'            => 'denuncia_operador_list',
                 'searchInListDenuncia'                => 'listDenunciasAmbito'.$this->ambito_dependencia,
                 'newWindow'                           => true,
                 'tableName'                           => $this->tableName,
@@ -254,6 +255,8 @@ class DenunciaAmbitoController extends Controller{
         $this->ambito_dependencia = $ambito_dependencia;
         $this->ambito_estatus = $ambito_estatus;
 
+        $ServicioIdArray = Session::get('ServicioIdArray');
+
         if($IsEnlace){
 
             $DependenciaIdArray = Session::get('DependenciaIdArray');
@@ -305,13 +308,23 @@ class DenunciaAmbitoController extends Controller{
 
         }
 
-        $Servicios = _viServicios::query()
-            ->select('id','servicio','abreviatura_dependencia')
-            ->where("servicio_habilitado", 1)
-            ->where('ambito_dependencia',$this->ambito_dependencia)
-            ->whereIn('dependencia_id',$dependencias_id)
-            ->orderBy('servicio')
-            ->get();
+        if (count($ServicioIdArray) > 0){
+            $Servicios = _viServicios::query()
+                ->select('id','servicio','abreviatura_dependencia')
+                ->where("servicio_habilitado", 1)
+                ->where('ambito_dependencia',$this->ambito_dependencia)
+                ->whereIn('id',$ServicioIdArray)
+                ->orderBy('servicio')
+                ->get();
+        }else{
+            $Servicios = _viServicios::query()
+                ->select('id','servicio','abreviatura_dependencia')
+                ->where("servicio_habilitado", 1)
+                ->where('ambito_dependencia',$this->ambito_dependencia)
+                ->whereIn('dependencia_id',$dependencias_id)
+                ->orderBy('servicio')
+                ->get();
+        }
 
 
         $this->msg = "";
@@ -487,6 +500,8 @@ class DenunciaAmbitoController extends Controller{
         $this->ambito_dependencia = $ambito_dependencia;
         $this->ambito_estatus = $ambito_estatus;
 
+        $ServicioIdArray = Session::get('ServicioIdArray');
+
         if($IsEnlace){
             $DependenciaIdArray = Session::get('DependenciaIdArray');
             $dependencias_id = Dependencia::query()
@@ -537,13 +552,31 @@ class DenunciaAmbitoController extends Controller{
 
         }
 
-        $Servicios = _viServicios::query()
-            ->select('id','servicio','abreviatura_dependencia')
-            ->where("servicio_habilitado", 1)
-            ->where('ambito_dependencia',$this->ambito_dependencia)
-            ->whereIn('dependencia_id',$dependencias_id)
-            ->orderBy('servicio')
-            ->get();
+//        $Servicios = _viServicios::query()
+//            ->select('id','servicio','abreviatura_dependencia')
+//            ->where("servicio_habilitado", 1)
+//            ->where('ambito_dependencia',$this->ambito_dependencia)
+//            ->whereIn('dependencia_id',$dependencias_id)
+//            ->orderBy('servicio')
+//            ->get();
+
+        if (count($ServicioIdArray) > 0){
+            $Servicios = _viServicios::query()
+                ->select('id','servicio','abreviatura_dependencia')
+                ->where("servicio_habilitado", 1)
+                ->where('ambito_dependencia',$this->ambito_dependencia)
+                ->whereIn('id',$ServicioIdArray)
+                ->orderBy('servicio')
+                ->get();
+        }else{
+            $Servicios = _viServicios::query()
+                ->select('id','servicio','abreviatura_dependencia')
+                ->where("servicio_habilitado", 1)
+                ->where('ambito_dependencia',$this->ambito_dependencia)
+                ->whereIn('dependencia_id',$dependencias_id)
+                ->orderBy('servicio')
+                ->get();
+        }
 
         $ServCat = ServicioCategoria::query()
             ->whereHas('users', function ($query) {
@@ -796,8 +829,6 @@ class DenunciaAmbitoController extends Controller{
 
         $filters = new FiltersRules();
         $data = $request->all();
-//        dd($data);
-
 
         $queryFilters = $filters->filterRulesDenuncia($request);
 
@@ -809,16 +840,11 @@ class DenunciaAmbitoController extends Controller{
             $this->max_item_for_query = session::get('items_for_query');
         }
 
-//        dd($queryFilters);
-
         $items = _viDDSs::query()
             ->select(FuncionesController::itemSelectDenuncias())
             ->ambitoFilterBy($queryFilters)
             ->orderByDesc('id')
             ->paginate($this->max_item_for_query);
-//            ->get();
-
-//        dd($items);
 
         $items->appends($queryFilters)->fragment('table');
 
@@ -827,7 +853,6 @@ class DenunciaAmbitoController extends Controller{
         $request->session()->put('items', $items);
         $this->ambito_dependencia = (int)$data['ambito_dependencia']; //Session::get('ambito_dependencia');
         $this->ambito_estatus = Session::get('ambito_estatus');
-//        dd($this->ambito_dependencia,$this->ambito_estatus);
         return view('SIAC.denuncia.denuncia_ambito.denuncia_list',
             [
                 'items'                               => $items,
@@ -835,6 +860,7 @@ class DenunciaAmbitoController extends Controller{
                 'titulo_header'                       => $this->ambito_dependencia == 1 ? "Apoyos Sociales" : "Servicios Municipales",
                 'user'                                => $user,
                 'searchInListDenuncia'                => 'listDenunciasAmbito'.$this->ambito_dependencia,
+                'showListDenuciasOperator'            => 'denuncia_operador_list',
                 'respuestasDenunciaItem'              => 'listRespuestas',
                 'respuestasDenunciaCiudadanaItem'     => 'listRespuestasCiudadanasAmbito',
                 'newWindow'                           => true,

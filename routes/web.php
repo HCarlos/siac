@@ -208,8 +208,6 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
 
     Route::get('quitarArchivoMobileServicio/{Id}', 'Storage\Mobile\StorageMobileServicioController@quitarArchivoMobileServicio')->name('quitarArchivoMobileServicio');
 
-
-
     // Catálogo de Afiliaciones
     Route::get('listAfiliaciones/', 'Denuncia\AfiliacionController@index')->name('listAfiliaciones');
     Route::get('editAfiliacion/{Id}', 'Denuncia\AfiliacionController@editItem')->name('editAfiliacion');
@@ -441,15 +439,10 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
     Route::get('archivosConfig','Storage\StorageExternalFilesController@archivos_config')->name('archivosConfig');
     Route::post('subirArchivoBase/', 'Storage\StorageExternalFilesController@subirArchivoBase')->name('subirArchivoBase/');
 
-//    Route::get('quitarArchivoBase/{driver}/{archivo}', 'Storage\StorageExternalFilesController@quitarArchivoBase')->name('quitarArchivoBase/');
     Route::post('quitarArchivoBase', 'Storage\StorageExternalFilesController@quitarArchivoBase')->name('quitarArchivoBase');
 
     Route::post('showFileListUserExcel1A','External\User\ListUserXLSXController@getListUserXLSX')->name('showFileListUserExcel1A');
 
-    //    Route::post('showFileListNivelExcel','External\Nivel\ListNivelXLSXController@getListNivelXLSX')->name('showFileListNivelExcel');
-    //    Route::post('showFileListParentescoExcel','External\Parentesco\ListParentescoXLSXController@getListParentescoXLSX')->name('showFileListParentescoExcel');
-    //    Route::post('showFileListFamiliaExcel','External\Familia\ListFamiliaXLSXController@getListFamiliaXLSX')->name('showFileListFamiliaExcel');
-    //    Route::post('showFileListRegFisExcel','External\Registros_Fiscales\ListaRegFisXLSXController@getListRegFisXLSX')->name('showFileListRegFisExcel');
     Route::post('getUserByRoleToXLSX','External\User\ListUserXLSXController@getUserByRoleToXLSX')->name('getUserByRoleToXLSX');
 
     Route::post('getModelListXlS/{model}','External\ListModelXLSXController@getListModelXLSX')->name('getModelListXlS');
@@ -511,6 +504,8 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
     Route::get('showModalDenunciaUserUpdate/{Id}', 'Denuncia\DenunciaUserAmbitoController@showModalDenunciaUserUpdate')->name('showModalDenunciaUserUpdate');
     Route::post('putModalDenunciaUserUpdate', 'Denuncia\DenunciaUserAmbitoController@putModalDenunciaUserUpdate')->name('putModalDenunciaUserUpdate');
 
+    /// DENUNCIAS CON OPERADOR
+    Route::get('denuncia_operador_list', 'Denuncia\DenunciaOperadorController@index')->name('denuncia_operador_list');
 
 
 

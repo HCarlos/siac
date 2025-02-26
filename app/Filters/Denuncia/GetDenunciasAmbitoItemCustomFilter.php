@@ -29,6 +29,7 @@ class GetDenunciasAmbitoItemCustomFilter extends QueryFilter{
         $DelegadosIdArray = [];
         $DependenciaArray = '';
         $DependenciaIdArray = [];
+        $ServicioIdArray = [];
         $filters['search'] = $search;
         if ($IsEnlace) {
             $ServicioIdArray = Auth::user()->ServicioIdArray;
@@ -55,6 +56,7 @@ class GetDenunciasAmbitoItemCustomFilter extends QueryFilter{
         session(['IsAdminArchivo' => $IsAdminArchivo]);
         session(['DependenciaArray' => $DependenciaArray]);
         session(['DependenciaIdArray' => $DependenciaIdArray]);
+        session(['ServicioIdArray' => $ServicioIdArray]);
         session(['DelegadosIdArray' => $DelegadosIdArray]);
 
         $filters['status_denuncia'] = '1';

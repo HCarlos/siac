@@ -20,21 +20,23 @@ class VistaDenunciaClass{
         if ($den) {
 
             $dens = Denuncia_Dependencia_Servicio::query()
-                ->select('denuncia_id','dependencia_id','servicio_id','estatu_id')
+//                ->select('id','denuncia_id','dependencia_id','servicio_id','estatu_id')
                 ->where('denuncia_id', $denuncia_id)
                 ->orderBy('id')
                 ->get();
 
-            $arr = [];
-            foreach ($dens as $d1) {
-                $val = $d1->denuncia_id.'|'.$d1->dependencia_id.'|'.$d1->servicio_id.'|'.$d1->estatu_id;
-                if (!in_array($val, $arr, true)){
-                    $arr[] = $val;
-                }
-            }
+//            dd($dens);
 
-            if (count($arr) > 0) {
+//            $arr = [];
+//            foreach ($dens as $d1) {
+//                $val = $d1->denuncia_id.'|'.$d1->dependencia_id.'|'.$d1->servicio_id.'|'.$d1->estatu_id;
+//                if (!in_array($val, $arr, true)){
+//                    $arr[] = $val;
+//                }
+//            }
 
+//            if (count($arr) > 0) {
+            if (count($dens) > 0) {
                 $estatus_general = [];
                 $estatus_id = $den->estatus_id;
                 $servicio_id = $den->servicio_id;
@@ -43,15 +45,16 @@ class VistaDenunciaClass{
                 $is_favorable = false;
                 $ue_id = 0;
 
-                foreach ($arr as $valor) {
-                    $d1 = explode('|', $valor);
-                    $dds = Denuncia_Dependencia_Servicio::query()
-                        ->where('denuncia_id', (int)$d1[0])
-                        ->where('dependencia_id', (int)$d1[1])
-                        ->where('servicio_id', (int)$d1[2])
-                        ->where('estatu_id', (int)$d1[3])
-                        ->orderByDesc('id')
-                        ->first();
+                foreach ($dens as $dds) {
+//                    $d1 = explode('|', $valor);
+//                    $dds = Denuncia_Dependencia_Servicio::query()
+//                        ->where('denuncia_id', (int)$d1[0])
+//                        ->where('dependencia_id', (int)$d1[1])
+//                        ->where('servicio_id', (int)$d1[2])
+//                        ->where('estatu_id', (int)$d1[3])
+//                        ->orderByDesc('id')
+//                        ->first();
+//                    $dds = Denuncia_Dependencia_Servicio::find($valor->id);
 
                     if ($dds) {
                         $abrev = $dds->dependencia->abreviatura;

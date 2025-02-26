@@ -25,4 +25,12 @@
             </a>
         </span>
     @endisset
+    @isset($showListDenuciasOperator)
+        @canany(['all','operador'])
+        <a href="{{url($showListDenuciasOperator)}}" class="btn btn-outline-white btn-rounded btn-sm ml-1" data-toggle="tooltip" data-placement="top" data-original-title="Ver Listado de Operadores">
+            <i class="fas fa-users"></i>
+        </a>
+        @endcanany
+    @endisset
+
 </div>
