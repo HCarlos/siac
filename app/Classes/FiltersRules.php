@@ -18,7 +18,7 @@ class FiltersRules
 {
 
     public function filterRulesDenuncia(Request $request){
-        $data = $request->all(['ambito_estatus','ambito_dependencia','curp','ciudadano','id','desde','hasta','prioridad_id','dependencia_id','servicio_id','estatus_id','creadopor_id','incluirFecha','conRespuesta','clave_identificadora','uuid','incluirFechaMovto','origen_id','ciudadano_id']);
+        $data = $request->all(['ambito_estatus','ambito_dependencia','curp','ciudadano','id','desde','hasta','prioridad_id','dependencia_id','servicio_id','estatus_id','creadopor_id','incluirFecha','conRespuesta','clave_identificadora','uuid','incluirFechaMovto','origen_id','ciudadano_id','centro_localidad_id']);
         $data['status_denuncia']      = 1;
         $data['ambito_dependencia']   = $data['ambito_dependencia']   == null ? "" : $data['ambito_dependencia'];
         $data['ambito_estatus']       = $data['ambito_estatus']       == null ? "" : $data['ambito_estatus'];
@@ -33,6 +33,7 @@ class FiltersRules
         $data['clave_identificadora'] = $data['clave_identificadora'] == null ? "" : $data['clave_identificadora'];
         $data['uuid']                 = $data['uuid']                 == null ? "" : $data['uuid'];
         $data['ciudadano_id']         = $data['ciudadano_id']         == null ? "" : $data['ciudadano_id'];
+        $data['centro_localidad_id']  = $data['centro_localidad_id']  == null ? "" : $data['centro_localidad_id'];
 
         $data['dependencia_id']       = $data['dependencia_id']       == "0" ? "" : $data['dependencia_id'];
         $data['prioridad_id']         = $data['prioridad_id']         == "0" ? "" : $data['prioridad_id'];
@@ -71,6 +72,7 @@ class FiltersRules
 
         $filters = array_merge($filters, [
             'ciudadano_id'         => $data['ciudadano_id'],
+            'centro_localidad_id'  => $data['centro_localidad_id'],
             'origen_id'            => $data['origen_id'],
             'servicio_id'          => $data['servicio_id'],
             'estatus_id'           => $data['estatus_id'],

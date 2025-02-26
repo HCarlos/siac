@@ -11,6 +11,7 @@ use App\Http\Requests\Denuncia\DenunciaAmbitoRequest;
 use App\Http\Requests\Denuncia\DenunciaRequest;
 use App\Http\Requests\Denuncia\SearchIdenticalAmbitoRequest;
 use App\Http\Requests\Denuncia\SearchIdenticalRequest;
+use App\Models\Catalogos\CentroLocalidad;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Domicilios\Ubicacion;
 use App\Models\Catalogos\Estatu;
@@ -316,6 +317,11 @@ class DenunciaAmbitoController extends Controller{
                 ->get();
         }
 
+        $localidades_centro = CentroLocalidad::query()
+            ->orderBy('prefijo_colonia', 'asc')
+            ->orderBy('colonia', 'asc')
+            ->get();
+
 
         $this->msg = "";
         $th = $this->ambito_dependencia == 1 ? "Apoyos Sociales" : "Servicios Municipales";
@@ -335,6 +341,7 @@ class DenunciaAmbitoController extends Controller{
                 'ambito'               => null, //FuncionesController::arrAmbitosSM(),
                 'ambito_dependencia'   => $this->ambito_dependencia,
                 'ambito_estatus'       => $this->ambito_estatus,
+                'localidades_centro'  => $localidades_centro,
             ]
         );
     }
@@ -542,13 +549,11 @@ class DenunciaAmbitoController extends Controller{
 
         }
 
-//        $Servicios = _viServicios::query()
-//            ->select('id','servicio','abreviatura_dependencia')
-//            ->where("servicio_habilitado", 1)
-//            ->where('ambito_dependencia',$this->ambito_dependencia)
-//            ->whereIn('dependencia_id',$dependencias_id)
-//            ->orderBy('servicio')
-//            ->get();
+        $localidades_centro = CentroLocalidad::query()
+            ->orderBy('prefijo_colonia', 'asc')
+            ->orderBy('colonia', 'asc')
+            ->get();
+
 
         if (count($ServicioIdArray) > 0){
             $Servicios = _viServicios::query()
@@ -609,6 +614,7 @@ class DenunciaAmbitoController extends Controller{
                 'ambito'               => $ServCat, //FuncionesController::arrAmbitosSM(),
                 'ambito_dependencia'   => $this->ambito_dependencia,
                 'ambito_estatus'       => $this->ambito_estatus,
+                'localidades_centro'  => $localidades_centro,
             ]
         );
     }
@@ -795,6 +801,12 @@ class DenunciaAmbitoController extends Controller{
 
         $this->ambito_estatus = Session::get('ambito_estatus');
 
+        $localidades_centro = CentroLocalidad::query()
+            ->orderBy('prefijo_colonia', 'asc')
+            ->orderBy('colonia', 'asc')
+            ->get();
+
+
         $user = Auth::user();
         return view ('SIAC.denuncia.search_ambito.denuncia_search_panel',
             [
@@ -809,6 +821,7 @@ class DenunciaAmbitoController extends Controller{
                 'prioridades'        => $Prioridades,
                 'ambito_dependencia' => $this->ambito_dependencia,
                 'ambito_estatus'     => $this->ambito_estatus,
+                'localidades_centro' => $localidades_centro,
             ]
         );
     }

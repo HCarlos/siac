@@ -32,6 +32,7 @@ class DenunciaAmbitoFilter extends QueryFilter
             'dependencia_id'         => '',
             'prioridad_id'           => '',
             'servicio_id'            => '',
+            'centro_localidad_id'    => '',
             'origen_id'              => '',
             'estatus_id'             => '',
             'fecha_movimiento'       => '',
@@ -79,7 +80,7 @@ class DenunciaAmbitoFilter extends QueryFilter
         $search = addslashes($search); // Escapar caracteres especiales
 
         return $query->whereRaw("gd_searchtext @@ plainto_tsquery('spanish', ?)", [$search]
-                    )->orderByRaw("denuncia, referencia, search_google, gd_ubicacion ");
+                    )->orderByRaw("descripcion, referencia, search_google, gd_ubicacion ");
 
     }
 
@@ -160,13 +161,17 @@ class DenunciaAmbitoFilter extends QueryFilter
 
         if ( is_array($search) ){
             return $query->whereIn('sue_id', $search);
-        }else{
-            return $query->where('sue_id', (int)$search);
         }
 
-
+        return $query->where('sue_id', (int)$search);
 
     }
+
+    public function centro_localidad_id($query, $search){
+        if (is_null($search) || empty ($search) || trim($search) == "0") {return $query;}
+        return $query->where('centro_localidad_id', (int)$search);
+    }
+
 
     public function estatus_id($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "0") {return $query;}

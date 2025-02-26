@@ -21,6 +21,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class DenunciaAmbitoRequest extends FormRequest
 {
@@ -48,14 +49,15 @@ class DenunciaAmbitoRequest extends FormRequest
     {
 
         return [
-            'descripcion'  => ['required','string','min:4'],
-            'servicio_id'  => ['required','numeric','min:1'],
-            'usuario_id'   => ['required','numeric','min:1'],
-            'origen_id'    => ['required','numeric','min:1'],
-            'ubicacion_id' => ['required','numeric','min:1'],
-            'latitud'      => ['required','numeric'],
-            'longitud'     => ['required','numeric'],
-            'gd_ubicacion' => ['required','string','min:4'],
+            'descripcion'         => ['required','string','min:4'],
+            'servicio_id'         => ['required','numeric','min:1'],
+            'usuario_id'          => ['required','numeric','min:1'],
+            'origen_id'           => ['required','numeric','min:1'],
+            'ubicacion_id'        => ['required','numeric','min:1'],
+            'latitud'             => ['required','numeric'],
+            'longitud'            => ['required','numeric'],
+            'gd_ubicacion'        => ['required','string','min:4'],
+            'centro_localidad_id' => ['required','numeric','min:1'],
         ];
     }
 
@@ -67,14 +69,15 @@ class DenunciaAmbitoRequest extends FormRequest
 
     public function attributes(){
         return [
-            'descripcion'     => 'Solicitud',
-            'servicio_id'     => 'Servicio',
-            'origen_id'       => 'Fuente',
-            'usuario_id'      => 'Usuario',
-            'ubicacion_id'    => 'Ubicación',
-            'latitud'         => 'Latitud',
-            'longitud'        => 'Longitud',
-            'gd_ubicacion'    => 'Ubicación google',
+            'descripcion'         => 'Solicitud',
+            'servicio_id'         => 'Servicio',
+            'origen_id'           => 'Fuente',
+            'usuario_id'          => 'Usuario',
+            'ubicacion_id'        => 'Ubicación',
+            'latitud'             => 'Latitud',
+            'longitud'            => 'Longitud',
+            'gd_ubicacion'        => 'Ubicación google',
+            'centro_localidad_id' => 'Localidad',
         ];
     }
 
@@ -136,6 +139,7 @@ class DenunciaAmbitoRequest extends FormRequest
                 'ip'                           => FuncionesController::getIp(),
                 'host'                         => config('atemun.public_url'),
                 'ambito'                       => $this->ambito ?? 0,
+                'centro_localidad_id'          => $this->centro_localidad_id ?? 0,
             ];
 
 //            dd($this->ambito);
@@ -332,13 +336,17 @@ class DenunciaAmbitoRequest extends FormRequest
 
 
 
-    public function getRedirectUrl()
-    {
+    public function getRedirectUrl(){
+        //        return Redirect::to('editDenunciaAmbito/'.$this->ambito_dependencia.'/'.$item->id);
+
         $url = $this->redirector->getUrlGenerator();
         if ($this->id > 0){
             return $url->route($this->redirectRoute,['ambito_dependencia'=>$this->ambito_dependencia,'Id'=>$this->id]);
+//            return Redirect::to($this->redirectRoute.'/'.$this->ambito_dependencia.'/'.$this->id);
         }else{
             return $url->route('newDenunciaAmbito/'.$this->ambito_dependencia.'/0');
+//            return Redirect::to('newDenunciaAmbito/'.$this->ambito_dependencia.'/0');
+//            return Redirect::back();
         }
     }
 

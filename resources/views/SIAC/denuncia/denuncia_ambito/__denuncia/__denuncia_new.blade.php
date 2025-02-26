@@ -24,8 +24,8 @@
                 </div>
             </div>
 
-            <div class="form-row mb-1 ">
-                <label for = "search_google" class="col-sm-2 col-form-label text-right">Ubicación: </label>
+            <div class="form-row">
+                <label for = "search_google" class="col-sm-2 col-form-label text-right">Georeferencia: </label>
                 <div class="col-sm-10">
                     <div class="input-group">
                     <input type="text" name="search_google" id="search_google" class="form-control" value="{{ old('search_google') }}" placeholder="escriba aquí la colonia" >
@@ -35,7 +35,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-row mb-1">
+            <div class="form-row mb-1 ">
                 <label for = "searchGoogleResult" class="col-lg-2 col-form-label text-right"> </label>
                 <div class="col-lg-10">
                     <small class="text-success font-medium text-center p-0 m-0" id="searchGoogleResult"></small>
@@ -50,6 +50,17 @@
                 <label for = "longitud" class="col-lg-2 col-form-label text-right">Longitud: </label>
                 <div class="col-lg-4">
                     <input type="text" name="longitud" id="longitud" class="form-control longitud" value="" placeholder="-92.944787" >
+                </div>
+            </div>
+            <div class="form-row mb-1 ">
+                <label for = "centro_localidad_id" class="col-lg-2 col-form-label text-right m-0 p-0">Localidad: </label>
+                <div class="col-lg-10">
+                    <select id="centro_localidad_id" name="centro_localidad_id" class="form-control" size="1" value="{{ old('centro_localidad_id') }}">
+                        <option value="0"  >Seleccione una Localidad</option>
+                        @foreach($localidades_centro as $t)
+                            <option value="{{$t->id}}" >{{ $t->ItemColonia() }} </option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
             <hr>

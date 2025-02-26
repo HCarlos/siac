@@ -55,6 +55,17 @@
                     <input type="text" name="longitud" id="longitud" class="form-control longitud" value="{{ old('longitud', $items->longitud) }}" placeholder="-92.944787" >
                 </div>
             </div>
+            <div class="form-row mb-1 ">
+                <label for = "centro_localidad_id" class="col-lg-2 col-form-label text-right m-0 p-0">Localidad: </label>
+                <div class="col-lg-10">
+                    <select id="centro_localidad_id" name="centro_localidad_id" class="form-control" size="1" value="{{ old('centro_localidad_id') }}">
+                        <option value="0"  >Seleccione una Localidad</option>
+                        @foreach($localidades_centro as $t)
+                            <option value="{{$t->id}}"  {{ $t->id === $items->centro_localidad_id ? 'selected': '' }}  >{{ $t->ItemColonia() }} </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
             <hr>
             <div class="form-group row mb-1 mt-2">
                 <div class="col-lg-12 ">

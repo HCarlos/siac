@@ -34,4 +34,13 @@ class CentroLocalidad extends Model{
         return $this->hasOne(User::class,'id','delegado_id');
     }
 
+    public function ItemColonia(){
+        return $this->prefijo_colonia.' '.$this->colonia;
+    }
+
+    public function ItemDelegacion(){
+        return $this->prefijo_delegacion.' '.$this->delegacion;
+    }
+
+
 }

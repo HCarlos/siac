@@ -24,7 +24,7 @@
                         </td>
                         <td class="w-25">
                             {{$item->ciudadano->full_name}} <br>
-                            <small>{{$item->ciudadano->curp}}</small>
+                            <small>{{$item->ciudadano->username}}</small>
                         </td>
                         <td  class="w-15">{{ \Carbon\Carbon::parse($item->fecha_ingreso)->format('d-m-Y H:i') }}</td>
                         <td>

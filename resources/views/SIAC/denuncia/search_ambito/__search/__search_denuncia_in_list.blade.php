@@ -72,6 +72,18 @@
 </div>
 
 <div class="form-row mb-1">
+    <label for = "centro_localidad_id" class="col-md-2 col-form-label">Localidad</label>
+    <div class="col-md-10">
+        <select id="centro_localidad_id" name="centro_localidad_id" class="form-control" size="1">
+            <option value="" selected >Seleccione una Localidad</option>
+            @foreach($localidades_centro as $t)
+                <option value="{{ $t->id }}">{{ $t->ItemColonia() }} </option>
+            @endforeach
+        </select>
+    </div>
+</div>
+
+<div class="form-row mb-1">
     <label for = "origen_id" class="col-md-2 col-form-label">Origen</label>
     <div class="col-md-4">
         <select id="origen_id" name="origen_id" class="form-control" size="1">

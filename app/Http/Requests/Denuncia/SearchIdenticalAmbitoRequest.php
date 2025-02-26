@@ -57,27 +57,29 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
             $id                 = (int) $this->id;
 
             $ambito_dependencia = Session::get('ambito_dependencia');
-//            dd($search_google);
+            $ambito_dependencia = (int) $this->ambito_dependencia;
 
             if ($ambito_dependencia === 1 ){
                 $Ubi = Ubicacion::find($ubicacion_id);
-//                $filters = $descripcion.' '.$referencia.' '.$ubicacion;
                 $filters = $Ubi->calle ?? ''.' '.$Ubi->colonia ?? '';
             }else{
-//                $filters = $descripcion.' '.$referencia;
-                  $filters = $search_google; //.' '.$searchgoogleresult;
-//                $filters = $searchgoogleresult;
+                  $filters = $search_google;
             }
-
-//                            dd($filters);
 
             $F           = new FuncionesController();
             $tsString    = $F->string_to_tsQuery(strtolower($filters),' & ');
-
             $oFilters['search'] = $tsString;
-            $oFilters['servicio_id'] = $servicio_id;
 
-//                                        dd($oFilters);
+            $oFilters['servicio_id'] = $servicio_id;
+//            if ($ambito_dependencia === 2 ){
+//                $oFilters['centro_localidad_id'] = (int) $this->centro_localidad_id;
+//            }else{
+//                $F           = new FuncionesController();
+//                $tsString    = $F->string_to_tsQuery(strtolower($filters),' & ');
+//                $oFilters['search'] = $tsString;
+//            }
+
+//            dd($oFilters);
 
             if ($ambito_dependencia === 1 ){
                 $items = _viDDSs::query()
@@ -85,7 +87,8 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
                     ->orderBy('id')
                     ->get();
             }else{
-                $items = _viDDSs::query()
+//                dd($oFilters);
+                $items = Denuncia::query()
                     ->ambitoFilterBy($oFilters)
                     ->orderBy('id')
                     ->get();
