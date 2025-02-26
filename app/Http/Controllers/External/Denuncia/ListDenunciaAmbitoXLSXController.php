@@ -74,7 +74,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
 
         $sh->setCellValue('u1', Carbon::now()->format('d-m-Y h:m:s'));
         foreach ($Items as $item){
-            $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
+            $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y H:i');
             $fechaIngreso   = isset($item->fecha_ingreso) ? $fechaIngreso : '';
 
             $resp = Denuncia_Dependencia_Servicio::query()
@@ -110,52 +110,56 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 $fechaUntiloEstatus   = Carbon::parse($arrUltimoEstatus->fecha)->format('d-m-Y');
             }
 
-            $telcel = explode(';',$item->telefonoscelularesemails);
+            foreach ($item->ciudadanos as $cds){
 
-            $cadcel = '';
-            for ($i = 0; $i < count($telcel) - 1;  $i++) {
-                if ($cadcel === ''){
-                    $cadcel .= trim($telcel[$i]);
-                }else if ( trim($telcel[$i]) !== '' ){
-                    $cadcel .= ', ' . trim($telcel[$i]);
-                }else{
-                    $cadcel .= '';
+
+                $telcel = $cds->telefonos. '; '. $cds->celulares. '; '. $cds->email;
+                $telcel = explode(';',$telcel);
+
+                $cadcel = '';
+                for ($i = 0; $i < count($telcel) - 1;  $i++) {
+                    if ($cadcel === ''){
+                        $cadcel .= trim($telcel[$i]);
+                    }else if ( trim($telcel[$i]) !== '' ){
+                        $cadcel .= ', ' . trim($telcel[$i]);
+                    }else{
+                        $cadcel .= '';
+                    }
                 }
+
+                $gdu = explode(',',trim($item->gd_ubicacion));
+                $cadgdu = $gdu[1] ?? '';
+
+                $sh
+                    ->setCellValue('A'.$C, $item->id ?? 0)
+                    ->setCellValue('B'.$C, trim($cds->username ?? ''))
+                    ->setCellValue('C'.$C, trim($cds->ap_paterno ?? ''))
+                    ->setCellValue('D'.$C, trim($cds->ap_materno ?? ''))
+                    ->setCellValue('E'.$C, trim($cds->nombre ?? ''))
+
+                    ->setCellValue('F'.$C, trim($item->gd_ubicacion) ?? '')
+                    ->setCellValue('G'.$C, $cadgdu ?? '')
+
+                    ->setCellValue('H'.$C, $cadcel ?? '')
+                    ->setCellValue('I'.$C, $fechaIngreso ?? '')
+                    ->setCellValue('J'.$C, $item->dependencia_ultimo_estatus->dependencia ?? '')
+                    ->setCellValue('K'.$C, $item->servicio_ultimo_estatus->servicio ?? '')
+
+                    ->setCellValue('L'.$C, $item->descripcion ?? '')
+
+                    ->setCellValue('M'.$C, $item->prioridad->prioridad ?? '')
+                    ->setCellValue('N'.$C, $item->origen->origen ?? '')
+                    ->setCellValue('O'.$C, $item->estatus_general ?? '')
+                    ->setCellValue('P'.$C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y h:m') ?? '')
+                    ->setCellValue('Q'.$C, $respuesta )
+                    ->setCellValue('R'.$C, $favorable ? "SI" : "NO" )
+                    ->setCellValue('S'.$C, $item->clave_identificadora )
+                    ->setCellValue('T'.$C, trim($cds->StrGenero ?? ''))
+                    ->setCellValue('U'.$C, $item->Ambito() ?? '');
+                $C++;
             }
-
-            $gdu = explode(',',trim($item->gd_ubicacion));
-            $cadgdu = $gdu[1] ?? '';
-
-            $sh
-                ->setCellValue('A'.$C, $item->id ?? 0)
-                ->setCellValue('B'.$C, trim($item->curp_ciudadano ?? ''))
-                ->setCellValue('C'.$C, trim($item->ap_paterno_ciudadano ?? ''))
-                ->setCellValue('D'.$C, trim($item->ap_materno_ciudadano ?? ''))
-                ->setCellValue('E'.$C, trim($item->nombre_ciudadano ?? ''))
-
-                ->setCellValue('F'.$C, trim($item->gd_ubicacion) ?? '')
-                ->setCellValue('G'.$C, $cadgdu ?? '')
-
-                ->setCellValue('H'.$C, $cadcel ?? '')
-                ->setCellValue('I'.$C, $fechaIngreso ?? '')
-                ->setCellValue('J'.$C, $item->dependencia_ultimo_estatus ?? '')
-                ->setCellValue('K'.$C, $item->servicio_ultimo_estatus ?? '')
-
-                ->setCellValue('L'.$C, $item->denuncia ?? '')
-
-                ->setCellValue('M'.$C, $item->prioridad ?? '')
-                ->setCellValue('N'.$C, $item->origen ?? '')
-                ->setCellValue('O'.$C, $arrUltimoEstatus->estatus ?? '')
-                ->setCellValue('P'.$C, $fechaUntiloEstatus ?? '')
-                ->setCellValue('Q'.$C, $respuesta )
-                ->setCellValue('R'.$C, $favorable ? "SI" : "NO" )
-                ->setCellValue('S'.$C, $item->clave_identificadora )
-                ->setCellValue('T'.$C, trim($item->genero_ciudadano ?? ''))
-                ->setCellValue('U'.$C, $item->ambito_sas === 'No Aplica' ? "" : $item->ambito_sas ?? '');
-            $C++;
         }
-//        ->setCellValue('N'.$C, $servicio->subarea->area->dependencia->dependencia ?? '')
-//        ->setCellValue('Q'.$C, $servicio->servicio ?? '')
+
 
         $Cx = $C  - 1;
         $oVal = $sh->getCell('G1')->getValue();
@@ -190,71 +194,70 @@ class ListDenunciaAmbitoXLSXController extends Controller
     public function denunciaSASGeneral01($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
 
         $sh->setCellValue('I1', Carbon::now()->format('d-m-Y h:m:s'));
-        foreach ($Items as $item){
-            $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
-            $fechaIngreso   = isset($item->fecha_ingreso) ? $fechaIngreso : '';
+        foreach ($Items as $item) {
+            $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
+            $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
 
             $resp = Denuncia_Dependencia_Servicio::query()
-                ->select(['id','observaciones','dependencia_id','favorable','denuncia_id'])
-                ->where('denuncia_id',$item->id)
+                ->select(['id', 'observaciones', 'dependencia_id', 'favorable', 'denuncia_id'])
+                ->where('denuncia_id', $item->id)
                 ->orderByDesc('id')
                 ->first();
 
             $respuesta = "";
             $favorable = false;
-            try{
-                if ( $resp->observaciones !== null){
+            try {
+                if ($resp->observaciones !== null) {
                     $res = trim($resp->observaciones) ?? '';
-                    if ( $res != ""){
+                    if ($res != "") {
                         $dep = Dependencia::find($resp->dependencia_id);
-                        $respuesta = $dep->abreviatura.' - '.$res.'. ';
+                        $respuesta = $dep->abreviatura . ' - ' . $res . '. ';
                         $favorable = $resp->favorable;
                     }
-                }else{
+                } else {
                     $respuesta = '';
                     $favorable = '';
                 }
-            }catch (Exception $e) {
+            } catch (Exception $e) {
                 $respuesta = '';
                 $favorable = '';
             }
 
 
-//            if (json_decode($item->estatus_general) == null){
-//                $fechaUntiloEstatus = "";
-//            }else{
-//                $arrUltimoEstatus = last(json_decode($item->estatus_general));
-//                $fechaUntiloEstatus   = Carbon::parse($arrUltimoEstatus->fecha)->format('d-m-Y');
-//            }
+            foreach ($item->ciudadanos as $cds) {
 
-            $telcel = explode(';',$item->telefonoscelularesemails);
-            $cadcel = '';
-            for ($i = 0; $i < count($telcel) - 1;  $i++) {
-                if ($cadcel === ''){
-                    $cadcel .= trim($telcel[$i]);
-                }else if ( trim($telcel[$i]) !== '' ){
-                    $cadcel .= ', ' . trim($telcel[$i]);
-                }else{
-                    $cadcel .= '';
+                $telcel = $cds->telefonos . '; ' . $cds->celulares . '; ' . $cds->email;
+                $telcel = explode(';', $telcel);
+
+
+                $cadcel = '';
+                for ($i = 0; $i < count($telcel) - 1; $i++) {
+                    if ($cadcel === '') {
+                        $cadcel .= trim($telcel[$i]);
+                    } else if (trim($telcel[$i]) !== '') {
+                        $cadcel .= ', ' . trim($telcel[$i]);
+                    } else {
+                        $cadcel .= '';
+                    }
                 }
+
+                $gdu = explode(',', trim($item->gd_ubicacion));
+                $cadgdu = $gdu[1] ?? '';
+
+                $sh
+                    ->setCellValue('A' . $C, $item->id ?? 0)
+                    ->setCellValue('B' . $C, trim($item->servicio_ultimo_estatus->servicio ?? ''))
+                    ->setCellValue('C' . $C, $fechaIngreso ?? '')
+                    ->setCellValue('D' . $C, trim($cds->full_name ?? ''))
+                    ->setCellValue('E' . $C, $cadcel)
+                    ->setCellValue('F' . $C, trim($item->gd_ubicacion ?? ''))
+                    ->setCellValue('G' . $C, trim($cadgdu ?? ''))
+                    ->setCellValue('H' . $C, $item->descripcion ?? '')
+                    ->setCellValue('I' . $C, $item->Ambito() ?? '')
+                    ->setCellValue('J' . $C, $item->ultimo_estatus ?? '')
+                    ->setCellValue('K' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y H:i') ?? '');
+                $C++;
             }
-
-            $gdu = explode(',',trim($item->gd_ubicacion));
-            $cadgdu = $gdu[1] ?? '';
-
-            $sh
-                ->setCellValue('A'.$C, $item->id ?? 0)
-                ->setCellValue('B'.$C, trim($item->ultimo_servicio ?? ''))
-                ->setCellValue('C'.$C, $fechaIngreso ?? '')
-                ->setCellValue('D'.$C, trim($item->ciudadano ?? ''))
-                ->setCellValue('E'.$C, $cadcel)
-                ->setCellValue('F'.$C, trim($item->gd_ubicacion ?? ''))
-                ->setCellValue('G'.$C, trim($cadgdu ?? ''))
-                ->setCellValue('H'.$C, $item->denuncia ?? '')
-                ->setCellValue('I'.$C, $item->ambito_sas === 'No Aplica' ? "" : $item->ambito_sas ?? '')
-                ->setCellValue('J'.$C, $item->ultimo_estatus ?? '')
-                ->setCellValue('K'.$C, $item->fecha_ultimo_estatus ?? '');
-            $C++;
         }
 
         $Cx = $C  - 1;

@@ -73,7 +73,8 @@ class ListDenunciaXLSXController extends Controller
     public function denunciaGeneral01($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
 
         $sh->setCellValue('S1', Carbon::now()->format('d-m-Y h:m:s'));
-        foreach ($Items as $item){
+        foreach ($Items as $it){
+            $item = _viDDSs::find($it->id);
             $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
             $fechaIngreso   = isset($item->fecha_ingreso) ? $fechaIngreso : '';
 
@@ -178,7 +179,8 @@ class ListDenunciaXLSXController extends Controller
     public function denunciaSASGeneral01($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
 
         $sh->setCellValue('M1', Carbon::now()->format('d-m-Y h:m:s'));
-        foreach ($Items as $item){
+        foreach ($Items as $it){
+            $item = _viDDSs::find($it->id);
             $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
             $fechaIngreso   = isset($item->fecha_ingreso) ? $fechaIngreso : '';
 

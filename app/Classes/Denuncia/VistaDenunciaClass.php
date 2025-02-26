@@ -17,15 +17,17 @@ class VistaDenunciaClass{
 
         $den = Denuncia::findOrFail($denuncia_id);
 
+//        dd($den);
+
         if ($den) {
 
-            $dens = Denuncia_Dependencia_Servicio::query()
 //                ->select('id','denuncia_id','dependencia_id','servicio_id','estatu_id')
+            $dens = Denuncia_Dependencia_Servicio::query()
                 ->where('denuncia_id', $denuncia_id)
                 ->orderBy('id')
                 ->get();
 
-//            dd($dens);
+//            dd(count($dens));
 
 //            $arr = [];
 //            foreach ($dens as $d1) {
@@ -36,6 +38,9 @@ class VistaDenunciaClass{
 //            }
 
 //            if (count($arr) > 0) {
+
+//            dd( $dens );
+
             if (count($dens) > 0) {
                 $estatus_general = [];
                 $estatus_id = $den->estatus_id;

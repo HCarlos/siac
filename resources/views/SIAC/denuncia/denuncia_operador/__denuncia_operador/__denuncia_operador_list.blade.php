@@ -1,16 +1,38 @@
 <div class="row" style="width: 100% !important;">
-    <div class="col-lg-12">
-        <div class="card card-primary">
-            <div class="card-header">
-{{--                <h6>{{$Denuncia->Ciudadano->FullName}}  <small>{{ date('d-m-Y H:i:s', strtotime($Denuncia->fecha_ingreso)) }}</small></h6>--}}
-            </div>
-            <div class="card-body">
-{{--                <p><strong>DESCRIPCIÓN: </strong>{{$Denuncia->descripcion}}</p>--}}
-{{--                <p><strong>REFERENCIA: </strong>{{$Denuncia->referencia.'  '.$Denuncia->observaciones}}</p>--}}
-{{--                <p><strong>UBICACION: </strong>{{$Denuncia->gd_ubicacion}}</p>--}}
+        <div class="col-lg-6">
+            <div class="card card-primary">
+                <div class="card-header">
+                    Hola
+                </div>
+                <div class="card-body">
+                    <div class="form-row mb-1">
+                        <label for = "operador_id" class="col-md-2 col-form-label">Operador Por:</label>
+                        <div class="col-md-4">
+                            <select id="operador_id" name="operador_id" class="form-control" size="1">
+                                <option value="0" selected >Seleccione un Usuario</option>
+{{--                                @foreach($capturistas as $id => $valor)--}}
+{{--                                    <option value="{{ $id }}">{{ $valor }}</option>--}}
+{{--                                @endforeach--}}
+                            </select>
+                        </div>
+                        <label for = "id" class="col-md-1 col-form-label text-right">ID </label>
+                        <div class="col-md-5">
+                            <input type="text" name="id" id="id" value="{{ old('id') }}" class="form-control" />
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
-    </div>
+        <div class="col-lg-6">
+            <div class="card card-primary">
+                <div class="card-header">
+                    Mundo
+                </div>
+                <div class="card-body">
+                </div>
+            </div>
+        </div>
 </div>
 
 <table  id="tblCat" class="table table-bordered table-striped dt-responsive dataTable " role="grid" aria-describedby="datatable-buttons_info" >

@@ -66,22 +66,18 @@ class DenunciaAmbitoController extends Controller{
             Session::put('is_pagination', true);
         }
 
-//        Session(['ambito_dependencia' => $ambito_dependencia]);
-//        session(['ambito_estatus' => $ambito_estatus]);
-//        session(['is_pagination' => true]);
-
         $this->ambito_dependencia = $ambito_dependencia;
         $this->ambito_estatus = $ambito_estatus;
 
         if ( $search !== [] && isEmpty($search) !== null && $search !== "" ) {
-            $items = _viDDSs::query()
+            $items = Denuncia::query()
                 ->select(FuncionesController::itemSelectDenuncias())
                 ->GetDenunciasAmbitoItemCustomFilter($filters)
                 ->orderByDesc('id')
                 ->get();
             session(['is_pagination' => false]);
         }else{
-            $items = _viDDSs::query()
+            $items = Denuncia::query()
                 ->select(FuncionesController::itemSelectDenuncias())
                 ->GetDenunciasAmbitoItemCustomFilter($filters)
                 ->orderByDesc('id')
@@ -91,12 +87,6 @@ class DenunciaAmbitoController extends Controller{
 
 
         $request->session()->put('items', $items);
-
-//        session(['ambito_dependencia' => $ambito_dependencia]);
-
-//        dd(session::get('ambito_dependencia'));
-
-//        dd(Session::get('ambito_dependencia'),Session::get('ambito_dependencia'));
 
         session(['msg' => '']);
 
@@ -840,7 +830,7 @@ class DenunciaAmbitoController extends Controller{
             $this->max_item_for_query = session::get('items_for_query');
         }
 
-        $items = _viDDSs::query()
+        $items = Denuncia::query()
             ->select(FuncionesController::itemSelectDenuncias())
             ->ambitoFilterBy($queryFilters)
             ->orderByDesc('id')

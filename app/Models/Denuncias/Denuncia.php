@@ -5,8 +5,13 @@
 
 namespace App\Models\Denuncias;
 
+use App\Filters\Denuncia\Count\DenunciaAmbitoFilterCount;
+use App\Filters\Denuncia\Count\GetDenunciasAmbitoFilterCount;
+use App\Filters\Denuncia\Count\GetDenunciasEstatusAmbitoFilterCount;
 use App\Filters\Denuncia\Count\GetDenunciasFilterCount;
+use App\Filters\Denuncia\DenunciaAmbitoFilter;
 use App\Filters\Denuncia\DenunciaFilter;
+use App\Filters\Denuncia\GetDenunciasAmbitoItemCustomFilter;
 use App\Filters\Denuncia\GetDenunciasItemCustomFilter;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Models\Catalogos\Dependencia;
@@ -17,6 +22,7 @@ use App\Models\Catalogos\Prioridad;
 use App\Models\Catalogos\Servicio;
 use App\Traits\Denuncia\DenunciaTrait;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -74,6 +80,23 @@ class Denuncia extends Model
         return (new GetDenunciasFilterCount())->applyTo($query, $filters);
     }
 
+    public function scopeAmbitoFilterBy($query, $filters){
+        return (new DenunciaAmbitoFilter())->applyTo($query, $filters);
+    }
+    public function scopeGetDenunciasAmbitoItemCustomFilter($query, $filters){
+        return (new GetDenunciasAmbitoItemCustomFilter())->applyTo($query, $filters);
+    }
+    public function scopeGetDenunciasAmbitoFilterCount($query, $filters){
+        return (new GetDenunciasAmbitoFilterCount())->applyTo($query, $filters);
+    }
+
+    public function scopeFilterByCount($query, $filters){
+        return (new DenunciaAmbitoFilterCount())->applyTo($query, $filters);
+    }
+    public function scopeGetDenunciasEstatusAmbitoFilterCount($query, $filters){
+        return (new GetDenunciasEstatusAmbitoFilterCount())->applyTo($query, $filters);
+    }
+
     public function prioridad(){
         return $this->hasOne(Prioridad::class,'id','prioridad_id');
     }
@@ -125,6 +148,11 @@ class Denuncia extends Model
     public function ubicacion(){
         return $this->hasOne(Ubicacion::class,'id','ubicacion_id');
     }
+
+    public function UbicacMe(){
+        return $this->hasOne(Ubicacion::class,'id','ubicacion_id');
+    }
+
     public function ubicaciones(){
         return $this->belongsToMany(Ubicacion::class,'denuncia_ubicacion','denuncia_id','ubicacion_id');
     }
@@ -207,8 +235,41 @@ class Denuncia extends Model
     }
 
     public function servicio_ultimo_estatus(){
-        return $this->hasOne(Servicio::class,'id','due_id');
+        return $this->hasOne(Servicio::class,'id','sue_id');
     }
+
+    public function semaforo_ultimo_estatus(){
+
+        $sem = 1;
+
+        $finicio = Carbon::now();
+        $ffin = Carbon::parse($this->fecha_ingreso);
+        $cffin = "";
+
+        if ($this->ultimo_estatus === "ATENDIDO" ||
+            $this->ultimo_estatus === "ATENDIDA" ||
+            $this->ultimo_estatus === "RECHAZADA"
+        ){
+            $finicio = Carbon::parse($this->fecha_ingreso);
+            $ffin = Carbon::parse($this->fecha_ultimo_estatus);
+            $cffin = Carbon::parse($this->fecha_ultimo_estatus)->format('d-m-Y');
+        }
+        $dias = $finicio->diffInDays($ffin);
+
+        if ( $dias <= $this->dias_ejecucion ){ $sem = 1; $class_color = 'text-verde-semaforo';  }
+        if ( $dias > $this->dias_ejecucion && $dias <= $this->dias_maximos_ejecucion ){ $sem = 2; $class_color = 'text-amarillo-semaforo';}
+        if ( $dias > $this->dias_maximos_ejecucion ){ $sem = 3; $class_color = 'text-rojo-semaforo';}
+
+        return [
+            'sem' => $sem,
+            'dias' => $dias,
+            'class_color' => $class_color,
+            'fecha_fin' => $cffin,
+        ];
+
+    }
+
+
 
 
 }

@@ -186,9 +186,20 @@ trait DenunciaTrait
             case 2:
                 $r = "Rural";
                 break;
+            case 3:
+                $r = "Desazolve Manual";
+                break;
+            case 4:
+                $r = "Desazolve con Vactor";
+                break;
+            case 5:
+                $r = "Desazolve con equipo almeja";
+                break;
+            default:
+                $r = "";
+                break;
         }
         return $r;
     }
-
 
 }

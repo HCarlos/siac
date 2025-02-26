@@ -23,26 +23,27 @@
                             @endif
                         </td>
                         <td class="w-25">
-                            {{$item->ciudadano}} <br>
-                            <small>{{$item->curp_ciudadano}}</small>
+                            {{$item->ciudadano->full_name}} <br>
+                            <small>{{$item->ciudadano->curp}}</small>
                         </td>
-                        <td  class="w-15">{{($item->fecha_ingreso)}}</td>
+                        <td  class="w-15">{{ \Carbon\Carbon::parse($item->fecha_ingreso)->format('d-m-Y H:i') }}</td>
                         <td>
-                            <small title="{{($item->dependencia_ultimo_estatus)}}">
-                                {{($item->dependencia_ultimo_estatus)}}
+                            <small title="{{($item->dependencia_ultimo_estatus->dependencia)}}">
+                                {{($item->dependencia_ultimo_estatus->dependencia)}}
                             </small>
                             <small class="fas fa-circle chikirimbita {{ $item->semaforo_ultimo_estatus()['class_color'] }}"> {{ $item->semaforo_ultimo_estatus()['dias'] }}</small>
                         </td>
                         <td class="w-25">
-                            {{($item->servicio_ultimo_estatus)}}<br>
+                            {{($item->servicio_ultimo_estatus->servicio)}}<br>
                             <small class="text-gray-lighter">{{( $item->ultimo_estatus )}}</small>
                             @if( $item->TotalRespuestas>0 )
                                 > <small class="text-danger"><strong> {{( $item->TotalRespuestas )}}</strong></small>
+                                <small class="chikirimbita"> {{ $item->semaforo_ultimo_estatus()['fecha_fin'] }}</small>
                             @endif
                             <br>
                             @if($item->ciudadanos->count() > 1)<span class="text-danger">( <i class="fas fa-users"></i> <strong>  {{$item->ciudadanos->count()}} </strong> )</span> @endif
                         </td>
-                        <td class="w-25">@if($item->ambito_dependencia === 2) {{ $item->gd_ubicacion}} @else {{$item->ubicacion}} @endif
+                        <td class="w-25">@if($item->dependencia->ambito_dependencia === 2) {{ $item->gd_ubicacion }} @else {{ $item->ubicacion->ubicacion}} @endif
                         </td>
                         <td class="table-action w-15">
                             <div class="button-list">
