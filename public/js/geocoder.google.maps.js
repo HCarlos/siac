@@ -25,6 +25,8 @@ if (
 }
 
 async function initMap(lat, lon, siExiste) {
+    $("#searchGoogleError").html('');
+    $("#searchGoogleResult").html('');
 
     let search_google = $('#search_google').val().trim();
     let centro_localidad_id = parseInt($('#centro_localidad_id').val());
