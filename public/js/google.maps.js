@@ -38,19 +38,21 @@ async function initMap(lat, lon, siExiste) {
 
     if (!siExiste) {
 
-        let search_google = document.getElementById("search_google").value ;
-        let positionString = search_google.search('centro')
+        let search_google = document.getElementById("search_google").value;
+        let centro_localidad = document.getElementById("centro_localidad").value.toLowerCase() ;
+        let search_custom = search_google.concat(' ', centro_localidad);
+        let positionString = search_custom.search('centro')
         if (positionString === -1) {
-            search_google += ' centro';
+            search_custom += ' centro';
         }
-        positionString = search_google.search('tabasco')
+        positionString = search_custom.search('tabasco')
         if (positionString === -1) {
-            search_google += ' tabasco';
+            search_custom += ' tabasco';
         }
 
-
+        // alert(search_custom);
         const request = {
-            query: search_google,
+            query: search_custom,
             fields: ["name", "formatted_address", "geometry"],
         };
 
@@ -227,13 +229,15 @@ if  ( document.getElementById("map") ){
 
 $("#searchGoogleBtn").click(event => {
     event.preventDefault();
-    if ( $("#search_google").val() !== "" ) {
+    if ( $("#centro_localidad").val() !== "" ) {
         siExiste = false;
         $("#map").show();
         initMap(lat, lon, siExiste);
     }else {
         $("#map").hide();
     }
+
+
 });
 
 $("#search_google").change(event => {

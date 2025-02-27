@@ -617,6 +617,7 @@ jQuery(function($) {
                 alert("Proporcione un servicio");
                 return false;
             }
+
             if ( $("#search_google").val() ){
                 if ($("#search_google").val() === '' && $("#searchGoogleResult").html() === ''){
                     alert("Búsque la ubicación del problema");
@@ -624,6 +625,11 @@ jQuery(function($) {
                 }
             }else{
                 alert("Búsque la ubicación del problema");
+            }
+
+            if ($("#centro_localidad_id").val() <= 0){
+                alert("Seleccione una Localidad");
+                return false;
             }
 
 
@@ -680,6 +686,14 @@ jQuery(function($) {
             var isFechaIngresoView = $("#isFechaIngresoView").val() !== "SI";
             $(".fecha_ingreso").prop('readonly', isFechaIngresoView);
         }
+
+        $(".centro_localidad_id").on('change',function(event){
+            var loc = $(".centro_localidad_id option:selected").text().split(",");
+            // alert(loc[1]+" "+loc[3]);
+            $("#centro_localidad").val( loc[1]+" "+loc[3] );
+            // alert( $(this).val() );
+        });
+
 
     });
 

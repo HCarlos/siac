@@ -323,6 +323,7 @@ class DenunciaAmbitoController extends Controller{
             ->get();
 
 
+
         $this->msg = "";
         $th = $this->ambito_dependencia == 1 ? "Apoyos Sociales" : "Servicios Municipales";
         return view('SIAC.denuncia.denuncia_ambito.denuncia_new',
@@ -554,6 +555,13 @@ class DenunciaAmbitoController extends Controller{
             ->orderBy('colonia', 'asc')
             ->get();
 
+        $centro_localidad = "";
+
+        if ($item->centro_localidad_id > 0){
+            $cl = CentroLocalidad::find($item->centro_localidad_id);
+            $centro_localidad = $cl->colonia.' '.$cl->delegacion;
+        }
+
 
         if (count($ServicioIdArray) > 0){
             $Servicios = _viServicios::query()
@@ -614,7 +622,8 @@ class DenunciaAmbitoController extends Controller{
                 'ambito'               => $ServCat, //FuncionesController::arrAmbitosSM(),
                 'ambito_dependencia'   => $this->ambito_dependencia,
                 'ambito_estatus'       => $this->ambito_estatus,
-                'localidades_centro'  => $localidades_centro,
+                'localidades_centro'   => $localidades_centro,
+                'centro_localidad'     => $centro_localidad,
             ]
         );
     }

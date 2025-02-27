@@ -59,14 +59,14 @@ class DenunciaController extends Controller{
 
         if ( $search !== [] && isEmpty($search) !== null && $search !== "" ) {
             $items = _viDDSs::query()
-                ->select(FuncionesController::itemSelectDenuncias())
+                ->select(FuncionesController::itemSelectDenunciasV1())
                 ->GetDenunciasItemCustomFilter($filters)
                 ->orderByDesc('id')
                 ->get();
             session(['is_pagination' => false]);
         }else{
             $items = _viDDSs::query()
-                ->select(FuncionesController::itemSelectDenuncias())
+                ->select(FuncionesController::itemSelectDenunciasV1())
                 ->GetDenunciasItemCustomFilter($filters)
                 ->orderByDesc('id')
                 ->paginate($this->max_item_for_query);
@@ -466,7 +466,7 @@ class DenunciaController extends Controller{
             $this->max_item_for_query = session::get('items_for_query');
         }
 
-        $items = _viDDSs::query()->select(FuncionesController::itemSelectDenuncias())
+        $items = _viDDSs::query()->select(FuncionesController::itemSelectDenunciasV1())
             ->filterBy($queryFilters)
             ->orderByDesc('id')
             ->paginate($this->max_item_for_query);

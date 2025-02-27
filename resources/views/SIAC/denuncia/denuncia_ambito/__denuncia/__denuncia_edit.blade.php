@@ -25,14 +25,31 @@
 
         </div>
             <div class="form-row mb-1 ">
-                <label for = "search_google" class="col-sm-2 col-form-label text-right">Ubicación: </label>
+                <label for = "search_google" class="col-sm-2 col-form-label text-right">Georeferencia: </label>
                 <div class="col-sm-10">
                     <div class="input-group">
                         <input type="text" name="search_google" id="search_google" class="form-control" value="{{ old('search_google', $items->search_google) }}" placeholder="escriba aquí la colonia" >
-                        <button type="button" class="btn btn-sm btn-primary float-right" id="searchGoogleBtn">
-                            <i class="mdi mdi-magnify"></i>
-                        </button>
                     </div>
+                </div>
+            </div>
+            <div class="form-row mb-1 ">
+                <label for = "centro_localidad_id" class="col-lg-2 col-form-label text-right m-0 p-0">Localidad: </label>
+                <div class="col-lg-10">
+                    <select id="centro_localidad_id" name="centro_localidad_id" class="form-control" size="1" value="{{ old('centro_localidad_id') }}">
+                        <option value="0"  >Seleccione una Localidad</option>
+                        @foreach($localidades_centro as $t)
+                            <option value="{{$t->id}}"  {{ $t->id === $items->centro_localidad_id ? 'selected': '' }}  >{{ $t->ItemColoniaDelegacion() }} </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label for = "search_google" class="col-sm-2 col-form-label text-right"> </label>
+                <div class="col-lg-10">
+                    <button type="button" class="btn btn-sm btn-primary float-right w-100-percent" id="searchGoogleBtn">
+                        <i class="mdi mdi-magnify"></i> Buscar Calle y Número, y Localidad
+                    </button>
                 </div>
             </div>
 
@@ -53,17 +70,6 @@
                 <label for = "longitud" class="col-lg-2 col-form-label text-right">Longitud: </label>
                 <div class="col-lg-4">
                     <input type="text" name="longitud" id="longitud" class="form-control longitud" value="{{ old('longitud', $items->longitud) }}" placeholder="-92.944787" >
-                </div>
-            </div>
-            <div class="form-row mb-1 ">
-                <label for = "centro_localidad_id" class="col-lg-2 col-form-label text-right m-0 p-0">Localidad: </label>
-                <div class="col-lg-10">
-                    <select id="centro_localidad_id" name="centro_localidad_id" class="form-control" size="1" value="{{ old('centro_localidad_id') }}">
-                        <option value="0"  >Seleccione una Localidad</option>
-                        @foreach($localidades_centro as $t)
-                            <option value="{{$t->id}}"  {{ $t->id === $items->centro_localidad_id ? 'selected': '' }}  >{{ $t->ItemColonia() }} </option>
-                        @endforeach
-                    </select>
                 </div>
             </div>
             <hr>
@@ -270,6 +276,7 @@
 
 <input type="hidden" name="ambito_dependencia" id="ambito_dependencia" value="{{ old('ambito_dependencia',$ambito_dependencia) }}" >
 <input type="hidden" name="ambito_estatus" id="ambito_estatus" value="{{ old('ambito_estatus',$ambito_estatus) }}" >
+<input type="hidden" name="centro_localidad" id="centro_localidad" value="{{ old('centro_localidad',$centro_localidad) }}" >
 
 @include('shared/code/__modal_denuncia_user_data')
 

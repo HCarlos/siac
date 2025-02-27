@@ -54,21 +54,29 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
             $ubicacion_id       = (int) $this->ubicacion_id;
             $usuario_id         = (int) $this->usuario_id;
             $servicio_id        = (int) $this->servicio_id;
+            $centro_localidad_id        = (int) $this->centro_localidad_id;
             $id                 = (int) $this->id;
 
-            $ambito_dependencia = Session::get('ambito_dependencia');
+//            $ambito_dependencia = Session::get('ambito_dependencia');
             $ambito_dependencia = (int) $this->ambito_dependencia;
 
             if ($ambito_dependencia === 1 ){
                 $Ubi = Ubicacion::find($ubicacion_id);
                 $filters = $Ubi->calle ?? ''.' '.$Ubi->colonia ?? '';
             }else{
-                  $filters = $search_google;
+
+//                $F           = new FuncionesController();
+//                $tsString    = $F->string_to_tsQuery(strtolower($filters),' & ');
+//                $oFilters['search'] = $tsString;
+//                $filters = $search_google;
+
+                if($centro_localidad_id > 0){
+                    $oFilters['centro_localidad_id'] = $centro_localidad_id;
+                }
+
+
             }
 
-            $F           = new FuncionesController();
-            $tsString    = $F->string_to_tsQuery(strtolower($filters),' & ');
-            $oFilters['search'] = $tsString;
 
             $oFilters['servicio_id'] = $servicio_id;
 //            if ($ambito_dependencia === 2 ){

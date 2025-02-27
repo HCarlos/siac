@@ -219,6 +219,7 @@
                 </ul>
             </li>
             @endif
+            @if(Gate::check('all') || Gate::check('test_admin'))
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">
                     @include('.shared.svgs.__domicilio')
@@ -318,7 +319,7 @@
                     @endif
                 </ul>
             </li>
-
+            @endif
             @if(Gate::check('all') || Gate::check('unificar'))
             <li class="side-nav-item">
                 <a href="javascript: void(0);" class="side-nav-link">

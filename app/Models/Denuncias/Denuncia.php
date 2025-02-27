@@ -14,6 +14,7 @@ use App\Filters\Denuncia\DenunciaFilter;
 use App\Filters\Denuncia\GetDenunciasAmbitoItemCustomFilter;
 use App\Filters\Denuncia\GetDenunciasItemCustomFilter;
 use App\Http\Controllers\Funciones\FuncionesController;
+use App\Models\Catalogos\CentroLocalidad;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Domicilios\Ubicacion;
 use App\Models\Catalogos\Estatu;
@@ -269,6 +270,14 @@ class Denuncia extends Model
 
     }
 
+
+    public function getLocalidadCentroAttribute(){
+        $ret = [];
+        if ($this->centro_localidad_id > 0) {
+            return CentroLocalidad::find($this->centro_localidad_id);
+        }
+
+    }
 
 
 

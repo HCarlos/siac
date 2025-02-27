@@ -35,11 +35,15 @@ class CentroLocalidad extends Model{
     }
 
     public function ItemColonia(){
-        return $this->prefijo_colonia.' '.$this->colonia;
+        return trim($this->prefijo_colonia).' '.trim($this->colonia);
     }
 
     public function ItemDelegacion(){
-        return $this->prefijo_delegacion.' '.$this->delegacion;
+        return trim($this->prefijo_delegacion).' '.trim($this->delegacion);
+    }
+
+    public function ItemColoniaDelegacion(){
+        return trim($this->prefijo_colonia).', '.trim($this->colonia).', '.trim($this->prefijo_delegacion).', '.trim($this->delegacion);
     }
 
 

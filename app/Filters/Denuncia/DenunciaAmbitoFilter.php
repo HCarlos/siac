@@ -168,7 +168,7 @@ class DenunciaAmbitoFilter extends QueryFilter
     }
 
     public function centro_localidad_id($query, $search){
-        if (is_null($search) || empty ($search) || trim($search) == "0") {return $query;}
+        if (is_null($search) || empty ($search) || trim($search) === "0") {return $query;}
         return $query->where('centro_localidad_id', (int)$search);
     }
 

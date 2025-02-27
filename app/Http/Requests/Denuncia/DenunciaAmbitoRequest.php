@@ -57,7 +57,7 @@ class DenunciaAmbitoRequest extends FormRequest
             'latitud'             => ['required','numeric'],
             'longitud'            => ['required','numeric'],
             'gd_ubicacion'        => ['required','string','min:4'],
-            'centro_localidad_id' => ['required','numeric','min:1'],
+            'centro_localidad_id' => ['required','numeric','gt:0'],
         ];
     }
 
@@ -342,11 +342,8 @@ class DenunciaAmbitoRequest extends FormRequest
         $url = $this->redirector->getUrlGenerator();
         if ($this->id > 0){
             return $url->route($this->redirectRoute,['ambito_dependencia'=>$this->ambito_dependencia,'Id'=>$this->id]);
-//            return Redirect::to($this->redirectRoute.'/'.$this->ambito_dependencia.'/'.$this->id);
         }else{
-            return $url->route('newDenunciaAmbito/'.$this->ambito_dependencia.'/0');
-//            return Redirect::to('newDenunciaAmbito/'.$this->ambito_dependencia.'/0');
-//            return Redirect::back();
+            return $url->route('newDenunciaAmbito',['ambito_dependencia' => $this->ambito_dependencia,'ambito_estatus' => 0] );
         }
     }
 
