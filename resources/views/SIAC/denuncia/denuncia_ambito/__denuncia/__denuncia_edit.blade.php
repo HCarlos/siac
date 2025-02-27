@@ -25,7 +25,7 @@
 
         </div>
             <div class="form-row mb-1 ">
-                <label for = "search_google" class="col-sm-2 col-form-label text-right">Georeferencia: </label>
+                <label for = "search_google" class="col-sm-2 col-form-label text-right">Call y núúmero: </label>
                 <div class="col-sm-10">
                     <div class="input-group">
                         <input type="text" name="search_google" id="search_google" class="form-control" value="{{ old('search_google', $items->search_google) }}" placeholder="escriba aquí la colonia" >
@@ -35,7 +35,7 @@
             <div class="form-row mb-1 ">
                 <label for = "centro_localidad_id" class="col-lg-2 col-form-label text-right m-0 p-0">Localidad: </label>
                 <div class="col-lg-10">
-                    <select id="centro_localidad_id" name="centro_localidad_id" class="form-control" size="1" value="{{ old('centro_localidad_id') }}">
+                    <select id="centro_localidad_id" name="centro_localidad_id" class="form-control centro_localidad_id" size="1" value="{{ old('centro_localidad_id') }}">
                         <option value="0"  >Seleccione una Localidad</option>
                         @foreach($localidades_centro as $t)
                             <option value="{{$t->id}}"  {{ $t->id === $items->centro_localidad_id ? 'selected': '' }}  >{{ $t->ItemColoniaDelegacion() }} </option>

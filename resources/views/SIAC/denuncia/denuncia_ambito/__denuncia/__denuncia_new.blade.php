@@ -56,6 +56,8 @@
                     <small class="text-success font-medium text-center p-0 m-0" id="searchGoogleResult"></small>
                     <small class="text-danger font-medium text-center p-0 m-0" id="searchGoogleError"></small>
                 </div>
+                <!-- Indicador de carga -->
+                <div class="cargando" id="cargando">Buscando dirección...</div>
             </div>
             <div class="form-row mb-1 ">
                 <label for = "latitud" class="col-lg-2 col-form-label text-right">Latitud: </label>
@@ -187,5 +189,4 @@
 <input type="hidden" name="ambito_dependencia" id="ambito_dependencia" value="{{ old('ambito_dependencia',$ambito_dependencia) }}" >
 <input type="hidden" name="ambito_estatus" id="ambito_estatus" value="{{ old('ambito_estatus',$ambito_estatus) }}" >
 <input type="hidden" name="centro_localidad" id="centro_localidad" value="" >
-centro_localidad_id
 @include('shared/code/__modal_denuncia_user_data')
