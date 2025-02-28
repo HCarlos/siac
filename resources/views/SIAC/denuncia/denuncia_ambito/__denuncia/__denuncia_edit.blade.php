@@ -221,6 +221,7 @@
 <h6>CREADO</h6>
 <address>
     <strong class="orange">POR:</strong>  {{ $items->creadopor->Fullname }}<br>
+{{--    <small class="text-gray-darker">Und:</small>{{ str_replace('|',', ',$items->creadopor->DependenciaAbreviaturaArray) }}<br>--}}
     <strong class="purple">FECHA:</strong>  {{ date('d-m-Y H:i:s', strtotime($items->created_at)) }}<br>
 </address>
 </div> <!-- end col-->
@@ -228,6 +229,7 @@
 <h6>MODIFICADO</h6>
 <address>
     <strong class="orange">POR:</strong>  {{ $items->modificadopor->Fullname }}<br>
+{{--    <small class="text-gray-darker">Und:</small>{{ str_replace('|',', ',$items->modificadopor->DependenciaAbreviaturaArray) }}<br>--}}
     <strong class="purple">FECHA:</strong>  {{ date('d-m-Y H:i:s', strtotime($items->updated_at)) }}<br>
 </address>
 </div> <!-- end col-->
@@ -235,6 +237,7 @@
 <h6>ÚLTIMA RESPUESTA</h6>
 <address>
     <strong class="orange">POR:</strong>  {{ $items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->creadopor->full_name }}<br>
+{{--    <small class="text-gray-darker">Und:</small>{{ str_replace('|',', ',$items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->creadopor->DependenciaAbreviaturaArray) }}<br>--}}
     <strong class="info">SERVICIO:</strong>  {{ $items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->servicio->servicio }}<br>
     <strong class="seagreen">ESTATUS:</strong>  {{ $items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->estatu->estatus }}<br>
     <strong class="purple">FECHA:</strong>  {{ date('d-m-Y H:i:s', strtotime($items->ultimo_estatu_denuncia_dependencia_servicio->sort()->last()->fecha_movimiento)) }}<br>

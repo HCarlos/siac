@@ -699,7 +699,7 @@ jQuery(function($) {
             // alert( $(this).val() );
         });
 
-        $('#formData').on('submit', function(event) {
+        $('.frmDataSolicitud').on('submit', function(event) {
             event.preventDefault(); // Prevenir el envío por defecto
 
             // Si todo es válido, enviar el formulario

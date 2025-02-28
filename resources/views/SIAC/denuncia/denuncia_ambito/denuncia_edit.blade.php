@@ -8,7 +8,7 @@
             @slot('title_card',$titulo_header ?? "")
             @slot('body_card')
                 @include('shared.code.__errors')
-                <form method="POST" action="{{ route($updateDenunciaAmbito) }}" accept-charset="UTF-8" enctype="multipart/form-data" class="formData" id="formData" >
+                <form method="POST" action="{{ route($updateDenunciaAmbito) }}" accept-charset="UTF-8" enctype="multipart/form-data" class="formData frmDataSolicitud" id="formData" >
                     @csrf
                     {{ method_field('PUT') }}
                     @include('SIAC.denuncia.denuncia_ambito.__denuncia.__denuncia_edit')
