@@ -8,6 +8,9 @@ jQuery(function($) {
                 'X-CSRF-Token': $("meta[name='csrf-token']").attr("content")
             }
         });
+
+        let IsPressButtonBuscarCoincidencia = false;
+
         $(".preloader").hide();
         $(".infoPreloader").html("");
 
@@ -652,7 +655,7 @@ jQuery(function($) {
                             Tbl += "<tr class='bgc-h-yellow-l3'>";
                             Tbl += "<td>"+
                                 value.id+"<br>"+
-                                "<strong>"+value.denuncia+"</strong><br>"+
+                                "<strong>"+value.descripcion+"</strong><br>"+
                                 "<small>"+value.fecha+"</small><br>"+
                                 "<strong class='text-green'>"+value.ciudadano+"</strong><br>"+
                                 "<small>"+value.gd_ubicacion+"</small><br>"+
@@ -667,6 +670,7 @@ jQuery(function($) {
                     }else{
                         alert(response.mensaje);
                     }
+                    IsPressButtonBuscarCoincidencia = true;
                 })
         });
 
@@ -676,11 +680,12 @@ jQuery(function($) {
         });
 
 
-        $(".formData").on('submit',function(event){
+        function lunchFormData(form){
             $(".btnGuardarDenuncia").prop('disabled', true);
             $(".infoPreloader").html("Guardando información...")
             $(".preloader").show();
-        });
+            form.submit();
+        }
 
         if ( $(".fecha_ingreso") ){
             var isFechaIngresoView = $("#isFechaIngresoView").val() !== "SI";
@@ -694,6 +699,22 @@ jQuery(function($) {
             // alert( $(this).val() );
         });
 
+        $('#formData').on('submit', function(event) {
+            event.preventDefault(); // Prevenir el envío por defecto
+
+            // Si todo es válido, enviar el formulario
+            let id = parseInt( $("#id").val() );
+
+            if (id > 0){
+                lunchFormData(this)
+            }else{
+                if (IsPressButtonBuscarCoincidencia){
+                    lunchFormData(this)
+                }else{
+                    alert("Busque una coincidencias");
+                }
+            }
+        });
 
     });
 

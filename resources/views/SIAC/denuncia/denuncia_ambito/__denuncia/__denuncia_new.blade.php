@@ -33,7 +33,7 @@
             <div class="form-row mb-1 ">
                 <label for = "centro_localidad_id" class="col-lg-2 col-form-label text-right m-0 p-0">Localidad: </label>
                 <div class="col-lg-10">
-                    <select id="centro_localidad_id" name="centro_localidad_id" class="form-control centro_localidad_id" size="1" value="{{ old('centro_localidad_id') }}">
+                    <select id="centro_localidad_id" name="centro_localidad_id" class="form-control centro_localidad_id select2" data-toggle="select2" size="1" value="{{ old('centro_localidad_id') }}">
                         <option value="0"  >Seleccione una Localidad</option>
                         @foreach($localidades_centro as $t)
                             <option value="{{$t->id}}" >{{ $t->ItemColoniaDelegacion() }} </option>

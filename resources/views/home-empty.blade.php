@@ -34,7 +34,7 @@
                                                     @if($user->genero === 0)
                                                         <h4 class="mt-1 mb-1 text-danger">{{ $user->full_name }}</h4>
                                                     @else
-                                                        <h4 class="mt-1 mb-1 text-primary">{{ $user->full_name }}</h4>
+                                                        <h4 class="mt-1 mb-1 text-info">{{ $user->full_name }}</h4>
                                                     @endif
                                                     <p class="font-13 text-white-50">{{ str_replace('|',', ',$user->RoleNameStrArray) }}</p>
 
