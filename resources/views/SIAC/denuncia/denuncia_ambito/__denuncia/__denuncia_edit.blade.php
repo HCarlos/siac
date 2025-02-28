@@ -25,7 +25,7 @@
 
         </div>
             <div class="form-row mb-1 ">
-                <label for = "search_google" class="col-sm-2 col-form-label text-right">Call y núúmero: </label>
+                <label for = "search_google" class="col-sm-2 col-form-label text-right">Calle y número: </label>
                 <div class="col-sm-10">
                     <div class="input-group">
                         <input type="text" name="search_google" id="search_google" class="form-control" value="{{ old('search_google', $items->search_google) }}" placeholder="escriba aquí la colonia" >
