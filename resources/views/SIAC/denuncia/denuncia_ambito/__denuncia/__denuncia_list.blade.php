@@ -48,7 +48,7 @@
                         <td class="table-action w-15">
                             <div class="button-list">
                                 @if($item->cerrado == false && $item->firmado == false)
-                                    @if($item->ambito_dependencia === 2)
+                                    @if($item->dependencia->ambito_dependencia === 2)
                                         @include('shared.ui_kit.__remove_item_servicios_municipales')
                                         @include('shared.ui_kit.__edit_den_dep_ser_ambito_sm')
                                     @else
@@ -57,7 +57,7 @@
                                     @endif
                                 @endif
                                 @if( ($item->cerrado == false && $item->firmado == false) && auth()->user()->can('elimina_denuncia_general') )
-                                    @if($item->ambito_dependencia === 2)
+                                    @if($item->dependencia->ambito_dependencia === 2)
                                         @include('shared.ui_kit.__remove_item_servicios_municipales')
                                     @else
                                         @include('shared.ui_kit.__remove_item_apoyos_sociales')
@@ -66,7 +66,7 @@
                                 @include('shared.ui_kit.__imagenes_list_item_ambito')
                                 @include('shared.ui_kit.__add_user_item')
                                 @include('shared.ui_kit.__edit_ambito_item')
-                                @if($item->ambito_dependencia === 2)
+                                @if($item->dependencia->ambito_dependencia === 2)
                                     @include('shared.ui_kit.__print_denuncia_ambito_item')
                                 @else
                                     @include('shared.ui_kit.__print_denuncia_item')

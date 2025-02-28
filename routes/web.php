@@ -83,7 +83,8 @@ Route::group(['middleware' => 'auth'], static function () {
 
 Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|ENLACE|USER_ARCHIVO_CAP|USER_ARCHIVO_ADMIN'], static function () {
 
-    Route::get('/home', 'HomeController@index')->name('home');
+//    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/home', 'HomeEmptyController@index')->name('home');
 
     Route::get('newUser', 'Catalogos\User\UserDataController@newUser')->name('newUser');
     Route::post('createUser', 'Catalogos\User\UserDataController@createUser')->name('createUser');
