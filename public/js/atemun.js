@@ -192,15 +192,6 @@ jQuery(function($) {
             });
         }
 
-
-
-        // if ( $(".listTarget, .search_autocomplete_user").length > 0  ){
-        //     $(".listTarget, .search_autocomplete_user").on('change', function(event) {
-        //         event.preventDefault();
-        //         //window.location.href = '/'+this.id+'/'+$(this).val();
-        //     });
-        // }
-
         if ( $(".btnAsign0").length > 0  ){
             //alert('btnAsign0');
             $(".btnAsign0").on('click', function(event) {
@@ -606,6 +597,8 @@ jQuery(function($) {
             formData['ubicacion_id']        = $("#ubicacion_id").val();
             formData['search_google']       = $("#search_google").val();
             formData['searchgoogleresult']  = $("#searchGoogleResult").html();
+            formData['latitud']             = $("#latitud").val();
+            formData['longitud']            = $("#longitud").val();
             formData['usuario_id']          = $("#usuario_id").val();
             formData['servicio_id']         = $("#servicio_id").val();
             formData['centro_localidad_id'] = $("#centro_localidad_id").val();
@@ -655,7 +648,7 @@ jQuery(function($) {
                             Tbl += "<tr class='bgc-h-yellow-l3'>";
                             Tbl += "<td>"+
                                 value.id+"<br>"+
-                                "<strong>"+value.descripcion+"</strong><br>"+
+                                "<strong>"+value.denuncia+"</strong><br>"+
                                 "<small>"+value.fecha+"</small><br>"+
                                 "<strong class='text-green'>"+value.ciudadano+"</strong><br>"+
                                 "<small>"+value.gd_ubicacion+"</small><br>"+

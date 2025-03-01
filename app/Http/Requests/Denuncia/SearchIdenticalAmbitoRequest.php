@@ -46,16 +46,23 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
         $this->data = [];
 //        dd($this->all());
         try {
-            $descripcion        = strtoupper(trim($this->descripcion));
-            $referencia         = strtoupper(trim($this->referencia));
-            $ubicacion          = strtoupper(trim($this->ubicacion));
-            $search_google      = $this->search_google;
-            $searchgoogleresult = $this->searchgoogleresult;
-            $ubicacion_id       = (int) $this->ubicacion_id;
-            $usuario_id         = (int) $this->usuario_id;
-            $servicio_id        = (int) $this->servicio_id;
-            $centro_localidad_id        = (int) $this->centro_localidad_id;
-            $id                 = (int) $this->id;
+            $descripcion         = strtoupper(trim($this->descripcion));
+            $referencia          = strtoupper(trim($this->referencia));
+            $ubicacion           = strtoupper(trim($this->ubicacion));
+            $search_google       = $this->search_google;
+            $searchgoogleresult  = $this->searchgoogleresult;
+            $ubicacion_id        = (int) $this->ubicacion_id;
+            $lat                 = explode('.', $this->latitud);
+            $lon                 = explode('.', $this->longitud);
+            $usuario_id          = (int) $this->usuario_id;
+            $servicio_id         = (int) $this->servicio_id;
+            $centro_localidad_id = (int) $this->centro_localidad_id;
+            $id                  = (int) $this->id;
+
+//            dd($this->longitud);
+
+            $latitud = $lat[0] . '.' . substr($lat[1], 0, 3);
+            $longitud = $lon[0] . '.' . substr($lon[1], 0, 3);
 
 //            $ambito_dependencia = Session::get('ambito_dependencia');
             $ambito_dependencia = (int) $this->ambito_dependencia;
@@ -72,6 +79,8 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
 
                 if($centro_localidad_id > 0){
                     $oFilters['centro_localidad_id'] = $centro_localidad_id;
+                    $oFilters['lati3'] = $latitud;
+                    $oFilters['long3'] = $longitud;
                 }
 
 
@@ -79,15 +88,6 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
 
 
             $oFilters['servicio_id'] = $servicio_id;
-//            if ($ambito_dependencia === 2 ){
-//                $oFilters['centro_localidad_id'] = (int) $this->centro_localidad_id;
-//            }else{
-//                $F           = new FuncionesController();
-//                $tsString    = $F->string_to_tsQuery(strtolower($filters),' & ');
-//                $oFilters['search'] = $tsString;
-//            }
-
-//            dd($oFilters);
 
             if ($ambito_dependencia === 1 ){
                 $items = _viDDSs::query()
@@ -95,9 +95,11 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
                     ->orderBy('id')
                     ->get();
             }else{
-//                dd($oFilters);
-                $items = Denuncia::query()
-                    ->ambitoFilterBy($oFilters)
+//                ->ambitoFilterBy($oFilters)
+                $items = _viDDSs::query()
+                    ->where('servicio_id', $servicio_id)
+                    ->where('lati3', (float)$latitud)
+                    ->where('long3', (float)$longitud)
                     ->orderBy('id')
                     ->get();
             }
