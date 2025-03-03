@@ -220,6 +220,7 @@ trait UserAttributes
             $DependenciaIdArray = $this->DependenciaIdArray;
             $attributes['dependencia_id'] = $DependenciaIdArray;
         }
+//        dd($attributes['dependencia_id']);
         return $attributes['dependencia_id'];
 
     }
