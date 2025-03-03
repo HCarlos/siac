@@ -662,6 +662,8 @@ jQuery(function($) {
                         $("#tblBody").append(Tbl);
                     }else{
                         alert(response.mensaje);
+                        $("#tblBody").empty();
+
                     }
                     IsPressButtonBuscarCoincidencia = true;
                 })

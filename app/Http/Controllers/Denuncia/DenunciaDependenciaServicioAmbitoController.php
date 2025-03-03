@@ -38,46 +38,54 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
         $this->middleware('auth');
     }
 
-    protected function index(Request $request, $Id)
-    {
+    protected function index(Request $request, $Id){
         ini_set('max_execution_time', 300);
-
-        $items = Denuncia_Dependencia_Servicio::query()->where('denuncia_id',$Id)->orderBy('id')->paginate();
-        $items->appends('id')->fragment('table');
 
         $Denuncia = Denuncia::find($Id);
 
-        $request->session()->put('items', $items);
-        $this->ambito_dependencia = Session::get('ambito_dependencia');
+        if ($Denuncia !== null) {
 
-        session(['msg' => '']);
 
-        $user = Auth::User();
-        $this->Id = $Id;
+            $items = Denuncia_Dependencia_Servicio::query()->where('denuncia_id', $Id)->orderBy('id')->paginate();
+            $items->appends('id')->fragment('table');
 
-        Denuncia_Dependencia_Servicio::where('denuncia_id', $Id)->update(['fue_leida' => true]);
 
-        return view('SIAC.denuncia.denuncia_dependencia_servicio_ambito.denuncia_dependencia_servicio_ambito_list',
-            [
-                'items'                               => $items,
-                'Id'                                  => $this->Id,
-                'Denuncia'                            => $Denuncia,
-                'titulo_catalogo'                     => "Cronología de cambios de estatus de la orden: " . $this->Id,
-                'user'                                => $user,
-                'newWindow'                           => true,
-                'newItem'                             => 'addDenunciaDependenciaServicioAmbito',
-                'tableName'                           => $this->tableName,
-                'showEdit'                            => 'editDenunciaDependenciaServicioAmbito',
-                'showProcess1'                        => 'showDataListDenunciaAmbitoRespuestaExcel1A',
-                'postNew'                             => 'postAddDenunciaDependenciaServicioAmbito',
-                'addItem'                             => 'addDenunciaDependenciaServicioAmbito',
-                'removeItem'                          => 'removeDenunciaDependenciaServicio',
-                'imprimirDenuncia'                    => "imprimirDenuncia/",
-                'imprimirDenunciaConRespuesta'        => "imprimir_denuncia_respuesta/",
-                'showEditDenunciaDependenciaServicio' => 'listDenunciaDependenciaServicioAmbito',
-                'imagenesDenunciaItem'                => 'listImagenes',
-            ]
-        );
+            $request->session()->put('items', $items);
+            $this->ambito_dependencia = Session::get('ambito_dependencia');
+
+            session(['msg' => '']);
+
+            $user = Auth::User();
+            $this->Id = $Id;
+
+//            dd($Denuncia);
+
+            Denuncia_Dependencia_Servicio::where('denuncia_id', $Id)->update(['fue_leida' => true]);
+
+            return view('SIAC.denuncia.denuncia_dependencia_servicio_ambito.denuncia_dependencia_servicio_ambito_list',
+                [
+                    'items' => $items,
+                    'Id' => $this->Id,
+                    'Denuncia' => $Denuncia,
+                    'titulo_catalogo' => "Cronología de cambios de estatus de la orden: " . $this->Id,
+                    'user' => $user,
+                    'newWindow' => true,
+                    'newItem' => 'addDenunciaDependenciaServicioAmbito',
+                    'tableName' => $this->tableName,
+                    'showEdit' => 'editDenunciaDependenciaServicioAmbito',
+                    'showProcess1' => 'showDataListDenunciaAmbitoRespuestaExcel1A',
+                    'postNew' => 'postAddDenunciaDependenciaServicioAmbito',
+                    'addItem' => 'addDenunciaDependenciaServicioAmbito',
+                    'removeItem' => 'removeDenunciaDependenciaServicio',
+                    'imprimirDenuncia' => "imprimirDenuncia/",
+                    'imprimirDenunciaConRespuesta' => "imprimir_denuncia_respuesta/",
+                    'showEditDenunciaDependenciaServicio' => 'listDenunciaDependenciaServicioAmbito',
+                    'imagenesDenunciaItem' => 'listImagenes',
+                ]
+            );
+        }else{
+            return \redirect()->route('home');
+        }
     }
 
 // ***************** EDITA LOS DATOS  ++++++++++++++++++++ //
