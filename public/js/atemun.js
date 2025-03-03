@@ -623,7 +623,7 @@ jQuery(function($) {
                 alert("Búsque la ubicación del problema");
             }
 
-            if ($("#centro_localidad_id").val() <= 0){
+            if ($("#centro_localidad_id").val() <= 0 && parseInt($("#ambito_dependencia").val()) === 2){
                 alert("Seleccione una Localidad");
                 return false;
             }

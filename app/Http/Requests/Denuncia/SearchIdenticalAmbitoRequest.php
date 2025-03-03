@@ -61,8 +61,6 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
 
 //            dd($this->longitud);
 
-            $latitud = $lat[0] . '.' . substr($lat[1], 0, 3);
-            $longitud = $lon[0] . '.' . substr($lon[1], 0, 3);
 
 //            $ambito_dependencia = Session::get('ambito_dependencia');
             $ambito_dependencia = (int) $this->ambito_dependencia;
@@ -71,6 +69,9 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
                 $Ubi = Ubicacion::find($ubicacion_id);
                 $filters = $Ubi->calle ?? ''.' '.$Ubi->colonia ?? '';
             }else{
+
+                $latitud = $lat[0] . '.' . substr($lat[1], 0, 3);
+                $longitud = $lon[0] . '.' . substr($lon[1], 0, 3);
 
 //                $F           = new FuncionesController();
 //                $tsString    = $F->string_to_tsQuery(strtolower($filters),' & ');

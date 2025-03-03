@@ -321,7 +321,8 @@ class DenunciaRequest extends FormRequest
             if ($this->id > 0){
                 return $url->route('editDenunciaAmbito',['Id'=>$this->id]);
             }else{
-                return $url->route('newDenunciaAmbito');
+//                return $url->route('newDenunciaAmbito/1/0',['Id'=>$this->id]);
+                return $url->route('newDenunciaAmbito',['ambito_dependencia' => $this->ambito_dependencia,'ambito_estatus' => 0] );
             }
         }else{
             if ($this->id > 0){
