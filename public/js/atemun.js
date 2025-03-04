@@ -603,11 +603,17 @@ jQuery(function($) {
             formData['servicio_id']         = $("#servicio_id").val();
             formData['centro_localidad_id'] = $("#centro_localidad_id").val();
             formData['ambito_dependencia']  = $("#ambito_dependencia").val();
+            formData['ciu_celulares']       = $("#ciu_celulares").val();
             formData['id']                  = $("#id").val();
 
             var ciudadano_id = $("#usuario_id").val();
 
             // alert(formData.toString());
+
+            if ($("#ciu_celulares").val() <= ""){
+                alert("Solicite al menos un núúmero de celular de contacto.");
+                return false;
+            }
 
             if ($("#servicio_id").val() <= 0){
                 alert("Proporcione un servicio");

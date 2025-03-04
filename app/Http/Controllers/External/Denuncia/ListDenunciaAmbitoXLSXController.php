@@ -149,7 +149,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
 
                     ->setCellValue('M'.$C, $item->prioridad->prioridad ?? '')
                     ->setCellValue('N'.$C, $item->origen->origen ?? '')
-                    ->setCellValue('O'.$C, $item->estatus_general ?? '')
+                    ->setCellValue('O'.$C, $item->ultimo_estatus ?? '')
                     ->setCellValue('P'.$C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y h:m') ?? '')
                     ->setCellValue('Q'.$C, $respuesta )
                     ->setCellValue('R'.$C, $favorable ? "SI" : "NO" )

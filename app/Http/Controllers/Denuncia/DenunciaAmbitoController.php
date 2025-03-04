@@ -1043,11 +1043,9 @@ class DenunciaAmbitoController extends Controller{
 
 
     protected function removeAddUserDenuncia($id0 = 0, $id1 = 0){
-
         $item = Denuncia::find($id0);
         $item->ciudadanos()->detach($id1);
         return Response::json(['mensaje' => 'Eliminado', 'data' => 'OK', 'status' => '200'], 200);
-
     }
 
     public function vistaDenuncia($denuncia_id){

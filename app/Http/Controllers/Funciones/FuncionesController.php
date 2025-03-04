@@ -347,7 +347,7 @@ class FuncionesController extends Controller
 
     public static function menuDashBoard($activo): array{
 
-        $arrLegenMenu = ["Inicio","General","Alumbrado","Espacios Púlicos","Limpia","Obras","SAS","Encuestas","Reportes"];
+        $arrLegenMenu = ["Inicio","General","Alumbrado","Espacios Públicos","Limpia","Obras","SAS","Encuestas","Reportes"];
         $arrUrls = array(
             "/dashboard-statistics-servicios-principales",
             "/dashboard-statistics-general",
