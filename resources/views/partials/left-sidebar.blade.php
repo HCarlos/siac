@@ -487,6 +487,12 @@
         <div class="clearfix"></div>
         @include('partials.aviso-privacidad-panel')
         <div class="clearfix"></div>
+        <div class="help-box text-white text-center">
+            <img src="assets/images/help-icon.svg" height="50" alt="Limpiar cache">
+            <a href="https://www.hostinet.com/formacion/navegadores/como-vaciar-la-cache-en-chrome-edge-y-firefox-2022/" target="_blank" class="btn btn-outline-light btn-sm mt-1">Limpiar cache</a>
+        </div>
     @endguest
     </div>
+
+
 </div>

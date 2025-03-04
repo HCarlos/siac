@@ -60,7 +60,34 @@
                                             </div>
                                         </div> <!-- end col-->
                                     </div> <!-- end row -->
+                                </div> <!-- end card-body/ profile-user-box-->
+                            </div><!--end profile/ card -->
 
+                            <div class="card bg-default">
+                                <div class="card-body profile-user-box">
+                                    <div class="row">
+                                        <div class="col-12 col-md-8">
+                                            <div class="media align-items-center">
+                                                <div class="mr-4">
+                                                    <h3 class="blink text-danger">Novedades</h3>
+                                                    <ul class="list-inline mb-0 text-light">
+                                                        <li class="list-inline-item mr-3">
+                                                            <p class="mb-0 text-muted">
+                                                                <i class="mdi mdi-arrow-right-bold mr-1"></i> En <b>Servicios Municipales</b>, es obligatorio capturar por lo menos el <i>número de celular</i> y <i>buscar coincidencias</i>.
+                                                            </p>
+                                                            <p class="mb-0 text-muted">
+                                                                <i class="mdi mdi-arrow-right-bold mr-1"></i> <b>Limpia el cache</b> de tu navegador periódicamente para mejorar la <i>velocidad de carga</i> y la <i>seguridad</i>.
+                                                            </p>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-4">
+                                            <div class="media">
+                                            </div>
+                                        </div>
+                                    </div> <!-- end row -->
                                 </div> <!-- end card-body/ profile-user-box-->
                             </div><!--end profile/ card -->
                         </div> <!-- end col-->
@@ -81,4 +108,16 @@
 
 </body>
 
+@endsection
+
+@section('styles')
+    <style>
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .blink {
+            animation: blink 1s linear infinite;
+        }
+    </style>
 @endsection
