@@ -12,6 +12,7 @@
                         <th class="sorting w-8-percent">Mobile</th>
                         <th class="sorting w-8-percent">Es Servicio</th>
                         <th class="sorting w-8-percent">Servicio</th>
+                        <th class="sorting w-8-percent">Habilitado</th>
                         <th class="w-10-percent"></th>
                     </tr>
                 </thead>
@@ -41,7 +42,13 @@
                                 {{$item->nombre_corto_ss}}
                             @endif
                         </td>
-{{--                        <td style="width: 34% !important; overflow: hidden !important;"><div class="w-50">{{ $item->subarea.' - '.$item->area.' - '.$item->dependencia.' - '.$item->abreviatura_dependencia }}</div></td>--}}
+                        <td class="text-center">
+                            @if( (int) $item->habilitado == 1 )
+                                <i class="fa fa-check text-success "></i>
+                            @else
+                                <i class="fa fa-times text-danger "></i>
+                            @endif
+                        </td>
                         <td class="table-action nowrap" >
 {{--                            @if( (int) $item->is_visible_mobile == 0 )--}}
                                 <div class="button-list nowrap">

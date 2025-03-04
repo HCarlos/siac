@@ -48,7 +48,7 @@ class DenunciaAmbitoFilter extends QueryFilter
 
     public function status_denuncia($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
-        return $query->where('status_denuncia', $search);
+        return $query->where('status_denuncia', (int)$search);
     }
 
     public function ambito_dependencia($query, $search){
@@ -63,6 +63,7 @@ class DenunciaAmbitoFilter extends QueryFilter
 //            if ((int)$search <> 0){
 //                return $query->where('ue_id', (int)$search );
 //            }
+//        DD($search);
         return $query->where('ue_id',$search );
 
 //        return $query->whereHas('ultimo_estatus', function ($q) use ($search) {

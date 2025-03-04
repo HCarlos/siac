@@ -259,7 +259,7 @@ class FuncionesController extends Controller
                         'clave_identificadora','estatus_general','ambito_sas','fecha_ultimo_estatus',
                         'creadopor_id','modificadopor_id','dias_ejecucion','dias_maximos_ejecucion',
                         'fecha_dias_ejecucion','fecha_dias_maximos_ejecucion',
-                        'search_google','gd_ubicacion','prioridad_id',
+                        'search_google','gd_ubicacion','prioridad_id','centro_localidad_id',
                         'ue_id'
                     ];
     }
@@ -270,6 +270,7 @@ class FuncionesController extends Controller
             'descripcion',
             'uuid','cerrado','firmado',
             'ue_id','due_id','sue_id','fecha_ultimo_estatus',
+            'centro_localidad_id',
         ];
     }
 

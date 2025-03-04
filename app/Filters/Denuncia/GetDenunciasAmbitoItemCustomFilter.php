@@ -65,6 +65,7 @@ class GetDenunciasAmbitoItemCustomFilter extends QueryFilter{
 
 //        dd( $filters );
 
+
         return $query->ambitoFilterBy($filters);
 
     }

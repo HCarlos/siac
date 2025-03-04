@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\External\Denuncia;
 
+use App\Models\Catalogos\CentroLocalidad;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Domicilios\Ubicacion;
 use App\Models\Catalogos\Estatu;
@@ -77,6 +78,15 @@ class ListDenunciaAmbitoXLSXController extends Controller
             $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y H:i');
             $fechaIngreso   = isset($item->fecha_ingreso) ? $fechaIngreso : '';
 
+            $Colonia = "";
+            $Delegacion = "";
+            $CenLoc       = $item->centro_localidad_id;
+            if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0){
+                $Loc = CentroLocalidad::find($CenLoc);
+                $Colonia = $Loc->ItemColonia();
+                $Delegacion = $Loc->ItemDelegacion();
+            }
+
             $resp = Denuncia_Dependencia_Servicio::query()
                     ->select(['id','observaciones','dependencia_id','favorable','denuncia_id'])
                     ->where('denuncia_id',$item->id)
@@ -138,24 +148,25 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('E'.$C, trim($cds->nombre ?? ''))
 
                     ->setCellValue('F'.$C, trim($item->gd_ubicacion) ?? '')
-                    ->setCellValue('G'.$C, $cadgdu ?? '')
+                    ->setCellValue('G'.$C, $Colonia ?? '')
+                    ->setCellValue('H'.$C, $Delegacion ?? '')
 
-                    ->setCellValue('H'.$C, $cadcel ?? '')
-                    ->setCellValue('I'.$C, $fechaIngreso ?? '')
-                    ->setCellValue('J'.$C, $item->dependencia_ultimo_estatus->dependencia ?? '')
-                    ->setCellValue('K'.$C, $item->servicio_ultimo_estatus->servicio ?? '')
+                    ->setCellValue('I'.$C, $cadcel ?? '')
+                    ->setCellValue('J'.$C, $fechaIngreso ?? '')
+                    ->setCellValue('K'.$C, $item->dependencia_ultimo_estatus->dependencia ?? '')
+                    ->setCellValue('L'.$C, $item->servicio_ultimo_estatus->servicio ?? '')
 
-                    ->setCellValue('L'.$C, $item->descripcion ?? '')
+                    ->setCellValue('M'.$C, $item->descripcion ?? '')
 
-                    ->setCellValue('M'.$C, $item->prioridad->prioridad ?? '')
-                    ->setCellValue('N'.$C, $item->origen->origen ?? '')
-                    ->setCellValue('O'.$C, $item->ultimo_estatus ?? '')
-                    ->setCellValue('P'.$C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y h:m') ?? '')
-                    ->setCellValue('Q'.$C, $respuesta )
-                    ->setCellValue('R'.$C, $favorable ? "SI" : "NO" )
-                    ->setCellValue('S'.$C, $item->clave_identificadora )
-                    ->setCellValue('T'.$C, trim($cds->StrGenero ?? ''))
-                    ->setCellValue('U'.$C, $item->Ambito() ?? '');
+                    ->setCellValue('N'.$C, $item->prioridad->prioridad ?? '')
+                    ->setCellValue('O'.$C, $item->origen->origen ?? '')
+                    ->setCellValue('P'.$C, $item->ultimo_estatus ?? '')
+                    ->setCellValue('Q'.$C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y h:m') ?? '')
+                    ->setCellValue('R'.$C, $respuesta )
+                    ->setCellValue('S'.$C, $favorable ? "SI" : "NO" )
+                    ->setCellValue('U'.$C, $item->clave_identificadora )
+                    ->setCellValue('U'.$C, trim($cds->StrGenero ?? ''))
+                    ->setCellValue('V'.$C, $item->Ambito() ?? '');
                 $C++;
             }
         }
@@ -223,6 +234,14 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 $favorable = '';
             }
 
+            $Colonia = "";
+            $Delegacion = "";
+            $CenLoc       = $item->centro_localidad_id;
+            if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0){
+                $Loc = CentroLocalidad::find($CenLoc);
+                $Colonia = $Loc->ItemColonia();
+                $Delegacion = $Loc->ItemDelegacion();
+            }
 
             foreach ($item->ciudadanos as $cds) {
 
@@ -251,11 +270,12 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('D' . $C, trim($cds->full_name ?? ''))
                     ->setCellValue('E' . $C, $cadcel)
                     ->setCellValue('F' . $C, trim($item->gd_ubicacion ?? ''))
-                    ->setCellValue('G' . $C, trim($cadgdu ?? ''))
-                    ->setCellValue('H' . $C, $item->descripcion ?? '')
-                    ->setCellValue('I' . $C, $item->Ambito() ?? '')
-                    ->setCellValue('J' . $C, $item->ultimo_estatus ?? '')
-                    ->setCellValue('K' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y H:i') ?? '');
+                    ->setCellValue('G' . $C, trim($Colonia ?? ''))
+                    ->setCellValue('H' . $C, trim($Delegacion ?? ''))
+                    ->setCellValue('J' . $C, $item->descripcion ?? '')
+                    ->setCellValue('J' . $C, $item->Ambito() ?? '')
+                    ->setCellValue('K' . $C, $item->ultimo_estatus ?? '')
+                    ->setCellValue('L' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y H:i') ?? '');
                 $C++;
             }
         }

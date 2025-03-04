@@ -302,7 +302,7 @@ class DenunciaAmbitoController extends Controller{
         if (count($ServicioIdArray) > 0){
             $Servicios = _viServicios::query()
                 ->select('id','servicio','abreviatura_dependencia')
-                ->where("servicio_habilitado", 1)
+                ->where("habilitado", true)
                 ->where('ambito_dependencia',$this->ambito_dependencia)
                 ->whereIn('id',$ServicioIdArray)
                 ->orderBy('servicio')
@@ -310,7 +310,7 @@ class DenunciaAmbitoController extends Controller{
         }else{
             $Servicios = _viServicios::query()
                 ->select('id','servicio','abreviatura_dependencia')
-                ->where("servicio_habilitado", 1)
+                ->where("habilitado", true)
                 ->where('ambito_dependencia',$this->ambito_dependencia)
                 ->whereIn('dependencia_id',$dependencias_id)
                 ->orderBy('servicio')
@@ -566,7 +566,7 @@ class DenunciaAmbitoController extends Controller{
         if (count($ServicioIdArray) > 0){
             $Servicios = _viServicios::query()
                 ->select('id','servicio','abreviatura_dependencia')
-                ->where("servicio_habilitado", 1)
+                ->where("habilitado", true)
                 ->where('ambito_dependencia',$this->ambito_dependencia)
                 ->whereIn('id',$ServicioIdArray)
                 ->orderBy('servicio')
@@ -574,7 +574,7 @@ class DenunciaAmbitoController extends Controller{
         }else{
             $Servicios = _viServicios::query()
                 ->select('id','servicio','abreviatura_dependencia')
-                ->where("servicio_habilitado", 1)
+                ->where("habilitado", true)
                 ->where('ambito_dependencia',$this->ambito_dependencia)
                 ->whereIn('dependencia_id',$dependencias_id)
                 ->orderBy('servicio')
