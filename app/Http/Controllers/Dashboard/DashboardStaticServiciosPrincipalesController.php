@@ -317,18 +317,24 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
             $cerradas = count($arrGeos->where('ue_id', 21));
             $atendidas = count($arrGeos->where('ue_id', 17));
             $rechazadas = count($arrGeos->where('ue_id', 20));
+            $observadas = count($arrGeos->where('ue_id', 18));
             $porcAtendidas = $total_geodenuncias > 0 ? (($atendidas / $total_geodenuncias) * 100)  : 0;
+            $porcRechazadas = $total_geodenuncias > 0 ? (($rechazadas / $total_geodenuncias) * 100)  : 0;
             $porcPendientes = 100 - $porcAtendidas;
             $porcAtendidas = number_format($porcAtendidas, 2, '.', '');
             $porcPendientes = number_format($porcPendientes, 2, '.', '');
+            $porcRechazadas = number_format($porcRechazadas, 2, '.', '');
 
             $otrosDatos = [
                 (object)["total_geodenuncias" => $total_geodenuncias,
                 "cerradas" => $cerradas,
                 "atendidas" => $atendidas,
                 "rechazadas" => $rechazadas,
+                "observadas" => $observadas,
                 "porcAtendidas" => $porcAtendidas,
-                "porcPendientes" => $porcPendientes]
+                "porcPendientes" => $porcPendientes,
+                "porcRechazadas" => $porcRechazadas
+                ]
             ];
 
 

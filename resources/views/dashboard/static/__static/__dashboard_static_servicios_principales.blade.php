@@ -138,7 +138,7 @@
                 </div>
                 <div class="card">
                     <div class="chart-container">
-                        <h3>% solicitudes cerradas</h3>
+                        <h3>Solicitudes cerradas</h3>
                         <canvas id="closedRequestsChart" class="canvas_uno"></canvas>
                     </div>
 
@@ -318,7 +318,7 @@
             const ctx7a = document.getElementById('solicitudesChart');
             const chart7a = new Chart(ctx7a, {
                 type: 'pie',
-                data: data3([Otros.otros[0].atendidas, Otros.otros[0].rechazadas]),
+                data: data3([Otros.otros[0].porcAtendidas, Otros.otros[0].porcRechazadas]),
                 options: opciones3pie(),
                 plugins: [ChartDataLabels] // Registramos el plugin
             });
@@ -326,7 +326,7 @@
             const ctx8a = document.getElementById('closedRequestsChart');
             const chart8a = new Chart(ctx8a, {
                 type: 'doughnut',
-                data: data4([Otros.otros[0].porcAtendidas, Otros.otros[0].porcPendientes]),
+                data: data4([Otros.otros[0].atendidas, Otros.otros[0].observadas]),
                 options: opciones4()
             });
 
