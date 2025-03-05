@@ -165,7 +165,8 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('R'.$C, $respuesta )
                     ->setCellValue('S'.$C, $item->clave_identificadora )
                     ->setCellValue('T'.$C, trim($cds->StrGenero ?? ''))
-                    ->setCellValue('U'.$C, $item->Ambito() ?? '');
+                    ->setCellValue('U'.$C, $item->Ambito() ?? '')
+                    ->setCellValue('V'.$C, $this->getColorSemaforo($item));
                 $C++;
             }
         }
@@ -408,6 +409,33 @@ class ListDenunciaAmbitoXLSXController extends Controller
 
 
 
+    function getColorSemaforo($g){
+        $status = "white";
+        $dias_vencidos = 0;
+        switch ( $g->ue_id ) {
+            case 16:
+            case 19:
+                $ser = _viDDSs::find($g->id);
+                $fex = Carbon::parse(now())->diffInDays(Carbon::parse($ser->fecha_dias_maximos_ejecucion),false);
+                if ($fex >= 0) {
+                    $status = "amarillo";
+                }else{
+                    $status = "rojo";
+                    $dias_vencidos = abs($fex);
+                }
+                break;
+            case 17:
+            case 20:
+            case 21:
+                $status = "verde";
+                break;
+            default:
+                $status = "amarillo";
+                break;
+        }
+        return $status;
+
+    }
 
 
 
