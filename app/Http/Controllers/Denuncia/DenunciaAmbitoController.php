@@ -322,8 +322,6 @@ class DenunciaAmbitoController extends Controller{
             ->orderBy('colonia', 'asc')
             ->get();
 
-
-
         $this->msg = "";
         $th = $this->ambito_dependencia == 1 ? "Apoyos Sociales" : "Servicios Municipales";
         return view('SIAC.denuncia.denuncia_ambito.denuncia_new',

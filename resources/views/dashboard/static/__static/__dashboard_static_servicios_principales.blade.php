@@ -174,6 +174,12 @@
                                     <option value="0">Todos</option>
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="colonias">Colonia:</label>
+                                <select class="form-select" name="colonias" id="colonias">
+                                    <option value="0">Todas</option>
+                                </select>
+                            </div>
                             <button type="button" id="frmFilter" class="btn btn-primary btn-submit ms-auto">Filtrar</button>
                             <div class="form-group">
                                 <label for="items">Items:</label>
@@ -215,14 +221,14 @@
                     throw new Error(`Error al cargar JSON: ${response.statusText}`);
                 }
                 const data = await response.json();
-                initLoadData(data[0],data[1],data[2],data[3],data[4],data[5],data[6]);
+                initLoadData(data[0],data[1],data[2],data[3],data[4],data[5],data[6],data[7]);
             } catch (error) {
                 console.error(error);
             }
         }
 
 
-        function initLoadData(Estatus,Unidades,Servicios,Georeferencias,Otros,FiltroUnidades,FiltroServicios) {
+        function initLoadData(Estatus,Unidades,Servicios,Georeferencias,Otros,FiltroUnidades,FiltroServicios,FiltroColonias) {
             let data1data = [];
             let data2data = [];
             let data3data = [];
@@ -355,6 +361,7 @@
 
             const selectZona = document.getElementById('zona');
             const selectServicios = document.getElementById('servicios');
+            const selectColonias = document.getElementById('colonias');
             const items = document.getElementById('items');
 
             FiltroUnidades.filtro_unidades.forEach(zona => {
@@ -377,6 +384,14 @@
                 });
             });
             selectServicios.innerHTML = '<option value="0">Todos</option>';
+
+            FiltroColonias.filtro_colonias.forEach(coldel => {
+                const opcion = document.createElement('option');
+                opcion.value = coldel.id;
+                opcion.text = coldel.colonia_delegacion;
+                selectColonias.add(opcion);
+            });
+
 
             document.getElementById('frmFilter').addEventListener('click', (event) => {
                 event.preventDefault();
@@ -408,22 +423,43 @@
     function filterMap(Georeferencias) {
         const selectZona = document.getElementById('zona');
         const selectServicios = document.getElementById('servicios');
+        const selectColonias = document.getElementById('colonias');
         const selectedZona = selectZona.value;
         const selectedServicio = selectServicios.value;
+        const selectedColonia = selectColonias.value;
         const dataSetLocations = [];
         Georeferencias.georeferencias.forEach( (geo) => {
             var dep = geo.dependencia_id;
             var ser = geo.sue_id;
+            var col = geo.colonia_delegacion_id;
 
             if (selectedZona == 0 && selectedServicio == 0) {
-                dataSetLocations.push(setDataLocations(geo));
+                if (selectedColonia == 0){
+                    dataSetLocations.push(setDataLocations(geo));
+                }else{
+                    if (col == selectedColonia) {
+                        dataSetLocations.push(setDataLocations(geo));
+                    }
+                }
             }else{
                 if (selectedZona > 0 ) {
                     if (dep == selectedZona && selectedServicio == 0) {
-                        dataSetLocations.push(setDataLocations(geo));
+                        if (selectedColonia == 0){
+                            dataSetLocations.push(setDataLocations(geo));
+                        }else{
+                            if (col == selectedColonia) {
+                                dataSetLocations.push(setDataLocations(geo));
+                            }
+                        }
                     }else{
                         if (dep == selectedZona && ser == selectedServicio) {
-                            dataSetLocations.push(setDataLocations(geo));
+                            if (selectedColonia == 0){
+                                dataSetLocations.push(setDataLocations(geo));
+                            }else{
+                                if (col == selectedColonia) {
+                                    dataSetLocations.push(setDataLocations(geo));
+                                }
+                            }
                         }
                     }
                 }
@@ -452,7 +488,9 @@
                 lat: geo.latitud,
                 lng: geo.longitud,
             },
-            uuid: geo.uuid
+            uuid: geo.uuid,
+            colonia_delegacion: geo.colonia_delegacion,
+            colonia_delegacion_id: geo.colonia_delegacion_id
         };
     }
 

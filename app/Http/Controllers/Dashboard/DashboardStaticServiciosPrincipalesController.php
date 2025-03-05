@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Funciones\FuncionesController;
+use App\Models\Catalogos\CentroLocalidad;
 use App\Models\Catalogos\Servicio;
 use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\_viServicios;
@@ -257,6 +258,26 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                             break;
                 }
 
+                $Colonia_Id    = 0;
+                $Colonia       = "";
+                $Delegacion_Id = 0;
+                $Delegacion    = "";
+                $ColDel        = "";
+                $ColDelId      = 0;
+                $CenLoc        = $g->centro_localidad_id;
+                if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0){
+                    $Loc            = CentroLocalidad::find($CenLoc);
+//                    dd($Loc);
+                    $Colonia_Id    = $Loc->colonia_id;
+                    $Colonia        = $Loc->ItemColonia();
+                    $Delegacion_Id = $Loc->delegacion_id;
+                    $Delegacion     = $Loc->ItemDelegacion();
+                    $ColDel         = $Loc->ItemColoniaDelegacion();
+                    $ColDelId       = $Loc->id;
+                }
+
+
+
                 $arrGeos[] = (object)[
                     "denuncia_id"=> $g->id,
                     "denuncia"=> $g->denuncia,
@@ -279,6 +300,12 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                     "icon" => $icon,
                     "dias_vencidos" => $dias_vencidos,
                     "uuid" => $g->uuid,
+                    "colonia_id" => $Colonia_Id,
+                    "colonia" => $Colonia,
+                    "delegacion_id" => $Delegacion_Id,
+                    "delegacion" => $Delegacion,
+                    "colonia_delegacion" => $ColDel,
+                    "colonia_delegacion_id" => $ColDelId
                 ];
 
 //                if ( str_contains($g->servicio_ultimo_estatus, "DESAZOLVE") ){
@@ -337,7 +364,23 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 ]
             ];
 
+            $localidades_centro = CentroLocalidad::query()
+                ->orderBy('prefijo_colonia', 'asc')
+                ->orderBy('colonia', 'asc')
+                ->get();
 
+//            $arrLocDel[] = (object)['id' => 0,"colonia_id" => 0,"colonia"=>"","delegacion_id" => 0,"delegacion"=>"","colonia_delegacion"=>"Seleccione una Colonia"];
+            $arrLocDel = array();
+            foreach ($localidades_centro as $item) {
+                $arrLocDel[] = (object)[
+                    'id' => $item->id,
+                    "colonia_id" => $item->colonia_id,
+                    "colonia"=> $item->ItemColonia(),
+                    "delegacion_id" => $item->delegacion_id,
+                    "delegacion"=> $item->ItemDelegacion(),
+                    "colonia_delegacion"=>$item->ItemColoniaDelegacion(),
+                ];
+            }
 
 
             // SE CONSTRUYE EL JSON GENERAL
@@ -349,6 +392,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 (object)["otros" => $otrosDatos],
                 (object)["filtro_unidades" => $arrDep],
                 (object)["filtro_servicios" => $arrDepServ],
+                (object)["filtro_colonias" => $arrLocDel],
             ];
 
 //           dd($arrJson);
@@ -457,7 +501,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
                 'fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','ultimo_estatus',
                 'sue_id','servicio_ultimo_estatus','ue_id','dependencia_id','uuid',
-                'denuncia',
+                'denuncia','centro_localidad_id'
             )
             ->where('ambito_dependencia', 2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
