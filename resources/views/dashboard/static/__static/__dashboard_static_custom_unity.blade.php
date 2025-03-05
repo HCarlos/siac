@@ -19,7 +19,7 @@
     <main id="contenedor">
         <!-- Header -->
         <div class="title-wrapper">
-            <h2 class="main-title">{{ $titulo }}</h2>
+            <h2 class="main-title--">{{ $titulo }}</h2>
             <p class="subtitle">Selecciona un filtro de tiempo para ver los datos detallados</p>
         </div>
         <form action="{{ url('/dashboard-statistics-custom-unity-post') }}" method="POST" id="formFilter">

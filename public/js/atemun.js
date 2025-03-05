@@ -590,6 +590,7 @@ jQuery(function($) {
 
         $(".searchIdenticalAmbito").on('click',function (event){
             event.preventDefault();
+            $("#tblBody").empty();
             var formData = {};
             formData['descripcion']         = $("#descripcion").val();
             formData['referencia']          = $("#referencia").val();
@@ -608,10 +609,8 @@ jQuery(function($) {
 
             var ciudadano_id = $("#usuario_id").val();
 
-            // alert(formData.toString());
-
             if ($("#ciu_celulares").val() <= ""){
-                alert("Solicite al menos un núúmero de celular de contacto.");
+                alert("Solicite al menos un número de celular de contacto.");
                 return false;
             }
 
