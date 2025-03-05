@@ -348,7 +348,8 @@ class FuncionesController extends Controller
 
     public static function menuDashBoard($activo): array{
 
-        $arrLegenMenu = ["Inicio","General","Alumbrado","Espacios Públicos","Limpia","Obras","SAS","Encuestas","Reportes"];
+//        $arrLegenMenu = ["Inicio","General","Alumbrado","Espacios Públicos","Limpia","Obras","SAS","Encuestas","Reportes"];
+        $arrLegenMenu = ["Inicio","General","Alumbrado","Espacios Públicos","Limpia","Obras","SAS"];
         $arrUrls = array(
             "/dashboard-statistics-servicios-principales",
             "/dashboard-statistics-general",
@@ -357,12 +358,12 @@ class FuncionesController extends Controller
             "/dashboard-statistics-custom-unity/50",
             "/dashboard-statistics-custom-unity/48",
             "/dashboard-statistics-custom-unity/47",
-            "/dashboard-statistics-encuestas",
-            "/dashboard-statistics-reportes",
         );
+//        "/dashboard-statistics-encuestas",
+//            "/dashboard-statistics-reportes",
 
         $menu = [];
-        for ($i = 0; $i < 9; $i++) {
+        for ($i = 0; $i < 7; $i++) {
             $menu[] = (object)["url" => $arrUrls[$i], "clase" => $i === $activo ? "menu-item active" : "menu-item", "title_menu" => $arrLegenMenu[$i]];
         }
 

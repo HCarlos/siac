@@ -238,7 +238,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 $status = "white";
                 $dias_vencidos = 0;
                 switch ( $g->ue_id ) {
-                    case 16:
+                    case 16: // Recibida
                     case 19:
                             $fex = Carbon::parse(now())->diffInDays(Carbon::parse($fme2),false);
                             if ($fex >= 0) {
@@ -308,10 +308,6 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                     "colonia_delegacion_id" => $ColDelId
                 ];
 
-//                if ( str_contains($g->servicio_ultimo_estatus, "DESAZOLVE") ){
-//                    dd($g->servicio_ultimo_estatus);
-//                }
-
                 if (!in_array($g->dependencia_id, array_column($arrDep, 'dependencia_id'), true)) {
                     $arrDep[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia];
                 }
@@ -331,8 +327,6 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                     }
 
                 }
-
-
 
             }
 

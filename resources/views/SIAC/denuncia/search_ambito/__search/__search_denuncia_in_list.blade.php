@@ -14,7 +14,7 @@
     <div class="col-md-4">
         <input type="text" name="ciudadano" id="ciudadano" value="{{ old('ciudadano') }}" class="form-control" />
     </div>
-    <label for = "ciudadano_id" class="col-md-1 col-form-label text-right">Usuario ID</label>
+    <label for = "ciudadano_id" class="col-md-1 col-form-label text-right">User ID</label>
     <div class="col-md-5">
         <input type="text" name="ciudadano_id" id="ciudadano_id" value="{{ old('ciudadano_id') }}" class="form-control" />
     </div>
@@ -34,7 +34,7 @@
         <div class="col-md-1 ">
             <div class="custom-control custom-checkbox mt-1 float-left">
                 <input type="checkbox" class="custom-control-input" id="incluirFecha" name="incluirFecha">
-                <label class="custom-control-label" for="incluirFecha">Incluir</label>
+                <label class="custom-control-label" for="incluirFecha">Ingresó</label>
             </div>
         </div>
 </div>
@@ -142,7 +142,7 @@
     <div class="col-md-6 ">
         <div class="custom-control custom-checkbox mt-1 float-left">
             <input type="checkbox" class="custom-control-input" id="incluirFechaMovto" name="incluirFechaMovto">
-            <label class="custom-control-label" for="incluirFechaMovto">Buscar en Fecha Movto</label>
+            <label class="custom-control-label" for="incluirFechaMovto">En Fecha del Último Estatus</label>
         </div>
     </div>
 

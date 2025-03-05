@@ -205,7 +205,7 @@
 
     function data4(dataSet) {
         return {
-            labels: ['Cerradas', 'Pendientes'],
+            labels: ['Cerradas', 'Observadas'],
             datasets: [{
                 data: dataSet,
                 backgroundColor: [

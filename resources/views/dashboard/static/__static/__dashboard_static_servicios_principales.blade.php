@@ -138,20 +138,14 @@
                 </div>
                 <div class="card">
                     <div class="chart-container">
-                        <h3>Solicitudes cerradas</h3>
+                        <h3>Cerradas vs Observadas</h3>
                         <canvas id="closedRequestsChart" class="canvas_uno"></canvas>
                     </div>
 
                 </div>
-                {{--                <div class="card">--}}
-                {{--                    <h3>Por zona:</h3>--}}
-                {{--                    <div class="map-container" id="map-container">--}}
-                {{--                        <div id="map"></div>--}}
-                {{--                    </div>--}}
-                {{--                </div>--}}
                 <div class="card">
                     <div class="chart-container">
-                        <h3>% solicitudes atendidas / rechazadas</h3>
+                        <h3>Atendidas vs Rechazadas</h3>
                         <canvas id="solicitudesChart"></canvas>
                     </div>
                 </div>
@@ -320,19 +314,20 @@
                 options: opciones1()
             });
 
-            // % Atendidas vs Rechazadas
+            // Atendidas vs Rechazadas
             const ctx7a = document.getElementById('solicitudesChart');
             const chart7a = new Chart(ctx7a, {
                 type: 'pie',
-                data: data3([Otros.otros[0].porcAtendidas, Otros.otros[0].porcRechazadas]),
+                data: data3([Otros.otros[0].atendidas, Otros.otros[0].rechazadas]),
                 options: opciones3pie(),
                 plugins: [ChartDataLabels] // Registramos el plugin
             });
 
+            // Cerradas vs Observadas
             const ctx8a = document.getElementById('closedRequestsChart');
             const chart8a = new Chart(ctx8a, {
                 type: 'doughnut',
-                data: data4([Otros.otros[0].atendidas, Otros.otros[0].observadas]),
+                data: data4([Otros.otros[0].cerradas, Otros.otros[0].observadas]),
                 options: opciones4()
             });
 

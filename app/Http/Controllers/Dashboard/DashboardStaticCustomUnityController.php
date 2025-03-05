@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Funciones\FuncionesController;
+use App\Models\Catalogos\CentroLocalidad;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -31,11 +32,6 @@ class DashboardStaticCustomUnityController extends Controller{
     protected function indexPost(Request $request){
 
         $data = $request->all();
-
-//        dd($data);
-
-
-//        $arrJson = [];
 
         $f = new FuncionesController();
 
@@ -72,12 +68,6 @@ class DashboardStaticCustomUnityController extends Controller{
             $filter = $data['filter'];
 
         }
-
-//        $start_date = Carbon::now()->startOfMonth();
-//        $start_date = $start_date->format('Y-m-d');
-//        $end_date = Carbon::now()->endOfMonth();
-//        $end_date =  $end_date->format('Y-m-d');
-//
 
         $data['start_date'] = $start_date;
         $data['end_date'] = $end_date;
@@ -201,7 +191,10 @@ class DashboardStaticCustomUnityController extends Controller{
 
             // INICIA EL MODULO DE GEOLOCALIZACIÓN
             $arrGeos = [];
+            $arrDep = [];
+            $arrDepServ = [];
             $arrG = static::getGeoDenuncias($start_date,$end_date,$this->unity_id,0);
+            $initArr = true;
 
             foreach ($arrG as $g) {
                 $fme1 = Carbon::parse($g->fecha_dias_ejecucion);
@@ -235,7 +228,7 @@ class DashboardStaticCustomUnityController extends Controller{
                 $status = "white";
                 $dias_vencidos = 0;
                 switch ( $g->ue_id ) {
-                    case 16:
+                    case 16: // Recibida
                     case 19:
                         $fex = Carbon::parse(now())->diffInDays(Carbon::parse($fme2),false);
                         if ($fex >= 0) {
@@ -255,13 +248,36 @@ class DashboardStaticCustomUnityController extends Controller{
                         break;
                 }
 
+                $Colonia_Id    = 0;
+                $Colonia       = "";
+                $Delegacion_Id = 0;
+                $Delegacion    = "";
+                $ColDel        = "";
+                $ColDelId      = 0;
+                $CenLoc        = $g->centro_localidad_id;
+                if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0){
+                    $Loc            = CentroLocalidad::find($CenLoc);
+//                    dd($Loc);
+                    $Colonia_Id    = $Loc->colonia_id;
+                    $Colonia        = $Loc->ItemColonia();
+                    $Delegacion_Id = $Loc->delegacion_id;
+                    $Delegacion     = $Loc->ItemDelegacion();
+                    $ColDel         = $Loc->ItemColoniaDelegacion();
+                    $ColDelId       = $Loc->id;
+                }
+
+
+
                 $arrGeos[] = (object)[
                     "denuncia_id"=> $g->id,
                     "denuncia"=> $g->denuncia,
                     "latitud"=> (float) $g->latitud,
                     "longitud"=> (float) $g->longitud,
+                    "dependencia_id" => $g->dependencia_id,
+                    "dependencia"=> $g->dependencia,
                     "abreviatura"=> $g->abreviatura,
-                    "servicio" => $g->servicio,
+                    "sue_id" => $g->sue_id,
+                    "servicio" => $g->nombre_corto_ss,
                     "ciudadano" => $g->ciudadano,
                     "ue_id" => $g->ue_id,
                     "ultimo_estatus" => $g->ultimo_estatus,
@@ -272,32 +288,87 @@ class DashboardStaticCustomUnityController extends Controller{
                     "dias_a_tiempo" => Carbon::parse($g->fecha_dias_maximos_ejecucion)->diffInDays(Carbon::parse($g->fecha_ingreso)),
                     "type" => $status,
                     "icon" => $icon,
-                    "dependencia_id" => $g->dependencia_id,
                     "dias_vencidos" => $dias_vencidos,
+                    "uuid" => $g->uuid,
+                    "colonia_id" => $Colonia_Id,
+                    "colonia" => $Colonia,
+                    "delegacion_id" => $Delegacion_Id,
+                    "delegacion" => $Delegacion,
+                    "colonia_delegacion" => $ColDel,
+                    "colonia_delegacion_id" => $ColDelId
                 ];
-            }
 
+                if (!in_array($g->dependencia_id, array_column($arrDep, 'dependencia_id'), true)) {
+                    $arrDep[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia];
+                }
+
+                if ($initArr){
+                    $arrDepServ[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia,"sue_id" => $g->sue_id,"servicio" => $g->nombre_corto_ss];
+                    $initArr = false;
+                }else{
+                    $Encontrado = false;
+                    foreach ($arrDepServ as $key => $value) {
+                        if ($value['dependencia_id'] === $g->dependencia_id && $value['sue_id'] === $g->sue_id) {
+                            $Encontrado = true;
+                        }
+                    }
+                    if (!$Encontrado) {
+                        $arrDepServ[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia,"sue_id" => $g->sue_id,"servicio" => $g->nombre_corto_ss];
+                    }
+
+                }
+
+            }
 //            dd($arrGeos);
 
             // INICIA EL MODULO DE OTROS DATOS
+            $arrGeos = collect($arrGeos);
+//            $total_geodenuncias = count($arrGeos);
+//            $cerradas = count($arrGeos->where('ue_id', 21));
+//            $atendidas = count($arrGeos->where('ue_id', 17));
+//            $rechazadas = count($arrGeos->where('ue_id', 20));
             $arrGeos = collect($arrGeos);
             $total_geodenuncias = count($arrGeos);
             $cerradas = count($arrGeos->where('ue_id', 21));
             $atendidas = count($arrGeos->where('ue_id', 17));
             $rechazadas = count($arrGeos->where('ue_id', 20));
+            $observadas = count($arrGeos->where('ue_id', 18));
             $porcAtendidas = $total_geodenuncias > 0 ? (($atendidas / $total_geodenuncias) * 100)  : 0;
+            $porcRechazadas = $total_geodenuncias > 0 ? (($rechazadas / $total_geodenuncias) * 100)  : 0;
             $porcPendientes = 100 - $porcAtendidas;
             $porcAtendidas = number_format($porcAtendidas, 2, '.', '');
             $porcPendientes = number_format($porcPendientes, 2, '.', '');
+            $porcRechazadas = number_format($porcRechazadas, 2, '.', '');
 
             $otrosDatos = [
                 (object)["total_geodenuncias" => $total_geodenuncias,
                     "cerradas" => $cerradas,
                     "atendidas" => $atendidas,
                     "rechazadas" => $rechazadas,
+                    "observadas" => $observadas,
                     "porcAtendidas" => $porcAtendidas,
-                    "porcPendientes" => $porcPendientes]
+                    "porcPendientes" => $porcPendientes,
+                    "porcRechazadas" => $porcRechazadas
+                ]
             ];
+
+            $localidades_centro = CentroLocalidad::query()
+                ->orderBy('prefijo_colonia', 'asc')
+                ->orderBy('colonia', 'asc')
+                ->get();
+
+            $arrLocDel = array();
+            foreach ($localidades_centro as $item) {
+                $arrLocDel[] = (object)[
+                    'id' => $item->id,
+                    "colonia_id" => $item->colonia_id,
+                    "colonia"=> $item->ItemColonia(),
+                    "delegacion_id" => $item->delegacion_id,
+                    "delegacion"=> $item->ItemDelegacion(),
+                    "colonia_delegacion"=>$item->ItemColoniaDelegacion(),
+                ];
+            }
+
 
             // SE CONSTRUYE EL JSON GENERAL
             $arrJson = [
@@ -306,7 +377,11 @@ class DashboardStaticCustomUnityController extends Controller{
                 (object)["servicios" => $vectorServicios],
                 (object)["georeferencias" => $arrGeos],
                 (object)["otros" => $otrosDatos],
+                (object)["filtro_unidades" => $arrDep],
+                (object)["filtro_servicios" => $arrDepServ],
+                (object)["filtro_colonias" => $arrLocDel],
             ];
+
 
 //           dd($arrJson);
 
@@ -325,7 +400,7 @@ class DashboardStaticCustomUnityController extends Controller{
                 break;
             case 49:
                 $active = 3;
-                $titulo = 'Explora las Estadísticas de Espacios Púlicos';
+                $titulo = 'Explora las Estadísticas de Espacios Públicos';
                 break;
             case 50:
                 $active = 4;
@@ -435,10 +510,11 @@ class DashboardStaticCustomUnityController extends Controller{
 
         return DB::table("_viddss")
             ->select(
-                'id','denuncia','latitud','longitud','abreviatura',
+                'id','latitud','longitud','dependencia','abreviatura',
                 'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
                 'fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','ultimo_estatus',
-                'servicio','ue_id','dependencia_id',
+                'sue_id','servicio_ultimo_estatus','ue_id','dependencia_id','uuid',
+                'denuncia','centro_localidad_id'
             )
             ->where('ambito_dependencia', 2)
             ->where('dependencia_id', $unidad_id)

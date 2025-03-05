@@ -163,10 +163,9 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('P'.$C, $item->ultimo_estatus ?? '')
                     ->setCellValue('Q'.$C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y h:m') ?? '')
                     ->setCellValue('R'.$C, $respuesta )
-                    ->setCellValue('S'.$C, $favorable ? "SI" : "NO" )
-                    ->setCellValue('U'.$C, $item->clave_identificadora )
-                    ->setCellValue('U'.$C, trim($cds->StrGenero ?? ''))
-                    ->setCellValue('V'.$C, $item->Ambito() ?? '');
+                    ->setCellValue('S'.$C, $item->clave_identificadora )
+                    ->setCellValue('T'.$C, trim($cds->StrGenero ?? ''))
+                    ->setCellValue('U'.$C, $item->Ambito() ?? '');
                 $C++;
             }
         }
@@ -272,7 +271,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('F' . $C, trim($item->gd_ubicacion ?? ''))
                     ->setCellValue('G' . $C, trim($Colonia ?? ''))
                     ->setCellValue('H' . $C, trim($Delegacion ?? ''))
-                    ->setCellValue('J' . $C, $item->descripcion ?? '')
+                    ->setCellValue('I' . $C, $item->descripcion ?? '')
                     ->setCellValue('J' . $C, $item->Ambito() ?? '')
                     ->setCellValue('K' . $C, $item->ultimo_estatus ?? '')
                     ->setCellValue('L' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y H:i') ?? '');

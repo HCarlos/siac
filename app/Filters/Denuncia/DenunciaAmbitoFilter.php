@@ -181,7 +181,11 @@ class DenunciaAmbitoFilter extends QueryFilter
 
     public function fecha_movimiento($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "0") {return $query;}
+
+//        dd($search);
+
             $cad = explode('|',$search);
+
             $fdesde = $cad[0];
             $fhasta = $cad[1];
             $estatu = (int)$cad[2];

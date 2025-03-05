@@ -51,13 +51,13 @@
                         <label for="end_date">F. Final</label>
                         <input type="date" id="end_date" name="end_date" value="{{ $end_date }}">
                     </div>
-                    <div class="search-container">
-                        <button class="search-btn" type="submit" >
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="search-icon">
-                                <path d="M10 2a8 8 0 105.29 14.29l4.35 4.35a1 1 0 001.42-1.42l-4.35-4.35A8 8 0 0010 2zm0 2a6 6 0 014.66 9.74 1 1 0 00-.14 1.41l4.35 4.35a1 1 0 001.42-1.42l-4.35-4.35a1 1 0 00-1.41.14A6 6 0 1110 4z" />
-                            </svg>
-                        </button>
-                    </div>
+{{--                    <div class="search-container">--}}
+{{--                        <button class="search-btn" type="submit" >--}}
+{{--                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="search-icon">--}}
+{{--                                <path d="M10 2a8 8 0 105.29 14.29l4.35 4.35a1 1 0 001.42-1.42l-4.35-4.35A8 8 0 0010 2zm0 2a6 6 0 014.66 9.74 1 1 0 00-.14 1.41l4.35 4.35a1 1 0 001.42-1.42l-4.35-4.35a1 1 0 00-1.41.14A6 6 0 1110 4z" />--}}
+{{--                            </svg>--}}
+{{--                        </button>--}}
+{{--                    </div>--}}
             </header>
             <input type="hidden" name="unity_id" value="{{ $unity_id }}">
         </form>
@@ -111,31 +111,31 @@
                 </div>
             </div>
             <!-- Charts Section -->
-            <div class="section">
-                <div class="card">
-                    <h3>Top 5 de servicios</h3>
-                    <div class="top-requests">
-                        <div><span id="u0"></span><span id="u0p" class="ml-1"></span></div>
-                        <div><span id="u1"></span><span id="u1p" class="ml-1"></span></div>
-                        <div><span id="u2"></span><span id="u2p" class="ml-1"></span></div>
-                        <div><span id="u3"></span><span id="u3p" class="ml-1"></span></div>
-                        <div><span id="u4"></span><span id="u4p" class="ml-1"></span></div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="chart-container">
-                        <h3>Solicitudes cerradas</h3>
-                        <canvas id="closedRequestsChart" class="canvas_uno"></canvas>
-                    </div>
+{{--            <div class="section">--}}
+{{--                <div class="card">--}}
+{{--                    <h3>Top 5 de servicios</h3>--}}
+{{--                    <div class="top-requests">--}}
+{{--                        <div><span id="u0"></span><span id="u0p" class="ml-1"></span></div>--}}
+{{--                        <div><span id="u1"></span><span id="u1p" class="ml-1"></span></div>--}}
+{{--                        <div><span id="u2"></span><span id="u2p" class="ml-1"></span></div>--}}
+{{--                        <div><span id="u3"></span><span id="u3p" class="ml-1"></span></div>--}}
+{{--                        <div><span id="u4"></span><span id="u4p" class="ml-1"></span></div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="card">--}}
+{{--                    <div class="chart-container">--}}
+{{--                        <h3>Solicitudes cerradas</h3>--}}
+{{--                        <canvas id="closedRequestsChart" class="canvas_uno"></canvas>--}}
+{{--                    </div>--}}
 
-                </div>
-                <div class="card">
-                    <div class="chart-container">
-                        <h3>% solicitudes atendidas / rechazadas</h3>
-                        <canvas id="solicitudesChart"></canvas>
-                    </div>
-                </div>
-            </div>
+{{--                </div>--}}
+{{--                <div class="card">--}}
+{{--                    <div class="chart-container">--}}
+{{--                        <h3>% solicitudes atendidas / rechazadas</h3>--}}
+{{--                        <canvas id="solicitudesChart"></canvas>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
 
         </div>
     </main>
@@ -161,8 +161,6 @@
                 if (!response.ok) {
                     throw new Error(`Error al cargar JSON: ${response.statusText}`);
                 }
-
-
                 // Convierte la respuesta a JSON
                 const data = await response.json();
 
@@ -177,16 +175,6 @@
 
         function initLoadData(Estatus,Unidades,Servicios,Georeferencias,Otros) {
 
-            // alert(data.estatus[0].Unidades[0].Total);
-
-            // Recibidas
-            // data.unidades.forEach((estatus) => {
-            //     console.log(`Estatus: ${estatus.Estatus}`);
-            //     console.log("Unidades:");
-            //     estatus.Unidades.forEach((unidad) => {
-            //         console.log(`- ${unidad.Unidad}: Total = ${unidad.Total}, Porcentaje = ${unidad.Porcentaje}%`);
-            //     });
-            // });
             let data1data = [];
             let data2data = [];
             let data3data = [];
@@ -227,20 +215,20 @@
 
 
             // % Atendidas vs Rechazadas
-            const ctx7a = document.getElementById('solicitudesChart');
-            const chart7a = new Chart(ctx7a, {
-                type: 'bar',
-                data: data3([Otros.otros[0].atendidas, Otros.otros[0].rechazadas]),
-                options: opciones3()
-            });
-
-            const ctx8a = document.getElementById('closedRequestsChart');
-            const chart8a = new Chart(ctx8a, {
-                type: 'doughnut',
-                data: data4([Otros.otros[0].atendidas, Otros.otros[0].observadas]),
-                options: opciones4()
-            });
-
+            // const ctx7a = document.getElementById('solicitudesChart');
+            // const chart7a = new Chart(ctx7a, {
+            //     type: 'bar',
+            //     data: data3([Otros.otros[0].atendidas, Otros.otros[0].rechazadas]),
+            //     options: opciones3()
+            // });
+            //
+            // const ctx8a = document.getElementById('closedRequestsChart');
+            // const chart8a = new Chart(ctx8a, {
+            //     type: 'doughnut',
+            //     data: data4([Otros.otros[0].atendidas, Otros.otros[0].observadas]),
+            //     options: opciones4()
+            // });
+            //
             // Llamar a la función de inicialización cuando la página cargue
 
             let dataSetLocations = [];
@@ -253,13 +241,6 @@
                 LabelServices.push(servicio.Servicio);
                 i++;
             });
-
-            // const ctx9a = document.getElementById('servicesChart');
-            // const chart9a = new Chart(ctx9a, {
-            //     type: 'bar',
-            //     data: data5(LabelServices,Services),
-            //     options: opciones5()
-            // });
 
             Georeferencias.georeferencias.forEach( (geo) => {
                 dataSetLocations.push({
@@ -297,9 +278,9 @@
         document.querySelectorAll('.radio-button input').forEach((input) => {
             input.addEventListener('change', function (event) {
                 // Envía el formulario cuando se selecciona una opción
-                if (event.currentTarget.value !== 'free') {
+                // if (event.currentTarget.value !== 'free') {
                     document.getElementById('formFilter').submit();
-                }
+                // }
             });
         });
 
