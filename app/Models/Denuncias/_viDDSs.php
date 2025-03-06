@@ -7,6 +7,7 @@ use App\Filters\Denuncia\Count\DenunciaAmbitoFilterCount;
 use App\Filters\Denuncia\Count\GetDenunciasAmbitoFilterCount;
 use App\Filters\Denuncia\Count\GetDenunciasEstatusAmbitoFilterCount;
 use App\Filters\Denuncia\DenunciaAmbitoFilter;
+use App\Filters\Denuncia\DenunciaFilter;
 use App\Filters\Denuncia\GetDenunciasAmbitoItemCustomFilter;
 use App\Filters\Denuncia\GetDenunciasItemCustomFilter;
 use App\Models\Catalogos\Dependencia;
@@ -38,7 +39,7 @@ class _viDDSs extends Model{
     ];
 
     public function scopeFilterBy($query, $filters){
-        return (new DenunciaAmbitoFilter())->applyTo($query, $filters);
+        return (new DenunciaFilter())->applyTo($query, $filters);
     }
     public function scopeGetDenunciasItemCustomFilter($query, $filters){
         return (new GetDenunciasItemCustomFilter())->applyTo($query, $filters);

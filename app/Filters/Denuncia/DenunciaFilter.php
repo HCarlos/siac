@@ -52,7 +52,7 @@ class DenunciaFilter extends QueryFilter
 
     public function status_denuncia($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
-        return $query->where('status_denuncia', $search);
+        return $query->where('status_denuncia', (int)$search);
     }
 
     public function ambito_dependencia($query, $search){
@@ -68,6 +68,8 @@ class DenunciaFilter extends QueryFilter
         $filters      = strtolower($filters);
         $filters      = $F->str_sanitizer($filters);
         $tsString     = $F->string_to_tsQuery( strtoupper($filters),' & ');
+
+//        dd($tsString);
 
         return $query->whereRaw("searchtextdenuncia @@ to_tsquery('spanish', ?)", [$tsString])
             ->orderByRaw("calle, num_ext, num_int, colonia, denuncia, referencia ASC");
