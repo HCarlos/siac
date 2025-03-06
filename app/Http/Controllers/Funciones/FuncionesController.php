@@ -364,7 +364,7 @@ class FuncionesController extends Controller
 
         $menu = [];
         for ($i = 0; $i < 7; $i++) {
-            $menu[] = (object)["url" => $arrUrls[$i], "clase" => $i === $activo ? "menu-item active" : "menu-item", "title_menu" => $arrLegenMenu[$i]];
+            $menu[] = (object)["url" => $arrUrls[$i], "clase" => $i === $activo ? "menu-item active" : "menu-item", "title_menu" => $arrLegenMenu[$i], "index" => $i];
         }
 
         return $menu;

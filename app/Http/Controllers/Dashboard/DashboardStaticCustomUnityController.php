@@ -277,7 +277,7 @@ class DashboardStaticCustomUnityController extends Controller{
                     "dependencia"=> $g->dependencia,
                     "abreviatura"=> $g->abreviatura,
                     "sue_id" => $g->sue_id,
-                    "servicio" => $g->nombre_corto_ss,
+                    "servicio" => $g->servicio_ultimo_estatus,
                     "ciudadano" => $g->ciudadano,
                     "ue_id" => $g->ue_id,
                     "ultimo_estatus" => $g->ultimo_estatus,
@@ -303,7 +303,7 @@ class DashboardStaticCustomUnityController extends Controller{
                 }
 
                 if ($initArr){
-                    $arrDepServ[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia,"sue_id" => $g->sue_id,"servicio" => $g->nombre_corto_ss];
+                    $arrDepServ[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia,"sue_id" => $g->sue_id,"servicio" => $g->servicio_ultimo_estatus];
                     $initArr = false;
                 }else{
                     $Encontrado = false;
@@ -313,7 +313,7 @@ class DashboardStaticCustomUnityController extends Controller{
                         }
                     }
                     if (!$Encontrado) {
-                        $arrDepServ[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia,"sue_id" => $g->sue_id,"servicio" => $g->nombre_corto_ss];
+                        $arrDepServ[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia,"sue_id" => $g->sue_id,"servicio" => $g->servicio_ultimo_estatus];
                     }
 
                 }
@@ -510,7 +510,7 @@ class DashboardStaticCustomUnityController extends Controller{
 
         return DB::table("_viddss")
             ->select(
-                'id','latitud','longitud','dependencia','abreviatura',
+                'id','latitud','longitud','dependencia','abreviatura','servicio_ultimo_estatus',
                 'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
                 'fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','ultimo_estatus',
                 'sue_id','servicio_ultimo_estatus','ue_id','dependencia_id','uuid',

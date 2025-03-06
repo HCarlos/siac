@@ -9,9 +9,7 @@
 
         </div>
         <nav class="menu">
-            @foreach($menu as $m)
-                <button class="{{ $m->clase }}" onclick="window.location.href='{{ $m->url }}'">{{ $m->title_menu }}</button>
-            @endforeach
+            @include('shared.ui_kit.__menu_dashboard_static')
         </nav>
     </aside>
 
@@ -104,7 +102,29 @@
             <!-- Sección de solicitudes por área -->
             <div class="section">
                 <div class="card" >
-                    <h3>Por zona:</h3>
+
+                    <div class="card-header">
+                        <form class="form-modern">
+                            <div class="form-group">
+                                <label for="servicios">Servicios:</label>
+                                <select class="form-select" name="servicios" id="servicios">
+                                    <option value="0">Todos</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="colonias">Colonia:</label>
+                                <select class="form-select colonias select2" name="colonias" id="colonias" data-toggle="select2" size="1" >
+                                    <option value="0">Todas</option>
+                                </select>
+                            </div>
+                            <button type="button" id="frmFilter" class="btn btn-primary btn-submit ms-auto">Filtrar</button>
+                            <div class="form-group">
+                                <label for="items">Items:</label>
+                                <input type="text" name="items" id="items" value="0" class="totalItems" disabled>
+                            </div>
+                        </form>
+                    </div>
+
                     <div class="map-container" id="map-container">
                         <div id="map"></div>
                     </div>
@@ -139,6 +159,7 @@
 
         </div>
     </main>
+    <input type="hidden" id="zona" name="zona" value="0">
 </div>
 
 
@@ -166,14 +187,14 @@
 
                 // Llama a la función para renderizar los datos
                 // console.log(data);
-                initLoadData(data[0],data[1],data[2],data[3],data[4]);
+                initLoadData(data[0],data[1],data[2],data[3],data[4],data[5],data[6],data[7]);
             } catch (error) {
                 console.error(error);
             }
         }
 
 
-        function initLoadData(Estatus,Unidades,Servicios,Georeferencias,Otros) {
+        function initLoadData(Estatus,Unidades,Servicios,Georeferencias,Otros,FiltroUnidades,FiltroServicios,FiltroColonias) {
 
             let data1data = [];
             let data2data = [];
@@ -232,44 +253,67 @@
             // Llamar a la función de inicialización cuando la página cargue
 
             let dataSetLocations = [];
-            let i = 0;
 
-            let Services = [];
-            let LabelServices = [];
-            Servicios.servicios.forEach( (servicio) => {
-                Services.push(servicio.Total);
-                LabelServices.push(servicio.Servicio);
-                i++;
-            });
+            // let Services = [];
+            // let LabelServices = [];
+            // Servicios.servicios.forEach( (servicio) => {
+            //     Services.push(servicio.Total);
+            //     LabelServices.push(servicio.Servicio);
+            //     i++;
+            // });
+
+            // const ctx9a = document.getElementById('servicesChart');
+            // const chart9a = new Chart(ctx9a, {
+            //     type: 'bar',
+            //     data: data5(LabelServices,Services),
+            //     options: opciones5()
+            // });
 
             Georeferencias.georeferencias.forEach( (geo) => {
-                dataSetLocations.push({
-                    denuncia_id:geo.denuncia_id,
-                    fecha_ingreso: geo.fecha_ingreso,
-                    unidad: geo.abreviatura,
-                    denuncia: geo.denuncia,
-                    description: geo.ciudadano,
-                    servicio: geo.servicio,
-                    estatus: geo.ultimo_estatus,
-                    type: geo.type,
-                    icon: geo.icon,
-                    dias_vencidos: geo.dias_vencidos,
-                    position: {
-                        lat: geo.latitud,
-                        lng: geo.longitud,
+                dataSetLocations.push(setDataLocations(geo));
+            });
+
+
+            const selectZona = document.getElementById('zona');
+            const selectServicios = document.getElementById('servicios');
+            const selectColonias = document.getElementById('colonias');
+            const items = document.getElementById('items');
+
+            // FiltroUnidades.filtro_unidades.forEach(zona => {
+                selectZona.value = FiltroUnidades.filtro_unidades[0].dependencia_id;
+            // });
+
+
+                FiltroServicios.filtro_servicios.forEach(item => {
+                    if (parseInt(item.dependencia_id) === parseInt(selectZona.value)) {
+                        const opcion = document.createElement('option');
+                        opcion.value = item.sue_id;
+                        opcion.text = item.servicio;
+                        selectServicios.add(opcion);
                     }
                 });
 
+            // selectServicios.innerHTML = '<option value="0">Todos</option>';
+
+            // alert(FiltroServicios.filtro_servicios[0].sue_id);
+
+            FiltroColonias.filtro_colonias.forEach(coldel => {
+                const opcion = document.createElement('option');
+                opcion.value = coldel.id;
+                opcion.text = coldel.colonia_delegacion;
+                selectColonias.add(opcion);
             });
+            $('#colonias').select2();
 
-            // alert("Se cargaron " + dataSetLocations.length + " denuncias");
+            document.getElementById('frmFilter').addEventListener('click', (event) => {
+                event.preventDefault();
+                filterMap(Georeferencias);
 
-            // console.log(dataSetLocations);
-
+            })
             window.onload = async () => initMap(dataSetLocations);
             initMap(dataSetLocations);
 
-
+            items.value = getCommaSeparatedTwoDecimalsNumber(dataSetLocations.length);
         }
 
         window.onload = loadJSON( "/storage/{{ $file_output }}" );
@@ -277,16 +321,86 @@
 
         document.querySelectorAll('.radio-button input').forEach((input) => {
             input.addEventListener('change', function (event) {
-                // Envía el formulario cuando se selecciona una opción
-                // if (event.currentTarget.value !== 'free') {
-                    document.getElementById('formFilter').submit();
-                // }
+                document.getElementById('formFilter').submit();
             });
         });
 
 
 
     });
+
+    function filterMap(Georeferencias) {
+        const selectZona = document.getElementById('zona');
+        const selectServicios = document.getElementById('servicios');
+        const selectColonias = document.getElementById('colonias');
+        const selectedZona = selectZona.value;
+        const selectedServicio = selectServicios.value;
+        const selectedColonia = selectColonias.value;
+        const dataSetLocations = [];
+        Georeferencias.georeferencias.forEach( (geo) => {
+            var dep = geo.dependencia_id;
+            var ser = geo.sue_id;
+            var col = geo.colonia_delegacion_id;
+
+                if (selectedZona > 0 ) {
+                    if (dep == selectedZona && selectedServicio == 0) {
+                        if (selectedColonia == 0){
+                            dataSetLocations.push(setDataLocations(geo));
+                        }else{
+                            if (col == selectedColonia) {
+                                dataSetLocations.push(setDataLocations(geo));
+                            }
+                        }
+                    }else{
+                        if (dep == selectedZona && ser == selectedServicio) {
+                            if (selectedColonia == 0){
+                                dataSetLocations.push(setDataLocations(geo));
+                            }else{
+                                if (col == selectedColonia) {
+                                    dataSetLocations.push(setDataLocations(geo));
+                                }
+                            }
+                        }
+                    }
+                }
+
+        });
+        items.value = getCommaSeparatedTwoDecimalsNumber(dataSetLocations.length);
+        window.onload = async () => initMap(dataSetLocations);
+        initMap(dataSetLocations);
+
+    }
+
+    function setDataLocations(geo) {
+        return {
+            denuncia_id:geo.denuncia_id,
+            fecha_ingreso: geo.fecha_ingreso,
+            unidad: geo.abreviatura,
+            denuncia: geo.denuncia,
+            description: geo.ciudadano,
+            servicio: geo.servicio,
+            estatus: geo.ultimo_estatus,
+            type: geo.type,
+            icon: geo.icon,
+            dias_vencidos: geo.dias_vencidos,
+            position: {
+                lat: geo.latitud,
+                lng: geo.longitud,
+            },
+            uuid: geo.uuid,
+            colonia_delegacion: geo.colonia_delegacion,
+            colonia_delegacion_id: geo.colonia_delegacion_id
+        };
+    }
+
+    function getCommaSeparatedTwoDecimalsNumber(number) {
+        const fixedNumber = Number.parseFloat(number).toFixed(0);
+        return String(fixedNumber).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    }
+
+
+
 
 
     {{--document.addEventListener("DOMContentLoaded",()=>{async function e(e){try{let a=await fetch(e);if(!a.ok)throw Error(`Error al cargar JSON: ${a.statusText}`);let o=await a.json();t(o[0],o[1],o[2],o[3],o[4])}catch(r){console.error(r)}}function t(e,t,a,o,r){let n=[],s=[],d=[],i=[],l=[],u=[],c=[],h=[];document.getElementById("h2Recibidas").innerHTML=e.estatus[0].Total,document.getElementById("h2EnProceso").innerHTML=e.estatus[1].Total,document.getElementById("h2Atendidas").innerHTML=e.estatus[2].Total,document.getElementById("h2Aatendidas").innerHTML=e.estatus[2].a_tiempo,document.getElementById("h2Abtendidas").innerHTML=e.estatus[2].con_rezago,document.getElementById("h2Rechazadas").innerHTML=e.estatus[3].Total,document.getElementById("h2Cerradas").innerHTML=e.estatus[4].Total,document.getElementById("h2Observadas").innerHTML=e.estatus[5].Total,document.getElementById("h2Total").innerHTML=e.estatus[0].Total+e.estatus[1].Total+e.estatus[2].Total+e.estatus[3].Total+e.estatus[4].Total+e.estatus[5].Total,e.estatus[0].Unidades.forEach(e=>{n.push(e.Total)}),e.estatus[1].Unidades.forEach(e=>{s.push(e.Total)}),e.estatus[2].Unidades.forEach(e=>{d.push(e.Total)}),e.estatus[3].Unidades.forEach(e=>{i.push(e.Total)}),e.estatus[4].Unidades.forEach(e=>{l.push(e.Total)}),e.estatus[5].Unidades.forEach(e=>{u.push(e.Total)}),e.estatus[2].Unidades.forEach(e=>{c.push(e.a_tiempo),h.push(e.con_rezago)});var g=0;t.unidades.forEach(e=>{document.getElementById("u"+g).innerHTML=e.Unidad,document.getElementById("u"+g+"p").innerHTML=e.Porcentaje+"%",g++});let p=document.getElementById("chart-area-1");new Chart(p,{type:"bar",data:data1(n),options:opciones1()});let y=document.getElementById("chart-area-2");new Chart(y,{type:"bar",data:data1(s),options:opciones1()});let E=document.getElementById("chart-area-3");new Chart(E,{type:"bar",data:data2([{type:"bar",label:"En tiempo",data:c,backgroundColor:"rgba(54, 162, 235, 0.6)",borderColor:"rgba(54, 162, 235, 1)",borderWidth:1,hoverBackgroundColor:"rgba(54, 162, 235, 0.6)",hoverBorderColor:"rgba(54, 162, 235, 1)"},{type:"bar",label:"Con rezago",data:h,backgroundColor:"rgba(255, 99, 132, 0.2)",borderColor:"rgba(255, 99, 132, 1)",borderWidth:1,hoverBackgroundColor:"rgba(255, 99, 132, 0.4)",hoverBorderColor:"rgba(255, 99, 132, 1)"},]),options:opciones2()});let T=document.getElementById("chart-area-4");new Chart(T,{type:"bar",data:data1(i),options:opciones1()});let b=document.getElementById("chart-area-5");new Chart(b,{type:"bar",data:data1(l),options:opciones1()});let m=document.getElementById("chart-area-6");new Chart(m,{type:"bar",data:data1(u),options:opciones1()});let B=document.getElementById("solicitudesChart");new Chart(B,{type:"bar",data:data3([r.otros[0].atendidas,r.otros[0].rechazadas]),options:opciones3()});let f=document.getElementById("closedRequestsChart");new Chart(f,{type:"doughnut",data:data4([r.otros[0].porcAtendidas,r.otros[0].porcPendientes]),options:opciones4()});let I=[],_=[],v=[];a.servicios.forEach(e=>{_.push(e.Total),v.push(e.Servicio),g++});let C=document.getElementById("servicesChart");new Chart(C,{type:"bar",data:data5(v,_),options:opciones5()}),o.georeferencias.forEach(e=>{I.push({denuncia_id:e.denuncia_id,fecha_ingreso:e.fecha_ingreso,unidad:e.abreviatura,denuncia:e.denuncia,description:e.ciudadano,servicio:e.servicio,estatus:e.ultimo_estatus,type:e.type,icon:e.icon,dias_vencidos:e.dias_vencidos,position:{lat:e.latitud,lng:e.longitud}})}),window.onload=async()=>initMap(I),initMap(I)}window.onload=e("/storage/{{ $file_output }}"),document.querySelectorAll(".radio-button input").forEach(e=>{e.addEventListener("change",function(e){"free"!==e.currentTarget.value&&document.getElementById("formFilter").submit()})})});--}}

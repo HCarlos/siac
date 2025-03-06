@@ -11,9 +11,7 @@
 
         </div>
         <nav class="menu">
-            @foreach($menu as $m)
-                <button class="{{ $m->clase }}" onclick="window.location.href='{{ $m->url }}'">{{ $m->title_menu }}</button>
-            @endforeach
+            @include('shared.ui_kit.__menu_dashboard_static')
         </nav>
     </aside>
 
