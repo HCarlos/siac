@@ -64,7 +64,7 @@ class GetDenunciasAmbitoFilterCount extends QueryFilter{
 
 //        dd($filters);
 
-        return $query->filterBy($filters);
+        return $query->ambitoFilterBy($filters);
 
 
     }
