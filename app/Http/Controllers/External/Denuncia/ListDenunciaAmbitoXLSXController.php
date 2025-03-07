@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\External\Denuncia;
 
+use App\Http\Controllers\Funciones\FuncionesController;
 use App\Models\Catalogos\CentroLocalidad;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Domicilios\Ubicacion;
@@ -12,8 +13,8 @@ use App\Models\Catalogos\Servicio;
 use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 
 use App\Http\Controllers\Funciones\LoadTemplateExcel;
@@ -29,14 +30,19 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 class ListDenunciaAmbitoXLSXController extends Controller
 {
 
+    public function __construct(){
+        $this->middleware('auth');
+    }
+
 
     public function getListDenunciaAmbitoXLSX(Request $request){
         ini_set('max_execution_time', 90000);
-//        $data = $request->only(['search','items']);
-        $Items = $request->session()->get('items');
+            $Items = $request->session()->get('items');
 
         $C0 = 6;
         $C = $C0;
+
+//        dd($Items);
 
         try {
 
@@ -434,6 +440,34 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 break;
         }
         return $status;
+
+    }
+
+    function exportDataFilterMap(Request $request){
+        $data = $request->all();
+
+        $dids = $data['items'];
+
+        $ids = Str::of($dids)
+            ->explode(',')
+            ->map(function ($value) {
+                return (int) $value;
+            })
+            ->toArray();
+
+//        dd($ids);
+
+        $items = Denuncia::query()
+            ->select(FuncionesController::itemSelectDenuncias())
+            ->whereIn('id', $ids)
+            ->orderByDesc('id')
+            ->get();
+
+        $request->session()->put('items', $items);
+
+//        dd($items);
+
+        return $this->getListDenunciaAmbitoXLSX($request);
 
     }
 

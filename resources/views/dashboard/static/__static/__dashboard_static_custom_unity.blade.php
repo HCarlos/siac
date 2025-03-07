@@ -128,6 +128,9 @@
                                 <label for="items">Items:</label>
                                 <input type="text" name="items" id="items" value="0" class="totalItems" disabled>
                             </div>
+                            <button type="button" id="frmFilterDataExport" class="btn btn-primary btn-export-excel ms-auto">
+                                <i class="fas fa-file-excel text-white"></i> Exportar
+                            </button>
                         </form>
                     </div>
 
@@ -166,6 +169,7 @@
         </div>
     </main>
     <input type="hidden" id="zona" name="zona" value="0">
+    <input type="hidden" id="denuncias" name="denuncias" value="">
 </div>
 
 
@@ -211,6 +215,9 @@
 
             let dataatiempo = [];
             let datarezago = [];
+
+            let frmFilterDataExport = document.getElementById("frmFilterDataExport");
+            frmFilterDataExport.disabled = true;
 
             document.getElementById("h2Recibidas").innerHTML = Estatus.estatus[0].Total;
             document.getElementById("h2EnProceso").innerHTML = Estatus.estatus[1].Total;
@@ -258,8 +265,6 @@
             //
             // Llamar a la función de inicialización cuando la página cargue
 
-            let dataSetLocations = [];
-
             // let Services = [];
             // let LabelServices = [];
             // Servicios.servicios.forEach( (servicio) => {
@@ -275,9 +280,15 @@
             //     options: opciones5()
             // });
 
+            const inputDenuncias = document.getElementById('denuncias');
+
+            let dataSetLocations = [];
+            let denuncias_id     = [];
             Georeferencias.georeferencias.forEach( (geo) => {
-                dataSetLocations.push(setDataLocations(geo));
+                dataSetLocations.push(setDataLocations(geo,denuncias_id));
             });
+            inputDenuncias.value = denuncias_id.join(',');
+            frmFilterDataExport.disabled = false;
 
 
             const selectZona = document.getElementById('zona');
@@ -320,11 +331,68 @@
                 });
             });
 
+
             document.getElementById('frmFilter').addEventListener('click', (event) => {
                 event.preventDefault();
-                filterMap(Georeferencias);
-
+                filterMap(Georeferencias,frmFilterDataExport);
             })
+
+            const btnFilterDataExport = document.getElementById('frmFilterDataExport');
+            btnFilterDataExport.addEventListener('click', function () {
+                // Deshabilita el botón si es necesario
+                btnFilterDataExport.disabled = true;
+                const inputDenuncias = document.getElementById('denuncias');
+                var PARAMS = {
+                    search : "",
+                    items : inputDenuncias.value,
+                    fileoutput : "fmt_lista_denuncias_sm.xlsx",
+                    indice : 0,
+                    _token : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                };
+
+                var temp=document.createElement("form");
+                temp.action='/exportDataFilterMap';
+                temp.method="POST";
+                temp.target="_blank";
+                temp.style.display="none";
+                for(var x in PARAMS) {
+                    var opt=document.createElement("textarea");
+                    opt.name=x;
+                    opt.value=PARAMS[x];
+                    temp.appendChild(opt);
+                }
+                document.body.appendChild(temp);
+                temp.submit();
+                return temp;
+
+
+                /*
+                fetch('/exportDataFilterMap', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify(PARAMS) // Reemplaza o agrega los datos necesarios
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // console.log(data);
+                        // Aquí puedes volver a habilitar el botón si lo deseas
+                        btnFilterDataExport.disabled = false;
+                    })
+                    .catch(error => {
+                        // console.error(error);
+                        btnFilterDataExport.disabled = false;
+                    });
+                    */
+
+            });
+
+
+
+
+
             window.onload = async () => initMap(dataSetLocations);
             initMap(dataSetLocations);
 
@@ -342,16 +410,18 @@
 
     });
 
-    function filterMap(Georeferencias) {
+    function filterMap(Georeferencias, frmFilterDataExport) {
         const selectZona = document.getElementById('zona');
         const selectServicios = document.getElementById('servicios');
         const selectColonias = document.getElementById('colonias');
         const selectDelegaciones = document.getElementById('delegaciones');
+        const inputDenuncias = document.getElementById('denuncias');
         const selectedZona = selectZona.value;
         const selectedServicio = selectServicios.value;
         const selectedColonia = selectColonias.value;
         const selectedDelegacion = selectDelegaciones.value;
         const dataSetLocations = [];
+        const denuncias_id = [];
         Georeferencias.georeferencias.forEach( (geo) => {
             var dep = geo.dependencia_id;
             var ser = geo.sue_id;
@@ -359,37 +429,41 @@
             var del = geo.delegacion_id;
             if (selectedZona == dep && selectedServicio == 0 && selectedColonia == 0 && selectedDelegacion == 0) {
                 console.log("1");
-                dataSetLocations.push(setDataLocations(geo));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id));
             }else if (selectedZona == dep && selectedServicio == 0 && selectedColonia == 0 && selectedDelegacion == del){
                     console.log("2");
-                    dataSetLocations.push(setDataLocations(geo));
+                    dataSetLocations.push(setDataLocations(geo, denuncias_id));
             }else if (selectedZona == dep && selectedServicio == 0 && selectedColonia == col && selectedDelegacion == del){
                 console.log("3");
-                dataSetLocations.push(setDataLocations(geo));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id));
             }else if (selectedZona == dep && selectedServicio == ser && selectedColonia == 0 && selectedDelegacion == 0){
                 console.log("4");
-                dataSetLocations.push(setDataLocations(geo));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id));
             }else if (selectedZona == dep && selectedServicio == ser && selectedColonia == 0 && selectedDelegacion == del){
                 console.log("6");
-                dataSetLocations.push(setDataLocations(geo));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id));
             }else if (selectedZona == dep && selectedServicio == ser && selectedColonia == col && selectedDelegacion == del) {
                 console.log("7");
-                dataSetLocations.push(setDataLocations(geo));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id));
             }
         });
-
+        inputDenuncias.value = denuncias_id.join(',');
 
         items.value = getCommaSeparatedTwoDecimalsNumber(dataSetLocations.length);
         window.onload = async () => initMap(dataSetLocations);
         initMap(dataSetLocations);
 
         if (dataSetLocations.length == 0) {
+            frmFilterDataExport.disabled = true;
             alert("No hay datos para mostrar");
+        }else{
+            frmFilterDataExport.disabled = false;
         }
 
     }
 
-    function setDataLocations(geo) {
+    function setDataLocations(geo, denuncias_id) {
+        denuncias_id.push(geo.denuncia_id);
         return {
             denuncia_id:geo.denuncia_id,
             fecha_ingreso: geo.fecha_ingreso,

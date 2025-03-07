@@ -6,12 +6,16 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\External\Denuncia\ListDenunciaAmbitoXLSXController;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Models\Catalogos\CentroLocalidad;
+use App\Models\Denuncias\Denuncia;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class DashboardStaticCustomUnityController extends Controller{
 
@@ -554,6 +558,51 @@ class DashboardStaticCustomUnityController extends Controller{
             ->groupBy('sue_id','servicio','abreviatura')
             ->orderBy('total','desc')
             ->get();
+    }
+
+    public function exportFilterData(Request $request){
+        $data = $request->all();
+
+        $dids = $data['denuncias'];
+
+        $ids = Str::of($dids)
+            ->explode(',')
+            ->map(function ($value) {
+                return (int) $value;
+            })
+            ->toArray();
+
+//        dd($ids);
+
+        $item = Denuncia::query()
+            ->whereIn('id', $ids)
+            ->get();
+
+        $items = Denuncia::query()
+            ->select(FuncionesController::itemSelectDenuncias())
+            ->whereIn('id', $ids)
+            ->orderByDesc('id')
+            ->get();
+
+        $request->session()->put('items', $items);
+
+//        $cont = app(ListDenunciaAmbitoXLSXController::class);
+//
+//        return $cont->getListDenunciaAmbitoXLSX($request);
+
+//        $data = ['items' => $items];
+//
+//        // Crea una petición POST interna a la ruta deseada
+//        $internalRequest = Request::create('showDataListDenunciaAmbitoExcel1A', 'POST', $data);
+//
+//        // Despacha la petición y obtiene la respuesta
+//        $response = Route::dispatch($internalRequest);
+//
+//        // Retorna o procesa la respuesta según sea necesario
+//        return $response;
+
+
+
     }
 
 

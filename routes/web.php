@@ -66,9 +66,10 @@ Route::group(['middleware' => 'auth'], static function () {
     // Dashboard Servicios Principales
     Route::match(['get','put','post'],'dashboard-statistics-servicios-principales', 'Dashboard\DashboardStaticServiciosPrincipalesController@index')->name('dashboard-statistics-servicios-principales');
 
-    // Dashboard Servicios Principales
+    // Dashboard Servicios por Unidad
     Route::match(['get'],'dashboard-statistics-custom-unity/{unity_id}', 'Dashboard\DashboardStaticCustomUnityController@index')->name('dashboard-statistics-custom-unity');
     Route::match(['put','post'],'dashboard-statistics-custom-unity-post', 'Dashboard\DashboardStaticCustomUnityController@indexPost')->name('dashboard-statistics-custom-unity-post');
+    Route::match(['post'],'dashboard-statistics-custom-unity-export-filter-data', 'Dashboard\DashboardStaticCustomUnityController@exportFilterData')->name('dashboard-statistics-custom-unity-export-filter-data');
 
     // USUARIOS
     Route::get('edit', 'Catalogos\User\UserDataController@showEditUserData')->name('edit');
@@ -497,6 +498,7 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|USER_OPERATOR_SIAC|
     Route::match(['get','put','post'],'findDataInDenunciaAmbito/', 'Denuncia\DenunciaAmbitoController@findDataInDenuncia')->name('findDataInDenunciaAmbito');
 
     Route::post('showDataListDenunciaAmbitoExcel1A/', 'External\Denuncia\ListDenunciaAmbitoXLSXController@getListDenunciaAmbitoXLSX')->name('showDataListDenunciaAmbitoExcel1A');
+    Route::post('exportDataFilterMap/', 'External\Denuncia\ListDenunciaAmbitoXLSXController@exportDataFilterMap')->name('exportDataFilterMap');
     Route::post('showDataListDenunciaAmbitoRespuestaExcel1A/', 'External\Denuncia\ListDenunciaAmbitoXLSXController@showDataListDenunciaAmbitoRespuestaExcel1A')->name('showDataListDenunciaAmbitoRespuestaExcel1A');
 
     Route::get('cerrarDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@closeItem')->name('cerrarDenunciaAmbito');
