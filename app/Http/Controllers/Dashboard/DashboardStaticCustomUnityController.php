@@ -258,9 +258,9 @@ class DashboardStaticCustomUnityController extends Controller{
                 if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0){
                     $Loc            = CentroLocalidad::find($CenLoc);
 //                    dd($Loc);
-                    $Colonia_Id    = $Loc->colonia_id;
+                    $Colonia_Id     = $Loc->colonia_id;
                     $Colonia        = $Loc->ItemColonia();
-                    $Delegacion_Id = $Loc->delegacion_id;
+                    $Delegacion_Id  = $Loc->delegacion_id;
                     $Delegacion     = $Loc->ItemDelegacion();
                     $ColDel         = $Loc->ItemColoniaDelegacion();
                     $ColDelId       = $Loc->id;
@@ -294,8 +294,8 @@ class DashboardStaticCustomUnityController extends Controller{
                     "colonia" => $Colonia,
                     "delegacion_id" => $Delegacion_Id,
                     "delegacion" => $Delegacion,
+                    "colonia_delegacion_id" => $ColDelId,
                     "colonia_delegacion" => $ColDel,
-                    "colonia_delegacion_id" => $ColDelId
                 ];
 
                 if (!in_array($g->dependencia_id, array_column($arrDep, 'dependencia_id'), true)) {
@@ -352,6 +352,9 @@ class DashboardStaticCustomUnityController extends Controller{
                 ]
             ];
 
+
+            // SE OBTENEN LAS COLONIAS
+
             $localidades_centro = CentroLocalidad::query()
                 ->orderBy('prefijo_colonia', 'asc')
                 ->orderBy('colonia', 'asc')
@@ -370,6 +373,25 @@ class DashboardStaticCustomUnityController extends Controller{
             }
 
 
+            // SE OBTENEN LAS DELEGACIONES
+
+            $delegaines_centro = CentroLocalidad::query()
+                ->select('delegacion_id','prefijo_delegacion', 'delegacion')
+                ->groupby('delegacion_id','prefijo_delegacion', 'delegacion')
+                ->distinct()
+                ->orderBy('prefijo_delegacion', 'asc')
+                ->orderBy('delegacion', 'asc')
+                ->get();
+
+            $arrDel = array();
+            foreach ($delegaines_centro as $item) {
+                $arrDel[] = (object)[
+                    "delegacion_id" => $item->delegacion_id,
+                    "delegacion"=> $item->ItemDelegacion(),
+                ];
+            }
+
+
             // SE CONSTRUYE EL JSON GENERAL
             $arrJson = [
                 (object)["estatus" => $arrEstatus],
@@ -380,6 +402,7 @@ class DashboardStaticCustomUnityController extends Controller{
                 (object)["filtro_unidades" => $arrDep],
                 (object)["filtro_servicios" => $arrDepServ],
                 (object)["filtro_colonias" => $arrLocDel],
+                (object)["filtro_delegaciones" => $arrDel],
             ];
 
 

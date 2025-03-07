@@ -168,6 +168,12 @@
                                 </select>
                             </div>
                             <div class="form-group">
+                                <label for="delegaciones">Delegaciones:</label>
+                                <select class="form-select delegaciones select2" name="delegaciones" id="delegaciones" data-toggle="select2" size="1" >
+                                    <option value="0">Todas</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label for="colonias">Colonia:</label>
                                 <select class="form-select colonias select2" name="colonias" id="colonias" data-toggle="select2" size="1" >
                                     <option value="0">Todas</option>
@@ -214,14 +220,13 @@
                     throw new Error(`Error al cargar JSON: ${response.statusText}`);
                 }
                 const data = await response.json();
-                initLoadData(data[0],data[1],data[2],data[3],data[4],data[5],data[6],data[7]);
+                initLoadData(data[0],data[1],data[2],data[3],data[4],data[5],data[6],data[7],data[8]);
             } catch (error) {
                 console.error(error);
             }
         }
 
-
-        function initLoadData(Estatus,Unidades,Servicios,Georeferencias,Otros,FiltroUnidades,FiltroServicios,FiltroColonias) {
+        function initLoadData(Estatus,Unidades,Servicios,Georeferencias,Otros,FiltroUnidades,FiltroServicios,FiltroColonias,FiltroDelegaciones) {
             let data1data = [];
             let data2data = [];
             let data3data = [];
@@ -356,6 +361,7 @@
             const selectZona = document.getElementById('zona');
             const selectServicios = document.getElementById('servicios');
             const selectColonias = document.getElementById('colonias');
+            const selectDelegaciones = document.getElementById('delegaciones');
             const items = document.getElementById('items');
 
             FiltroUnidades.filtro_unidades.forEach(zona => {
@@ -379,13 +385,29 @@
             });
             selectServicios.innerHTML = '<option value="0">Todos</option>';
 
-            FiltroColonias.filtro_colonias.forEach(coldel => {
+            FiltroDelegaciones.filtro_delegaciones.forEach(del => {
                 const opcion = document.createElement('option');
-                opcion.value = coldel.id;
-                opcion.text = coldel.colonia_delegacion;
-                selectColonias.add(opcion);
+                opcion.value = del.delegacion_id;
+                opcion.text = del.delegacion;
+                selectDelegaciones.add(opcion);
             });
-            $('#colonias').select2();
+
+
+            selectDelegaciones.addEventListener('change', (event) => {
+                {{--alert("@");--}}
+                const selectedValue = selectDelegaciones.value;
+                selectColonias.innerHTML = '<option value="0">Todos</option>';
+                FiltroColonias.filtro_colonias.forEach(item => {
+                    // alert(selectedValue +" - "+ item.delegacion_id)
+                    if (selectedValue == item.delegacion_id) {
+                        const opcion = document.createElement('option');
+                        opcion.value = item.id;
+                        opcion.text = item.colonia_delegacion;
+                        selectColonias.add(opcion);
+                    }
+                });
+            });
+
 
             document.getElementById('frmFilter').addEventListener('click', (event) => {
                 event.preventDefault();
@@ -418,51 +440,65 @@
         const selectZona = document.getElementById('zona');
         const selectServicios = document.getElementById('servicios');
         const selectColonias = document.getElementById('colonias');
+        const selectDelegaciones = document.getElementById('delegaciones');
         const selectedZona = selectZona.value;
         const selectedServicio = selectServicios.value;
         const selectedColonia = selectColonias.value;
+        const selectedDelegacion = selectDelegaciones.value;
         const dataSetLocations = [];
         Georeferencias.georeferencias.forEach( (geo) => {
             var dep = geo.dependencia_id;
             var ser = geo.sue_id;
             var col = geo.colonia_delegacion_id;
+            var del = geo.delegacion_id;
 
-            if (selectedZona == 0 && selectedServicio == 0) {
-                if (selectedColonia == 0){
-                    dataSetLocations.push(setDataLocations(geo));
-                }else{
-                    if (col == selectedColonia) {
-                        dataSetLocations.push(setDataLocations(geo));
-                    }
-                }
-            }else{
-                if (selectedZona > 0 ) {
-                    if (dep == selectedZona && selectedServicio == 0) {
-                        if (selectedColonia == 0){
-                            dataSetLocations.push(setDataLocations(geo));
-                        }else{
-                            if (col == selectedColonia) {
-                                dataSetLocations.push(setDataLocations(geo));
-                            }
-                        }
-                    }else{
-                        if (dep == selectedZona && ser == selectedServicio) {
-                            if (selectedColonia == 0){
-                                dataSetLocations.push(setDataLocations(geo));
-                            }else{
-                                if (col == selectedColonia) {
-                                    dataSetLocations.push(setDataLocations(geo));
-                                }
-                            }
-                        }
-                    }
-                }
+            if (selectedZona == 0 && selectedServicio == 0 && selectedColonia == 0 && selectedDelegacion == 0) {
+                console.log("01");
+                dataSetLocations.push(setDataLocations(geo));
+            }else if (selectedZona == 0 && selectedServicio == 0 && selectedColonia == 0 && selectedDelegacion == del){
+                console.log("02");
+                dataSetLocations.push(setDataLocations(geo));
+            }else if (selectedZona == 0 && selectedServicio == 0 && selectedColonia == col && selectedDelegacion == del){
+                console.log("03");
+                dataSetLocations.push(setDataLocations(geo));
+            }else if (selectedZona == 0 && selectedServicio == ser && selectedColonia == 0 && selectedDelegacion == 0){
+                console.log("04");
+                dataSetLocations.push(setDataLocations(geo));
+            }else if (selectedZona == 0 && selectedServicio == ser && selectedColonia == 0 && selectedDelegacion == del){
+                console.log("06");
+                dataSetLocations.push(setDataLocations(geo));
+            }else if (selectedZona == 0 && selectedServicio == ser && selectedColonia == col && selectedDelegacion == del) {
+                console.log("07");
+                dataSetLocations.push(setDataLocations(geo));
+            }else if (selectedZona == dep && selectedServicio == 0 && selectedColonia == 0 && selectedDelegacion == 0) {
+                console.log("11");
+                dataSetLocations.push(setDataLocations(geo));
+            }else if (selectedZona == dep && selectedServicio == 0 && selectedColonia == 0 && selectedDelegacion == del){
+                console.log("12");
+                dataSetLocations.push(setDataLocations(geo));
+            }else if (selectedZona == dep && selectedServicio == 0 && selectedColonia == col && selectedDelegacion == del){
+                console.log("13");
+                dataSetLocations.push(setDataLocations(geo));
+            }else if (selectedZona == dep && selectedServicio == ser && selectedColonia == 0 && selectedDelegacion == 0){
+                console.log("14");
+                dataSetLocations.push(setDataLocations(geo));
+            }else if (selectedZona == dep && selectedServicio == ser && selectedColonia == 0 && selectedDelegacion == del){
+                console.log("16");
+                dataSetLocations.push(setDataLocations(geo));
+            }else if (selectedZona == dep && selectedServicio == ser && selectedColonia == col && selectedDelegacion == del) {
+                console.log("17");
+                dataSetLocations.push(setDataLocations(geo));
             }
 
         });
+
         items.value = getCommaSeparatedTwoDecimalsNumber(dataSetLocations.length);
         window.onload = async () => initMap(dataSetLocations);
         initMap(dataSetLocations);
+
+        if (dataSetLocations.length == 0) {
+            alert("No hay datos para mostrar");
+        }
 
     }
 

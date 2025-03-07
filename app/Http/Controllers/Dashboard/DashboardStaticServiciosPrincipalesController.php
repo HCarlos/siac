@@ -376,6 +376,24 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 ];
             }
 
+            // SE OBTENEN LAS DELEGACIONES
+
+            $delegaines_centro = CentroLocalidad::query()
+                ->select('delegacion_id','prefijo_delegacion', 'delegacion')
+                ->groupby('delegacion_id','prefijo_delegacion', 'delegacion')
+                ->distinct()
+                ->orderBy('prefijo_delegacion', 'asc')
+                ->orderBy('delegacion', 'asc')
+                ->get();
+
+            $arrDel = array();
+            foreach ($delegaines_centro as $item) {
+                $arrDel[] = (object)[
+                    "delegacion_id" => $item->delegacion_id,
+                    "delegacion"=> $item->ItemDelegacion(),
+                ];
+            }
+
 
             // SE CONSTRUYE EL JSON GENERAL
             $arrJson = [
@@ -387,6 +405,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 (object)["filtro_unidades" => $arrDep],
                 (object)["filtro_servicios" => $arrDepServ],
                 (object)["filtro_colonias" => $arrLocDel],
+                (object)["filtro_delegaciones" => $arrDel],
             ];
 
 //           dd($arrJson);
