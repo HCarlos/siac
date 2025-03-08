@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\Denuncias\Denuncia;
-use Doctrine\DBAL\Query\QueryException;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\QueryException;
 
 class AgregarColoniaIdADenunciasSeeder extends Seeder
 {
