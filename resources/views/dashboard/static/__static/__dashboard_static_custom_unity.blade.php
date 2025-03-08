@@ -365,32 +365,7 @@
                 temp.submit();
                 return temp;
 
-
-                /*
-                fetch('/exportDataFilterMap', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify(PARAMS) // Reemplaza o agrega los datos necesarios
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        // console.log(data);
-                        // Aquí puedes volver a habilitar el botón si lo deseas
-                        btnFilterDataExport.disabled = false;
-                    })
-                    .catch(error => {
-                        // console.error(error);
-                        btnFilterDataExport.disabled = false;
-                    });
-                    */
-
             });
-
-
-
 
 
             window.onload = async () => initMap(dataSetLocations);

@@ -172,8 +172,19 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('S'.$C, $item->clave_identificadora )
                     ->setCellValue('T'.$C, trim($cds->StrGenero ?? ''))
                     ->setCellValue('U'.$C, $item->Ambito() ?? '')
-                    ->setCellValue('V'.$C, $this->getColorSemaforo($item));
+                    ->setCellValue('V'.$C, $this->getColorSemaforo($item)[0]);
+
+                $sh
+                    ->getStyle('A'.$C.':V'.$C)
+                    ->getFill()
+                    ->applyFromArray([
+                            'fillType' => 'solid',
+                            'rotation' => 0,
+                            'color' => ['rgb' => $this->getColorSemaforo($item)[1]],
+                            ]);
+
                 $C++;
+
             }
         }
 
@@ -417,6 +428,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
 
     function getColorSemaforo($g){
         $status = "white";
+        $status_i = "white";
         $dias_vencidos = 0;
         switch ( $g->ue_id ) {
             case 16:
@@ -425,8 +437,10 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 $fex = Carbon::parse(now())->diffInDays(Carbon::parse($ser->fecha_dias_maximos_ejecucion),false);
                 if ($fex >= 0) {
                     $status = "amarillo";
+                    $status_i = "yellow";
                 }else{
                     $status = "rojo";
+                    $status_i = "red";
                     $dias_vencidos = abs($fex);
                 }
                 break;
@@ -434,12 +448,14 @@ class ListDenunciaAmbitoXLSXController extends Controller
             case 20:
             case 21:
                 $status = "verde";
+                $status_i = "green";
                 break;
             default:
                 $status = "amarillo";
+                $status_i = "yellow";
                 break;
         }
-        return $status;
+        return [$status,$status_i];
 
     }
 
@@ -454,8 +470,6 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 return (int) $value;
             })
             ->toArray();
-
-//        dd($ids);
 
         $items = Denuncia::query()
             ->select(FuncionesController::itemSelectDenuncias())

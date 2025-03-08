@@ -90,7 +90,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 (object)["ue_id" => 21, "Estatus"=> "CERRADO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
             ];
 
-            $ServiciosPrincipales = [483,508,476,503,471,466];
+            $ServiciosPrincipales = [483,508,476,503,479,466];
 
             $srv2 = static::getUltimoEstatus($start_date,$end_date,$ServiciosPrincipales);
 
@@ -179,7 +179,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 (object)["sue_id" => 508, "Servicio"=> "DESAZOLVE DE DRENAJE", "Total"=> 0,"Porcentaje" => 0],
                 (object)["sue_id" => 476, "Servicio"=> "FUGA DE AGUA POTABLE", "Total"=> 0,"Porcentaje" => 0],
                 (object)["sue_id" => 503, "Servicio"=> "RECOLECCIÓN DE RESIDUOS SÓLIDOS", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 471, "Servicio"=> "REPARACIÓN DE ALCANTARILLA", "Total"=> 0,"Porcentaje" => 0],
+                (object)["sue_id" => 479, "Servicio"=> "REPARACIÓN DE ALCANTARILLA", "Total"=> 0,"Porcentaje" => 0],
                 (object)["sue_id" => 466, "Servicio"=> "REPARACIÓN DE LUMINARIAS", "Total"=> 0,"Porcentaje" => 0],
             ];
 
@@ -441,7 +441,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
         return DB::table("_viddss")
             ->select(["ultimo_estatus as name", "ue_id", DB::raw("count(ue_id) as data")])
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-            ->whereIn('sue_id', [483,508,476,503,471,466])
+            ->whereIn('sue_id', [483,508,476,503,479,466])
             ->groupBy(["ultimo_estatus","ue_id"])
             ->get();
     }

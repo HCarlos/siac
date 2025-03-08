@@ -184,6 +184,9 @@
                                 <label for="items">Items:</label>
                                 <input type="text" name="items" id="items" value="0" class="totalItems" disabled>
                             </div>
+                            <button type="button" id="frmFilterDataExport" class="btn btn-primary btn-export-excel ms-auto">
+                                <i class="fas fa-file-excel text-white"></i> Exportar
+                            </button>
                         </form>
                     </div>
 
@@ -197,6 +200,8 @@
 
         </div>
     </main>
+    <input type="hidden" id="denuncias" name="denuncias" value="">
+
 </div>
 
 
@@ -237,6 +242,8 @@
             let dataatiempo = [];
             let datarezago = [];
 
+            let frmFilterDataExport = document.getElementById("frmFilterDataExport");
+            frmFilterDataExport.disabled = true;
 
             document.getElementById("h2Recibidas").innerHTML  = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[0].Total);
             document.getElementById("h2EnProceso").innerHTML  = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[1].Total);
@@ -337,8 +344,6 @@
 
             // Llamar a la función de inicialización cuando la página cargue
 
-            let dataSetLocations = [];
-
             let Services = [];
             let LabelServices = [];
             Servicios.servicios.forEach( (servicio) => {
@@ -354,9 +359,15 @@
                 options: opciones5()
             });
 
+            const inputDenuncias = document.getElementById('denuncias');
+
+            let dataSetLocations = [];
+            let denuncias_id     = [];
             Georeferencias.georeferencias.forEach( (geo) => {
-                dataSetLocations.push(setDataLocations(geo));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id));
             });
+            inputDenuncias.value = denuncias_id.join(',');
+            frmFilterDataExport.disabled = false;
 
             const selectZona = document.getElementById('zona');
             const selectServicios = document.getElementById('servicios');
@@ -392,7 +403,6 @@
                 selectDelegaciones.add(opcion);
             });
 
-
             selectDelegaciones.addEventListener('change', (event) => {
                 {{--alert("@");--}}
                 const selectedValue = selectDelegaciones.value;
@@ -411,9 +421,41 @@
 
             document.getElementById('frmFilter').addEventListener('click', (event) => {
                 event.preventDefault();
-                filterMap(Georeferencias);
+                filterMap(Georeferencias,frmFilterDataExport);
 
             })
+
+            const btnFilterDataExport = document.getElementById('frmFilterDataExport');
+            btnFilterDataExport.addEventListener('click', function () {
+                // Deshabilita el botón si es necesario
+                btnFilterDataExport.disabled = true;
+                const inputDenuncias = document.getElementById('denuncias');
+                var PARAMS = {
+                    search : "",
+                    items : inputDenuncias.value,
+                    fileoutput : "fmt_lista_denuncias_sm.xlsx",
+                    indice : 0,
+                    _token : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                };
+
+                var temp=document.createElement("form");
+                temp.action='/exportDataFilterMap';
+                temp.method="POST";
+                temp.target="_blank";
+                temp.style.display="none";
+                for(var x in PARAMS) {
+                    var opt=document.createElement("textarea");
+                    opt.name=x;
+                    opt.value=PARAMS[x];
+                    temp.appendChild(opt);
+                }
+                document.body.appendChild(temp);
+                temp.submit();
+                return temp;
+
+            });
+
+
             window.onload = async () => initMap(dataSetLocations);
             initMap(dataSetLocations);
 
@@ -436,16 +478,18 @@
     });
 
 
-    function filterMap(Georeferencias) {
+    function filterMap(Georeferencias, frmFilterDataExport) {
         const selectZona = document.getElementById('zona');
         const selectServicios = document.getElementById('servicios');
         const selectColonias = document.getElementById('colonias');
         const selectDelegaciones = document.getElementById('delegaciones');
+        const inputDenuncias = document.getElementById('denuncias');
         const selectedZona = selectZona.value;
         const selectedServicio = selectServicios.value;
         const selectedColonia = selectColonias.value;
         const selectedDelegacion = selectDelegaciones.value;
         const dataSetLocations = [];
+        const denuncias_id = [];
         Georeferencias.georeferencias.forEach( (geo) => {
             var dep = geo.dependencia_id;
             var ser = geo.sue_id;
@@ -454,55 +498,60 @@
 
             if (selectedZona == 0 && selectedServicio == 0 && selectedColonia == 0 && selectedDelegacion == 0) {
                 console.log("01");
-                dataSetLocations.push(setDataLocations(geo));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id));
             }else if (selectedZona == 0 && selectedServicio == 0 && selectedColonia == 0 && selectedDelegacion == del){
                 console.log("02");
-                dataSetLocations.push(setDataLocations(geo));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id));
             }else if (selectedZona == 0 && selectedServicio == 0 && selectedColonia == col && selectedDelegacion == del){
                 console.log("03");
-                dataSetLocations.push(setDataLocations(geo));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id));
             }else if (selectedZona == 0 && selectedServicio == ser && selectedColonia == 0 && selectedDelegacion == 0){
                 console.log("04");
-                dataSetLocations.push(setDataLocations(geo));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id));
             }else if (selectedZona == 0 && selectedServicio == ser && selectedColonia == 0 && selectedDelegacion == del){
                 console.log("06");
-                dataSetLocations.push(setDataLocations(geo));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id));
             }else if (selectedZona == 0 && selectedServicio == ser && selectedColonia == col && selectedDelegacion == del) {
                 console.log("07");
-                dataSetLocations.push(setDataLocations(geo));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id));
             }else if (selectedZona == dep && selectedServicio == 0 && selectedColonia == 0 && selectedDelegacion == 0) {
                 console.log("11");
-                dataSetLocations.push(setDataLocations(geo));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id));
             }else if (selectedZona == dep && selectedServicio == 0 && selectedColonia == 0 && selectedDelegacion == del){
                 console.log("12");
-                dataSetLocations.push(setDataLocations(geo));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id));
             }else if (selectedZona == dep && selectedServicio == 0 && selectedColonia == col && selectedDelegacion == del){
                 console.log("13");
-                dataSetLocations.push(setDataLocations(geo));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id));
             }else if (selectedZona == dep && selectedServicio == ser && selectedColonia == 0 && selectedDelegacion == 0){
                 console.log("14");
-                dataSetLocations.push(setDataLocations(geo));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id));
             }else if (selectedZona == dep && selectedServicio == ser && selectedColonia == 0 && selectedDelegacion == del){
                 console.log("16");
-                dataSetLocations.push(setDataLocations(geo));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id));
             }else if (selectedZona == dep && selectedServicio == ser && selectedColonia == col && selectedDelegacion == del) {
                 console.log("17");
-                dataSetLocations.push(setDataLocations(geo));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id));
             }
 
         });
+        inputDenuncias.value = denuncias_id.join(',');
 
         items.value = getCommaSeparatedTwoDecimalsNumber(dataSetLocations.length);
         window.onload = async () => initMap(dataSetLocations);
         initMap(dataSetLocations);
 
         if (dataSetLocations.length == 0) {
+            frmFilterDataExport.disabled = true;
             alert("No hay datos para mostrar");
+        }else{
+            frmFilterDataExport.disabled = false;
         }
 
     }
 
-    function setDataLocations(geo) {
+    function setDataLocations(geo,denuncias_id) {
+        denuncias_id.push(geo.denuncia_id);
         return {
             denuncia_id:geo.denuncia_id,
             fecha_ingreso: geo.fecha_ingreso,
