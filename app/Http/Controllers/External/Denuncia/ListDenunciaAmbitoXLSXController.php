@@ -51,7 +51,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
             $file_external =  $data["fileoutput"];
             $indice = (int) $data["indice"];
 
-//            dd($file_external);
+//            dd($indice);
 
             $arrFE = explode('.',$file_external);
             $extension = Str::ucfirst($arrFE[1]);
@@ -279,6 +279,8 @@ class ListDenunciaAmbitoXLSXController extends Controller
 
                 $gdu = explode(',', trim($item->gd_ubicacion));
                 $cadgdu = $gdu[1] ?? '';
+
+//                dd($cadgdu);
 
                 $sh
                     ->setCellValue('A' . $C, $item->id ?? 0)

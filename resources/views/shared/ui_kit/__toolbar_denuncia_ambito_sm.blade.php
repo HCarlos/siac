@@ -14,7 +14,7 @@
         <div class="dropdown-menu">
             @php $indice = -1 @endphp
             @foreach(config("atemun.menu_archivos_sm") as $key=>$value )
-                <a class="dropdown-item btnGetItems" href="{{ route($showProcess1)}}-{{$value}}-{{$indice}}">{{$key}}</a>
+                <a class="dropdown-item btnGetItems" href="{{ route($showProcess1)}}-{{$value}}-{{++$indice}}">{{$key}}</a>
             @endforeach
         </div>
     @endisset
