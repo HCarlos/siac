@@ -531,8 +531,6 @@ jQuery(function($) {
 
             var ciudadano_id = $("#usuario_id").val();
 
-            // alert(formData.toString());
-
             if ($("#servicio_id").val() <= 0){
                 alert("Proporcione un servicio");
                 return false;
@@ -654,7 +652,7 @@ jQuery(function($) {
                             Tbl += "<td>"+
                                 value.id+"<br>"+
                                 "<strong>"+value.denuncia+"</strong><br>"+
-                                "<small>"+value.fecha+"</small><br>"+
+                                "<small>"+value.fecha+"</small> (<small>"+value.latitud+", "+value.longitud+"</small>)<br>"+
                                 "<strong class='text-green'>"+value.ciudadano+"</strong><br>"+
                                 "<small>"+value.gd_ubicacion+"</small><br>"+
                                 "<strong class='text-primary-dark'>"+value.ultimo_estatus+"</strong> " + TC +

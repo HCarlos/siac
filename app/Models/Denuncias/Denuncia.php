@@ -69,15 +69,17 @@ class Denuncia extends Model
 //->orderByRaw("ts_rank(searchtextdenuncia, to_tsquery('spanish', ?)) DESC", [$search]);
 
     public function scopeFilterBy($query, $filters){
-//        DD($filters);
+//        dd($filters);
         return (new DenunciaFilter())->applyTo($query, $filters);
     }
 
     public function scopeGetDenunciasItemCustomFilter($query, $filters){
+//        dd("1");
         return (new GetDenunciasItemCustomFilter())->applyTo($query, $filters);
     }
 
     public function scopeGetDenunciasFilterCount($query, $filters){
+//        dd("2");
         return (new GetDenunciasFilterCount())->applyTo($query, $filters);
     }
 
@@ -85,16 +87,20 @@ class Denuncia extends Model
         return (new DenunciaAmbitoFilter())->applyTo($query, $filters);
     }
     public function scopeGetDenunciasAmbitoItemCustomFilter($query, $filters){
+//        dd("3");
         return (new GetDenunciasAmbitoItemCustomFilter())->applyTo($query, $filters);
     }
     public function scopeGetDenunciasAmbitoFilterCount($query, $filters){
+//        dd("4");
         return (new GetDenunciasAmbitoFilterCount())->applyTo($query, $filters);
     }
 
     public function scopeFilterByCount($query, $filters){
+//        dd("4--");
         return (new DenunciaAmbitoFilterCount())->applyTo($query, $filters);
     }
     public function scopeGetDenunciasEstatusAmbitoFilterCount($query, $filters){
+//        dd("5");
         return (new GetDenunciasEstatusAmbitoFilterCount())->applyTo($query, $filters);
     }
 

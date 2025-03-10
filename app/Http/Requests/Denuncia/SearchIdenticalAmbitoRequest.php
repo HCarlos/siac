@@ -126,6 +126,8 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
                     'ubicacion'        => $item->FullUbication,
                     'search_google'    => $item->search_google,
                     'gd_ubicacion'     => $item->gd_ubicacion,
+                    'latitud'          => $item->latitud,
+                    'longitud'         => $item->longitud,
                     'ciudadano_id'     => $item->ciudadano_id,
                     'ciudadano'        => $Ciudadano->FullName,
                     'fecha'            => $item->fecha_ingreso_solicitud,

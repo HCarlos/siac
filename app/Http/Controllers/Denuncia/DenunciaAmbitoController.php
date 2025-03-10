@@ -56,6 +56,8 @@ class DenunciaAmbitoController extends Controller{
         ini_set('max_execution_time', 300);
         $search = $request->only(['search']);
 
+//        dd($search);
+
         $filters['filterdata'] = $search;
 
         if (Session::has('ambito_dependencia')){

@@ -22,7 +22,10 @@ class GetDenunciasAmbitoItemCustomFilter extends QueryFilter{
         $search = isset($search['search']) ? $search['search'] : '';
         $search = strtoupper($search);
 
-        $IsEnlace               = Auth::user()->isRole('ENLACE');
+//        dd(" SI");
+
+        $IsEnlace               = Auth::user()->isRole('ENLACE') ?? false;
+//        dd("$IsEnlace");
         $IsAdminArchivo         = Auth::user()->isRole('USER_ARCHIVO_ADMIN');
         $IsDelegados            = Auth::user()->isRole('DELEGADOS');
         $IsCoordinadorDelegados = Auth::user()->isRole('COORDINACION_DE_DELEGADOS');
@@ -31,6 +34,8 @@ class GetDenunciasAmbitoItemCustomFilter extends QueryFilter{
         $DependenciaIdArray = [];
         $ServicioIdArray = [];
         $filters['search'] = $search;
+
+
         if ($IsEnlace) {
             $ServicioIdArray = Auth::user()->ServicioIdArray;
             if (count($ServicioIdArray) > 0){

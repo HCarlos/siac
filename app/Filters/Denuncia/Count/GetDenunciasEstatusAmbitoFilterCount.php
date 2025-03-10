@@ -28,7 +28,7 @@ class GetDenunciasEstatusAmbitoFilterCount extends QueryFilter{
         $search = isset($search['search']) ? $search['search'] : '';
         $search = strtoupper($search);
 
-        $IsEnlace               = Auth::user()->isRole('ENLACE');
+        $IsEnlace               = Auth::user()->isRole('ENLACE') ?? false;
         $IsDelegados            = Auth::user()->isRole('DELEGADOS');
         $IsCoordinadorDelegados = Auth::user()->isRole('COORDINACION_DE_DELEGADOS');
         $DelegadosIdArray = [];
