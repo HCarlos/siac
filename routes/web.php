@@ -514,7 +514,7 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|test_admin|USER_OPE
 
 });
 
-Route::group(['middleware' => 'role:auth|Administrator|SysOp|DELEGADO|CIUDADANO|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|ENLACE|USER_ARCHIVO_CAP|USER_ARCHIVO_ADMIN'], static function () {
+Route::group(['middleware' => 'role:auth|Administrator|SysOp|DELEGADO|DELEGADOS|COORDINACION_DE_DELEGADOS|CIUDADANO|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|ENLACE|USER_ARCHIVO_CAP|USER_ARCHIVO_ADMIN'], static function () {
 
     Route::get('/home-ciudadano', 'HomeController@index_ciudadano')->name('home-ciudadano');
 
