@@ -77,7 +77,7 @@
                 <div class="card">
                     <div class="stat-2">
                         <h1 class="count yellow" id="h2EnProceso">0</h1>
-                        <p>En Proceso / Programadas</p>
+                        <p>En Proceso</p>
                     </div>
                     <div class="chart">
                         <canvas id="chart-area-2">[Gráfico de Barras]</canvas>
@@ -107,6 +107,25 @@
                         <canvas id="chart-area-4">[Gráfico de Barras]</canvas>
                     </div>
                 </div>
+                <div class="card">
+                    <div class="stat-2">
+                        <h1 class="count" id="h2Cerradas">0</h1>
+                        <p>Cerradas</p>
+                    </div>
+                    <div class="chart">
+                        <canvas id="chart-area-5"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="stat-2">
+                        <h1 class="count" id="h2Observadas">0</h1>
+                        <p>Observadas</p>
+                    </div>
+                    <div class="chart">
+                        <canvas id="chart-area-6"></canvas>
+                    </div>
+                </div>
+
                 <div class="card">
                     <div class="stat-2">
                         <h1 class="count" id="h2Total">0</h1>
@@ -253,6 +272,8 @@
             document.getElementById("h2Abtendidas").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[2].con_rezago);
 
             document.getElementById("h2Rechazadas").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[3].Total);
+            document.getElementById("h2Cerradas").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[4].Total);
+            document.getElementById("h2Observadas").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[5].Total);
 
             document.getElementById("h2Total").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[0].Total + Estatus.estatus[1].Total + Estatus.estatus[2].Total + Estatus.estatus[3].Total + Estatus.estatus[4].Total + Estatus.estatus[5].Total);
 
@@ -317,7 +338,25 @@
                 options: opciones1()
             });
 
+
+            // Cerradas
+            const ctx5a = document.getElementById('chart-area-5');
+            const chart5a = new Chart(ctx5a, {
+                type: 'bar',
+                data: data1(data5data),
+                options: opciones1()
+            });
+
             // Observadas
+            const ctx6a = document.getElementById('chart-area-6');
+            const chart6a = new Chart(ctx6a, {
+                type: 'bar',
+                data: data1(data6data),
+                options: opciones1()
+            });
+
+
+            // Total
             const ctx6b = document.getElementById('chart-area-7');
             const chart6b = new Chart(ctx6b, {
                 type: 'bar',

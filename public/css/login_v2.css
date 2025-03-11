@@ -1,8 +1,44 @@
+/*body {*/
+/*    margin: 0;*/
+/*    font-family: Arial, sans-serif;*/
+/*    overflow-x: hidden;*/
+/*}*/
+
+/* Estilo del body con la imagen de fondo */
 body {
     margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-image: url('/images/background_v2.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-family: Arial, sans-serif;
     overflow-x: hidden;
 }
+
+/* Ajustes para iPhone 11 (modo retrato) */
+@media only screen and (max-width: 414px) {
+    body {
+        background-size: contain;  /* Muestra la imagen completa sin recortes */
+        background-position: center top; /* Ajusta la posición para dispositivos pequeños */
+    }
+}
+
+/* Ajustes para iPad mini (usualmente en modo retrato, alrededor de 768px de ancho) */
+@media only screen and (min-width: 415px) and (max-width: 768px) {
+    body {
+        background-size: cover; /* Puedes ajustar a 'contain' si prefieres ver la imagen completa */
+        background-position: center center; /* Centra la imagen */
+    }
+}        /* Botón estilizado */
+
+
+
 
 .hero-section {
     position: relative;

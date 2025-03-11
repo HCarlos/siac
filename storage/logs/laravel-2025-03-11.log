@@ -514,3 +514,5 @@ CONTEXT:  unnamed portal parameter $1 = '' at /var/www/servimun/vendor/doctrine/
 [2025-03-11 10:42:04] local.ALERT: Evento: OLAN PEREZ SERGIO ha MODIFICADO la denuncia: 110704  11-03-2025 10:42:04 con Estatus General Modificado  
 [2025-03-11 10:42:04] local.ALERT: Evento: OLAN PEREZ SERGIO ha MODIFICADO la denuncia: 110704  11-03-2025 10:42:04  
 [2025-03-11 10:43:02] local.ALERT: Evento: OLAN PEREZ SERGIO ha CAMBIADO su ESTATUS de la denuncia: 110704  11-03-2025 10:42:47 con Estatus General Modificado  
+[2025-03-11 10:53:32] local.INFO: El usuario Admin se ha logueado  
+[2025-03-11 11:30:32] local.INFO: El usuario Admin se ha desconectado  

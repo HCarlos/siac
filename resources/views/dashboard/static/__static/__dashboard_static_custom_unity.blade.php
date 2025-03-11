@@ -68,7 +68,7 @@
             </div>
             <div class="stat">
                 <h2 id="h2EnProceso">0</h2>
-                <p>En Proceso / Programadas</p>
+                <p>En Proceso</p>
             </div>
             <div class="card-stat">
                 <div class="card-left">
@@ -227,8 +227,8 @@
             document.getElementById("h2Abtendidas").innerHTML = Estatus.estatus[2].con_rezago;
 
             document.getElementById("h2Rechazadas").innerHTML = Estatus.estatus[3].Total;
-            document.getElementById("h2Cerradas").innerHTML = Estatus.estatus[4].Total;
-            document.getElementById("h2Observadas").innerHTML = Estatus.estatus[5].Total;
+            document.getElementById("h2Cerradas").innerHTML = Estatus.estatus[5].Total;
+            document.getElementById("h2Observadas").innerHTML = Estatus.estatus[4].Total;
 
             document.getElementById("h2Total").innerHTML = Estatus.estatus[0].Total + Estatus.estatus[1].Total + Estatus.estatus[2].Total + Estatus.estatus[3].Total + Estatus.estatus[4].Total + Estatus.estatus[5].Total;
 

@@ -376,13 +376,11 @@ class DenunciaAmbitoController extends Controller{
         $this->ambito_dependencia = $data['ambito_dependencia'];
 
         $item = $request->manage((int)$this->ambito_dependencia);
-//        dd( $item );
         if (!isset($item->id)) {
             abort(422);
         }
         $this->msg = "Registro Guardado con éxito! \n\nFolio: " . $item->id;
         session(['msg' => $this->msg]);
-//        return Redirect::to('editDenunciaAmbito/'.$this->ambito_dependencia.'/'.$item->id);
         return Redirect::back();
 
     }

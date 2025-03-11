@@ -69,7 +69,7 @@
             </div>
             <div class="stat">
                 <h2 id="h2EnProceso">0</h2>
-                <p>En Proceso / Programadas</p>
+                <p>En Proceso</p>
             </div>
             <div class="card-stat">
                 <div class="card-left">
@@ -103,37 +103,37 @@
             <!-- Sección de solicitudes por área -->
             <div class="section">
                 <div class="card">
-                    <h3>Recibidas:</h3>
+                    <h3>Recibidas</h3>
                     <div class="chart">
                         <canvas id="chart-area-1"></canvas>
                     </div>
                 </div>
                 <div class="card">
-                    <h3>En proceso / programadas:</h3>
+                    <h3>En proceso</h3>
                     <div class="chart">
                         <canvas id="chart-area-2">[Gráfico de Barras]</canvas>
                     </div>
                 </div>
                 <div class="card">
-                    <h3>Atendidas:</h3>
+                    <h3>Atendidas</h3>
                     <div class="chart">
                         <canvas id="chart-area-3">[Gráfico de Barras]</canvas>
                     </div>
                 </div>
                 <div class="card">
-                    <h3>Rechazadas:</h3>
+                    <h3>Rechazadas</h3>
                     <div class="chart">
                         <canvas id="chart-area-4">[Gráfico de Barras]</canvas>
                     </div>
                 </div>
                 <div class="card">
-                    <h3>Cerradas:</h3>
+                    <h3>Cerradas</h3>
                     <div class="chart">
                         <canvas id="chart-area-5">[Gráfico de Barras]</canvas>
                     </div>
                 </div>
                 <div class="card">
-                    <h3>Observadas:</h3>
+                    <h3>Observadas</h3>
                     <div class="chart">
                         <canvas id="chart-area-6">[Gráfico de Barras]</canvas>
                     </div>
@@ -141,7 +141,7 @@
             </div>
             <div class="section">
                 <div class="card" >
-                    <h3>Por zona:</h3>
+                    <h3>Por zona</h3>
                     <div class="map-container" id="map-container">
                         <div id="map"></div>
                     </div>
@@ -253,8 +253,8 @@
             document.getElementById("h2Abtendidas").innerHTML = Estatus.estatus[2].con_rezago;
 
             document.getElementById("h2Rechazadas").innerHTML = Estatus.estatus[3].Total;
-            document.getElementById("h2Cerradas").innerHTML = Estatus.estatus[4].Total;
-            document.getElementById("h2Observadas").innerHTML = Estatus.estatus[5].Total;
+            document.getElementById("h2Cerradas").innerHTML = Estatus.estatus[5].Total;
+            document.getElementById("h2Observadas").innerHTML = Estatus.estatus[4].Total;
 
             document.getElementById("h2Total").innerHTML = Estatus.estatus[0].Total + Estatus.estatus[1].Total + Estatus.estatus[2].Total + Estatus.estatus[3].Total + Estatus.estatus[4].Total + Estatus.estatus[5].Total;
 

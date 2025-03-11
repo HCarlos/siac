@@ -23,7 +23,7 @@
 </head>
 <body>
 <div class="hero-section">
-    <img src="{{ asset('images/background_v2.png') }}" alt="Fondo" class="hero-image">
+{{--    <img src="{{ asset('images/background_v2.png') }}" alt="Fondo" class="hero-image">--}}
     <div class="card">
         <div class="card-header">
             <span>Ingreso</span>

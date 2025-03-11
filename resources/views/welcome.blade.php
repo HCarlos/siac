@@ -9,15 +9,33 @@
         body {
             margin: 0;
             padding: 0;
-            height: 100vh; /* Ocupa toda la altura de la pantalla */
-            background: url('/images/background_v2.png') no-repeat center center/cover; /* Imagen de fondo */
-            position: relative; /* Para posicionar el botón correctamente */
+            min-height: 100vh;
+            background-image: url('/images/background_v2.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* Botón estilizado */
+        /* Ajustes para iPhone 11 (modo retrato) */
+        @media only screen and (max-width: 414px) {
+            body {
+                background-size: contain;  /* Muestra la imagen completa sin recortes */
+                background-position: center top; /* Ajusta la posición para dispositivos pequeños */
+            }
+        }
+
+        /* Ajustes para iPad mini (usualmente en modo retrato, alrededor de 768px de ancho) */
+        @media only screen and (min-width: 415px) and (max-width: 768px) {
+            body {
+                background-size: cover; /* Puedes ajustar a 'contain' si prefieres ver la imagen completa */
+                background-position: center center; /* Centra la imagen */
+            }
+        }        /* Botón estilizado */
+
         .modern-button {
             position: absolute; /* Para superponerlo sobre la imagen */
             top: 20px; /* Espaciado desde el borde superior */

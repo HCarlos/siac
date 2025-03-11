@@ -156,12 +156,10 @@ class DenunciaAmbitoRequest extends FormRequest
             }
         }catch (Exception $e){
             $Msg = new MessageAlertClass();
-            dd("Exception: ".$Msg->Message($e));
-            //throw new HttpResponseException(response()->json( $Msg->Message($e), 422));
+            throw new HttpResponseException(response()->json( $Msg->Message($e), 422));
         }catch (QueryException $e){
             $Msg = new MessageAlertClass();
-            dd("QueryException: ".$Msg->Message($e));
-            //throw new HttpResponseException(response()->json( $Msg->Message($e), 422));
+            throw new HttpResponseException(response()->json( $Msg->Message($e), 422));
         }
         return $item;
 
