@@ -375,7 +375,8 @@ class DenunciaAmbitoController extends Controller{
         $data = $request->all();
         $this->ambito_dependencia = $data['ambito_dependencia'];
 
-        $item = $request->manage($this->ambito_dependencia);
+        $item = $request->manage((int)$this->ambito_dependencia);
+//        dd( $item );
         if (!isset($item->id)) {
             abort(422);
         }
@@ -688,7 +689,7 @@ class DenunciaAmbitoController extends Controller{
         $item = Denuncia::withTrashed()->findOrFail($id);
         if (Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN|USER_SAS_ADMIN|USER_DIF_ADMIN')){
             return $this->remove($id);
-        }elseif ( Auth::user()->isRole('ENLACE') && Auth::user()->id == $item->creadopor_id ){
+        }elseif ( Auth::user()->isRole('ENLACE|DELEGADOS|COORDINACION_DE_DELEGADOS') && Auth::user()->id == $item->creadopor_id ){
             return $this->remove($id);
         }else{
             return Response::json(['mensaje' => 'Acceso Denegado', 'data' => 'Error', 'status' => '200'], 200);

@@ -142,11 +142,10 @@ class DenunciaAmbitoRequest extends FormRequest
                 'centro_localidad_id'          => $this->centro_localidad_id ?? 0,
             ];
 
-//            dd($this->ambito);
 
             if (Auth::user()->isRole('Administrator|SysOp')){
                 $item = $this->guardar($Item);
-            }elseif ( Auth::user()->isRole('ENLACE|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN') ){
+            }elseif ( Auth::user()->isRole('ENLACE|DELEGADOS|COORDINACION_DE_DELEGADOS|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN') ){
                 if (auth()->user()->hasAnyPermission(['all','guardar_expediente','modificar_expediente'])) {
                     $item = $this->guardar($Item);
                 }else {
@@ -155,9 +154,14 @@ class DenunciaAmbitoRequest extends FormRequest
             }else{
                 return null;
             }
+        }catch (Exception $e){
+            $Msg = new MessageAlertClass();
+            dd("Exception: ".$Msg->Message($e));
+            //throw new HttpResponseException(response()->json( $Msg->Message($e), 422));
         }catch (QueryException $e){
             $Msg = new MessageAlertClass();
-            throw new HttpResponseException(response()->json( $Msg->Message($e), 422));
+            dd("QueryException: ".$Msg->Message($e));
+            //throw new HttpResponseException(response()->json( $Msg->Message($e), 422));
         }
         return $item;
 
