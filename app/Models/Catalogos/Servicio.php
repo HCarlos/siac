@@ -100,13 +100,12 @@ class Servicio extends Model
 
     static function getQueryServiciosFromDependencias($id=0){
 
-//        $items =  static::whereHas('subareas', function($p) use ($id) {
-//            $p->whereHas("areas", function($q) use ($id){
-//                return $q->where("dependencia_id",$id);
-//            });
-//        })->orderBy('servicio')->get();
 
-        $items =  _viServicios::query()->where("dependencia_id",$id)->orderBy('servicio')->get();
+       $items =  _viServicios::query()
+            ->where("dependencia_id",$id)
+            ->where("habilitado",true)
+            ->orderBy('servicio')
+            ->get();
 
 //        dd($items);
 
