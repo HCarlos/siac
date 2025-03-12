@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Funciones\FuncionesController;
+use App\Models\Catalogos\CentroLocalidad;
 use App\Models\Catalogos\Servicio;
 use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\_viServicios;
@@ -254,13 +255,34 @@ class DashboardStaticGeneralController extends Controller{
                             break;
                 }
 
+                $Colonia_Id    = 0;
+                $Colonia       = "";
+                $Delegacion_Id = 0;
+                $Delegacion    = "";
+                $ColDel        = "";
+                $ColDelId      = 0;
+                $CenLoc        = $g->centro_localidad_id;
+                if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0){
+                    $Loc            = CentroLocalidad::find($CenLoc);
+//                    dd($Loc);
+                    $Colonia_Id    = $Loc->colonia_id;
+                    $Colonia        = $Loc->ItemColonia();
+                    $Delegacion_Id = $Loc->delegacion_id;
+                    $Delegacion     = $Loc->ItemDelegacion();
+                    $ColDel         = $Loc->ItemColoniaDelegacion();
+                    $ColDelId       = $Loc->id;
+                }
+
                 $arrGeos[] = (object)[
                     "denuncia_id"=> $g->id,
                     "denuncia"=> $g->denuncia,
                     "latitud"=> (float) $g->latitud,
                     "longitud"=> (float) $g->longitud,
+                    "dependencia_id" => $g->dependencia_id,
+                    "dependencia"=> $g->dependencia,
                     "abreviatura"=> $g->abreviatura,
-                    "servicio" => $g->servicio,
+                    "sue_id" => $g->sue_id,
+                    "servicio" => $g->nombre_corto_ss,
                     "ciudadano" => $g->ciudadano,
                     "ue_id" => $g->ue_id,
                     "ultimo_estatus" => $g->ultimo_estatus,
@@ -271,8 +293,14 @@ class DashboardStaticGeneralController extends Controller{
                     "dias_a_tiempo" => Carbon::parse($g->fecha_dias_maximos_ejecucion)->diffInDays(Carbon::parse($g->fecha_ingreso)),
                     "type" => $status,
                     "icon" => $icon,
-                    "dependencia_id" => $g->dependencia_id,
                     "dias_vencidos" => $dias_vencidos,
+                    "uuid" => $g->uuid,
+                    "colonia_id" => $Colonia_Id,
+                    "colonia" => $Colonia,
+                    "delegacion_id" => $Delegacion_Id,
+                    "delegacion" => $Delegacion,
+                    "colonia_delegacion" => $ColDel,
+                    "colonia_delegacion_id" => $ColDelId
                 ];
             }
 
@@ -322,7 +350,7 @@ class DashboardStaticGeneralController extends Controller{
 
 //        'rango_de_consulta' => $f->fechaEspanol($start_date).' - '.$f->fechaEspanol($end_date),
 
-        return view('dashboard.static.dashboard_static_general',
+        return view('dashboard.static.dashboard_static_osm_leaft_general',
             [
                 'filter' => $filter,
                 'start_date' => $start_date,
@@ -405,10 +433,11 @@ class DashboardStaticGeneralController extends Controller{
 
         return DB::table("_viddss")
             ->select(
-                'id','denuncia','latitud','longitud','abreviatura',
+                'id','latitud','longitud','dependencia','abreviatura',
                 'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
                 'fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','ultimo_estatus',
-                'servicio','ue_id','dependencia_id',
+                'sue_id','servicio_ultimo_estatus','ue_id','dependencia_id','uuid',
+                'denuncia','centro_localidad_id'
             )
             ->where('ambito_dependencia', 2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])

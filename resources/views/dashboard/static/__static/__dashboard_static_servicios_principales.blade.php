@@ -272,8 +272,8 @@
             document.getElementById("h2Abtendidas").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[2].con_rezago);
 
             document.getElementById("h2Rechazadas").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[3].Total);
-            document.getElementById("h2Cerradas").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[4].Total);
-            document.getElementById("h2Observadas").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[5].Total);
+            document.getElementById("h2Cerradas").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[5].Total);
+            document.getElementById("h2Observadas").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[4].Total);
 
             document.getElementById("h2Total").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[0].Total + Estatus.estatus[1].Total + Estatus.estatus[2].Total + Estatus.estatus[3].Total + Estatus.estatus[4].Total + Estatus.estatus[5].Total);
 
