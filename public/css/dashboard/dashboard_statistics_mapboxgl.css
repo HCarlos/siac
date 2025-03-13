@@ -16,6 +16,8 @@ body {
     overflow: hidden;
 }
 
+
+
 /* Sidebar */
 .sidebar {
     width: 250px;
@@ -663,43 +665,38 @@ dashboard-container.card.collapsed .header-2 button:hover {
 }
 
 .property {
+    /*align-items: center;*/
+    /*background-color: #FFFFFF;*/
+    /*border-radius: 50%;*/
+    /*color: #263238;*/
+    /*display: flex;*/
+    /*font-size: 14px;*/
+    /*gap: 15px;*/
+    /*height: 30px;*/
+    /*justify-content: center;*/
+    /*padding: 4px;*/
+    /*position: relative;*/
+    /*!*transition: all 0.3s ease-out;*!*/
+    /*width: 30px;*/
+    /*border: 2px solid rgba(54, 47, 47, 0.85);*/
+    /*cursor: pointer;*/
+
     align-items: center;
     background-color: #FFFFFF;
     border-radius: 50%;
     color: #263238;
-    display: flex;
-    font-size: 14px;
-    gap: 15px;
-    height: 30px;
-    justify-content: center;
-    padding: 4px;
-    position: relative;
-    transition: all 0.3s ease-out;
-    width: 30px;
-    border: 2px solid rgba(54, 47, 47, 0.85);
+
+
+
 }
 
-.property::after {
-    /*border-left: 9px solid transparent;*/
-    /*border-right: 9px solid transparent;*/
-    /*border-top: 9px solid #FFFFFF;*/
-    content: "";
-    height: 0;
-    left: 50%;
-    position: absolute;
-    top: 95%;
-    transform: translate(-50%, 0);
-    transition: all 0.3s ease-out;
-    width: 0;
-    z-index: 1;
-    border: 1px solid rgba(54, 47, 47, 0.85);
-}
 
 .property .icon {
     align-items: top;
     display: flex;
     justify-content: center;
     color: #FFFFFF;
+    cursor: pointer;
 }
 
 .property .icon svg {
@@ -713,16 +710,13 @@ dashboard-container.card.collapsed .header-2 button:hover {
     background-color: white;
     text-align: justify;
     flex: 1;
-    width: 400px;
-    /*padding: 2em;*/
+    /*width: 500px important;*/
+    /*!*padding: 2em;*!*/
 
-    border-radius: 8px;
-    box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.2);
-    padding: 8px 15px;
-
-    border: 2px solid rgba(54, 47, 47, 0.85);
-
-
+    /*border-radius: 8px;*/
+    /*box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.2);*/
+    /*padding: 8px 15px;*/
+    /*border: 2px solid rgba(54, 47, 47, 0.85);*/
 
 }
 
@@ -742,6 +736,7 @@ dashboard-container.card.collapsed .header-2 button:hover {
     display: flex;
     flex-direction: row;
     gap: 10px;
+    width: width-content !important;
 }
 
 .property .features > div {
@@ -750,7 +745,7 @@ dashboard-container.card.collapsed .header-2 button:hover {
     border-radius: 5px;
     border: 1px solid #ccc;
     display: flex;
-    font-size: 10px;
+    font-size: 8px;
     gap: 5px;
     padding: 5px;
 }
@@ -773,6 +768,7 @@ dashboard-container.card.collapsed .header-2 button:hover {
 
 .property.highlight .details {
     display: flex;
+    width: 500px important;
 }
 
 .property.highlight .icon svg {
@@ -808,6 +804,10 @@ dashboard-container.card.collapsed .header-2 button:hover {
     color: var(--house-color);
 }
 
+.houses {
+    color: var(--house-color);
+}
+
 .property:not(.highlight):has(.fa-house) {
     background-color: var(--house-color);
 }
@@ -820,6 +820,10 @@ dashboard-container.card.collapsed .header-2 button:hover {
  * Building icon colors.
  */
 .property.highlight:has(.fa-building) .icon {
+    color: var(--building-color);
+}
+
+.buildings {
     color: var(--building-color);
 }
 
@@ -838,6 +842,10 @@ dashboard-container.card.collapsed .header-2 button:hover {
     color: var(--warehouse-color);
 }
 
+.warehouses {
+    color: var(--warehouse-color);
+}
+
 .property:not(.highlight):has(.fa-warehouse) {
     background-color: var(--warehouse-color);
 }
@@ -853,6 +861,11 @@ dashboard-container.card.collapsed .header-2 button:hover {
     color: var(--shop-color);
 }
 
+.shops {
+    color: var(--shop-color);
+}
+
+
 .property:not(.highlight):has(.fa-shop) {
     background-color: var(--shop-color);
 }
@@ -865,6 +878,10 @@ dashboard-container.card.collapsed .header-2 button:hover {
  * Rojo icon colors.
  */
 .property.highlight:has(.fa-rojo) .icon {
+    color: var(--rojo-color);
+}
+
+.rojos {
     color: var(--rojo-color);
 }
 
@@ -883,6 +900,10 @@ dashboard-container.card.collapsed .header-2 button:hover {
     color: var(--amarillo-color);
 }
 
+.amarillos {
+    color: var(--amarillo-color);
+}
+
 .property:not(.highlight):has(.fa-amarillo) {
     background-color: var(--amarillo-color);
 }
@@ -898,6 +919,10 @@ dashboard-container.card.collapsed .header-2 button:hover {
     color: var(--verde-color);
 }
 
+.verdes {
+    color: var(--verde-color);
+}
+
 .property:not(.highlight):has(.fa-verde) {
     background-color: var(--verde-color);
 }
@@ -906,14 +931,42 @@ dashboard-container.card.collapsed .header-2 button:hover {
     border-top: 9px solid var(--verde-color);
 }
 
-.open_solicitud{
-    text-decoration: none;
+.features > div > a.open_solicitud{
+    text-decoration: none !important;
     color: rgba(54, 47, 47, 0.85);
     font-weight: bold;
+    cursor: pointer;
+    border: none !important;
+}
+
+.features > div > a.open_solicitud:hover{
+    text-decoration: none !important;
+}
+
+.features > div > a.open_solicitud:active{
+    text-decoration: none !important;
 }
 
 .url-home{
     text-decoration: none;
     color: white;
     font-weight: bold;
+}
+
+.leaflet-marker-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 30px;
+    color: #fff;
+    border: 1px solid rgba(54, 47, 47, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+}
+.leaflet-control-fullscreen a::after {
+    content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="%23333" d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>');
 }

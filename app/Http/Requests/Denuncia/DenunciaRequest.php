@@ -139,7 +139,8 @@ class DenunciaRequest extends FormRequest
 
             if (Auth::user()->isRole('Administrator|SysOp')){
                 $item = $this->guardar($Item);
-            }elseif ( Auth::user()->isRole('ENLACE|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN') ){
+            }elseif ( Auth::user()->isRole('ENLACE|DELEGADOS|COORDINACION_DE_DELEGADOS|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN') ){
+
                     if (auth()->user()->hasAnyPermission(['all','guardar_expediente','modificar_expediente'])) {
                         $item = $this->guardar($Item);
                     }else {
@@ -321,7 +322,6 @@ class DenunciaRequest extends FormRequest
             if ($this->id > 0){
                 return $url->route('editDenunciaAmbito',['Id'=>$this->id]);
             }else{
-//                return $url->route('newDenunciaAmbito/1/0',['Id'=>$this->id]);
                 return $url->route('newDenunciaAmbito',['ambito_dependencia' => $this->ambito_dependencia,'ambito_estatus' => 0] );
             }
         }else{
