@@ -552,9 +552,9 @@ dashboard-container.card.collapsed .header-2 button:hover {
     transition: all 0.3s ease;
 }
 #map {
-    height: 600px !important;
-    width: width-content !important;
-    transition: height 0.3s ease;
+    height: 90vh !important;
+    width: 100% !important;
+    /*transition: height 0.3s ease;*/
     border-radius: 10px;
     background: #ffffff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);

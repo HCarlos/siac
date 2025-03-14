@@ -14,26 +14,54 @@ async function initMap(dataSet) {
     //
 
 // Crear el mapa
+//     const map = L.map('map', {
+//     }).setView([lat, lon], 15);
+
     const map = L.map('map', {
-        fullscreenControl: true, // activa el control fullscreen
+        fullscreenControl: true,
         fullscreenControlOptions: {
-            forceSeparateButton: true, // Mostrar como botón independiente
-            position: 'topright', // posición del botón (puede ser 'topleft', 'topright', 'bottomleft' o 'bottomright')
-            title: 'Ver mapa en pantalla completa', // título al pasar el mouse
-            titleCancel: 'Salir de pantalla completa' // título cuando está en modo fullscreen
+            forceSeparateButton: true,
+            position: 'topright',
+            title: 'Ver mapa en pantalla completa',
+            titleCancel: 'Salir de pantalla completa'
         }
     }).setView([lat, lon], 15);
 
-// Añadir capa base (ej: OpenStreetMap)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-    // map.addControl(L.control.fullscreen({
-    //     position: 'topright', // Posición en el mapa (topright, bottomleft, etc.)
-    //     title: 'Pantalla Completa', // Texto al pasar el mouse
-    //     titleCancel: 'Salir de Pantalla Completa', // Texto al salir
+
+    map.isFullscreen() // Is the map fullscreen?
+    // map.toggleFullscreen() // Either go fullscreen, or cancel the existing fullscreen.
+
+
+// Añadir capa base (ej: OpenStreetMap)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    // Asegurar que el botón se muestre correctamente en la esquina superior derecha
+
+    // map.addControl(new L.Control.Fullscreen({
+    //     position: 'topright' // Fija la posición en la esquina superior derecha
     // }));
 
-    L.control.scale().addTo(map);
+    // L.control.fullscreen({
+    //     position: 'topright' // Fija la posición en la esquina superior derecha
+    // }).addTo(map);
+
+    map.on('fullscreenchange', function () {
+
+        if (map.isFullscreen()) {
+            console.log('entered fullscreen');
+        } else {
+            console.log('exited fullscreen');
+        }
+
+        setTimeout(() => {
+            map.invalidateSize();
+        }, 200);
+    });
+
+    // L.control.scale().addTo(map);
 
     for (const property of dataSet) {
 
@@ -76,15 +104,23 @@ async function initMap(dataSet) {
     }
 
 
-    window.addEventListener('resize', function() {
-        map.invalidateSize();
-    });
+    // window.addEventListener('resize', function() {
+    //     map.invalidateSize();
+    // });
+
+    // map.on('fullscreenchange', function () {
+    //     setTimeout(() => {
+    //         map.invalidateSize();
+    //     }, 200); // Retraso corto para permitir la transición
+    // });
+
+
 
 
 }
 
 // initMap_mapbox
-async function initMap_mapbox(dataSet) {
+async function initMapinitMap_mapbox(dataSet) {
     // alert("init");
     // const popupCSS = buildContentCSS()
     const nav = new mapboxgl.NavigationControl({
@@ -96,7 +132,7 @@ async function initMap_mapbox(dataSet) {
         style: 'mapbox://styles/mapbox/streets-v12',
         center: [lon, lat], // [longitud, latitud]
         zoom: 13
-    }).addControl(new mapboxgl.FullscreenControl({container: document.querySelector('body')}))
+    }).addControl(new mapboxgl.FullscreenControl())
         .addControl(new mapboxgl.GeolocateControl({
             trackUserLocation: true,
             showUserHeading: true
