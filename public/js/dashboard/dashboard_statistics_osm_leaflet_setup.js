@@ -1,23 +1,14 @@
-let map;
+let map = null;
 let isCollapsed = true;
-let lat = 17.9919;
-let lon = -92.9303;
 let fullScreenControl = false;
 
 // initMap_leafletel map
-async function initMap(dataSet) {
+function initMap(dataSet,lat,lon) {
 
-    // alert("Initializing Map...");
+    if (map instanceof L.Map) map.remove();
+    map = null;
 
-    // const map = L.map('map').setView([lat, lon], 13); // Villahermosa
-    // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-    //
-
-// Crear el mapa
-//     const map = L.map('map', {
-//     }).setView([lat, lon], 15);
-
-    const map = L.map('map', {
+    map = L.map('map', {
         fullscreenControl: true,
         fullscreenControlOptions: {
             forceSeparateButton: true,
@@ -27,26 +18,11 @@ async function initMap(dataSet) {
         }
     }).setView([lat, lon], 15);
 
-
-
-    map.isFullscreen() // Is the map fullscreen?
-    // map.toggleFullscreen() // Either go fullscreen, or cancel the existing fullscreen.
-
-
-// Añadir capa base (ej: OpenStreetMap)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap'
     }).addTo(map);
 
-    // Asegurar que el botón se muestre correctamente en la esquina superior derecha
-
-    // map.addControl(new L.Control.Fullscreen({
-    //     position: 'topright' // Fija la posición en la esquina superior derecha
-    // }));
-
-    // L.control.fullscreen({
-    //     position: 'topright' // Fija la posición en la esquina superior derecha
-    // }).addTo(map);
+    map.isFullscreen() // Is the map fullscreen?
 
     map.on('fullscreenchange', function () {
 
@@ -61,7 +37,7 @@ async function initMap(dataSet) {
         }, 200);
     });
 
-    // L.control.scale().addTo(map);
+    L.control.scale().addTo(map);
 
     for (const property of dataSet) {
 
@@ -102,20 +78,6 @@ async function initMap(dataSet) {
 
 
     }
-
-
-    // window.addEventListener('resize', function() {
-    //     map.invalidateSize();
-    // });
-
-    // map.on('fullscreenchange', function () {
-    //     setTimeout(() => {
-    //         map.invalidateSize();
-    //     }, 200); // Retraso corto para permitir la transición
-    // });
-
-
-
 
 }
 
@@ -184,7 +146,6 @@ function buildContentIcon(property, bgColor) {
 }
 
 function buildContentDetail(property, className) {
-    // console.log(className);
     return `
         <div class="`+className+`">
             <div class="details">
@@ -225,5 +186,4 @@ function buildContentDetail(property, className) {
             </div>
         </div>
     `;
-
 }

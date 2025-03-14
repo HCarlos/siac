@@ -173,10 +173,11 @@
 </div>
 
 
-<script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-({key: "{{env('GOOGLE_MAPS_KEY')}}", v: "weekly"});</script>
+{{--<script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})--}}
+{{--({key: "{{env('GOOGLE_MAPS_KEY')}}", v: "weekly"});</script>--}}
 
-<script src="/js/dashboard/dashboard_statistics_map_setup.js" type="text/javascript"></script>
+{{--<script src="/js/dashboard/dashboard_statistics_map_setup.js" type="text/javascript"></script>--}}
+<script src="/js/dashboard/dashboard_statistics_osm_leaflet_setup.js" type="text/javascript"></script>
 
 <script>
 
@@ -367,9 +368,10 @@
 
             });
 
-
-            window.onload = async () => initMap(dataSetLocations);
-            initMap(dataSetLocations);
+            let lat = 17.9919;
+            let lon = -92.9303;
+            window.onload = async () => initMap(dataSetLocations, lat, lon);
+            initMap(dataSetLocations, lat, lon);
 
             items.value = getCommaSeparatedTwoDecimalsNumber(dataSetLocations.length);
 
@@ -391,12 +393,16 @@
         const selectColonias = document.getElementById('colonias');
         const selectDelegaciones = document.getElementById('delegaciones');
         const inputDenuncias = document.getElementById('denuncias');
+        const map = document.getElementById('map');
         const selectedZona = selectZona.value;
         const selectedServicio = selectServicios.value;
         const selectedColonia = selectColonias.value;
         const selectedDelegacion = selectDelegaciones.value;
         const dataSetLocations = [];
         const denuncias_id = [];
+        let lat = 17.9919;
+        let lon = -92.9303;
+
         Georeferencias.georeferencias.forEach( (geo) => {
             var dep = geo.dependencia_id;
             var ser = geo.sue_id;
@@ -421,12 +427,19 @@
                 console.log("7");
                 dataSetLocations.push(setDataLocations(geo, denuncias_id));
             }
+            lat = geo.latitud;
+            lon = geo.longitud;
         });
         inputDenuncias.value = denuncias_id.join(',');
 
         items.value = getCommaSeparatedTwoDecimalsNumber(dataSetLocations.length);
-        window.onload = async () => initMap(dataSetLocations);
-        initMap(dataSetLocations);
+
+        console.log(dataSetLocations);
+
+        // async () => initMap(dataSetLocations);
+       // alert(2);
+
+        initMap(dataSetLocations, lat, lon);
 
         if (dataSetLocations.length == 0) {
             frmFilterDataExport.disabled = true;
@@ -460,7 +473,7 @@
             delegacion_id: geo.delegacion_id,
             delegacion: geo.delegacion,
         };
-    }
+   }
 
     function getCommaSeparatedTwoDecimalsNumber(number) {
         const fixedNumber = Number.parseFloat(number).toFixed(0);

@@ -443,6 +443,110 @@ main {
     font-size: small !important;
 }
 
+/* Header con fondo degradado */
+.card-header {
+    background: linear-gradient(135deg, #4b79a1, #283e51);
+    padding: 1em;
+    color: #fff;
+    border-radius: 1em 1em 0 0;
+}
+/* Formulario con layout flex */
+.card-header form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+}
+/* Grupo de controles */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 180px;
+}
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 14px;
+}
+/* Estilo para los selects */
+.form-group select {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #fff;
+    color: #333;
+    /* Personaliza la flecha del select */
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2210%22%20height%3D%226%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M0%200l5%206l5-6z%22%20fill%3D%22%23666%22/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px 6px;
+    cursor: pointer;
+}
+
+.form-group input.totalItems {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: rgba(54, 47, 47, 0.85);
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+/* Estilo del botón de envío */
+.btn-submit {
+    padding: 12px 24px;
+    background-color: #ff6f61;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    white-space: nowrap;
+    font-weight: bold;
+}
+.btn-submit:hover {
+    background-color: #ff4f41;
+}
+
+.btn-export-excel {
+    padding: 12px 24px;
+    background-color: #24aa03;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    white-space: nowrap;
+    font-weight: bold;
+}
+.btn-export-excel:hover {
+    background-color: #0c770c;
+    color: white;
+}
+.btn-export-excel:disabled {
+    background-color: #737171;
+    color: white;
+}
+
+
+/* Estilo del cuerpo del card */
+.card-body {
+    padding: 20px;
+}
+
+
+
+
 .card {
     background-color: white;
     border-radius: 8px;

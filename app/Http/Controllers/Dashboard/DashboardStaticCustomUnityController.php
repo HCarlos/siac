@@ -286,7 +286,7 @@ class DashboardStaticCustomUnityController extends Controller{
                     "ue_id" => $g->ue_id,
                     "ultimo_estatus" => $g->ultimo_estatus,
                     "fecha_ultimo_estatus" => Carbon::parse($g->fecha_ultimo_estatus)->format('d-m-Y H:i:s'),
-                    "fecha_ingreso" => Carbon::parse($g->fecha_ingreso)->format('d-m-Y H:i:s'),
+                    "fecha_ingreso" => Carbon::parse($g->fecha_ingreso)->format('d-m-Y'),
                     "fecha_ejecucion_minima" => Carbon::parse($g->fecha_dias_ejecucion)->format('d-m-Y H:i:s'),
                     "fecha_ejecucion_maxima" => Carbon::parse($g->fecha_dias_maximos_ejecucion)->format('d-m-Y H:i:s'),
                     "dias_a_tiempo" => Carbon::parse($g->fecha_dias_maximos_ejecucion)->diffInDays(Carbon::parse($g->fecha_ingreso)),
