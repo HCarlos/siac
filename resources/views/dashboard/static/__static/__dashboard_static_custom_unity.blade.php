@@ -436,8 +436,7 @@
 
         console.log(dataSetLocations);
 
-        // async () => initMap(dataSetLocations);
-       // alert(2);
+        // window.onload = async () => initMap(dataSetLocations, lat, lon);
 
         initMap(dataSetLocations, lat, lon);
 

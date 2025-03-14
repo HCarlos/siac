@@ -3,7 +3,7 @@ let isCollapsed = true;
 let fullScreenControl = false;
 
 // initMap_leafletel map
-function initMap(dataSet,lat,lon) {
+async function initMap(dataSet,lat,lon) {
 
     if (map instanceof L.Map) map.remove();
     map = null;
