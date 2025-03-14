@@ -960,13 +960,13 @@ dashboard-container.card.collapsed .header-2 button:hover {
     text-align: center;
     line-height: 30px;
     color: #fff;
-    border: 1px solid rgba(54, 47, 47, 0.85);
+    border: 2px solid rgba(54, 47, 47, 0.85);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+}
 
-}
-.leaflet-control-fullscreen a::after {
-    content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="%23333" d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>');
-}
+/*.leaflet-control-fullscreen a::after {*/
+/*    content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="%23333" d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>');*/
+/*}*/

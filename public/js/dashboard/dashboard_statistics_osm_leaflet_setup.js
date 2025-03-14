@@ -15,10 +15,14 @@ async function initMap(dataSet) {
 
 // Crear el mapa
     const map = L.map('map', {
-        fullscreenControl: false, // Activar control de pantalla completa
-        center: [lat, lon], // Coordenadas de Villahermosa
-        zoom: 15
-    });
+        fullscreenControl: true, // activa el control fullscreen
+        fullscreenControlOptions: {
+            forceSeparateButton: true, // Mostrar como botón independiente
+            position: 'topright', // posición del botón (puede ser 'topleft', 'topright', 'bottomleft' o 'bottomright')
+            title: 'Ver mapa en pantalla completa', // título al pasar el mouse
+            titleCancel: 'Salir de pantalla completa' // título cuando está en modo fullscreen
+        }
+    }).setView([lat, lon], 15);
 
 // Añadir capa base (ej: OpenStreetMap)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
@@ -27,9 +31,9 @@ async function initMap(dataSet) {
     //     position: 'topright', // Posición en el mapa (topright, bottomleft, etc.)
     //     title: 'Pantalla Completa', // Texto al pasar el mouse
     //     titleCancel: 'Salir de Pantalla Completa', // Texto al salir
-    //     forceSeparateButton: true // Mostrar como botón independiente
     // }));
 
+    L.control.scale().addTo(map);
 
     for (const property of dataSet) {
 
@@ -72,7 +76,9 @@ async function initMap(dataSet) {
     }
 
 
-
+    window.addEventListener('resize', function() {
+        map.invalidateSize();
+    });
 
 
 }
@@ -119,7 +125,7 @@ async function initMap_mapbox(dataSet) {
         // Crear un popup con la clase .property
         const html = buildContentDetail(property,'highlight');
         // alert(html);
-        const popup = new mapboxgl.Popup({ offset: 25, closeButton: true, className: 'highlight' })
+        const popup = new mapboxgl.Popup({ closeButton: true, className: 'highlight' })
             .setHTML(html);
 
         // Asignar el popup al marcador
