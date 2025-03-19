@@ -129,6 +129,21 @@ li.side-nav-item > a.side-nav-link:hover, ul.side-nav-second-level > li > a:hove
     transform: translateY(-2px); /* Efecto de elevación */
 }
 
+li.side-nav-item > a.side-nav-link, ul.side-nav-second-level > li > a, ul.side-nav-three-level > li > a{
+    background-color: #f5f3f3 !important;
+    color: #362f2f !important;
+    /*box-shadow: 0 4px 8px rgb(115, 113, 113); !* Sombra al pasar el cursor *!*/
+    /*transform: translateY(-2px); !* Efecto de elevación *!*/
+}
+
+
+li.side-nav-item > a.side-nav-link:hover, ul.side-nav-second-level > li > a:hover, ul.side-nav-three-level > li > a:hover{
+    background-color: #362f2f !important;
+    color: #d3d3cd !important;
+    box-shadow: 0 4px 8px rgb(115, 113, 113); /* Sombra al pasar el cursor */
+    transform: translateY(-2px); /* Efecto de elevación */
+}
+
 .icon_usuarios_interno{
     color: #a08557 !important;
 }
