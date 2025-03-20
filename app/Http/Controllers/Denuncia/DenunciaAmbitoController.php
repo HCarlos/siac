@@ -998,13 +998,13 @@ class DenunciaAmbitoController extends Controller{
         $item         = Denuncia::find($Id);
 
         $this->msg = "";
-        return view('SIAC.denuncia.denuncia.denuncia_add_user',
+        return view('SIAC.denuncia.denuncia_ambito.denuncia_add_user',
             [
                 'user'            => Auth::user(),
                 'items'           => $item,
                 'putAddUserEdit'  => 'updateAddUserDenunciaAmbito',
                 'removeItem'      => 'removeAddUserDenunciaAmbito',
-                'titulo_catalogo' => "Agregando usuario al folio " .$Id,
+                'titulo_catalogo' => "",
                 'titulo_header'   => "Agregando usuario al folio " .$Id,
                 'msg'             => $this->msg,
             ]
@@ -1013,22 +1013,45 @@ class DenunciaAmbitoController extends Controller{
 
 // ***************** GUARDA LOS CAMBIOS ++++++++++++++++++++ //
 
-    protected function updateAddUserDenunciaGet($id,$usuario_id){
+    protected function updateAddUserDenunciaAmbitoGet($id,$usuario_id){
+        $id = (int) $id;
+        $usuario_id = (int) $usuario_id;
+        if ($id == 0 || $usuario_id == 0) {
+            return Redirect::back();
+        }
         return $this->addUserToDemanda($id, $usuario_id);
     }
 
-    protected function updateAddUserDenuncia(Request $request){
+    protected function updateAddUserDenunciaAmbito(Request $request){
+
+        $id = (int) $request['id'];
+        $usuario_id = (int) $request['usuario_id'];
+        if ($id == 0 || $usuario_id == 0) {
+            return Redirect::back();
+        }
 
         return $this->addUserToDemanda($request['id'], $request['usuario_id']);
     }
 
     private function addUserToDemanda($id, $usuario_id){
+        $id = (int) $id;
+        $usuario_id = (int) $usuario_id;
+        if ($id == 0 || $usuario_id == 0) {
+            return Redirect::back();
+        }
+
         $item = Denuncia::find($id);
-        if ($item->cerrado == false){
+        if ($item->cerrado == false && $usuario_id != 0) {
             $item->ciudadanos()->detach($usuario_id);
             $item->ciudadanos()->attach($usuario_id);
         }
         return Redirect::back();
+    }
+
+    protected function removeAddUserDenuncia($id0 = 0, $id1 = 0){
+        $item = Denuncia::find($id0);
+        $item->ciudadanos()->detach($id1);
+        return Response::json(['mensaje' => 'Eliminado', 'data' => 'OK', 'status' => '200'], 200);
     }
 
 
@@ -1040,12 +1063,6 @@ class DenunciaAmbitoController extends Controller{
         return Response::json(['mensaje' => count($items).' registros(s).', 'result_msg' => 'OK', 'data' => $items, 'status' => '200'], 200);
     }
 
-
-    protected function removeAddUserDenuncia($id0 = 0, $id1 = 0){
-        $item = Denuncia::find($id0);
-        $item->ciudadanos()->detach($id1);
-        return Response::json(['mensaje' => 'Eliminado', 'data' => 'OK', 'status' => '200'], 200);
-    }
 
     public function vistaDenuncia($denuncia_id){
         $this->ambito_dependencia = Session::get('ambito_dependencia');

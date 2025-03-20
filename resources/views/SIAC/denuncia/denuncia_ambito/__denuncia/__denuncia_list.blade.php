@@ -64,7 +64,7 @@
                                     @endif
                                 @endif
                                 @include('shared.ui_kit.__imagenes_list_item_ambito')
-                                @include('shared.ui_kit.__add_user_item')
+                                @include('shared.ui_kit.__add_user_ambito_item')
                                 @include('shared.ui_kit.__edit_ambito_item')
                                 @if($item->dependencia->ambito_dependencia === 2)
                                     @include('shared.ui_kit.__print_denuncia_ambito_item')

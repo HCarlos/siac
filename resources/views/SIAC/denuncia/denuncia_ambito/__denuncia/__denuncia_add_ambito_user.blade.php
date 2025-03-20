@@ -32,6 +32,6 @@
 </div>
 
 <input type="hidden" name="id" id="id" value="{{$items->id}}" >
-<input type="hidden" name="usuario_id" id="usuario_id" >
+<input type="hidden" name="usuario_id" id="usuario_id" value="0" >
 
 <hr>

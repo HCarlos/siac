@@ -6,6 +6,11 @@
                 <label for = "search_autocomplete_user" class="col-lg-12 col-form-label labelDenuncia">Busca el usuario que solicita el servicio: </label>
                 <div class="col-lg-12">
                     <div class="input-group">
+                        <small data-toggle="tooltip" class="text-rojo-morena"
+                               title="Escribe el nombre completo del ciudadano. Asegúrate que aparezca en el menú desplegable con su CURP, en caso de no estar en el menú, puedes agregarlo en el icono de (+) revisa que cuente con número de teléfono, si no cuenta con teléfono de contacto, lo puedes agregar en el icono color naranja."
+                        >
+                            <i class="fa fa-question-circle pl-1 pr-1 pt-2"></i>
+                        </small>
                         <input type="text" name="search_autocomplete_user" id="search_autocomplete_user" class="form-control" value="" placeholder="Buscar usuario...">
                         <span class="input-group-append">
                             <a href="{{route("newUser")}}" target="_blank" class="btn btn-icon btn-info"> <i class="mdi mdi-plus"></i></a>
@@ -25,12 +30,17 @@
             </div>
 
             <div class="form-row">
-                <label for = "search_google" class="col-sm-2 col-form-label text-right">Calle y número: </label>
-                <div class="col-sm-10">
+                <label for = "search_google" class="col-sm-2 col-form-label text-right">Calle y núm.: </label>
+                <div class="input-group col-sm-10 ">
+                    <small data-toggle="tooltip" class="text-rojo-morena mr-1"
+                          title="Coloca aquí el nombre correcto de la calle, avenida, carretera… con su número. Asegúrate que salga el menú desplegable, de lo contrario recarga la página."
+                    >
+                                <i class="fa fa-question-circle pt-2"></i>
+                    </small>
                     <input type="text" name="search_google" id="search_google" class="form-control" value="{{ old('search_google') }}" placeholder="Escriba la calle y el número" >
                 </div>
             </div>
-            <div class="form-row mb-1 ">
+            <div class="form-row mb-1 mt-1 ">
                 <label for = "centro_localidad_id" class="col-lg-2 col-form-label text-right m-0 p-0">Localidad: </label>
                 <div class="col-lg-10">
                     <select id="centro_localidad_id" name="centro_localidad_id" class="form-control centro_localidad_id select2" data-toggle="select2" size="1" value="{{ old('centro_localidad_id') }}">
@@ -118,7 +128,12 @@
 
             <div class="form-group row mb-1">
                 <label for = "descripcion" class="col-lg-2 col-form-label has-descripcion labelDenuncia text-right m-0 p-0">Descripción y/o referencia:</label>
-                <div class="col-lg-10">
+                <div class="input-group col-lg-10">
+                    <small data-toggle="tooltip" class="text-rojo-morena"
+                          title="Agregar dirección completa (calle, avenida, carretera con número). Y agregar datos que ayuden a nuestras cuadrillas a localizar el problema reportado, como referencias, tipo de vialidad, si hay una tiendita, color de casa, entre qué calles, si hay un árbol, etc…"
+                    >
+                        <i class="fa fa-question-circle pl-1 pr-1 pt-1"></i>
+                    </small>
                     <textarea name="descripcion" id="descripcion" class="form-control" rows="6">{{ old('descripcion') }}</textarea>
                     <span class="has-descripcion">
                         <strong class="text-danger"></strong>

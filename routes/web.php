@@ -485,8 +485,8 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|test_admin|USER_OPE
     Route::put('updateDenunciaAmbito1', 'Denuncia\DenunciaAmbitoController@updateItem1')->name('updateDenunciaAmbito1');
     Route::put('updateDenunciaAmbito2', 'Denuncia\DenunciaAmbitoController@updateItem2')->name('updateDenunciaAmbito2');
     Route::get('addUserDenunciaAmbito/{Id}', 'Denuncia\DenunciaAmbitoController@addUserItem')->name('addUserDenunciaAmbito');
-    Route::put('updateAddUserDenunciaAmbito', 'Denuncia\DenunciaAmbitoController@updateAddUserDenuncia')->name('updateAddUserDenunciaAmbito');
-    Route::get('updateAddUserDenunciaAmbitoGet/{id}/{usuario_id}', 'Denuncia\DenunciaAmbitoController@updateAddUserDenunciaGet')->name('updateAddUserDenunciaAmbitoGet');
+    Route::put('updateAddUserDenunciaAmbito', 'Denuncia\DenunciaAmbitoController@updateAddUserDenunciaAmbito')->name('updateAddUserDenunciaAmbito');
+    Route::get('updateAddUserDenunciaAmbitoGet/{id}/{usuario_id}', 'Denuncia\DenunciaAmbitoController@updateAddUserDenunciaAmbitoGet')->name('updateAddUserDenunciaAmbitoGet');
     Route::get('removeAddUserDenunciaAmbito/{id0}/{id1}', 'Denuncia\DenunciaAmbitoController@removeAddUserDenuncia')->name('removeAddUserDenunciaAmbito');
     Route::get('newDenunciaAmbito/{ambito_dependencia}/{ambito_estatus}', 'Denuncia\DenunciaAmbitoController@newItem')->name('newDenunciaAmbito');
     Route::post('createDenunciaAmbito1', 'Denuncia\DenunciaAmbitoController@createItem1')->name('createDenunciaAmbito1');
