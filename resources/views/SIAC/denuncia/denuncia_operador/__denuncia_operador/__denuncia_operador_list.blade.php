@@ -1,24 +1,23 @@
 <div class="row" style="width: 100% !important;">
         <div class="col-lg-6">
             <div class="card card-primary">
-                <div class="card-header">
-                    Hola
-                </div>
                 <div class="card-body">
                     <div class="form-row mb-1">
-                        <label for = "operador_id" class="col-md-2 col-form-label">Operador Por:</label>
-                        <div class="col-md-4">
-                            <select id="operador_id" name="operador_id" class="form-control" size="1">
-                                <option value="0" selected >Seleccione un Usuario</option>
-{{--                                @foreach($capturistas as $id => $valor)--}}
-{{--                                    <option value="{{ $id }}">{{ $valor }}</option>--}}
-{{--                                @endforeach--}}
+                        <div class="input-group mb-1">
+                            <label for = "operador_id" class="col-form-label font-weight-bold text-rojo-morena">Operador : </label>
+                            <select id="operador_id" name="operador_id" class="form-control ml-1" size="1">
+                                <option value="0" selected >Seleccione un Operador</option>
+                                @foreach($operadores as $id => $valor)
+                                    <option value="{{ $id }}">{{ $valor }}</option>
+                                @endforeach
                             </select>
+                            <label for = "denuncia_id" class="col-form-label  font-weight-bold text-rojo-morena text-right ml-1">Solicitud Id : </label>
+                            <input type="text" name="denuncia_id" id="denuncia_id" value="{{old('denuncia_id')}}" class="form-control ml-1" autocomplete="on" />
+                            <button type="button" class="btn btn-info btn-rounded ml-1" id="btnSearchDenuncia"><i class="mdi mdi-magnify"></i></button>
                         </div>
-                        <label for = "id" class="col-md-1 col-form-label text-right">ID </label>
-                        <div class="col-md-5">
-                            <input type="text" name="id" id="id" value="{{ old('id') }}" class="form-control" />
-                        </div>
+                    </div>
+                    <div class="form-row mb-1 mt-2 w-100-percent">
+                        <button type="button" class="btn btn-primary btn-rounded-sm w-100-percent" id="btnSaveSolicitud"><i class="mdi mdi-content-save"></i> Agregar a Operador</button>
                     </div>
 
                 </div>
@@ -26,10 +25,28 @@
         </div>
         <div class="col-lg-6">
             <div class="card card-primary">
-                <div class="card-header">
-                    Mundo
-                </div>
                 <div class="card-body">
+                    <table  border="1" cellpadding="5" cellspacing="0" class="w-100-percent">
+                        <tbody>
+                        <!-- Aquí irían los datos dinámicamente -->
+                        <tr>
+                            <th>SOLICITUD<br><strong class="text-success" id="lblSolicitudId"></strong></th>
+                            <td id="solicitud" class="w-100-percent"></td>
+                        </tr>
+                        <tr>
+                            <th>SERVICIO</th>
+                            <td id="sue"></td>
+                        </tr>
+                        <tr>
+                            <th>UBICACIÓN</th>
+                            <td id="ubicacion"></td>
+                        </tr>
+                        <tr>
+                            <th>CIUDADANO</th>
+                            <td id="ciudadano"></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -51,19 +68,19 @@
 
     @foreach($items as $item)
         <tr>
-            <td>{{$item->id}}</td>
+            <td>{{$item->denuncia->id}}</td>
             <td>{{$item->operador->full_name}}</td>
-            <td>{{$item->denuncia->servicio.', '.$item->denuncia->denuncia}}</td>
+            <td>{{$item->denuncia->servicio->servicio}}<br><br>{{$item->denuncia->descripcion}}</td>
             <td>{{$item->denuncia->ultimo_estatus }}</td>
-            <td>{{$item->fecha}}</td>
-            <td>{{$item->comentario}}</td>
+            <td>{{\Carbon\Carbon::parse($item->denuncia->fecha_ingreso)->format('d-m-Y H:i')}}</td>
+            <td>{{ $item->comentario}}</td>
             <td>
-                    @if(Gate::check('all') || Gate::check('editar_respuesta'))
-                        @include('shared.ui_kit.__edit_item')
-                    @endif
-                    @if(Gate::check('all') || Gate::check('eliminar_respuesta'))
-                        @include('shared.ui_kit.__remove_item_respuesta')
-                    @endif
+{{--                    @if(Gate::check('all') || Gate::check('editar_respuesta'))--}}
+{{--                        @include('shared.ui_kit.__edit_item')--}}
+{{--                    @endif--}}
+{{--                    @if(Gate::check('all') || Gate::check('eliminar_respuesta'))--}}
+{{--                        @include('shared.ui_kit.__remove_item_respuesta')--}}
+{{--                    @endif--}}
             </td>
         </tr>
     @endforeach

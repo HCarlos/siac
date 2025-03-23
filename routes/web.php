@@ -508,7 +508,9 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|test_admin|USER_OPE
     Route::post('putModalDenunciaUserUpdate', 'Denuncia\DenunciaUserAmbitoController@putModalDenunciaUserUpdate')->name('putModalDenunciaUserUpdate');
 
     /// DENUNCIAS CON OPERADOR
-    Route::get('denuncia_operador_list', 'Denuncia\DenunciaOperadorController@index')->name('denuncia_operador_list');
+    Route::get('denuncia_operador_list/{operador_id}', 'Denuncia\DenunciaOperadorController@index')->name('denuncia_operador_list');
+    Route::put('getDenunciaAmbitoAjaxFromId', 'Denuncia\DenunciaOperadorController@getDenunciaAmbitoAjaxFromId')->name('getDenunciaAmbitoAjaxFromId');
+    Route::post('getSolicitudesAmbitoAjaxFromOperator', 'Denuncia\DenunciaOperadorController@getSolicitudesAmbitoAjaxFromOperator')->name('getSolicitudesAmbitoAjaxFromOperator');
 
 
 

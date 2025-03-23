@@ -1,4 +1,4 @@
-<div class="row" style="width: 100% !important;">
+<div class="row w-100-percent" >
     <div class="col-lg-12">
 
         <table  id="tblCat" class="table table-bordered table-striped dt-responsive dataTable tblCatDenuncias" role="grid" aria-describedby="datatable-buttons_info"  width="100%">

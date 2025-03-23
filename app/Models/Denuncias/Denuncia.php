@@ -201,6 +201,10 @@ class Denuncia extends Model
         return $this->belongsToMany(Respuesta::class,'denuncia_respuesta','denuncia_id','respuesta_id');
     }
 
+    public function operadores(){
+        return $this->belongsToMany(User::class,'denuncia_operador','denuncia_id','operador_id');
+    }
+
     public function imagene(){
         return $this->hasOne(Imagene::class,'id','imagene_id');
     }

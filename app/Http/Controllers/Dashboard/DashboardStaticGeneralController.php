@@ -105,11 +105,11 @@ class DashboardStaticGeneralController extends Controller{
                         $tr = 0;
 
                         $vectorUnidades = [
-                            (object)["Unidad" => "ALUMBRADO", "Unidad_Id" => 46,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                            (object)["Unidad" => "ESPACIOS PÚBLICOS", "Unidad_Id" => 49,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                            (object)["Unidad" => "LIMPIA", "Unidad_Id" => 50,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                            (object)["Unidad" => "OBRAS PÚBLICAS", "Unidad_Id" => 48,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                            (object)["Unidad" => "SAS", "Unidad_Id" => 47,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                            (object)["Unidad" => "ALUMBRADO", "Unidad_Id" => 46,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
+                            (object)["Unidad" => "ESPACIOS PÚBLICOS", "Unidad_Id" => 49,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
+                            (object)["Unidad" => "LIMPIA", "Unidad_Id" => 50,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
+                            (object)["Unidad" => "OBRAS PÚBLICAS", "Unidad_Id" => 48,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
+                            (object)["Unidad" => "SAS", "Unidad_Id" => 47,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
                         ];
                         $totalServ = 0;
                         foreach ($vectorUnidades as $key => $value) {
@@ -147,6 +147,29 @@ class DashboardStaticGeneralController extends Controller{
                 }
             }
 
+            // SUmamos En proceso y Observadas
+            foreach ($arrEstatus[1]->Unidades as $key => $uni) {
+                $uni1 = $arrEstatus[1]->Unidades[$key]->Total ?? 0;
+                $uni4 = $arrEstatus[4]->Unidades[$key]->Total ?? 0;
+                $uni->Total1 = $uni1 + $uni4;
+            }
+
+            // Sumamos Atendidas y Cerradas
+            foreach ($arrEstatus[2]->Unidades as $key => $uni) {
+                $uni2 = $arrEstatus[2]->Unidades[$key]->Total ?? 0;
+                $uni5 = $arrEstatus[5]->Unidades[$key]->Total ?? 0;
+
+                $uniat2 = $arrEstatus[2]->Unidades[$key]->a_tiempo ?? 0;
+                $uniat5 = $arrEstatus[5]->Unidades[$key]->a_tiempo ?? 0;
+
+                $unicr2 = $arrEstatus[2]->Unidades[$key]->con_rezago ?? 0;
+                $unicr5 = $arrEstatus[5]->Unidades[$key]->con_rezago ?? 0;
+
+                $uni->Total1 = $uni1 + $uni4;
+                $uni->a_tiempo_t1 = $uniat2 + $uniat5;
+                $uni->con_rezago_t1 = $unicr2 + $unicr5;
+            }
+
 //            dd($arrEstatus);
 
             // INICIA EL MODULO DE UNIDADES
@@ -172,6 +195,7 @@ class DashboardStaticGeneralController extends Controller{
                 $vectorUnidades[$key]->Porcentaje = (int) number_format($total, 0);
             }
 
+//            dd($vectorUnidades);
 
             // INICIA EL MODULO DE SERVICIOS
             $vectorServicios = [
@@ -198,6 +222,7 @@ class DashboardStaticGeneralController extends Controller{
                 $total = $vectorServicios[$key]->Total > 0 ? (($vectorServicios[$key]->Total / $totalServ) * 100)  : 0;
                 $vectorServicios[$key]->Porcentaje = (int) number_format($total, 0);
             }
+
 
             // INICIA EL MODULO DE GEOLOCALIZACIÓN
             $arrGeos = [];

@@ -625,7 +625,7 @@ class DenunciaController extends Controller{
 
     private function addUserToDemanda($id, $usuario_id){
         $item = Denuncia::find($id);
-        if ($item->cerrado == false){
+        if ($item->cerrado == false && (int) $usuario_id !== 0) {
             $item->ciudadanos()->detach($usuario_id);
             $item->ciudadanos()->attach($usuario_id);
         }

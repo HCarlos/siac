@@ -67,9 +67,15 @@
                 <h2 id="h2Recibidas">0</h2>
                 <p>Recibidas</p>
             </div>
-            <div class="stat">
-                <h2 id="h2EnProceso">0</h2>
-                <p>En Proceso</p>
+            <div class="card-stat">
+                <div class="card-left">
+                    <h2 id="h2EnProcesoTotal">0</h2>
+                    <p>En Proceso</p>
+                </div>
+                <div class="card-right">
+                    <p><strong id="h2EnProcesoEP">0</strong> EN PROCESO</p>
+                    <p><strong id="h2ObservadasEP">0</strong> OBSERVADAS</p>
+                </div>
             </div>
             <div class="card-stat">
                 <div class="card-left">
@@ -85,14 +91,14 @@
                 <h2 style="color: red;" id="h2Rechazadas">0</h2>
                 <p>Rechazadas</p>
             </div>
-            <div class="stat">
-                <h2 id="h2Cerradas">0</h2>
-                <p>Cerradas</p>
-            </div>
-            <div class="stat">
-                <h2 id="h2Observadas">0</h2>
-                <p>Observadas</p>
-            </div>
+{{--            <div class="stat">--}}
+{{--                <h2 id="h2Cerradas">0</h2>--}}
+{{--                <p>Cerradas</p>--}}
+{{--            </div>--}}
+{{--            <div class="stat">--}}
+{{--                <h2 id="h2Observadas">0</h2>--}}
+{{--                <p>Observadas</p>--}}
+{{--            </div>--}}
             <div class="stat">
                 <h2 id="h2Total">0</h2>
                 <p>Todas</p>
@@ -126,18 +132,18 @@
                         <canvas id="chart-area-4">[Gráfico de Barras]</canvas>
                     </div>
                 </div>
-                <div class="card">
-                    <h3>Cerradas</h3>
-                    <div class="chart">
-                        <canvas id="chart-area-5">[Gráfico de Barras]</canvas>
-                    </div>
-                </div>
-                <div class="card">
-                    <h3>Observadas</h3>
-                    <div class="chart">
-                        <canvas id="chart-area-6">[Gráfico de Barras]</canvas>
-                    </div>
-                </div>
+{{--                <div class="card">--}}
+{{--                    <h3>Cerradas</h3>--}}
+{{--                    <div class="chart">--}}
+{{--                        <canvas id="chart-area-6">[Gráfico de Barras]</canvas>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="card">--}}
+{{--                    <h3>Observadas</h3>--}}
+{{--                    <div class="chart">--}}
+{{--                        <canvas id="chart-area-5">[Gráfico de Barras]</canvas>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
             </div>
             <div class="section">
                 <div class="card" >
@@ -246,28 +252,31 @@
             let datarezago = [];
 
             document.getElementById("h2Recibidas").innerHTML = Estatus.estatus[0].Total;
-            document.getElementById("h2EnProceso").innerHTML = Estatus.estatus[1].Total;
+            document.getElementById("h2EnProcesoTotal").innerHTML = Estatus.estatus[1].Total + Estatus.estatus[4].Total;
+            document.getElementById("h2EnProcesoEP").innerHTML = Estatus.estatus[1].Total;
+            document.getElementById("h2ObservadasEP").innerHTML = Estatus.estatus[4].Total;
 
-            document.getElementById("h2Atendidas").innerHTML = Estatus.estatus[2].Total;
-            document.getElementById("h2Aatendidas").innerHTML = Estatus.estatus[2].a_tiempo;
-            document.getElementById("h2Abtendidas").innerHTML = Estatus.estatus[2].con_rezago;
+            document.getElementById("h2Atendidas").innerHTML = Estatus.estatus[2].Total + Estatus.estatus[5].Total;
+            document.getElementById("h2Aatendidas").innerHTML = Estatus.estatus[2].a_tiempo + Estatus.estatus[5].a_tiempo;
+            document.getElementById("h2Abtendidas").innerHTML = Estatus.estatus[2].con_rezago + Estatus.estatus[5].con_rezago;
 
             document.getElementById("h2Rechazadas").innerHTML = Estatus.estatus[3].Total;
-            document.getElementById("h2Cerradas").innerHTML = Estatus.estatus[5].Total;
-            document.getElementById("h2Observadas").innerHTML = Estatus.estatus[4].Total;
+            // document.getElementById("h2Cerradas").innerHTML = Estatus.estatus[5].Total;
+            // document.getElementById("h2Observadas").innerHTML = Estatus.estatus[4].Total;
 
             document.getElementById("h2Total").innerHTML = Estatus.estatus[0].Total + Estatus.estatus[1].Total + Estatus.estatus[2].Total + Estatus.estatus[3].Total + Estatus.estatus[4].Total + Estatus.estatus[5].Total;
 
             Estatus.estatus[0].Unidades.forEach( (unidad) => {data1data.push(unidad.Total); });
-            Estatus.estatus[1].Unidades.forEach( (unidad) => {data2data.push(unidad.Total); });
-            Estatus.estatus[2].Unidades.forEach( (unidad) => {data3data.push(unidad.Total); });
+            Estatus.estatus[1].Unidades.forEach( (unidad) => {data2data.push(unidad.Total1); });
+            Estatus.estatus[2].Unidades.forEach( (unidad) => {data3data.push(unidad.Total2); });
             Estatus.estatus[3].Unidades.forEach( (unidad) => {data4data.push(unidad.Total); });
             Estatus.estatus[4].Unidades.forEach( (unidad) => {data5data.push(unidad.Total); });
+
             Estatus.estatus[5].Unidades.forEach( (unidad) => {data6data.push(unidad.Total); });
 
             Estatus.estatus[2].Unidades.forEach( (unidad) => {
-                dataatiempo.push(unidad.a_tiempo);
-                datarezago.push(unidad.con_rezago);
+                dataatiempo.push(unidad.a_tiempo_t1);
+                datarezago.push(unidad.con_rezago_t1);
             });
 
             var i = 0;
@@ -294,13 +303,11 @@
                 options: opciones1()
             });
 
+            // Atendidas
             var ds_atendidas = [
                 {type: 'bar',label: 'En tiempo', data: dataatiempo, backgroundColor: 'rgba(54, 162, 235, 0.6)', borderColor: 'rgba(54, 162, 235, 1)', borderWidth: 1, hoverBackgroundColor: 'rgba(54, 162, 235, 0.6)', hoverBorderColor: 'rgba(54, 162, 235, 1)' },
                 {type: 'bar',label: 'Con rezago', data: datarezago, backgroundColor: 'rgba(255, 99, 132, 0.2)', borderColor: 'rgba(255, 99, 132, 1)', borderWidth: 1, hoverBackgroundColor: 'rgba(255, 99, 132, 0.4)', hoverBorderColor: 'rgba(255, 99, 132, 1)'},
             ];
-
-
-            // Atendidas
             const ctx3a = document.getElementById('chart-area-3');
             const chart3a = new Chart(ctx3a, {
                 type: 'bar',
@@ -316,21 +323,21 @@
                 options: opciones1()
             });
 
-            // Cerradas
-            const ctx5a = document.getElementById('chart-area-5');
-            const chart5a = new Chart(ctx5a, {
-                type: 'bar',
-                data: data1(data5data),
-                options: opciones1()
-            });
-
             // Observadas
-            const ctx6a = document.getElementById('chart-area-6');
-            const chart6a = new Chart(ctx6a, {
-                type: 'bar',
-                data: data1(data6data),
-                options: opciones1()
-            });
+            // const ctx5a = document.getElementById('chart-area-5');
+            // const chart5a = new Chart(ctx5a, {
+            //     type: 'bar',
+            //     data: data1(data5data),
+            //     options: opciones1()
+            // });
+
+            // Cerradas
+            // const ctx6a = document.getElementById('chart-area-6');
+            // const chart6a = new Chart(ctx6a, {
+            //     type: 'bar',
+            //     data: data1(data6data),
+            //     options: opciones1()
+            // });
 
             // % Atendidas vs Rechazadas
             const ctx7a = document.getElementById('solicitudesChart');

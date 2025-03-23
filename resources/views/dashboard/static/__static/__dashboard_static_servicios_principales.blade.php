@@ -113,7 +113,7 @@
                         <p>Cerradas</p>
                     </div>
                     <div class="chart">
-                        <canvas id="chart-area-5"></canvas>
+                        <canvas id="chart-area-6"></canvas>
                     </div>
                 </div>
                 <div class="card">
@@ -122,7 +122,7 @@
                         <p>Observadas</p>
                     </div>
                     <div class="chart">
-                        <canvas id="chart-area-6"></canvas>
+                        <canvas id="chart-area-5"></canvas>
                     </div>
                 </div>
 
