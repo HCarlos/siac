@@ -88,6 +88,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 (object)["ue_id" => 20, "Estatus"=> "RECHAZADA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
                 (object)["ue_id" => 18, "Estatus"=> "OBSERVADA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
                 (object)["ue_id" => 21, "Estatus"=> "CERRADO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                (object)["ue_id" => 22, "Estatus"=> "CERRADO POR RECHAZO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
             ];
 
             $ServiciosPrincipales = [483,508,476,503,479,466];
@@ -168,6 +169,13 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 $uni->Total1 = $uni1 + $uni4;
                 $uni->a_tiempo_t1 = $uniat2 + $uniat5;
                 $uni->con_rezago_t1 = $unicr2 + $unicr5;
+            }
+
+            // Sumamos Rechazadas y Cerrada por Rechazos
+            foreach ($arrEstatus[3]->Unidades as $key => $uni) {
+                $uni1 = $arrEstatus[3]->Unidades[$key]->Total ?? 0;
+                $uni4 = $arrEstatus[6]->Unidades[$key]->Total ?? 0;
+                $uni->Total1 = $uni1 + $uni4;
             }
 
 
@@ -276,6 +284,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                     case 17:
                     case 20:
                     case 21:
+                    case 22:
                             $status = "verde";
                             break;
                     default:
@@ -361,6 +370,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
             $arrGeos = collect($arrGeos);
             $total_geodenuncias = count($arrGeos);
             $cerradas = count($arrGeos->where('ue_id', 21));
+            $cerradas_rechazo = count($arrGeos->where('ue_id', 22));
             $atendidas = count($arrGeos->where('ue_id', 17));
             $rechazadas = count($arrGeos->where('ue_id', 20));
             $observadas = count($arrGeos->where('ue_id', 18));
@@ -374,6 +384,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
             $otrosDatos = [
                 (object)["total_geodenuncias" => $total_geodenuncias,
                 "cerradas" => $cerradas,
+                "cerradas_rechazo" => $cerradas_rechazo,
                 "atendidas" => $atendidas,
                 "rechazadas" => $rechazadas,
                 "observadas" => $observadas,

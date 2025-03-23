@@ -75,9 +75,15 @@
                     </div>
                 </div>
                 <div class="card">
-                    <div class="stat-2">
-                        <h1 class="count yellow" id="h2EnProceso">0</h1>
-                        <p>En Proceso</p>
+                    <div class="card-stat-2">
+                        <div class="card-left">
+                            <h1 class="count yellow" id="h2EnProcesoTotal">0</h1>
+                            <p>En Proceso</p>
+                        </div>
+                        <div class="card-right">
+                            <p><strong id="h2EnProcesoEP">0</strong> EN PROCESO</p>
+                            <p><strong id="h2ObservadasEP">0</strong> OBSERVADAS</p>
+                        </div>
                     </div>
                     <div class="chart">
                         <canvas id="chart-area-2">[Gráfico de Barras]</canvas>
@@ -89,42 +95,62 @@
                             <h1 class="count green" id="h2Atendidas">0</h1>
                             <p>Atendidas</p>
                         </div>
-                        <div class="card-right">
-                            <p><strong id="h2Aatendidas">0</strong> A TIEMPO</p>
-                            <p><strong id="h2Abtendidas">0</strong> CON REZAGO</p>
-                        </div>
+                            <div class="card-right">
+                                <table width="100%">
+                                    <tr>
+                                        <td colspan="4">
+                                            <div style="display: flex; justify-content: space-between;">
+                                                <div class="card-right">
+                                                    <p><strong id="h2AtendidasAT">0</strong> ATENDIDAS<br>
+                                                    <strong id="h2CerradasAT">0</strong> CERRADAS</p>
+                                                </div>
+                                                <div style="text-align: left;" class="card-right">
+                                                    <p><strong id="h2Aatendidas">0</strong> A TIEMPO<br>
+                                                    <strong id="h2Abtendidas">0</strong> CON REZAGO</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
                     </div>
                     <div class="chart">
                         <canvas id="chart-area-3">[Gráfico de Barras]</canvas>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="stat-2">
-                        <h1  class="count red" id="h2Rechazadas">0</h1>
-                        <p>Rechazadas</p>
+                    <div class="card-stat-2">
+                        <div class="card-left">
+                            <h1  class="count red" id="h2RechazadasTotal">0</h1>
+                            <p>Rechazadas</p>
+                        </div>
+                        <div class="card-right">
+                            <p><strong id="h2RechazadasREC">0</strong> RECHAZADAS</p>
+                            <p><strong id="h2CerradasREC">0</strong> CERRADAS</p>
+                        </div>
                     </div>
                     <div class="chart">
                         <canvas id="chart-area-4">[Gráfico de Barras]</canvas>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="stat-2">
-                        <h1 class="count" id="h2Cerradas">0</h1>
-                        <p>Cerradas</p>
-                    </div>
-                    <div class="chart">
-                        <canvas id="chart-area-6"></canvas>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="stat-2">
-                        <h1 class="count" id="h2Observadas">0</h1>
-                        <p>Observadas</p>
-                    </div>
-                    <div class="chart">
-                        <canvas id="chart-area-5"></canvas>
-                    </div>
-                </div>
+{{--                <div class="card">--}}
+{{--                    <div class="stat-2">--}}
+{{--                        <h1 class="count" id="h2Cerradas">0</h1>--}}
+{{--                        <p>Cerradas</p>--}}
+{{--                    </div>--}}
+{{--                    <div class="chart">--}}
+{{--                        <canvas id="chart-area-6"></canvas>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="card">--}}
+{{--                    <div class="stat-2">--}}
+{{--                        <h1 class="count" id="h2Observadas">0</h1>--}}
+{{--                        <p>Observadas</p>--}}
+{{--                    </div>--}}
+{{--                    <div class="chart">--}}
+{{--                        <canvas id="chart-area-5"></canvas>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
                 <div class="card">
                     <div class="stat-2">
@@ -268,15 +294,22 @@
             frmFilterDataExport.disabled = true;
 
             document.getElementById("h2Recibidas").innerHTML  = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[0].Total);
-            document.getElementById("h2EnProceso").innerHTML  = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[1].Total);
+            document.getElementById("h2EnProcesoTotal").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[1].Total + Estatus.estatus[4].Total);
+            document.getElementById("h2EnProcesoEP").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[1].Total);
+            document.getElementById("h2ObservadasEP").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[4].Total);
 
-            document.getElementById("h2Atendidas").innerHTML  = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[2].Total);
-            document.getElementById("h2Aatendidas").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[2].a_tiempo);
-            document.getElementById("h2Abtendidas").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[2].con_rezago);
+            document.getElementById("h2Atendidas").innerHTML  = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[2].Total + Estatus.estatus[5].Total);
+            document.getElementById("h2AtendidasAT").innerHTML  = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[2].Total);
+            document.getElementById("h2CerradasAT").innerHTML  = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[5].Total);
+            document.getElementById("h2Aatendidas").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[2].a_tiempo + Estatus.estatus[5].a_tiempo);
+            document.getElementById("h2Abtendidas").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[2].con_rezago + Estatus.estatus[5].con_rezago);
 
-            document.getElementById("h2Rechazadas").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[3].Total);
-            document.getElementById("h2Cerradas").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[5].Total);
-            document.getElementById("h2Observadas").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[4].Total);
+            document.getElementById("h2RechazadasTotal").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[3].Total + Estatus.estatus[6].Total);
+            document.getElementById("h2RechazadasREC").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[3].Total);
+            document.getElementById("h2CerradasREC").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[6].Total);
+
+            // document.getElementById("h2Cerradas").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[5].Total);
+            // document.getElementById("h2Observadas").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[4].Total);
 
             document.getElementById("h2Total").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[0].Total + Estatus.estatus[1].Total + Estatus.estatus[2].Total + Estatus.estatus[3].Total + Estatus.estatus[4].Total + Estatus.estatus[5].Total);
 
@@ -343,20 +376,20 @@
 
 
             // Cerradas
-            const ctx5a = document.getElementById('chart-area-5');
-            const chart5a = new Chart(ctx5a, {
-                type: 'bar',
-                data: data1(data5data),
-                options: opciones1()
-            });
+            // const ctx5a = document.getElementById('chart-area-5');
+            // const chart5a = new Chart(ctx5a, {
+            //     type: 'bar',
+            //     data: data1(data5data),
+            //     options: opciones1()
+            // });
 
             // Observadas
-            const ctx6a = document.getElementById('chart-area-6');
-            const chart6a = new Chart(ctx6a, {
-                type: 'bar',
-                data: data1(data6data),
-                options: opciones1()
-            });
+            // const ctx6a = document.getElementById('chart-area-6');
+            // const chart6a = new Chart(ctx6a, {
+            //     type: 'bar',
+            //     data: data1(data6data),
+            //     options: opciones1()
+            // });
 
 
             // Total

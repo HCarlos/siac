@@ -66,32 +66,58 @@
                 <h2 id="h2Recibidas">0</h2>
                 <p>Recibidas</p>
             </div>
-            <div class="stat">
-                <h2 id="h2EnProceso">0</h2>
-                <p>En Proceso</p>
-            </div>
             <div class="card-stat">
+                <div class="card-left">
+                    <h2 id="h2EnProcesoTotal">0</h2>
+                    <p>En Proceso</p>
+                </div>
+                <div class="card-right">
+                    <p><strong id="h2EnProcesoEP">0</strong> EN PROCESO</p>
+                    <p><strong id="h2ObservadasEP">0</strong> OBSERVADAS</p>
+                </div>
+            </div>
+            <div class="card-stat-2">
                 <div class="card-left">
                     <h1 class="count green" id="h2Atendidas">0</h1>
                     <p>Atendidas</p>
                 </div>
                 <div class="card-right">
-                    <p><strong id="h2Aatendidas">0</strong> A TIEMPO</p>
-                    <p><strong id="h2Abtendidas">0</strong> CON REZAGO</p>
+                    <table width="100%">
+                        <tr>
+                            <td colspan="4">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <div class="card-right">
+                                        <p><strong id="h2AtendidasAT">0</strong> ATENDIDAS<br>
+                                            <strong id="h2CerradasAT">0</strong> CERRADAS</p>
+                                    </div>
+                                    <div style="text-align: left;" class="card-right">
+                                        <p><strong id="h2Aatendidas">0</strong> A TIEMPO<br>
+                                            <strong id="h2Abtendidas">0</strong> CON REZAGO</p>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
-            <div class="stat">
-                <h2 style="color: red;" id="h2Rechazadas">0</h2>
-                <p>Rechazadas</p>
+            <div class="card-stat">
+                <div class="card-left">
+                    <h2 style="color: red;" id="h2RechazadasTotal">0</h2>
+                    <p>Rechazadas</p>
+                </div>
+                <div class="card-right">
+                    <p><strong id="h2RechazadasREC">0</strong> RECHAZADAS</p>
+                    <p><strong id="h2CerradasREC">0</strong> CERRADAS</p>
+                </div>
             </div>
-            <div class="stat">
-                <h2 id="h2Cerradas">0</h2>
-                <p>Cerradas</p>
-            </div>
-            <div class="stat">
-                <h2 id="h2Observadas">0</h2>
-                <p>Observadas</p>
-            </div>
+{{--            <div class="stat">--}}
+{{--                <h2 id="h2Cerradas">0</h2>--}}
+{{--                <p>Cerradas</p>--}}
+{{--            </div>--}}
+{{--            <div class="stat">--}}
+{{--                <h2 id="h2Observadas">0</h2>--}}
+{{--                <p>Observadas</p>--}}
+{{--            </div>--}}
             <div class="stat">
                 <h2 id="h2Total">0</h2>
                 <p>Todas</p>
@@ -221,15 +247,22 @@
             frmFilterDataExport.disabled = true;
 
             document.getElementById("h2Recibidas").innerHTML = Estatus.estatus[0].Total;
-            document.getElementById("h2EnProceso").innerHTML = Estatus.estatus[1].Total;
+            document.getElementById("h2EnProcesoTotal").innerHTML = Estatus.estatus[1].Total + Estatus.estatus[4].Total;
+            document.getElementById("h2EnProcesoEP").innerHTML = Estatus.estatus[1].Total;
+            document.getElementById("h2ObservadasEP").innerHTML = Estatus.estatus[4].Total;
 
-            document.getElementById("h2Atendidas").innerHTML = Estatus.estatus[2].Total;
-            document.getElementById("h2Aatendidas").innerHTML = Estatus.estatus[2].a_tiempo;
-            document.getElementById("h2Abtendidas").innerHTML = Estatus.estatus[2].con_rezago;
+            document.getElementById("h2Atendidas").innerHTML = Estatus.estatus[2].Total + Estatus.estatus[5].Total;
+            document.getElementById("h2AtendidasAT").innerHTML = Estatus.estatus[2].Total;
+            document.getElementById("h2CerradasAT").innerHTML = Estatus.estatus[5].Total;
+            document.getElementById("h2Aatendidas").innerHTML = Estatus.estatus[2].a_tiempo + Estatus.estatus[5].a_tiempo;
+            document.getElementById("h2Abtendidas").innerHTML = Estatus.estatus[2].con_rezago + Estatus.estatus[5].con_rezago;
 
-            document.getElementById("h2Rechazadas").innerHTML = Estatus.estatus[3].Total;
-            document.getElementById("h2Cerradas").innerHTML = Estatus.estatus[5].Total;
-            document.getElementById("h2Observadas").innerHTML = Estatus.estatus[4].Total;
+            document.getElementById("h2RechazadasTotal").innerHTML = Estatus.estatus[3].Total + Estatus.estatus[6].Total;
+            document.getElementById("h2RechazadasREC").innerHTML = Estatus.estatus[3].Total;
+            document.getElementById("h2CerradasREC").innerHTML = Estatus.estatus[6].Total;
+
+            // document.getElementById("h2Cerradas").innerHTML = Estatus.estatus[5].Total;
+            // document.getElementById("h2Observadas").innerHTML = Estatus.estatus[4].Total;
 
             document.getElementById("h2Total").innerHTML = Estatus.estatus[0].Total + Estatus.estatus[1].Total + Estatus.estatus[2].Total + Estatus.estatus[3].Total + Estatus.estatus[4].Total + Estatus.estatus[5].Total;
 

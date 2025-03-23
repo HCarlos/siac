@@ -87,12 +87,13 @@ class DashboardStaticCustomUnityController extends Controller{
 
             // INICIA EL MODULO DE ESTATUS
             $arrEstatus = [
-                (object)["ue_id" => 16, "Estatus"=> "RECIBIDA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["ue_id" => 19, "Estatus"=> "EN_PROCESO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["ue_id" => 17, "Estatus"=> "ATENDIDA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["ue_id" => 20, "Estatus"=> "RECHAZADA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["ue_id" => 18, "Estatus"=> "OBSERVADA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["ue_id" => 21, "Estatus"=> "CERRADO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                (object)["ue_id" => 16, "Estatus"=> "RECIBIDA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
+                (object)["ue_id" => 19, "Estatus"=> "EN_PROCESO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
+                (object)["ue_id" => 17, "Estatus"=> "ATENDIDA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
+                (object)["ue_id" => 20, "Estatus"=> "RECHAZADA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
+                (object)["ue_id" => 18, "Estatus"=> "OBSERVADA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
+                (object)["ue_id" => 21, "Estatus"=> "CERRADO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
+                (object)["ue_id" => 22, "Estatus"=> "CERRADO POR RECHAZO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
             ];
 
 
@@ -143,6 +144,36 @@ class DashboardStaticCustomUnityController extends Controller{
                         $a->con_rezago = $tr;
                     }
                 }
+            }
+
+            // SUmamos En proceso y Observadas
+            foreach ($arrEstatus[1]->Unidades as $key => $uni) {
+                $uni1 = $arrEstatus[1]->Unidades[$key]->Total ?? 0;
+                $uni4 = $arrEstatus[4]->Unidades[$key]->Total ?? 0;
+                $uni->Total1 = $uni1 + $uni4;
+            }
+
+            // Sumamos Atendidas y Cerradas
+            foreach ($arrEstatus[2]->Unidades as $key => $uni) {
+                $uni2 = $arrEstatus[2]->Unidades[$key]->Total ?? 0;
+                $uni5 = $arrEstatus[5]->Unidades[$key]->Total ?? 0;
+
+                $uniat2 = $arrEstatus[2]->Unidades[$key]->a_tiempo ?? 0;
+                $uniat5 = $arrEstatus[5]->Unidades[$key]->a_tiempo ?? 0;
+
+                $unicr2 = $arrEstatus[2]->Unidades[$key]->con_rezago ?? 0;
+                $unicr5 = $arrEstatus[5]->Unidades[$key]->con_rezago ?? 0;
+
+                $uni->Total1 = $uni1 + $uni4;
+                $uni->a_tiempo_t1 = $uniat2 + $uniat5;
+                $uni->con_rezago_t1 = $unicr2 + $unicr5;
+            }
+
+            // Sumamos Rechazadas y Cerrada por Rechazos
+            foreach ($arrEstatus[3]->Unidades as $key => $uni) {
+                $uni1 = $arrEstatus[3]->Unidades[$key]->Total ?? 0;
+                $uni4 = $arrEstatus[6]->Unidades[$key]->Total ?? 0;
+                $uni->Total1 = $uni1 + $uni4;
             }
 
 //            dd($arrEstatus);
@@ -245,6 +276,7 @@ class DashboardStaticCustomUnityController extends Controller{
                     case 17:
                     case 20:
                     case 21:
+                    case 22:
                         $status = "verde";
                         break;
                     default:
@@ -329,11 +361,13 @@ class DashboardStaticCustomUnityController extends Controller{
             $arrGeos = collect($arrGeos);
 //            $total_geodenuncias = count($arrGeos);
 //            $cerradas = count($arrGeos->where('ue_id', 21));
+//            $cerradas_por_rechazo = count($arrGeos->where('ue_id', 22));
 //            $atendidas = count($arrGeos->where('ue_id', 17));
 //            $rechazadas = count($arrGeos->where('ue_id', 20));
             $arrGeos = collect($arrGeos);
             $total_geodenuncias = count($arrGeos);
             $cerradas = count($arrGeos->where('ue_id', 21));
+            $cerradas_rechazo = count($arrGeos->where('ue_id', 22));
             $atendidas = count($arrGeos->where('ue_id', 17));
             $rechazadas = count($arrGeos->where('ue_id', 20));
             $observadas = count($arrGeos->where('ue_id', 18));
@@ -347,6 +381,7 @@ class DashboardStaticCustomUnityController extends Controller{
             $otrosDatos = [
                 (object)["total_geodenuncias" => $total_geodenuncias,
                     "cerradas" => $cerradas,
+                    "cerradas_rechazo" => $cerradas_rechazo,
                     "atendidas" => $atendidas,
                     "rechazadas" => $rechazadas,
                     "observadas" => $observadas,
