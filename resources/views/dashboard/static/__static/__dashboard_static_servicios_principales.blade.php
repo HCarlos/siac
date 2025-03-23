@@ -66,9 +66,15 @@
             <!-- Sección de solicitudes por área -->
             <div class="section">
                 <div class="card">
-                    <div class="stat-2">
-                        <h1 class="count" id="h2Recibidas">0</h1>
-                        <p>Recibidas</p>
+                    <div class="card-stat-2">
+                        <div class="card-left">
+                            <h1 class="count" id="h2Recibidas">0</h1>
+                            <p>Recibidas</p>
+                        </div>
+                        <div class="card-right">
+                            <p><strong id="h2Recibida1"></strong> .  </p>
+                            <p><strong id="h2Recibida2"></strong> .  </p>
+                        </div>
                     </div>
                     <div class="chart">
                         <canvas id="chart-area-1"></canvas>
@@ -153,9 +159,15 @@
 {{--                </div>--}}
 
                 <div class="card">
-                    <div class="stat-2">
-                        <h1 class="count" id="h2Total">0</h1>
-                        <p>Todas</p>
+                    <div class="card-stat-2">
+                        <div class="card-left">
+                            <h1 class="count" id="h2Total">0</h1>
+                            <p>Todas</p>
+                        </div>
+                        <div class="card-right">
+                            <p><strong id="h2Total1"></strong> .  </p>
+                            <p><strong id="h2Total2"></strong> .  </p>
+                        </div>
                     </div>
                     <div class="chart">
                         <canvas id="chart-area-7">[Gráfico de Barras]</canvas>
