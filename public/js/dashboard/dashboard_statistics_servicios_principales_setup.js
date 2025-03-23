@@ -270,7 +270,7 @@
                 data: dataSet,
                 backgroundColor: [
                     '#6a0dad', // Morado
-                    'rgba(255,127,80,0.85)', // Azul oscuro
+                    '#FF7F50D8', // Salmon
                     '#00bfff', // Cian
                     '#32cd32', // Verde
                     '#ffc107', // Amarillo
@@ -344,7 +344,7 @@ function data3pie(dataSetLabels,dataSet) {
             data: dataSet,
             backgroundColor: [
                 '#6a0dad', // Morado
-                '#0044cc', // Azul oscuro
+                '#FF7F50D8', // Azul oscuro
                 '#00bfff', // Cian
                 '#32cd32', // Verde
                 '#ffc107', // Amarillo
