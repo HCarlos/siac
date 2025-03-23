@@ -266,11 +266,11 @@
         return {
             labels: dataSetLabels,
             datasets: [{
-                label: 'Cantidad de servicios',
+                label: 'Servicios',
                 data: dataSet,
                 backgroundColor: [
                     '#6a0dad', // Morado
-                    '#0044cc', // Azul oscuro
+                    'rgba(255,127,80,0.85)', // Azul oscuro
                     '#00bfff', // Cian
                     '#32cd32', // Verde
                     '#ffc107', // Amarillo
@@ -340,7 +340,7 @@ function data3pie(dataSetLabels,dataSet) {
     return {
         labels: dataSetLabels,
         datasets: [{
-            label: 'Cantidad de servicios',
+            label: 'Servicios',
             data: dataSet,
             backgroundColor: [
                 '#6a0dad', // Morado
