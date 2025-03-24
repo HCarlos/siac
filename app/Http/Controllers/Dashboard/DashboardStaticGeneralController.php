@@ -166,16 +166,16 @@ class DashboardStaticGeneralController extends Controller{
                 $unicr2 = $arrEstatus[2]->Unidades[$key]->con_rezago ?? 0;
                 $unicr5 = $arrEstatus[5]->Unidades[$key]->con_rezago ?? 0;
 
-                $uni->Total1 = $uni1 + $uni4;
+                $uni->Total1 = $uni2 + $uni5;
                 $uni->a_tiempo_t1 = $uniat2 + $uniat5;
                 $uni->con_rezago_t1 = $unicr2 + $unicr5;
             }
 
             // Sumamos Rechazadas y Cerrada por Rechazos
             foreach ($arrEstatus[3]->Unidades as $key => $uni) {
-                $uni1 = $arrEstatus[3]->Unidades[$key]->Total ?? 0;
-                $uni4 = $arrEstatus[6]->Unidades[$key]->Total ?? 0;
-                $uni->Total1 = $uni1 + $uni4;
+                $uni3 = $arrEstatus[3]->Unidades[$key]->Total ?? 0;
+                $uni6 = $arrEstatus[6]->Unidades[$key]->Total ?? 0;
+                $uni->Total1 = $uni3 + $uni6;
             }
 
 
