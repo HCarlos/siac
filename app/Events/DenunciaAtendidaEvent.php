@@ -44,7 +44,7 @@ class DenunciaAtendidaEvent  implements ShouldBroadcast{
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-update-denuncia_estatus-atendida');
+        return new PrivateChannel('channel-update-denuncia-estatus-atendida');
     }
 
     public function broadcastAs(): string {
@@ -75,7 +75,6 @@ class DenunciaAtendidaEvent  implements ShouldBroadcast{
                 'promedio_dias_atendida' => $pdx->promedio_dias_atendida,
             ]);
         }
-
 
         $fecha = Carbon::now()->format('d-m-Y H:i'); //$fecha
         $this->msg    =  strtoupper(Auth::user()->FullName)." ha marcado como ATENDIDA la solicitud: ".$this->denuncia_id."  ".$fecha;

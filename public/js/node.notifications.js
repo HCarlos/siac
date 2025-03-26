@@ -77,6 +77,23 @@ jQuery(function($) {
                 }
             });
 
+
+        window.Echo.channel('channel-update-denuncia-estatus-atendida')
+            .listen('.DenunciaAtendidaEvent', (data) => {
+                if ( parseInt(localStorage.isToast) === 1) {
+                    $.toast({
+                        heading: 'SIAC',
+                        text: data.msg,
+                        icon: data.icon,
+                        loader: true,
+                        hideAfter: false,
+                        loaderBg: '#9EC600',
+                        position: 'top-left',
+                    })
+                }
+            });
+
+
     });
 
     // alert( localStorage.isToast );
