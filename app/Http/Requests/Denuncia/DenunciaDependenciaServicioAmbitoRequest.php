@@ -7,7 +7,9 @@ namespace App\Http\Requests\Denuncia;
 
 use App\Classes\MessageAlertClass;
 use App\Classes\NotificationsMobile\SendNotificationFCM;
+use App\Events\DenunciaAtendidaEvent;
 use App\Events\DenunciaUpdateStatusGeneralAmbitoEvent;
+use App\Events\IUQDenunciaEvent;
 use App\Http\Controllers\Storage\StorageRespuestaDenunciaController;
 use App\Models\Catalogos\Estatu;
 use App\Models\Denuncias\Denuncia;
@@ -137,6 +139,10 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
 
         $cfm = new SendNotificationFCM();
         $cfm->sendNotificationMobile($item,3);
+
+        if ( $this->estatus_id == 17 ){ //Atendida
+            event(new DenunciaAtendidaEvent($this->denuncia_id,Auth::user()->id,1));
+        }
 
         return Denuncia_Dependencia_Servicio::orderBy('id', 'DESC')->first()->id;
 

@@ -24,7 +24,7 @@ class Servicio extends Model
         'root','filename','filename_png','filename_thumb', 'ambito_servicio',
         'is_visible_mobile', 'nombre_mobile', 'url_image_mobile', 'orden_image_mobile',
         'nombre_corto_ss', 'nombre_corto_orden_ss', 'is_visible_nombre_corto_ss',
-        'dias_ejecucion', 'dias_maximos_ejecucion','estatus_cve',
+        'dias_ejecucion', 'dias_maximos_ejecucion','estatus_cve','promedio_dias_atendida',
     ];
     protected $hidden = ['deleted_at','created_at','updated_at'];
     protected $casts = ['habilitado'=>'boolean','is_visible_mobile'=>'boolean', 'is_visible_nombre_corto_ss'=>'boolean',];

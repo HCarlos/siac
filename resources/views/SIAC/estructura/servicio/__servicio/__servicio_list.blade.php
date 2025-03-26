@@ -12,6 +12,7 @@
                         <th class="sorting w-8-percent">Mobile</th>
                         <th class="sorting w-8-percent">Es Servicio</th>
                         <th class="sorting w-8-percent">Servicio</th>
+                        <th class="sorting w-8-percent">Prom</th>
                         <th class="sorting w-8-percent">Habilitado</th>
                         <th class="w-10-percent"></th>
                     </tr>
@@ -42,6 +43,7 @@
                                 {{$item->nombre_corto_ss}}
                             @endif
                         </td>
+                        <td>{{$item->promedio_dias_atendida}}</td>
                         <td class="text-center">
                             @if( (int) $item->habilitado == 1 )
                                 <i class="fa fa-check text-success "></i>
