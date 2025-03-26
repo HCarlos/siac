@@ -8,6 +8,10 @@
     $cerradas = \App\Models\Denuncias\_viDDSs::query()->GetDenunciasEstatusAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',21)->count();
     $tAtCer = $atendidas + $cerradas;
 
+    $rechazadas = \App\Models\Denuncias\_viDDSs::query()->GetDenunciasEstatusAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',20)->count();
+    $cerradas_rechazadas = \App\Models\Denuncias\_viDDSs::query()->GetDenunciasEstatusAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',22)->count();
+    $tRechCer = $rechazadas + $cerradas_rechazadas;
+
     $enproceso = \App\Models\Denuncias\_viDDSs::query()->GetDenunciasEstatusAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',19)->count();
     $observadas = \App\Models\Denuncias\_viDDSs::query()->GetDenunciasEstatusAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',18)->count();
     $tProObs = $enproceso + $observadas;
@@ -147,10 +151,30 @@
                                 <a href="{{route('listDenunciasAmbito20')}}">
 {{--                                    @php $filters['filterdata']=""; @endphp--}}
                                     <i class="mdi dripicons-archive"></i>
-                                    <span
-                                        class="badge badge-light float-right">{{\App\Models\Denuncias\_viDDSs::query()->GetDenunciasEstatusAmbitoFilterCount($filters)->where('ambito_dependencia',2)->where('ue_id',20)->count()}}</span>
+                                    <span class="badge badge-light float-right mr-4">{{ $tRechCer }}</span>
+                                    <span class="menu-arrow "></span>
                                     <span>Rechazadas</span>
                                 </a>
+                                <ul class="side-nav-three-level" aria-expanded="false">
+                                    <li >
+                                        <a href="{{route('listDenunciasAmbito20')}}">
+{{--                                            @php $filters['filterdata']=""; @endphp--}}
+{{--                                            <i class="mdi dripicons-archive"></i>--}}
+                                            <span
+                                                class="badge badge-light float-right">{{ $rechazadas }}</span>
+                                            <span class="ml-4">Rechazadas</span>
+                                        </a>
+                                    </li>
+                                    <li >
+                                        <a href="{{route('listDenunciasAmbito22')}}">
+{{--                                            @php $filters['filterdata']=""; @endphp--}}
+{{--                                            <i class="mdi dripicons-archive"></i>--}}
+                                            <span class="badge badge-light float-right">{{$cerradas_rechazadas}}</span>
+                                            <span class="ml-4">Cerradas P/R</span>
+                                        </a>
+                                    </li>
+                                </ul>
+
                             </li>
                         </ul>
                     </li>

@@ -58,4 +58,6 @@ class AgregarColoniaIdADenunciasSeeder extends Seeder
 
 
     }
+
+    
 }

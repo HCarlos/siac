@@ -155,6 +155,10 @@ class DenunciaAmbitoController extends Controller{
         return $this->index($request, 2,21);
     }
 
+    protected function index22(Request $request){
+        return $this->index($request, 2,22);
+    }
+
     protected function newItem1($ambito_dependencia, $ambito_estatus){
 
         $Prioridades  = Prioridad::query()

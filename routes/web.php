@@ -481,6 +481,7 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|test_admin|USER_OPE
     Route::get('listDenunciasAmbito19', 'Denuncia\DenunciaAmbitoController@index19')->name('listDenunciasAmbito19');
     Route::get('listDenunciasAmbito20', 'Denuncia\DenunciaAmbitoController@index20')->name('listDenunciasAmbito20');
     Route::get('listDenunciasAmbito21', 'Denuncia\DenunciaAmbitoController@index21')->name('listDenunciasAmbito21');
+    Route::get('listDenunciasAmbito22', 'Denuncia\DenunciaAmbitoController@index22')->name('listDenunciasAmbito22');
     Route::get('editDenunciaAmbito/{ambito_dependencia}/{Id}', 'Denuncia\DenunciaAmbitoController@editItem')->name('editDenunciaAmbito');
     Route::put('updateDenunciaAmbito1', 'Denuncia\DenunciaAmbitoController@updateItem1')->name('updateDenunciaAmbito1');
     Route::put('updateDenunciaAmbito2', 'Denuncia\DenunciaAmbitoController@updateItem2')->name('updateDenunciaAmbito2');
