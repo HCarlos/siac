@@ -81,6 +81,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
 
         $sh->setCellValue('u1', Carbon::now()->format('d-m-Y h:m:s'));
         foreach ($Items as $item){
+//            dd($item);
             $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y H:i');
             $fechaIngreso   = isset($item->fecha_ingreso) ? $fechaIngreso : '';
 
@@ -172,10 +173,11 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('S'.$C, $item->clave_identificadora )
                     ->setCellValue('T'.$C, trim($cds->StrGenero ?? ''))
                     ->setCellValue('U'.$C, $item->Ambito() ?? '')
-                    ->setCellValue('V'.$C, $this->getColorSemaforo($item)[0]);
-
+                    ->setCellValue('V'.$C, $this->getColorSemaforo($item)[0])
+                    ->setCellValue('W'.$C, $item->dias_atendida ?? '' )
+                    ->setCellValue('X'.$C, $item->dias_rechazada ?? '' );
                 $sh
-                    ->getStyle('A'.$C.':V'.$C)
+                    ->getStyle('A'.$C.':X'.$C)
                     ->getFill()
                     ->applyFromArray([
                             'fillType' => 'solid',
@@ -429,6 +431,19 @@ class ListDenunciaAmbitoXLSXController extends Controller
 
 
     function getColorSemaforo($g){
+
+        $finicio = Carbon::now();
+        $ffin = Carbon::parse($g->fecha_ingreso)->format('Y-m-d');
+        $cffin = "";
+
+        if ($g->estatu_id === 17 ||
+            $g->estatu_id === 20
+        ) {
+            $finicio = Carbon::parse($g->fecha_ingreso)->format('Y-m-d');
+        }
+
+
+
         $status = "white";
         $status_i = "white";
         $dias_vencidos = 0;
@@ -436,7 +451,9 @@ class ListDenunciaAmbitoXLSXController extends Controller
             case 16:
             case 19:
                 $ser = _viDDSs::find($g->id);
-                $fex = Carbon::parse(now())->diffInDays(Carbon::parse($ser->fecha_dias_maximos_ejecucion),false);
+                $ffin = Carbon::parse($ser->fecha_movimiento);
+                $cffin = Carbon::parse($ser->fecha_movimiento);
+                $fex = Carbon::parse($ffin)->diffInDays(Carbon::parse($ser->fecha_dias_maximos_ejecucion),false);
                 if ($fex >= 0) {
                     $status = "amarillo";
                     $status_i = "yellow";
@@ -449,6 +466,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
             case 17:
             case 20:
             case 21:
+            case 22:
                 $status = "verde";
                 $status_i = "green";
                 break;

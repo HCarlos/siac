@@ -158,7 +158,7 @@ class DenunciaAtendidaEvent  implements ShouldBroadcast{
                 'trigger_type'   => $this->trigger_type,
                 'message'        => $this->msg,
                 'icon'           => $this->icon,
-                'status'         => $this->status,
+                'status'         => 200,
                 'ip'             => FuncionesController::getIp(),
                 'host'           => $ip,
                 'fecha'          => now(),

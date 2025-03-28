@@ -271,6 +271,7 @@ class FuncionesController extends Controller
             'uuid','cerrado','firmado',
             'ue_id','due_id','sue_id','fecha_ultimo_estatus',
             'centro_localidad_id',
+            'dias_atendida','dias_rechazada','dias_observada',
         ];
     }
 

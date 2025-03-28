@@ -49,7 +49,7 @@ class Denuncia extends Model
         'ip', 'host','ambito',
         'ue_id','due_id','sue_id','fecha_ultimo_estatus',
         'search_google','gd_ubicacion','centro_localidad_id',
-        'dias_atendida',
+        'dias_atendida','dias_rechazada','dias_observada',
     ];
 //    protected $hidden = ['deleted_at','created_at','updated_at'];
     protected $dates = ['fecha_ingreso', 'fecha_oficio_dependencia' => 'datetime:d-m-Y', 'fecha_limite' => 'datetime:d-m-Y', 'fecha_ejecucion' => 'datetime:d-m-Y', 'created_at' => 'datetime:d-m-Y H:mm:ss', 'updated_at' => 'datetime:d-m-Y H:mm:ss','fecha_cerrado'];

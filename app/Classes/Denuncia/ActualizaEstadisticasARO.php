@@ -10,7 +10,9 @@ use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use Carbon\Carbon;
+use Google\Service\Adsense\Alert;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ActualizaEstadisticasARO{
 
@@ -28,9 +30,11 @@ class ActualizaEstadisticasARO{
                 ->orderBy('id')
                 ->get();
 
+
             if (count($dens) > 0) {
                 foreach ($dens as $d) {
                     if ( in_array($d->estatu_id, [17, 20]) ) {
+//                        Log::alert("Evento: ".$d->denuncia_id." ".$d->dependencia_id." ".$d->servicio_id." ".$d->estatu_id);
                         event(new DenunciaAtendidaEvent($d->denuncia_id, 1, 1, $d->estatu_id, false, $d));
                     }
                 }
@@ -48,6 +52,8 @@ class ActualizaEstadisticasARO{
             $finicio = Carbon::now();
             $ffin = Carbon::parse($den->fecha_ingreso);
             $cffin = "";
+
+//            dd($viDen->estatu_id);
 
             if ($viDen->estatu_id === 17 ||
                 $viDen->estatu_id === 20
