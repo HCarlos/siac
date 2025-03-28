@@ -26,7 +26,6 @@ class AlterServicio2Table extends Migration
             });
         }
 
-
     }
 
     /**

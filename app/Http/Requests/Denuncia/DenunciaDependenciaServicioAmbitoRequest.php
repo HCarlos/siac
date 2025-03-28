@@ -140,9 +140,7 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
         $cfm = new SendNotificationFCM();
         $cfm->sendNotificationMobile($item,3);
 
-        if ( $this->estatus_id == 17 ){ //Atendida
-            event(new DenunciaAtendidaEvent($this->denuncia_id,Auth::user()->id,1));
-        }
+        event(new DenunciaAtendidaEvent($this->denuncia_id,Auth::user()->id,1,$this->estatus_id, true, null));
 
         return Denuncia_Dependencia_Servicio::orderBy('id', 'DESC')->first()->id;
 
