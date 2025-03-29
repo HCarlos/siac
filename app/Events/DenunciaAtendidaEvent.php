@@ -79,12 +79,12 @@ class DenunciaAtendidaEvent  implements ShouldBroadcast{
                 $den->save();
 
                 $pdx = DB::table("denuncias")
-                    ->select(DB::raw("AVG(dias_atendida) AS promedio_dias_atendida"))
+                    ->select(DB::raw("AVG(COALESCE(dias_atendida)) AS promedio_dias_atendida"))
                     ->where('servicio_id', $den->servicio_id)
-                    ->where('dias_atendida','>', 0)
                     ->groupBy('servicio_id')
                     ->first();
 
+                //                ->where('dias_atendida','>', 0)
 //                ->where('ambito_dependencia', 2)
 
                 if ($pdx->promedio_dias_atendida !== null) {
@@ -112,12 +112,12 @@ class DenunciaAtendidaEvent  implements ShouldBroadcast{
                 $den->save();
 
                 $pdx = DB::table("denuncias")
-                    ->select(DB::raw("AVG(dias_rechazada) AS promedio_dias_rechazada"))
+                    ->select(DB::raw("AVG(COALESCE(dias_rechazada)) AS promedio_dias_rechazada"))
                     ->where('servicio_id', $den->servicio_id)
-                    ->where('dias_rechazada','>', 0)
                     ->groupBy('servicio_id')
                     ->first();
 
+//                ->where('dias_rechazada','>', 0)
 //                ->where('ambito_dependencia', 2)
 
 //                if ($pdx->promedio_dias_rechazada !== null) {
