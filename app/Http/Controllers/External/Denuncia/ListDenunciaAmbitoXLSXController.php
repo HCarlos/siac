@@ -79,10 +79,10 @@ class ListDenunciaAmbitoXLSXController extends Controller
     // Denuncia General Formato 01
     public function denunciaGeneral01($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
 
-        $sh->setCellValue('u1', Carbon::now()->format('d-m-Y h:m:s'));
+        $sh->setCellValue('u1', Carbon::now()->format('d-m-Y h:i:s'));
         foreach ($Items as $item){
 //            dd($item);
-            $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y H:i');
+            $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y H:i:s');
             $fechaIngreso   = isset($item->fecha_ingreso) ? $fechaIngreso : '';
 
             $Colonia = "";
@@ -101,31 +101,27 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->first();
 
             $respuesta = "";
-            $favorable = false;
             try{
                 if ( $resp->observaciones !== null){
                     $res = trim($resp->observaciones) ?? '';
                     if ( $res != ""){
                         $dep = Dependencia::find($resp->dependencia_id);
                         $respuesta = $dep->abreviatura.' - '.$res.'. ';
-                        $favorable = $resp->favorable;
                     }
                 }else{
                     $respuesta = '';
-                    $favorable = '';
                 }
             }catch (Exception $e) {
                 $respuesta = '';
-                $favorable = '';
             }
 
 
-            if (json_decode($item->estatus_general) == null){
-                $fechaUntiloEstatus = "";
-            }else{
-                $arrUltimoEstatus = last(json_decode($item->estatus_general));
-                $fechaUntiloEstatus   = Carbon::parse($arrUltimoEstatus->fecha)->format('d-m-Y');
-            }
+//            if (json_decode($item->estatus_general) == null){
+//                $fechaUntiloEstatus = "";
+//            }else{
+//                $arrUltimoEstatus = last(json_decode($item->estatus_general));
+//                $fechaUntiloEstatus   = Carbon::parse($arrUltimoEstatus->fecha)->format('d-m-Y');
+//            }
 
             foreach ($item->ciudadanos as $cds){
 
@@ -146,6 +142,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
 
                 $gdu = explode(',',trim($item->gd_ubicacion));
                 $cadgdu = $gdu[1] ?? '';
+
 
                 $sh
                     ->setCellValue('A'.$C, $item->id ?? 0)
@@ -168,7 +165,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('N'.$C, $item->prioridad->prioridad ?? '')
                     ->setCellValue('O'.$C, $item->origen->origen ?? '')
                     ->setCellValue('P'.$C, $item->ultimo_estatus ?? '')
-                    ->setCellValue('Q'.$C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y h:m') ?? '')
+                    ->setCellValue('Q'.$C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y H:i:s') ?? '')
                     ->setCellValue('R'.$C, $respuesta )
                     ->setCellValue('S'.$C, $item->clave_identificadora )
                     ->setCellValue('T'.$C, trim($cds->StrGenero ?? ''))
@@ -223,9 +220,9 @@ class ListDenunciaAmbitoXLSXController extends Controller
     // Denuncia General Formato 01
     public function denunciaSASGeneral01($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
 
-        $sh->setCellValue('I1', Carbon::now()->format('d-m-Y h:m:s'));
+        $sh->setCellValue('I1', Carbon::now()->format('d-m-Y H:i:s'));
         foreach ($Items as $item) {
-            $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
+            $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y H:i:s');
             $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
 
             $resp = Denuncia_Dependencia_Servicio::query()
@@ -234,24 +231,24 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 ->orderByDesc('id')
                 ->first();
 
-            $respuesta = "";
-            $favorable = false;
-            try {
-                if ($resp->observaciones !== null) {
-                    $res = trim($resp->observaciones) ?? '';
-                    if ($res != "") {
-                        $dep = Dependencia::find($resp->dependencia_id);
-                        $respuesta = $dep->abreviatura . ' - ' . $res . '. ';
-                        $favorable = $resp->favorable;
-                    }
-                } else {
-                    $respuesta = '';
-                    $favorable = '';
-                }
-            } catch (Exception $e) {
-                $respuesta = '';
-                $favorable = '';
-            }
+//            $respuesta = "";
+//            $favorable = false;
+//            try {
+//                if ($resp->observaciones !== null) {
+//                    $res = trim($resp->observaciones) ?? '';
+//                    if ($res != "") {
+//                        $dep = Dependencia::find($resp->dependencia_id);
+//                        $respuesta = $dep->abreviatura . ' - ' . $res . '. ';
+//                        $favorable = $resp->favorable;
+//                    }
+//                } else {
+//                    $respuesta = '';
+//                    $favorable = '';
+//                }
+//            } catch (Exception $e) {
+//                $respuesta = '';
+//                $favorable = '';
+//            }
 
             $Colonia = "";
             $Delegacion = "";
@@ -296,7 +293,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('I' . $C, $item->descripcion ?? '')
                     ->setCellValue('J' . $C, $item->Ambito() ?? '')
                     ->setCellValue('K' . $C, $item->ultimo_estatus ?? '')
-                    ->setCellValue('L' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y H:i') ?? '');
+                    ->setCellValue('L' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y H:i:s') ?? '');
                 $C++;
             }
         }
@@ -353,7 +350,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
             $spreadsheet = $reader->load($archivo);
             $sh = $spreadsheet->setActiveSheetIndex(0);
 
-            $sh->setCellValue('H1', Carbon::now()->format('d-m-Y h:m:s'));
+            $sh->setCellValue('H1', Carbon::now()->format('d-m-Y h:i:s'));
             foreach ($Items as $item){
 
 //                dd($item);
@@ -371,18 +368,18 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 $Servicio    = Servicio::find($servicio_id);
                 $Estatus     = Estatu::find($estatu_id);
 
-                $ciudadano   = User::find($Denuncia->ciudadano_id);
-                $prioridad   = Prioridad::find($Denuncia->prioridad_id);
-                $origen      = Origen::find($Denuncia->origen_id);
-                $dependencia = Dependencia::find($Denuncia->dependencia_id);
-                $servicio    = Servicio::find($Denuncia->servicio_id);
-                $ubicacion   = Ubicacion::find($Denuncia->ubicacion_id);
-                $estatus     = Estatu::find($Denuncia->estatus_id);
-                $creadopor   = User::find($Denuncia->creadopor_id);
+//                $ciudadano   = User::find($Denuncia->ciudadano_id);
+//                $prioridad   = Prioridad::find($Denuncia->prioridad_id);
+//                $origen      = Origen::find($Denuncia->origen_id);
+//                $dependencia = Dependencia::find($Denuncia->dependencia_id);
+//                $servicio    = Servicio::find($Denuncia->servicio_id);
+//                $ubicacion   = Ubicacion::find($Denuncia->ubicacion_id);
+//                $estatus     = Estatu::find($Denuncia->estatus_id);
+//                $creadopor   = User::find($Denuncia->creadopor_id);
 
-                $fechaIngreso   = Carbon::parse($Denuncia->fecha_ingreso)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
-                $fechaLimite    = Carbon::parse($Denuncia->fecha_limite)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
-                $fechaEjecucion = Carbon::parse($Denuncia->fecha_ejecucion)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
+//                $fechaIngreso   = Carbon::parse($Denuncia->fecha_ingreso)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
+//                $fechaLimite    = Carbon::parse($Denuncia->fecha_limite)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
+//                $fechaEjecucion = Carbon::parse($Denuncia->fecha_ejecucion)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
 
                 $sh
                     ->setCellValue('A'.$C, $item->id)
