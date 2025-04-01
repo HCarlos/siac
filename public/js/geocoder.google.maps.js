@@ -180,6 +180,16 @@ async function initMap(lat, lon, siExiste) {
                 $("#searchGoogleResult").html(results[0].formatted_address).show(100);
                 $("#search_google").val(results[0].formatted_address)
 
+                const administrativeAreaLevel2 = results[0].address_components.find(component => component.types.includes('administrative_area_level_2'));
+
+                // Si existe, mostrar el nombre
+                if (administrativeAreaLevel2) {
+                    console.log(administrativeAreaLevel2.long_name);  // Esto debe devolver "Centro"
+                } else {
+                    console.log('No se encontró un nivel administrativo 2');
+                }
+
+
             } else {
                 $("#searchGoogleError").html('Cannot determine address at this location.' + status).show(100);
             }
@@ -316,14 +326,16 @@ jQuery(function($) {
         if (input) {
             const center = { lat: lat, lng: lon };
             const defaultBounds = {
-                north: center.lat + 0.1,
-                south: center.lat - 0.1,
-                east: center.lng + 0.1,
-                west: center.lng - 0.1,
+                north: center.lat + 0.2,
+                south: center.lat - 0.2,
+                east: center.lng + 0.2,
+                west: center.lng - 0.2,
             };
             const autocompletar = new google.maps.places.Autocomplete(input, {
                 types: ['geocode'],
-                componentRestrictions: { country: 'mx' }
+                componentRestrictions: { country: 'mx'},
+                bounds: defaultBounds,
+                strictBounds: true,
             });
         } else {
             console.error('No se encontró el elemento con id "search_google"');
