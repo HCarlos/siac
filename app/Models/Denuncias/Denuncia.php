@@ -5,6 +5,7 @@
 
 namespace App\Models\Denuncias;
 
+use App\Classes\Denuncia\ActualizaEstadisticasARO;
 use App\Filters\Denuncia\Count\DenunciaAmbitoFilterCount;
 use App\Filters\Denuncia\Count\GetDenunciasAmbitoFilterCount;
 use App\Filters\Denuncia\Count\GetDenunciasEstatusAmbitoFilterCount;
@@ -24,6 +25,7 @@ use App\Models\Catalogos\Servicio;
 use App\Traits\Denuncia\DenunciaTrait;
 use App\User;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -252,66 +254,68 @@ class Denuncia extends Model
 
     public function semaforo_ultimo_estatus(){
 
-        $sem = 1;
+        return ActualizaEstadisticasARO::semaforo_ultimo_estatus_off($this->ue_id, new DateTime($this->fecha_ultimo_estatus), $this->fecha_ingreso);
 
-        $finicio = Carbon::now();
-        $ffin = Carbon::parse($this->fecha_ingreso);
-        $cffin = "";
-
-        if ($this->ultimo_estatus === "ATENDIDO" ||
-            $this->ultimo_estatus === "ATENDIDA" ||
-            $this->ultimo_estatus === "RECHAZADA"
-        ){
-            $finicio = Carbon::parse($this->fecha_ingreso);
-            $ffin = Carbon::parse($this->fecha_ultimo_estatus);
-            $cffin = Carbon::parse($this->fecha_ultimo_estatus)->format('d-m-Y');
-        }
-//        $viDevn = _viDDSs::find($this->id);
+//        $sem = 1;
 //
-//        $fme2 = Carbon::parse($viDevn->fecha_dias_maximos_ejecucion);
-
-        $dias = $finicio->diffInDays($ffin);
-
-//        if ( $dias <= $this->dias_ejecucion ){ $sem = 1; $class_color = 'text-verde-semaforo';  }
-//        if ( $dias > $this->dias_ejecucion && $dias <= $this->dias_maximos_ejecucion ){ $sem = 2; $class_color = 'text-amarillo-semaforo';}
-//        if ( $dias > $this->dias_maximos_ejecucion ){ $sem = 3; $class_color = 'text-rojo-semaforo';}
-
-        switch ( $this->ue_id ) {
-            case 16:
-            case 19:
-                $fex = Carbon::parse(now())->diffInDays(Carbon::parse($ffin),false);
-                if ($fex >= 0) {
-                    $status = "amarillo";
-                    $class_color = 'text-amarillo-semaforo';
-                    $sem = 2;
-                }else{
-                    $status = "rojo";
-                    $class_color = 'text-rojo-semaforo';
-                    $sem = 3;
-                    $dias_vencidos = abs($fex);
-                }
-                break;
-            case 17:
-            case 20:
-            case 21:
-            case 22:
-                $status = "verde";
-                $sem = 1;
-                $class_color = 'text-verde-semaforo';
-                break;
-            default:
-                $status = "amarillo";
-                $class_color = 'text-amarillo-semaforo';
-                $sem = 2;
-                break;
-        }
-
-        return [
-            'sem' => $sem,
-            'dias' => $dias,
-            'class_color' => $class_color,
-            'fecha_fin' => $cffin,
-        ];
+//        $finicio = Carbon::now();
+//        $ffin = Carbon::parse($this->fecha_ingreso);
+//        $cffin = "";
+//
+//        if ($this->ultimo_estatus === "ATENDIDO" ||
+//            $this->ultimo_estatus === "ATENDIDA" ||
+//            $this->ultimo_estatus === "RECHAZADA"
+//        ){
+//            $finicio = Carbon::parse($this->fecha_ingreso);
+//            $ffin = Carbon::parse($this->fecha_ultimo_estatus);
+//            $cffin = Carbon::parse($this->fecha_ultimo_estatus)->format('d-m-Y');
+//        }
+////        $viDevn = _viDDSs::find($this->id);
+////
+////        $fme2 = Carbon::parse($viDevn->fecha_dias_maximos_ejecucion);
+//
+//        $dias = $finicio->diffInDays($ffin);
+//
+////        if ( $dias <= $this->dias_ejecucion ){ $sem = 1; $class_color = 'text-verde-semaforo';  }
+////        if ( $dias > $this->dias_ejecucion && $dias <= $this->dias_maximos_ejecucion ){ $sem = 2; $class_color = 'text-amarillo-semaforo';}
+////        if ( $dias > $this->dias_maximos_ejecucion ){ $sem = 3; $class_color = 'text-rojo-semaforo';}
+//
+//        switch ( $this->ue_id ) {
+//            case 16:
+//            case 19:
+//                $fex = Carbon::parse(now())->diffInDays(Carbon::parse($ffin),false);
+//                if ($fex >= 0) {
+//                    $status = "amarillo";
+//                    $class_color = 'text-amarillo-semaforo';
+//                    $sem = 2;
+//                }else{
+//                    $status = "rojo";
+//                    $class_color = 'text-rojo-semaforo';
+//                    $sem = 3;
+//                    $dias_vencidos = abs($fex);
+//                }
+//                break;
+//            case 17:
+//            case 20:
+//            case 21:
+//            case 22:
+//                $status = "verde";
+//                $sem = 1;
+//                $class_color = 'text-verde-semaforo';
+//                break;
+//            default:
+//                $status = "amarillo";
+//                $class_color = 'text-amarillo-semaforo';
+//                $sem = 2;
+//                break;
+//        }
+//
+//        return [
+//            'sem' => $sem,
+//            'dias' => $dias,
+//            'class_color' => $class_color,
+//            'fecha_fin' => $cffin,
+//        ];
 
 
     }

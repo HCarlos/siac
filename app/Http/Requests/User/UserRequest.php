@@ -45,10 +45,8 @@ class UserRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
-    {
+    public function rules(){
         $arr =  [
-//            'email'      => ['required', 'string', 'email', 'max:255', 'unique:users,'.$this->id],
             'ubicacion_nueva_id' => ['required','numeric','not_in:0'],
             'curp'               => ['unique:users,curp,'.$this->id, new IsCURPRule() ],
             'ap_paterno'         => ['required', 'string'],
@@ -60,8 +58,7 @@ class UserRequest extends FormRequest
         return $arr;
     }
 
-    public function messages()
-    {
+    public function messages(){
         return [
 
             'ubicacion_nueva_id.required' => 'Se requiere la :attribute',

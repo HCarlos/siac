@@ -21,8 +21,10 @@ class Actualizar_Estatus_General_2_Seeder extends Seeder
 
         $dens = Denuncia::query()
             ->select('id')
+        ->where('id', 103917)
             ->orderByDesc('id')
             ->get();
+
 
         $vid = new ActualizaEstadisticasARO();
 

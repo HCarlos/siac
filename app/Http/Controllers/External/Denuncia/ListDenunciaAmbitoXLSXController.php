@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\External\Denuncia;
 
+use App\Classes\Denuncia\ActualizaEstadisticasARO;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Models\Catalogos\CentroLocalidad;
 use App\Models\Catalogos\Dependencia;
@@ -14,6 +15,7 @@ use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use App\Http\Controllers\Controller;
+use DateTime;
 use Illuminate\Http\Request;
 
 
@@ -170,7 +172,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('S'.$C, $item->clave_identificadora )
                     ->setCellValue('T'.$C, trim($cds->StrGenero ?? ''))
                     ->setCellValue('U'.$C, $item->Ambito() ?? '')
-                    ->setCellValue('V'.$C, $this->getColorSemaforo($item)[0])
+                    ->setCellValue('V'.$C, $this->getColorSemaforo($item)['status'])
                     ->setCellValue('W'.$C, $item->dias_atendida ?? '' )
                     ->setCellValue('X'.$C, $item->dias_rechazada ?? '' );
                 $sh
@@ -179,7 +181,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->applyFromArray([
                             'fillType' => 'solid',
                             'rotation' => 0,
-                            'color' => ['rgb' => $this->getColorSemaforo($item)[1]],
+                            'color' => ['rgb' => $this->getColorSemaforo($item)['status_i']],
                             ]);
 
                 $C++;
@@ -429,50 +431,52 @@ class ListDenunciaAmbitoXLSXController extends Controller
 
     function getColorSemaforo($g){
 
-        $finicio = Carbon::now();
-        $ffin = Carbon::parse($g->fecha_ingreso)->format('Y-m-d');
-        $cffin = "";
+        return ActualizaEstadisticasARO::semaforo_ultimo_estatus_off($g->ue_id, new DateTime($g->fecha_movimiento), $g->fecha_ingreso);
 
-        if ($g->estatu_id === 17 ||
-            $g->estatu_id === 20
-        ) {
-            $finicio = Carbon::parse($g->fecha_ingreso)->format('Y-m-d');
-        }
-
-
-
-        $status = "white";
-        $status_i = "white";
-        $dias_vencidos = 0;
-        switch ( $g->ue_id ) {
-            case 16:
-            case 19:
-                $ser = _viDDSs::find($g->id);
-                $ffin = Carbon::parse($ser->fecha_movimiento);
-                $cffin = Carbon::parse($ser->fecha_movimiento);
-                $fex = Carbon::parse($ffin)->diffInDays(Carbon::parse($ser->fecha_dias_maximos_ejecucion),false);
-                if ($fex >= 0) {
-                    $status = "amarillo";
-                    $status_i = "yellow";
-                }else{
-                    $status = "rojo";
-                    $status_i = "red";
-                    $dias_vencidos = abs($fex);
-                }
-                break;
-            case 17:
-            case 20:
-            case 21:
-            case 22:
-                $status = "verde";
-                $status_i = "green";
-                break;
-            default:
-                $status = "amarillo";
-                $status_i = "yellow";
-                break;
-        }
-        return [$status,$status_i];
+//        $finicio = Carbon::now();
+//        $ffin = Carbon::parse($g->fecha_ingreso)->format('Y-m-d');
+//        $cffin = "";
+//
+//        if ($g->estatu_id === 17 ||
+//            $g->estatu_id === 20
+//        ) {
+//            $finicio = Carbon::parse($g->fecha_ingreso)->format('Y-m-d');
+//        }
+//
+//
+//
+//        $status = "white";
+//        $status_i = "white";
+//        $dias_vencidos = 0;
+//        switch ( $g->ue_id ) {
+//            case 16:
+//            case 19:
+//                $ser = _viDDSs::find($g->id);
+//                $ffin = Carbon::parse($ser->fecha_movimiento);
+//                $cffin = Carbon::parse($ser->fecha_movimiento);
+//                $fex = Carbon::parse($ffin)->diffInDays(Carbon::parse($ser->fecha_dias_maximos_ejecucion),false);
+//                if ($fex >= 0) {
+//                    $status = "amarillo";
+//                    $status_i = "yellow";
+//                }else{
+//                    $status = "rojo";
+//                    $status_i = "red";
+//                    $dias_vencidos = abs($fex);
+//                }
+//                break;
+//            case 17:
+//            case 20:
+//            case 21:
+//            case 22:
+//                $status = "verde";
+//                $status_i = "green";
+//                break;
+//            default:
+//                $status = "amarillo";
+//                $status_i = "yellow";
+//                break;
+//        }
+//        return [$status,$status_i];
 
     }
 

@@ -10,6 +10,7 @@ use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use Carbon\Carbon;
+use DateTime;
 use Google\Service\Adsense\Alert;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -45,36 +46,50 @@ class ActualizaEstadisticasARO{
 
     }
 
-        public function semaforo_ultimo_estatus_off($den, $viDen){
+        public static function semaforo_ultimo_estatus_off($ue_id, $fecha_mayor, $fecha_menor){
 
             $sem = 1;
+            $dias_vencidos = 0;
 
-            $finicio = Carbon::now();
-            $ffin = Carbon::parse($den->fecha_ingreso);
+//            dd($fecha_mayor);
+
+            $ffin = Carbon::now();
+            $ff = now();
+            $ff = $ff->setTime(0,0,0);
+            $ff = Carbon::parse($ff);
+            $ffin = $ff;
+            $finicio = $fecha_menor->setTime(0,0,0);
+
             $cffin = "";
 
-//            dd($viDen->estatu_id);
-
-            if ($viDen->estatu_id === 17 ||
-                $viDen->estatu_id === 20
+            if ($ue_id === 17 ||
+                $ue_id === 20
             ) {
-                $finicio = Carbon::parse($den->fecha_ingreso);
-                $ffin = Carbon::parse($viDen->fecha_movimiento);
-                $cffin = Carbon::parse($viDen->fecha_movimiento)->format('d-m-Y');
+                $finicio = $fecha_menor->setTime(0,0,0);
+                $ffin = $fecha_mayor->setTime(0,0,0);
+                $cffin = Carbon::parse($fecha_mayor)->format('d-m-Y');
             }
 
-            $dias = $finicio->diffInDays($ffin);
+            $finicio = Carbon::parse($finicio);
+            $ffin = Carbon::parse($ffin);
 
-            switch ($den->ue_id) {
+            $dias = $ffin->diffInDays($finicio);
+
+//            dd($dias);
+
+            switch ($ue_id) {
                 case 16:
                 case 19:
-                    $fex = Carbon::parse(now())->diffInDays(Carbon::parse($ffin), false);
+                    $ffin = $fecha_mayor->setTime(0,0,0);
+                    $fex = $ff->diffInDays($ffin,false);
                     if ($fex >= 0) {
                         $status = "amarillo";
+                        $status_i = "yellow";
                         $class_color = 'text-amarillo-semaforo';
                         $sem = 2;
                     } else {
                         $status = "rojo";
+                        $status_i = "red";
                         $class_color = 'text-rojo-semaforo';
                         $sem = 3;
                         $dias_vencidos = abs($fex);
@@ -85,11 +100,13 @@ class ActualizaEstadisticasARO{
                 case 21:
                 case 22:
                     $status = "verde";
+                    $status_i = "green";
                     $sem = 1;
                     $class_color = 'text-verde-semaforo';
                     break;
                 default:
                     $status = "amarillo";
+                    $status_i = "yellow";
                     $class_color = 'text-amarillo-semaforo';
                     $sem = 2;
                     break;
@@ -98,8 +115,11 @@ class ActualizaEstadisticasARO{
             return [
                 'sem' => $sem,
                 'dias' => $dias,
+                'status' => $status,
+                'status_i' => $status_i,
                 'class_color' => $class_color,
                 'fecha_fin' => $cffin,
+                'dias_vencidos' => $dias_vencidos,
             ];
 
         }

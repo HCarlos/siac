@@ -71,9 +71,10 @@ class DenunciaAtendidaEvent  implements ShouldBroadcast{
                 $den = Denuncia::find($this->denuncia_id);
                 if ($this->onFly){
                     $semaforo = $den->semaforo_ultimo_estatus();
+                    $semaforo = ActualizaEstadisticasARO::semaforo_ultimo_estatus_off($den->ultimo_estatus,$den->fecha_ultimo_estatus,$den->fecha_ingreso);
                 }else{
-                    $aro = new ActualizaEstadisticasARO($this->denuncia_id);
-                    $semaforo = $aro->semaforo_ultimo_estatus_off($den,$this->viDen);
+                    $semaforo = ActualizaEstadisticasARO::semaforo_ultimo_estatus_off($this->viDen->estatu_id,$this->viDen->fecha_movimiento,$den->fecha_ingreso);
+//                    dd($semaforo);
                 }
                 $den->dias_atendida = $semaforo['dias'];
                 $den->save();
@@ -103,10 +104,12 @@ class DenunciaAtendidaEvent  implements ShouldBroadcast{
 
                 $den = Denuncia::find($this->denuncia_id);
                 if ($this->onFly){
-                    $semaforo = $den->semaforo_ultimo_estatus();
+//                    $semaforo = $den->semaforo_ultimo_estatus();
+                    $semaforo = ActualizaEstadisticasARO::semaforo_ultimo_estatus_off($den->ultimo_estatus,$den->fecha_ultimo_estatus,$den->fecha_ingreso);
                 }else{
-                    $aro = new ActualizaEstadisticasARO($this->denuncia_id);
-                    $semaforo = $aro->semaforo_ultimo_estatus_off($den,$this->viDen);
+                    $semaforo = ActualizaEstadisticasARO::semaforo_ultimo_estatus_off($this->viDen->estatu_id,$this->viDen->fecha_movimiento,$den->fecha_ingreso);
+//                    $aro = new ActualizaEstadisticasARO($this->denuncia_id);
+//                    $semaforo = $aro->semaforo_ultimo_estatus_off($den,$this->viDen);
                 }
                 $den->dias_rechazada = $semaforo['dias'];
                 $den->save();

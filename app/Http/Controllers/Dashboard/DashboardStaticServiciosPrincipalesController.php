@@ -5,6 +5,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Classes\Denuncia\ActualizaEstadisticasARO;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Models\Catalogos\CentroLocalidad;
@@ -270,27 +271,36 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
 
                 $status = "white";
                 $dias_vencidos = 0;
-                switch ( $g->ue_id ) {
-                    case 16: // Recibida
-                    case 19:
-                            $fex = Carbon::parse(now())->diffInDays(Carbon::parse($fme2),false);
-                            if ($fex >= 0) {
-                                $status = "amarillo";
-                            }else{
-                                $status = "rojo";
-                                $dias_vencidos = abs($fex);
-                            }
-                            break;
-                    case 17:
-                    case 20:
-                    case 21:
-                    case 22:
-                            $status = "verde";
-                            break;
-                    default:
-                            $status = "amarillo";
-                            break;
+//                switch ( $g->ue_id ) {
+//                    case 16: // Recibida
+//                    case 19:
+//                            $fex = Carbon::parse(now())->diffInDays(Carbon::parse($fme2),false);
+//                            if ($fex >= 0) {
+//                                $status = "amarillo";
+//                            }else{
+//                                $status = "rojo";
+//                                $dias_vencidos = abs($fex);
+//                            }
+//                            break;
+//                    case 17:
+//                    case 20:
+//                    case 21:
+//                    case 22:
+//                            $status = "verde";
+//                            break;
+//                    default:
+//                            $status = "amarillo";
+//                            break;
+//                }
+
+                if ($g->id == 104096){
+//                    dd($g->fecha_dias_maximos_ejecucion);
                 }
+
+                $semaforo = ActualizaEstadisticasARO::semaforo_ultimo_estatus_off($g->ue_id, new DateTime($g->fecha_dias_maximos_ejecucion), new DateTime($g->fecha_ultimo_estatus));
+                $status = $semaforo['status'];
+                $dias_vencidos = $semaforo['dias_vencidos'];
+
 
                 $Colonia_Id    = 0;
                 $Colonia       = "";

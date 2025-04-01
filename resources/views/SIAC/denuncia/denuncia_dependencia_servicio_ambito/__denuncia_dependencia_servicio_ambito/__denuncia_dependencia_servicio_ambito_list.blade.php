@@ -36,7 +36,7 @@
             <td>{{$item->observaciones === "" ? "SE RECIBE LA SOLICITUD" : $item->observaciones }}</td>
             <td>{{$item->estatu->estatus}}</td>
     {{--                    <td class="text-center">@if($item->favorable==true)<i class="fas fa-check seagreen"></i> @else <i class="mdi mdi-close-box red mdi-18px"></i> @endif </td>--}}
-            <td>{{$item->fecha_movimiento}}</td>
+            <td>{{\Carbon\Carbon::parse($item->fecha_movimiento)->format('d-m-Y H:i:s') ?? $item->fecha_movimiento}}</td>
             <td>
                     @if(Gate::check('all') || Gate::check('editar_respuesta'))
                         @include('shared.ui_kit.__edit_item')
