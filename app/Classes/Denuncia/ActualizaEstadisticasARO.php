@@ -51,8 +51,6 @@ class ActualizaEstadisticasARO{
             $sem = 1;
             $dias_vencidos = 0;
 
-//            dd($fecha_mayor);
-
             $ffin = Carbon::now();
             $ff = now();
             $ff = $ff->setTime(0,0,0);
@@ -74,8 +72,6 @@ class ActualizaEstadisticasARO{
             $ffin = Carbon::parse($ffin);
 
             $dias = $ffin->diffInDays($finicio);
-
-//            dd($dias);
 
             switch ($ue_id) {
                 case 16:

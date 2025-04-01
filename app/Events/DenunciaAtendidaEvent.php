@@ -74,7 +74,6 @@ class DenunciaAtendidaEvent  implements ShouldBroadcast{
                     $semaforo = ActualizaEstadisticasARO::semaforo_ultimo_estatus_off($den->ultimo_estatus,$den->fecha_ultimo_estatus,$den->fecha_ingreso);
                 }else{
                     $semaforo = ActualizaEstadisticasARO::semaforo_ultimo_estatus_off($this->viDen->estatu_id,$this->viDen->fecha_movimiento,$den->fecha_ingreso);
-//                    dd($semaforo);
                 }
                 $den->dias_atendida = $semaforo['dias'];
                 $den->save();
@@ -82,16 +81,11 @@ class DenunciaAtendidaEvent  implements ShouldBroadcast{
                 $pdx = DB::table("denuncias")
                     ->select(DB::raw("AVG(COALESCE(dias_atendida)) AS promedio_dias_atendida"))
                     ->where('servicio_id', $den->servicio_id)
+                    ->where('dias_atendida','>', 0)
                     ->groupBy('servicio_id')
                     ->first();
 
-                //                ->where('dias_atendida','>', 0)
-//                ->where('ambito_dependencia', 2)
-
-                if ($pdx->promedio_dias_atendida !== null) {
-//                    Servicio::find($den->servicio_id)->update([
-//                        'promedio_dias_atendida' => $pdx->promedio_dias_atendida,
-//                    ]);
+                if ( $pdx !== null && $pdx->promedio_dias_atendida !== null ) {
                     $Ser = Servicio::find($den->servicio_id);
                     $Ser->promedio_dias_atendida = $pdx->promedio_dias_atendida;
                     $Ser->save();
@@ -104,12 +98,9 @@ class DenunciaAtendidaEvent  implements ShouldBroadcast{
 
                 $den = Denuncia::find($this->denuncia_id);
                 if ($this->onFly){
-//                    $semaforo = $den->semaforo_ultimo_estatus();
                     $semaforo = ActualizaEstadisticasARO::semaforo_ultimo_estatus_off($den->ultimo_estatus,$den->fecha_ultimo_estatus,$den->fecha_ingreso);
                 }else{
                     $semaforo = ActualizaEstadisticasARO::semaforo_ultimo_estatus_off($this->viDen->estatu_id,$this->viDen->fecha_movimiento,$den->fecha_ingreso);
-//                    $aro = new ActualizaEstadisticasARO($this->denuncia_id);
-//                    $semaforo = $aro->semaforo_ultimo_estatus_off($den,$this->viDen);
                 }
                 $den->dias_rechazada = $semaforo['dias'];
                 $den->save();
@@ -117,21 +108,17 @@ class DenunciaAtendidaEvent  implements ShouldBroadcast{
                 $pdx = DB::table("denuncias")
                     ->select(DB::raw("AVG(COALESCE(dias_rechazada)) AS promedio_dias_rechazada"))
                     ->where('servicio_id', $den->servicio_id)
+                    ->where('dias_rechazada','>', 0)
                     ->groupBy('servicio_id')
                     ->first();
 
-//                ->where('dias_rechazada','>', 0)
-//                ->where('ambito_dependencia', 2)
-
-//                if ($pdx->promedio_dias_rechazada !== null) {
+                if ( $pdx !== null && $pdx->promedio_dias_rechazada !== null ) {
                     $Ser = Servicio::find($den->servicio_id);
                     $Ser->promedio_dias_rechazada = $pdx->promedio_dias_rechazada;
                     $Ser->save();
-//                }
+                }
 
                 $lblEstatus = "RECHAZADA";
-
-//                dd($lblEstatus);
 
             }
 
