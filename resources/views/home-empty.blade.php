@@ -81,9 +81,10 @@
 {{--                                                        </li>--}}
 {{--                                                    </ul>--}}
 
-                                                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin|SERVICIOS_MUNICIPALES'))
+{{--                                                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin|SERVICIOS_MUNICIPALES'))--}}
+                                                        @if (Auth::user()->hasRole('Administrator'))
 
-                                                        <div class="title">Ubicación de Localidades</div>
+                                                        <div class="title">Tips para buscar algunas de estas localidades</div>
                                                         <table>
                                                             <thead>
                                                             <tr>
@@ -133,18 +134,18 @@
                                                             <tr>
                                                                 <td>COUNTRY</td>
                                                                 <td>FRACC HACIENDA CASA BLANCA</td>
-                                                                <td>Puerta Magna, Sauce 53, 86287 Villahermosa, Tab., México</td>
                                                                 <td></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>COUNTRY</td>
                                                                 <td>FRACC PUERTA MAGNA</td>
-                                                                <td>Valle del Jaguar, Ermitaño 12, 86287 Villahermosa, Tab., México</td>
+                                                                <td>Puerta Magna, Sauce 53, 86287 Villahermosa, Tab., México</td>
                                                                 <td></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>COUNTRY</td>
                                                                 <td>FRACC VALLE DEL JAGUAR</td>
+                                                                <td>Valle del Jaguar, Ermitaño 12, 86287 Villahermosa, Tab., México</td>
                                                                 <td>Prof. Juan XXIII 575, Parrilla 1ra. Secc., 86284 Parrilla, Tab.</td>
                                                                 <td></td>
                                                             </tr>
