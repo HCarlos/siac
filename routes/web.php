@@ -514,6 +514,9 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|test_admin|USER_OPE
     Route::post('getSolicitudesAmbitoAjaxFromOperator', 'Denuncia\DenunciaOperadorController@getSolicitudesAmbitoAjaxFromOperator')->name('getSolicitudesAmbitoAjaxFromOperator');
 
 
+    Route::get('delegaciones_colonias', static function () {
+        return view("partials.others.delegaciones_y_colonias");
+    })->name("delegaciones_colonias");
 
 });
 

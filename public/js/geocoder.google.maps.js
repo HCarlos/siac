@@ -326,10 +326,10 @@ jQuery(function($) {
         if (input) {
             const center = { lat: lat, lng: lon };
             const defaultBounds = {
-                north: center.lat + 0.5,
-                south: center.lat - 0.5,
-                east: center.lng + 0.5,
-                west: center.lng - 0.5,
+                north: center.lat + 0.3,
+                south: center.lat - 0.3,
+                east: center.lng + 0.3,
+                west: center.lng - 0.3,
             };
             const autocompletar = new google.maps.places.Autocomplete(input, {
                 types: ['geocode'],
