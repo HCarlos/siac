@@ -33,10 +33,10 @@ async function initMap(lat, lon, siExiste) {
     let centro_localidad = $('#centro_localidad').val().trim();
 
     // Validación básica
-    if (!search_google) {
-        $("#searchGoogleError").html('Por favor ingrese una dirección').show(100);
-        return false;
-    }
+    // if (!search_google) {
+    //     $("#searchGoogleError").html('Por favor ingrese una dirección').show(100);
+    //     return false;
+    // }
 
     if (centro_localidad_id <= 0) {
         $("#searchGoogleError").html('Por favor seleccione una localidad').show(100);

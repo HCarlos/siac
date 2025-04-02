@@ -227,24 +227,24 @@
                                                                 <td>C. Tomas Díaz Bartlet 238, Carlos Pellicer Cámara, 86270 Medellín y Madero 2da. Secc., Tab., México</td>
                                                                 <td class="observaciones"></td>
                                                             </tr>
-{{--                                                            <tr>--}}
-{{--                                                                <td>SABINA</td>--}}
-{{--                                                                <td>FRACC REAL DEL SABINA</td>--}}
-{{--                                                                <td>NO ENCONTRADA EN GOOGLE</td>--}}
-{{--                                                                <td class="observaciones">NO ENCONTRADA EN GOOGLE</td>--}}
-{{--                                                            </tr>--}}
-{{--                                                            <tr>--}}
-{{--                                                                <td>SABINA</td>--}}
-{{--                                                                <td>FRACC LOMAS DEL DORADO</td>--}}
-{{--                                                                <td>NO ENCONTRADA EN GOOGLE</td>--}}
-{{--                                                                <td class="observaciones">NO ENCONTRADA EN GOOGLE</td>--}}
-{{--                                                            </tr>--}}
-{{--                                                            <tr>--}}
-{{--                                                                <td>SABINA</td>--}}
-{{--                                                                <td>FRACC CENTROPOLIS</td>--}}
-{{--                                                                <td>NO ENCONTRADA EN GOOGLE</td>--}}
-{{--                                                                <td class="observaciones">NO ENCONTRADA EN GOOGLE</td>--}}
-{{--                                                            </tr>--}}
+                                                            <tr>
+                                                                <td>SABINA</td>
+                                                                <td>FRACC REAL DE SABINA</td>
+                                                                <td>Calle Principal 53, Sabina, 86153 Villahermosa, Tab., México</td>
+                                                                <td class="observaciones"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>SABINA</td>
+                                                                <td>FRACC LOMAS DEL DORADO</td>
+                                                                <td>La Palma 103, Sabina, 86153 Villahermosa, Tab., México</td>
+                                                                <td class="observaciones"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>PLAZA VILLAHERMOSA</td>
+                                                                <td>FRACC CENTROPOLIS</td>
+                                                                <td>Palapa Centropolis, Plaza Villahermosa, 86170 Villahermosa, Tab., México</td>
+                                                                <td class="observaciones"></td>
+                                                            </tr>
                                                             </tbody>
                                                         </table>
 
