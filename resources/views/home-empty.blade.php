@@ -81,10 +81,10 @@
 {{--                                                        </li>--}}
 {{--                                                    </ul>--}}
 
-{{--                                                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin|SERVICIOS_MUNICIPALES'))--}}
-                                                        @if (Auth::user()->hasRole('Administrator'))
+                                                    @if (Auth::user()->hasRole('Administrator|SysOp|test_admin|SERVICIOS_MUNICIPALES'))
+{{--                                                        @if (Auth::user()->hasRole('Administrator'))--}}
 
-                                                        <div class="title">Tips para buscar algunas de estas localidades</div>
+                                                        <div class="title text-left">Tips para buscar algunas de estas localidades</div>
                                                         <table>
                                                             <thead>
                                                             <tr>
@@ -95,22 +95,28 @@
                                                             </tr>
                                                             </thead>
                                                             <tbody>
+
+
+
                                                             <tr>
                                                                 <td>SABINA</td>
                                                                 <td>FRACC HACIENDA CANTABRIAS</td>
                                                                 <td>W2XX+92, Sabina, 86153 Villahermosa, Tab., México</td>
-                                                                <td>Se tiene que dar zoom para encontrar las localidades</td>
+                                                                <td>En algunos casos se tiene que dar zoom para encontrar las localidades</td>
+                                                                <td></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>SABINA</td>
                                                                 <td>HACIENDA SANTA RITA</td>
                                                                 <td>X22X+FQ, Sabina, 86153 Villahermosa, Tab., México</td>
                                                                 <td></td>
+                                                                <td></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>SABINA</td>
                                                                 <td>HACIENDA LAS LILIAS</td>
-                                                                <td>Hacienda las Lilias Circuito 1 #313 Fraccionamiento Haciendas</td>
+                                                                <td>Hacienda las Lilias Circuito 1 #313 Fraccionamiento Haciendas, Sabina, 86153 Villahermosa, Tab., México</td>
+                                                                <td></td>
                                                                 <td></td>
                                                             </tr>
                                                             <tr>
@@ -118,22 +124,27 @@
                                                                 <td>FRACC HACIENDAS FAMILY</td>
                                                                 <td>Calle Principal s/n, Sabina, 86153 Villahermosa, Tab., México</td>
                                                                 <td></td>
+                                                                <td></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>SABINA</td>
                                                                 <td>FRACC LAS BRISAS (GUAYABAL)</td>
                                                                 <td>Cto. de Las Brisas 104, Guayabal, 86095 Villahermosa, Tab., México</td>
                                                                 <td></td>
+                                                                <td></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>COUNTRY</td>
                                                                 <td>FRACC ZAFIRO</td>
-                                                                <td>Blvd. Bicentenario 1, Fraccionamiento Hacienda Casa Blanca I, Villahermosa, Tab., México</td>
+                                                                <td>223G+34 Villahermosa, Tabasco</td>
+                                                                <td></td>
                                                                 <td></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>COUNTRY</td>
                                                                 <td>FRACC HACIENDA CASA BLANCA</td>
+                                                                <td>Blvd. Bicentenario 1, Fraccionamiento Hacienda Casa Blanca I, Villahermosa, Tab., México</td>
+                                                                <td></td>
                                                                 <td></td>
                                                             </tr>
                                                             <tr>
@@ -141,44 +152,52 @@
                                                                 <td>FRACC PUERTA MAGNA</td>
                                                                 <td>Puerta Magna, Sauce 53, 86287 Villahermosa, Tab., México</td>
                                                                 <td></td>
+                                                                <td></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>COUNTRY</td>
                                                                 <td>FRACC VALLE DEL JAGUAR</td>
                                                                 <td>Valle del Jaguar, Ermitaño 12, 86287 Villahermosa, Tab., México</td>
-                                                                <td>Prof. Juan XXIII 575, Parrilla 1ra. Secc., 86284 Parrilla, Tab.</td>
+                                                                <td></td>
                                                                 <td></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>PARRILLA</td>
                                                                 <td>FRACC ALBORADA</td>
-                                                                <td>Laguna La Ceiba, Parrilla 1ra. Sec., Casa Para Todos, 86284 Parrilla, Tab.</td>
+                                                                <td>Prol. Juan XXIII 575, Parrilla 1ra. Secc., 86284 Parrilla, Tab., México</td>
+                                                                <td></td>
                                                                 <td></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>PARRILLA</td>
                                                                 <td>FRACC CASA PARA TODOS (LA LIMA)</td>
-                                                                <td>Del Naranjo 1 y 7, Parrilla 1ra. Sec., Los Almendros, 86288 La Lima, Tab., México</td>
+                                                                <td>Laguna La Ceiba, Parrilla 1ra. Secc., Casa Para Todos, 86284 Parrilla, Tab.</td>
+                                                                <td></td>
                                                                 <td></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>PARRILLA</td>
                                                                 <td>FRACC LOS ALMENDROS</td>
-                                                                <td>Cedro 8, Residencial El Arbol, 86284 Guapinol, Tab., México</td>
+                                                                <td>Del Naranjo 1 7, Parrilla 1ra. Secc., Los Almendros, 86288 La Lima, Tab., México</td>
+                                                                <td></td>
                                                                 <td></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>PARRILLA</td>
                                                                 <td>FRACC EL ARBOL (HUAPINOL)</td>
-                                                                <td>Tulipanes, 86284 Guapinol, Tab., México</td>
+                                                                <td>Cedro 8, Residencial El Árbol, 86284 Guapinol, Tab., México</td>
+                                                                <td></td>
                                                                 <td></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>PARRILLA</td>
                                                                 <td>FRACC JARDINES DE HUAPINOL</td>
-                                                                <td>PRIVADA LOMAS DE SANTO DOMINGO</td>
+                                                                <td>Tulipanes, 86284 Guapinol, Tab., México</td>
+                                                                <td></td>
                                                                 <td></td>
                                                             </tr>
+
+
 
                                                             <tr>
                                                                 <td>COLINAS DE SANTO DOMINGO</td>
@@ -192,6 +211,10 @@
                                                                 <td>Francisco I Madero Primera Secc., 86270 Medellín y Pigua 3ra. Secc., Tab., México</td>
                                                                 <td class="observaciones"></td>
                                                             </tr>
+
+
+
+
                                                             <tr>
                                                                 <td>FRACC FRAMBOYANES (TIERRA COLORADA)</td>
                                                                 <td>Residencial Framboyanes</td>
