@@ -85,7 +85,7 @@
                                                         <div class="table-wrapper">
                                                             <div class="title text-left">
                                                                 Tips para buscar algunas de estas localidades:
-                                                                <a class="btn btn-link" href="{{route('delegaciones_colonias')}}" target="_blank">Ver todas las delegaciones y colonias</a>
+                                                                <a class="btn btn-link float-right" href="{{route('delegaciones_colonias')}}" target="_blank">Ver todas las delegaciones y colonias</a>
                                                             </div>
                                                         <table class="table table-bordered table-striped">
                                                             <thead>

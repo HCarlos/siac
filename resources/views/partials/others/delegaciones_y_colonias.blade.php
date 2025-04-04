@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TDelegaciones y Colonias</title>
+    <title>Delegaciones y Colonias</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -40,14 +40,14 @@
     </style>
 </head>
 <body>
-<h2>Listado de Delegaciones y Colonias</h2>
+<h3>Listado de Delegaciones y Colonias</h3>
 <div class="table-container">
     <table border="1">
         <thead>
         <tr>
             <th>ID</th>
-            <th>Tipo y Delegación</th>
-            <th>Tipo y Colonia</th>
+            <th>Delegación</th>
+            <th>Colonia</th>
         </tr>
         </thead>
         <tbody>

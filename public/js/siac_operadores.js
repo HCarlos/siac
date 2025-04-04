@@ -10,22 +10,16 @@ jQuery(function($) {
 
         $("#btnSaveSolicitud").attr("disabled", true);
 
-        if ( $("#btnSearchDenuncia").length > 0  ){
+        if ( $("#btnSolicitudId").length > 0  ){
 
-            $("#btnSearchDenuncia").on("click", function (event) {
+            $("#btnSolicitudId").on("click", function (event) {
                 // event.preventDefault();
                 $("#btnSaveSolicitud").attr("disabled", true);
 
-                var denucnia_id = parseInt( $("#denuncia_id").val() );
-                var operador_id = parseInt( $("#operador_id").val() );
-
-                if ( operador_id <= 0 || isNaN(operador_id) ) {
-                    alert("Seleccione un Operador");
-                    return false;
-                }
-
-                if ( denucnia_id <= 0 || isNaN(denucnia_id) ) {
+                var denuncia_id = parseInt( $("#denuncia_id").val() );
+                if ( denuncia_id <= 0 || isNaN(denuncia_id) ) {
                     alert("Proporcione el ID de la solicitud");
+                    isValidSave();
                     return false;
                 }
 
@@ -33,7 +27,7 @@ jQuery(function($) {
                     $.ajax({
                         method: "PUT",
                         url: "/getDenunciaAmbitoAjaxFromId",
-                        data: "denuncia_id="+denucnia_id
+                        data: "denuncia_id="+denuncia_id
 
                     })
                     .done(function (response) {
@@ -50,13 +44,12 @@ jQuery(function($) {
                         $("#ciudadano").html(data.ap_paterno_ciudadano+" "+data.ap_materno_ciudadano+" "+data.nombre_ciudadano);
                         $("#ubicacion").html(data.gd_ubicacion+" " + getGeoRefHtml(data));
 
-                        $("#btnSaveSolicitud").attr("disabled", false);
+                        isValidSave();
 
                     });
                 });
             });
         }
-
         if ( $("#btnSaveSolicitud").length > 0  ){
             $("#btnSaveSolicitud").on("click", function (event) {
 
@@ -97,6 +90,54 @@ jQuery(function($) {
         }
 
 
+        if ( $("#operador_id").length > 0)  {
+            $("#operador_id").on("change", function (event) {
+                var operador_id = parseInt( $("#operador_id").val() );
+                if ( operador_id <= 0 || isNaN(operador_id) ) {
+                    $("#btnSaveSolicitud").attr("disabled", true);
+                    isValidSave();
+                    return false;
+                }
+                $.ajax({
+                    url: "/getUser/"+operador_id,
+                    dataType: "json",
+                    data: {
+                    },
+                    success: function(response) {
+                        var dataUser = response.data;
+                        $("#user_roles").html(dataUser.roles);
+                        $("#user_permissions").html(dataUser.permissions);
+                        $("#user_unidades").html(dataUser.unidades);
+                        $("#user_curp").html(dataUser.curp+" ("+dataUser.id+")" );
+                        isValidSave();
+                    },
+                });
+
+
+
+                // $("#btnSaveSolicitud").attr("disabled", false);
+
+
+            });
+        }
+
+        function isValidSave() {
+            var operador_id = parseInt( $("#operador_id").val() );
+            if ( operador_id <= 0 || isNaN(operador_id) ) {
+                $("#btnSaveSolicitud").attr("disabled", true);
+                return false;
+            }
+            var denuncia_id = parseInt( $("#denuncia_id").val() );
+            if ( denuncia_id <= 0 || isNaN(denuncia_id) ) {
+                $("#btnSaveSolicitud").attr("disabled", true);
+                return false;
+            }
+
+            $("#btnSaveSolicitud").attr("disabled", false);
+
+            return true;
+        }
+
 
         function getGeoRefHtml(data) {
             var html = "";
@@ -110,7 +151,6 @@ jQuery(function($) {
             }
             return html;
         }
-
 
     });
 });

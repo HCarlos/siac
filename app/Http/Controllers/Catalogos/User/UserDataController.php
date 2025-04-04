@@ -139,14 +139,7 @@ class UserDataController extends Controller
     protected function updateUser(UserRequest $request)
     {
         $Data = $request->all(['id']);
-        //dd($UserId);
         $Obj = $request->manageUser();
-//        if ( !isset($user) || !is_object($user) ) {
-//            $this->msg = $user;
-//            $user = User::find($Data['id']);
-//        }else{
-//            $this->msg = "Registro Guardado con éxito!!!";
-//        }
 
         if (!is_object($Obj)) {
             $id = 0;
@@ -317,6 +310,8 @@ class UserDataController extends Controller
 // ***************** MAUTOCOMPLETE DE UBICACIONES ++++++++++++++++++++ //
     protected function getUser($Id=0){
 
+//        dd($Id);
+
         $F = new FuncionesController();
         $sl = "";
 
@@ -336,8 +331,11 @@ class UserDataController extends Controller
         $items->nombre_completo = $items->FullName;
         $items->telefonos_casa = $items->telefonos;
         $items->telefonos = $items->TelefonosCelularesEmails;
+        $items->roles = str_replace('|',' | ',$items->RoleNameStrArray);
+        $items->permissions = str_replace('|',' | ',strtoupper($items->PermisionNameStrArray));
+        $items->unidades = str_replace('|',' | ',$items->DependenciaAbreviaturaStrArray);
         $items->sanitizer_location = $sl;
-        //dd($items);
+//        dd($items);
         return Response::json(['mensaje' => 'OK', 'data' => json_decode($items), 'status' => '200'], 200);
 
     }
