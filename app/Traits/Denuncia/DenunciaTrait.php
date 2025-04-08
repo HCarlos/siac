@@ -13,15 +13,6 @@
 namespace App\Traits\Denuncia;
 
 
-use App\Models\Catalogos\Domicilios\Calle;
-use App\Models\Catalogos\Domicilios\Ciudad;
-use App\Models\Catalogos\Domicilios\Codigopostal;
-use App\Models\Catalogos\Domicilios\Colonia;
-use App\Models\Catalogos\Domicilios\Comunidad;
-use App\Models\Catalogos\Domicilios\Estado;
-use App\Models\Catalogos\Domicilios\Municipio;
-use App\Models\Catalogos\Domicilios\Ubicacion;
-use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,16 +20,6 @@ trait DenunciaTrait
 {
 
     public function getFullUbicationAttribute(){
-//        return $this->calle.' '.
-//            $this->num_ext.' '.
-//            $this->num_int.' '.
-//            $this->colonia.' '.
-//            $this->comunidad.' '.
-//            $this->ciudad.' '.
-//            $this->municipio.' '.
-//            $this->estado.' '.
-//            $this->cp;
-
         $miLoc = trim($this->colonia) == trim($this->comunidad) ? trim($this->colonia) : trim($this->colonia).' '.trim($this->comunidad);
         return $this->calle.' '.
             $this->num_ext.' '.

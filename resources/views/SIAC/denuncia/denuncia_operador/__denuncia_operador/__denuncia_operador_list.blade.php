@@ -38,7 +38,7 @@
                     </table>
 
                     <div class="w-100-percent mt-2" >
-                        <button type="button"  class="btn btn-info btn-rounded-sm w-40-percent text-white float-left" id="btnGetSolicitudOperator"><i class="mdi mdi-content-copy"></i> Solicitudes de Este Operador</button>
+                        <button type="button"  class="btn btn-info btn-rounded-sm w-40-percent text-white float-left" id="btnGetSolicitudesOperator"><i class="mdi mdi-content-copy"></i> Solicitudes de Este Operador</button>
                         <button type="button" class="btn btn-primary btn-rounded-sm w-40-percent float-right" id="btnSaveSolicitud"><i class="mdi mdi-content-save"></i> Agregar Operador a Solicitud</button>
                     </div>
 
@@ -80,6 +80,10 @@
                         </tr>
                         </tbody>
                     </table>
+                    <div class="w-100-percent mt-2" >
+                        <button type="button"  class="btn btn-info btn-rounded-sm w-40-percent text-white float-left" id="btnGetSolicitudOperator"><i class="mdi mdi-paper-cut-vertical "></i> Buscar Solicitud</button>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -113,9 +117,9 @@
 {{--                    @if(Gate::check('all') || Gate::check('editar_respuesta'))--}}
 {{--                        @include('shared.ui_kit.__edit_item')--}}
 {{--                    @endif--}}
-{{--                    @if(Gate::check('all') || Gate::check('eliminar_respuesta'))--}}
-{{--                        @include('shared.ui_kit.__remove_item_respuesta')--}}
-{{--                    @endif--}}
+                    @if(Gate::check('all') || Gate::check('eliminar_respuesta'))
+                        @include('shared.ui_kit.__remove_item_operador_solicitud')
+                    @endif
             </td>
         </tr>
     @endforeach

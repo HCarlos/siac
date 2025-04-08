@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\DenunciaAPIController;
 use App\Http\Controllers\API\NoticiasAPIController;
+use App\Http\Controllers\API\OperadoresAPIController;
 use App\Http\Controllers\API\UserAPIController;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -63,8 +64,8 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::post('/noticias/list', [NoticiasAPIController::class, 'getNoticiasFromUser']);
 
-
-
+        // Operadores
+        Route::post('/operador/solicitudes_list', [OperadoresAPIController::class, 'getSolicitudesOperador']);
 
 
         Route::get('fire', function () {

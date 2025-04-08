@@ -508,10 +508,15 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|test_admin|USER_OPE
     Route::get('showModalDenunciaUserUpdate/{Id}', 'Denuncia\DenunciaUserAmbitoController@showModalDenunciaUserUpdate')->name('showModalDenunciaUserUpdate');
     Route::post('putModalDenunciaUserUpdate', 'Denuncia\DenunciaUserAmbitoController@putModalDenunciaUserUpdate')->name('putModalDenunciaUserUpdate');
 
-    /// DENUNCIAS CON OPERADOR
+    /// DENUNCIAS A OPERADOR
     Route::get('denuncia_operador_list/{operador_id}', 'Denuncia\DenunciaOperadorController@index')->name('denuncia_operador_list');
     Route::put('getDenunciaAmbitoAjaxFromId', 'Denuncia\DenunciaOperadorController@getDenunciaAmbitoAjaxFromId')->name('getDenunciaAmbitoAjaxFromId');
     Route::post('getSolicitudesAmbitoAjaxFromOperator', 'Denuncia\DenunciaOperadorController@getSolicitudesAmbitoAjaxFromOperator')->name('getSolicitudesAmbitoAjaxFromOperator');
+    Route::get('denuncia_solicitud_id_list/{denuncia_id}', 'Denuncia\DenunciaOperadorController@solicitud_id_list')->name('denuncia_solicitud_id_list');
+    Route::get('removeSolicitudOperador/{id}', 'Denuncia\DenunciaOperadorController@removeItem')->name('removeSolicitudOperador');
+
+
+
 
 
     Route::get('delegaciones_colonias', static function () {

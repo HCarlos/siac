@@ -33,16 +33,15 @@ jQuery(function($) {
                     .done(function (response) {
                         var OK = response.mensaje === "OK";
                         var data = response.data;
-                        if (!OK) {
+                        if (OK) {
+                            $("#lblSolicitudId").html(data.id);
+                            $("#solicitud").html(data.denuncia);
+                            $("#sue").html(data.servicio_ultimo_estatus);
+                            $("#ciudadano").html(data.ap_paterno_ciudadano+" "+data.ap_materno_ciudadano+" "+data.nombre_ciudadano);
+                            $("#ubicacion").html(data.gd_ubicacion+" " + getGeoRefHtml(data));
+                        }else{
                             alert(data);
                         }
-
-                        // alert(data.denuncia);
-                        $("#lblSolicitudId").html(data.id);
-                        $("#solicitud").html(data.denuncia);
-                        $("#sue").html(data.servicio_ultimo_estatus);
-                        $("#ciudadano").html(data.ap_paterno_ciudadano+" "+data.ap_materno_ciudadano+" "+data.nombre_ciudadano);
-                        $("#ubicacion").html(data.gd_ubicacion+" " + getGeoRefHtml(data));
 
                         isValidSave();
 
@@ -120,6 +119,24 @@ jQuery(function($) {
 
             });
         }
+
+        $("#btnGetSolicitudesOperator").on("click", function (event) {
+            var operador_id = parseInt( $("#operador_id").val() );
+            if ( operador_id <= 0 || isNaN(operador_id) ) {
+                alert("Seleccione un Operador");
+                return false;
+            }
+            window.location.href = "/denuncia_operador_list/"+operador_id;
+        })
+
+        $("#btnGetSolicitudOperator").on("click", function (event) {
+            var denuncia_id = parseInt( $("#denuncia_id").val() );
+            if ( denuncia_id <= 0 || isNaN(denuncia_id) ) {
+                alert("Proporcione el ID de la solicitud");
+                return false;
+            }
+            window.location.href = "/denuncia_solicitud_id_list/"+denuncia_id;
+        })
 
         function isValidSave() {
             var operador_id = parseInt( $("#operador_id").val() );

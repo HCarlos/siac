@@ -27,7 +27,7 @@
     @endisset
     @isset($showListDenuciasOperator)
         @canany(['all','operador','test_admin'])
-        <a href="{{url($showListDenuciasOperator,['operador_id'=>0])}}" class="btn btn-outline-white btn-rounded btn-sm ml-1" data-toggle="tooltip" data-placement="top" data-original-title="Ver Listado de Operadores">
+        <a href="{{url($showListDenuciasOperator,['operador_id'=>0])}}" class="btn btn-outline-white btn-rounded btn-sm ml-1" data-toggle="tooltip" data-placement="top" data-original-title="Ver Listado de Operadores" target="_blank">
             <i class="fas fa-users"></i>
         </a>
         @endcanany
