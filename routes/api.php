@@ -4,14 +4,8 @@ use App\Http\Controllers\API\DenunciaAPIController;
 use App\Http\Controllers\API\NoticiasAPIController;
 use App\Http\Controllers\API\OperadoresAPIController;
 use App\Http\Controllers\API\UserAPIController;
-use App\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------

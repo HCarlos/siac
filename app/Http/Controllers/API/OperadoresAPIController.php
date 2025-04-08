@@ -76,12 +76,14 @@ class OperadoresAPIController extends Controller{
             ->OrderByDesc("id")
             ->get();
         foreach ($imagenes as $imagen){
-            $fecha                = (new Carbon($imagen->fecha))->format('d-m-Y H:i:s');
             $path = "/storage/denuncia/";
+            $fecha                 = (new Carbon($imagen->fecha))->format('d-m-Y H:i:s');
             $imagen['fecha']       = $fecha;
-            $imagen["root"]        = config("atemun.public_url").$path.$imagen->filename;
-            $imagen["image"]       = config("atemun.public_url").$path.$imagen->filename_png;
-            $imagen["image_thumb"] = config("atemun.public_url").$path.$imagen->filename_thumb;
+            $imagen["image"]       = config("atemun.public_url").$path.$imagen->image;
+            $imagen["image_thumb"] = config("atemun.public_url").$path.$imagen->image_thumb;
+            $imagen["momento"]     = $imagen->momento;
+            $imagen["titulo"]      = $imagen->titulo;
+            $imagen["descripcion"] = $imagen->momento;
         }
         return $imagenes;
     }
