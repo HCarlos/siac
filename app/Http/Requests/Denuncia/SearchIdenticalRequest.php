@@ -64,13 +64,16 @@ class SearchIdenticalRequest extends FormRequest{
             $F           = new FuncionesController();
             $tsString    = $F->string_to_tsQuery($filters,' & ');
 
-            $oFilters['search'] = $tsString;
+//            $oFilters['search'] = $tsString;
             $oFilters['servicio_id'] = $servicio_id;
+            $oFilters['ciudadano_id'] = $usuario_id;
 
             $items = _viDDSs::query()
                 ->filterBy($oFilters)
                 ->orderBy('id')
                 ->get();
+
+//            dd($items);
 
             $this->llevarArray($items, $usuario_id);
 
@@ -85,7 +88,7 @@ class SearchIdenticalRequest extends FormRequest{
     function llevarArray($Items, $usuario_id){
         $this->data = [];
         foreach ($Items as $item) {
-            if ( $item->ciudadano_id != $usuario_id || $usuario_id = 0) {
+//            if ( $item->ciudadano_id != $usuario_id || $usuario_id = 0) {
                 $Ciudadano = User::find($item->ciudadano_id);
                 $this->data[] = array(
                     'denuncia'         => $item->denuncia,
@@ -98,7 +101,7 @@ class SearchIdenticalRequest extends FormRequest{
                     'total_ciudadanos' => $item->ciudadanos->count() > 1 ? $item->ciudadanos->count() : "",
                     'id'               => $item->id
                 );
-            }
+//            }
         }
 
 //        dd( $this->data );

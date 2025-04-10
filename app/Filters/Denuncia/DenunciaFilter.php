@@ -81,7 +81,6 @@ class DenunciaFilter extends QueryFilter
         if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
         $search = strtoupper($search);
         return $query->where("curp_ciudadano",strtoupper(trim($search)));
-
     }
 
     public function ciudadano($query, $search){
