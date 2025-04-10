@@ -83,7 +83,7 @@ class OperadoresAPIController extends Controller{
             $imagen["image_thumb"] = config("atemun.public_url").$path.$imagen->image_thumb;
             $imagen["momento"]     = $imagen->momento;
             $imagen["titulo"]      = $imagen->titulo;
-            $imagen["descripcion"] = $imagen->momento;
+            $imagen["descripcion"] = $imagen->descripcion;
         }
         return $imagenes;
     }

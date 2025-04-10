@@ -222,7 +222,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
     // Denuncia General Formato 01
     public function denunciaSASGeneral01($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
 
-        $sh->setCellValue('I1', Carbon::now()->format('d-m-Y H:i:s'));
+        $sh->setCellValue('N1', Carbon::now()->format('d-m-Y H:i:s'));
         foreach ($Items as $item) {
             $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y H:i:s');
             $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
@@ -232,25 +232,6 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 ->where('denuncia_id', $item->id)
                 ->orderByDesc('id')
                 ->first();
-
-//            $respuesta = "";
-//            $favorable = false;
-//            try {
-//                if ($resp->observaciones !== null) {
-//                    $res = trim($resp->observaciones) ?? '';
-//                    if ($res != "") {
-//                        $dep = Dependencia::find($resp->dependencia_id);
-//                        $respuesta = $dep->abreviatura . ' - ' . $res . '. ';
-//                        $favorable = $resp->favorable;
-//                    }
-//                } else {
-//                    $respuesta = '';
-//                    $favorable = '';
-//                }
-//            } catch (Exception $e) {
-//                $respuesta = '';
-//                $favorable = '';
-//            }
 
             $Colonia = "";
             $Delegacion = "";
@@ -279,9 +260,10 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 }
 
                 $gdu = explode(',', trim($item->gd_ubicacion));
-                $cadgdu = $gdu[1] ?? '';
+                $cadgdu0 = $gdu[0] ?? '';
+                $cadgdu1 = $gdu[1] ?? '';
 
-//                dd($cadgdu);
+//                dd($cadgdu0.' - '.$cadgdu1);
 
                 $sh
                     ->setCellValue('A' . $C, $item->id ?? 0)
@@ -290,27 +272,29 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('D' . $C, trim($cds->full_name ?? ''))
                     ->setCellValue('E' . $C, $cadcel)
                     ->setCellValue('F' . $C, trim($item->gd_ubicacion ?? ''))
-                    ->setCellValue('G' . $C, trim($Colonia ?? ''))
-                    ->setCellValue('H' . $C, trim($Delegacion ?? ''))
-                    ->setCellValue('I' . $C, $item->descripcion ?? '')
-                    ->setCellValue('J' . $C, $item->Ambito() ?? '')
-                    ->setCellValue('K' . $C, $item->ultimo_estatus ?? '')
-                    ->setCellValue('L' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y H:i:s') ?? '');
+                    ->setCellValue('G' . $C, trim($cadgdu0 ?? ''))
+                    ->setCellValue('H' . $C, trim($cadgdu1 ?? ''))
+                    ->setCellValue('I' . $C, trim($Colonia ?? ''))
+                    ->setCellValue('J' . $C, trim($Delegacion ?? ''))
+                    ->setCellValue('K' . $C, $item->descripcion ?? '')
+                    ->setCellValue('L' . $C, $item->Ambito() ?? '')
+                    ->setCellValue('M' . $C, $item->ultimo_estatus ?? '')
+                    ->setCellValue('N' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y H:i:s') ?? '');
                 $C++;
             }
         }
 
         $Cx = $C  - 1;
-        $oVal = $sh->getCell('G1')->getValue();
+        $oVal = $sh->getCell('I1')->getValue();
         $sh->setCellValue('B'.$C, 'TOTAL DE REGISTROS')
             ->setCellValue('C'.$C, '=COUNT(A'.$C0.':A'.$Cx.')')
-            ->setCellValue('G'.$C, $oVal);
+            ->setCellValue('I'.$C, $oVal);
 
-        $sh->getStyle('A'.$C0.':G'.$C)->getFont()
+        $sh->getStyle('A'.$C0.':N'.$C)->getFont()
             ->setName('Arial')
             ->setSize(8);
 
-        $sh->getStyle('A'.$C.':G'.$C)->getFont()->setBold(true);
+        $sh->getStyle('A'.$C.':N'.$C)->getFont()->setBold(true);
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="_'.$arrFE[0].'.'.$arrFE[1].'"');

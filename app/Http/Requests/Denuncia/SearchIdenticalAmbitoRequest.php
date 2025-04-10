@@ -46,23 +46,19 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
         $this->data = [];
 //        dd($this->all());
         try {
-            $descripcion         = strtoupper(trim($this->descripcion));
-            $referencia          = strtoupper(trim($this->referencia));
-            $ubicacion           = strtoupper(trim($this->ubicacion));
-            $search_google       = $this->search_google;
-            $searchgoogleresult  = $this->searchgoogleresult;
+//            $descripcion         = strtoupper(trim($this->descripcion));
+//            $referencia          = strtoupper(trim($this->referencia));
+//            $ubicacion           = strtoupper(trim($this->ubicacion));
+//            $search_google       = $this->search_google;
+//            $searchgoogleresult  = $this->searchgoogleresult;
             $ubicacion_id        = (int) $this->ubicacion_id;
             $lat                 = explode('.', $this->latitud);
             $lon                 = explode('.', $this->longitud);
             $usuario_id          = (int) $this->usuario_id;
             $servicio_id         = (int) $this->servicio_id;
             $centro_localidad_id = (int) $this->centro_localidad_id;
-            $id                  = (int) $this->id;
+//            $id                  = (int) $this->id;
 
-//            dd($this->longitud);
-
-
-//            $ambito_dependencia = Session::get('ambito_dependencia');
             $ambito_dependencia = (int) $this->ambito_dependencia;
 
             if ($ambito_dependencia === 1 ){
@@ -70,18 +66,13 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
                 $filters = $Ubi->calle ?? ''.' '.$Ubi->colonia ?? '';
             }else{
 
-                $latitud = $lat[0] . '.' . substr($lat[1], 0, 3);
-                $longitud = $lon[0] . '.' . substr($lon[1], 0, 3);
-
-//                $F           = new FuncionesController();
-//                $tsString    = $F->string_to_tsQuery(strtolower($filters),' & ');
-//                $oFilters['search'] = $tsString;
-//                $filters = $search_google;
+                $latitud = $lat[0] . '.' . substr($lat[1], 0, 2);
+                $longitud = $lon[0] . '.' . substr($lon[1], 0, 2);
 
                 if($centro_localidad_id > 0){
                     $oFilters['centro_localidad_id'] = $centro_localidad_id;
-                    $oFilters['lati3'] = $latitud;
-                    $oFilters['long3'] = $longitud;
+                    $oFilters['lati2'] = $latitud;
+                    $oFilters['long2'] = $longitud;
                 }
 
 
@@ -93,15 +84,15 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
             if ($ambito_dependencia === 1 ){
                 $items = _viDDSs::query()
                     ->filterBy($oFilters)
-                    ->orderBy('id')
+                    ->orderByDesc('id')
                     ->get();
             }else{
 //                ->ambitoFilterBy($oFilters)
                 $items = _viDDSs::query()
                     ->where('servicio_id', $servicio_id)
-                    ->where('lati3', (float)$latitud)
-                    ->where('long3', (float)$longitud)
-                    ->orderBy('id')
+                    ->where('lati2', (float)$latitud)
+                    ->where('long2', (float)$longitud)
+                    ->orderByDesc('id')
                     ->get();
             }
 
