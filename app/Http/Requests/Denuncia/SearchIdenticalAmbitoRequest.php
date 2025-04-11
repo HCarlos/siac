@@ -44,7 +44,9 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
 
     public function manage(){
         $this->data = [];
+
 //        dd($this->all());
+
         try {
 //            $descripcion         = strtoupper(trim($this->descripcion));
 //            $referencia          = strtoupper(trim($this->referencia));
@@ -61,9 +63,13 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
 
             $ambito_dependencia = (int) $this->ambito_dependencia;
 
-            if ($ambito_dependencia === 1 ){
+            if ($ambito_dependencia == 1 ){
                 $Ubi = Ubicacion::find($ubicacion_id);
                 $filters = $Ubi->calle ?? ''.' '.$Ubi->colonia ?? '';
+
+                $oFilters['servicio_id'] = $servicio_id;
+                $oFilters['ciudadano_id'] = $usuario_id;
+
             }else{
 
                 $latitud = $lat[0] . '.' . substr($lat[1], 0, 2);
@@ -78,10 +84,14 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
 
             }
 
+//            dd($ambito_dependencia);
 
-            $oFilters['servicio_id'] = $servicio_id;
+
 
             if ($ambito_dependencia === 1 ){
+
+//                dd($oFilters);
+
                 $items = _viDDSs::query()
                     ->filterBy($oFilters)
                     ->orderByDesc('id')
@@ -109,24 +119,24 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
     function llevarArray($Items, $usuario_id){
         $this->data = [];
         foreach ($Items as $item) {
-            if ( $item->ciudadano_id != $usuario_id || $usuario_id = 0) {
-                $Ciudadano = User::find($item->ciudadano_id);
-                $this->data[] = array(
-                    'denuncia'         => $item->denuncia,
-                    'referencia'       => $item->referencia,
-                    'ubicacion'        => $item->FullUbication,
-                    'search_google'    => $item->search_google,
-                    'gd_ubicacion'     => $item->gd_ubicacion,
-                    'latitud'          => $item->latitud,
-                    'longitud'         => $item->longitud,
-                    'ciudadano_id'     => $item->ciudadano_id,
-                    'ciudadano'        => $Ciudadano->FullName,
-                    'fecha'            => $item->fecha_ingreso_solicitud,
-                    'ultimo_estatus'   => $item->ultimo_estatus,
-                    'total_ciudadanos' => $item->ciudadanos->count() > 1 ? $item->ciudadanos->count() : "",
-                    'id'               => $item->id
-                );
-            }
+//            if ( $item->ciudadano_id != $usuario_id || $usuario_id = 0) {
+            $Ciudadano = User::find($item->ciudadano_id);
+            $this->data[] = array(
+                'denuncia'         => $item->denuncia,
+                'referencia'       => $item->referencia,
+                'ubicacion'        => $item->FullUbication,
+                'search_google'    => $item->search_google,
+                'gd_ubicacion'     => $item->gd_ubicacion,
+                'latitud'          => $item->latitud,
+                'longitud'         => $item->longitud,
+                'ciudadano_id'     => $item->ciudadano_id,
+                'ciudadano'        => $Ciudadano->FullName,
+                'fecha'            => $item->fecha_ingreso_solicitud,
+                'ultimo_estatus'   => $item->ultimo_estatus,
+                'total_ciudadanos' => $item->ciudadanos->count() > 1 ? $item->ciudadanos->count() : "",
+                'id'               => $item->id
+            );
+//            }
         }
 
 //        dd( $this->data );

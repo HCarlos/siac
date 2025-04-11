@@ -77,17 +77,10 @@ function mostrarResultados(datos) {
 
 // Actualizar el map con nueva ubicación
 async function actualizarMapa(ubicacion) {
-    // Eliminar marcador anterior
+
     if (marcador) {
         marcador.setMap(null);
     }
-
-    // Crear nuevo marcador
-    // marcador = new google.maps.Marker({
-    //     position: ubicacion,
-    //     map: map,
-    //     title: $('#search_google').val()
-    // });
 
     const { Map, InfoWindow } = await google.maps.importLibrary("maps");
     const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker",);

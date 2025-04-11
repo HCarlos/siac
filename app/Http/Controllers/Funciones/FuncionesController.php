@@ -266,8 +266,8 @@ class FuncionesController extends Controller
 
     public static function itemSelectDenuncias(): array{
         return ['id','ciudadano_id','dependencia_id','origen_id','prioridad_id','creadopor_id','ubicacion_id',
-            'fecha_ingreso', 'latitud','longitud','gd_ubicacion','search_google','ambito',
-            'descripcion',
+            'fecha_ingreso', 'latitud','longitud','gd_ubicacion','search_google','ambito','codigo_postal_manual',
+            'descripcion','search_google_select',
             'uuid','cerrado','firmado',
             'ue_id','due_id','sue_id','fecha_ultimo_estatus',
             'centro_localidad_id',

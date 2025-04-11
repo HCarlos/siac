@@ -115,63 +115,12 @@ async function initMap(lat, lon, siExiste) {
 
         let isDragging = false;
 
-        // google.maps.event.addListener(marker, "dragstart", () => {
-        //     isDragging = true;
-        //     //marker.position = map.getCenter(); // Asegurarse de que el marcador esté en el centro
-        // });
-        //
-        // google.maps.event.addListener(marker, "drag", () => {
-        //     if (isDragging) {
-        //         geocodePosition(marker.position);
-        //     }
-        // });
-
-
-        // google.maps.event.addListener(marker, "dragend", () => {
         marker.addListener("dragend", (event) => {
             setLatLng(marker.position.lat, marker.position.lng)
             // marker.position = map.getCenter(); // Sincronizar posición con el centro
             geocodePosition(marker.position);
             isDragging = false;
         });
-
-        //
-        // google.maps.event.addListener(marker, "center_changed", () => {
-        //     marker.position = map.getCenter();
-        // });
-        //
-        // google.maps.event.addListener(marker, "zoom_changed", () => {
-        //     marker.position = map.getCenter();
-        // });
-        //
-        // google.maps.event.addListener(marker, "idle", () => {
-        //     marker.position = map.getCenter();
-        // });
-
-
-        // google.maps.event.addListener(marker, "mousedown", () => {
-        // // map.addListener("mousedown", (event) => {
-        //     isDragging = true;
-        //     updateMarkerPosition(event.latLng); // Posicionar marcador al inicio
-        // });
-        //
-        // google.maps.event.addListener(marker, "mousemove", () => {
-        // // map.addListener("mousemove", (event) => {
-        //     if (isDragging) {
-        //         setLatLng(marker.position.lat, marker.position.lng)
-        //         geocodePosition(marker.position);
-        //     }
-        // });
-        //
-        // // Cuando el usuario deja de interactuar
-        // google.maps.event.addListener(marker, "mouseup", () => {
-        // // map.addListener("mouseup", () => {
-        //     isDragging = false;
-        //         setLatLng(marker.position.lat, marker.position.lng)
-        //         geocodePosition(marker.position);
-        //
-        // });
-
 
     }
 
@@ -181,17 +130,6 @@ async function initMap(lat, lon, siExiste) {
             if (status === google.maps.GeocoderStatus.OK) {
                 $("#gd_ubicacion").val(results[0].formatted_address);
                 $("#searchGoogleResult").html(results[0].formatted_address).show(100);
-
-                // $("#g_calle").val(results[1].formatted_address ?? "");
-                // $("#g_num_ext").val(results[0].formatted_address ?? "");
-                // $("#g_num_int").val("");
-                // $("#g_colonia").val(results[2].formatted_address ?? "");
-                // $("#g_comunidad").val(results[3].formatted_address ?? "");
-                // $("#g_municipio").val(results[4].formatted_address ?? "");
-                // $("#g_estado").val(results[6].formatted_address ?? "");
-                // $("#g_cp").val(results[6].formatted_address ?? "");
-
-                // console.log(results[0].address_components[6]["long_name"]);
 
             } else {
                 $("#searchGoogleError").html('Cannot determine address at this location.' + status).show(100);

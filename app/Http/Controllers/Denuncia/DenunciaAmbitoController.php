@@ -882,7 +882,7 @@ class DenunciaAmbitoController extends Controller{
                 'tableName'                           => $this->tableName,
                 'showEdit'                            => 'editDenunciaAmbito',
                 'showAddUser'                         => 'addUserDenunciaAmbito',
-                'newItem'                             => 'newDenunciaAmbito',
+                'newItem'                             => 'newDenunciaAmbito/'.$this->ambito_dependencia.'/'.$this->ambito_estatus,
                 'removeItem'                          => 'removeDenunciaAmbito',
                 'showProcess1'                        => $this->ambito_dependencia === 1 ? 'showDataListDenunciaExcel1A' : 'showDataListDenunciaAmbitoExcel1A',
                 'searchAdressDenuncia'                => 'listDenunciasAmbito'.$this->ambito_dependencia,
@@ -897,6 +897,9 @@ class DenunciaAmbitoController extends Controller{
         );
 
     }
+
+//'newItem'                             => 'newDenunciaAmbito',
+
 
 // ***************** ELIMINA EL ITEM VIA AJAX ++++++++++++++++++++ //
     protected function getServiciosFromDependenciasAmbito($id= 0){

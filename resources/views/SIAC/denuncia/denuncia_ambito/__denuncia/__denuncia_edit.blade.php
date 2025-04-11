@@ -27,31 +27,63 @@
                         <button type="button" class="btn btn-sm btn-orange float-right text-white  denunciaUserModalChange"  data-toggle="modal" data-placement="top" data-target="#denunciaUserModalChange" data-original-title="Actualizar datos del usuario"><i class="mdi mdi-refresh"></i></button>
                     </div>
                 </div>
+            </div>
+
+            <table class="table w-100-percent">
+
+                <tr class="w-100-percent p-0 m-0 border-none">
+                    <td class="w-15-percent p-0 m-0 text-right">
+                        <label for = "search_google" class="col-form-label text-right ">Calle y núm.: </label>
+                    </td>
+                    <td class="w-5-percent p-0 m-0 text-center" >
+                        <small data-toggle="tooltip" class="text-rojo-morena mr-1 w-100-percent" title="Coloca aquí el nombre correcto de la calle, avenida, carretera… con su número. Asegúrate que salga el menú desplegable, de lo contrario recarga la página.">
+                            <i class="fa fa-question-circle pt-2"></i>
+                        </small>
+                    </td>
+                    <td class="w-80-percent p-0 m-0">
+                        <input type="text" name="search_google" id="search_google" class="form-control w-100-percent" value="{{ old('search_google', $items->search_google) }}" placeholder="escriba aquí la colonia" required >
+                        <small class="muted chikirimbita chikirimbita_1 w-100-percent">{{ $items->search_google_select }}</small>
+                    </td>
+                </tr>
+
+                <tr  class="p-0 m-0">
+                    <td class="w-15-percent p-0 m-0 text-left">
+                        <label for = "centro_localidad_id" class="col-form-label text-right w-100-percent">Localidad: </label>
+                    </td>
+                    <td class="w-5-percent p-0 m-0 text-center">
+                        <small data-toggle="tooltip" class="text-rojo-morena mr-1 w-100-percent" title="Selecciona la colonia y la delegación, asegúrate que salga el menú desplegable, de lo contrario recarga la página.">
+                            <i class="fa fa-question-circle pt-2"></i>
+                        </small>
+                    </td>
+                    <td class="w-80-percent p-0 m-0">
+                        <select id="centro_localidad_id" name="centro_localidad_id" class="form-control centro_localidad_id select2" data-toggle="select2" size="1" value="{{ old('centro_localidad_id') }}">
+                            <option value="0"  >Seleccione una Localidad</option>
+                            @foreach($localidades_centro as $t)
+                                <option value="{{$t->id}}"  {{ $t->id === $items->centro_localidad_id ? 'selected': '' }}  >{{ $t->ItemColoniaDelegacion() }} </option>
+                            @endforeach
+                        </select>
+                    </td>
+                </tr>
+                <tr  class="p-0 m-0">
+                    <td class="w-15-percent p-0 m-0 text-left">
+                        <label for = "codigo_postal_manual" class="col-form-label text-right w-100-percent">Código Postal: </label>
+                    </td>
+                    <td class="w-5-percent p-0 m-0 text-center">
+                        <small data-toggle="tooltip" class="text-rojo-morena mr-1 w-100-percent" title="Escribe el código postal que le corresponda o el sugerido por google.">
+                            <i class="fa fa-question-circle pt-2"></i>
+                        </small>
+                    </td>
+                    <td class="w-80-percent p-0 m-0">
+                        <input type="text" name="codigo_postal_manual" id="codigo_postal_manual" class="form-control" value="{{ old('codigo_postal_manual', $items->codigo_postal_manual) }}" placeholder="Escriba el Código Postal" >
+                    </td>
+                </tr>
+            </table>
+
+
+
 
         </div>
-            <div class="form-row ">
-                <label for = "search_google" class="col-sm-2 col-form-label text-right">Calle y núm.: </label>
-                <div class="input-group col-sm-10 ">
-                    <small data-toggle="tooltip" class="text-rojo-morena mr-1"
-                           title="Coloca aquí el nombre correcto de la calle, avenida, carretera… con su número. Asegúrate que salga el menú desplegable, de lo contrario recarga la página."
-                    >
-                        <i class="fa fa-question-circle pt-2"></i>
-                    </small>
-                    <input type="text" name="search_google" id="search_google" class="form-control" value="{{ old('search_google', $items->search_google) }}" placeholder="escriba aquí la colonia" >
-                </div>
-            </div>
-            <div class="form-row mb-1 mt-1 ">
-                <label for = "centro_localidad_id" class="col-lg-2 col-form-label text-right m-0 p-0">Localidad: </label>
-                <div class="col-lg-10">
-                    <select id="centro_localidad_id" name="centro_localidad_id" class="form-control centro_localidad_id select2" data-toggle="select2" size="1" value="{{ old('centro_localidad_id') }}">
-                        <option value="0"  >Seleccione una Localidad</option>
-                        @foreach($localidades_centro as $t)
-                            <option value="{{$t->id}}"  {{ $t->id === $items->centro_localidad_id ? 'selected': '' }}  >{{ $t->ItemColoniaDelegacion() }} </option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-
+        <div class="grid-container rounded-lg-1em p-2 mt-2">
             <div class="form-row">
                 <label for = "search_google" class="col-sm-2 col-form-label text-right"> </label>
                 <div class="col-lg-10">
@@ -61,7 +93,7 @@
                 </div>
             </div>
 
-            <div class="form-row mb-1">
+            <div class="form-row mb-1 mt-1">
                 <label for = "searchGoogleResult" class="col-lg-2 col-form-label text-right"> </label>
                 <div class="col-lg-10">
                     <small class="text-success font-medium text-center p-0 m-0" id="searchGoogleResult"></small>
@@ -80,16 +112,13 @@
                     <input type="text" name="longitud" id="longitud" class="form-control longitud" value="{{ old('longitud', $items->longitud) }}" placeholder="-92.944787" >
                 </div>
             </div>
-            <hr>
             <div class="form-group row mb-1 mt-2">
                 <div class="col-lg-12 ">
-{{--                    <div id="map" class="hidden"></div>--}}
                     <div id="map-container">
                         <div id="map" class="hidden"></div>
                     </div>
                 </div>
             </div>
-            <hr>
         </div>
     </div>
 
@@ -137,7 +166,7 @@
                     >
                         <i class="fa fa-question-circle pl-1 pr-1 pt-1"></i>
                     </small>
-                    <textarea name="descripcion" id="descripcion" class="form-control" rows="6">{{ old('descripcion',$items->descripcion) }}</textarea>
+                    <textarea name="descripcion" id="descripcion" class="form-control" rows="6" required>{{ old('descripcion',$items->descripcion) }}</textarea>
                     <span class="has-descripcion">
                         <strong class="text-danger"></strong>
                     </span>
@@ -288,6 +317,7 @@
 
 <input type="hidden" name="altitud" id="altitud" value="{{ old('altitud',$items->altitud) }}" >
 <input type="hidden" name="gd_ubicacion" id="gd_ubicacion" value="{{ old('gd_ubicacion',$items->gd_ubicacion) }}" >
+<input type="hidden" name="search_google_select" id="search_google_select" value="{{ old('search_google_select',$items->search_google_select) }}" >
 <input type="hidden" name="referencia" id="referencia" value="{{ old('referencia',$items->referencia) }}" >
 
 <input type="hidden" name="ambito_dependencia" id="ambito_dependencia" value="{{ old('ambito_dependencia',$ambito_dependencia) }}" >

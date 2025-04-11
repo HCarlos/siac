@@ -82,15 +82,6 @@ async function initMap(lat, lon, siExiste) {
             fields: ["name", "formatted_address", "geometry"],
         };
 
-        // service = new google.maps.places.PlacesService(map);
-        // service.findPlaceFromQuery(request, (results, status) => {
-        //     if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-        //         createMarker(results[0], infoWindow, PinElement, AdvancedMarkerElement, map);
-        //         map.setCenter(results[0].geometry.location);
-        //         geocodePosition(results[0].geometry.location)
-        //     }
-        // });
-
         const geocoder = new google.maps.Geocoder();
 
         geocoder.geocode({ address: search_custom }, (resultados, estado) => {
@@ -178,7 +169,7 @@ async function initMap(lat, lon, siExiste) {
             if (status === google.maps.GeocoderStatus.OK) {
                 $("#gd_ubicacion").val(results[0].formatted_address);
                 $("#searchGoogleResult").html(results[0].formatted_address).show(100);
-                $("#search_google").val(results[0].formatted_address)
+                // $("#search_google").val(results[0].formatted_address)
 
                 const administrativeAreaLevel2 = results[0].address_components.find(component => component.types.includes('administrative_area_level_2'));
 
@@ -323,6 +314,7 @@ jQuery(function($) {
         });
 
         const input = document.getElementById('search_google');
+        let escribio = input.value;
         if (input) {
             const center = { lat: lat, lng: lon };
             const defaultBounds = {
@@ -337,8 +329,37 @@ jQuery(function($) {
                 bounds: defaultBounds,
                 strictBounds: true,
             });
+
+// Capturar el evento cuando el usuario selecciona una sugerencia
+            autocompletar.addListener('place_changed', (value) => {
+                const original = value;
+                console.log(original);
+                const place = autocompletar.getPlace();
+
+                if (!place.geometry) {
+                    // console.log("Lugar no válido o no tiene coordenadas.");
+                    $(".chikirimbita_1").html("Lugar no válido o no tiene coordenadas.");
+                    return;
+                }
+
+                // console.log('Lugar seleccionado:', place);
+                // console.log('Dirección:', place.formatted_address);
+                // console.log('Coordenadas:', place.geometry.location.lat(), place.geometry.location.lng());
+                $(".chikirimbita_1").html(place.formatted_address);
+                $("#search_google_select").val(place.formatted_address);
+                // this.value = escribio;
+                $("#search_google").val(escribio);
+            });
+
+            input.addEventListener('input', (event) => {
+                const valorActual = event.target.value;
+                console.log('Usuario escribió:', valorActual);
+                escribio = valorActual;
+            });
+
         } else {
             console.error('No se encontró el elemento con id "search_google"');
+            $(".chikirimbita_1").html('No se encontró el elemento con id "search_google"');
         }
 
         if  ( document.getElementById("map") ){

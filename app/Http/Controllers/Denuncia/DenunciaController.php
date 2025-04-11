@@ -9,6 +9,7 @@ use App\Events\IUQDenunciaEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Http\Requests\Denuncia\DenunciaRequest;
+use App\Http\Requests\Denuncia\SearchIdenticalAmbitoRequest;
 use App\Http\Requests\Denuncia\SearchIdenticalRequest;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Domicilios\Ubicacion;
@@ -633,7 +634,7 @@ class DenunciaController extends Controller{
     }
 
 
-    protected function searchIdentical(SearchIdenticalRequest $request){
+    protected function searchIdentical(SearchIdenticalAmbitoRequest $request){
         $items = $request->manage();
 //        dd($items);
         if ($items === null || $items === []) {

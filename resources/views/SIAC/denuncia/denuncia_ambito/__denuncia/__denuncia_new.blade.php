@@ -29,28 +29,62 @@
                 </div>
             </div>
 
-            <div class="form-row">
-                <label for = "search_google" class="col-sm-2 col-form-label text-right">Calle y núm.: </label>
-                <div class="input-group col-sm-10 ">
-                    <small data-toggle="tooltip" class="text-rojo-morena mr-1"
-                          title="Coloca aquí el nombre correcto de la calle, avenida, carretera… con su número. Asegúrate que salga el menú desplegable, de lo contrario recarga la página."
-                    >
-                                <i class="fa fa-question-circle pt-2"></i>
-                    </small>
-                    <input type="text" name="search_google" id="search_google" class="form-control" value="{{ old('search_google') }}" placeholder="Escriba la calle y el número" >
-                </div>
-            </div>
-            <div class="form-row mb-1 mt-1 ">
-                <label for = "centro_localidad_id" class="col-lg-2 col-form-label text-right m-0 p-0">Localidad: </label>
-                <div class="col-lg-10">
-                    <select id="centro_localidad_id" name="centro_localidad_id" class="form-control centro_localidad_id select2" data-toggle="select2" size="1" value="{{ old('centro_localidad_id') }}">
-                        <option value="0"  >Seleccione una Localidad</option>
-                        @foreach($localidades_centro as $t)
-                            <option value="{{$t->id}}" >{{ $t->ItemColoniaDelegacion() }} </option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
+            <table class="table w-100-percent">
+
+                <tr class="w-100-percent p-0 m-0 border-none">
+                    <td class="w-15-percent p-0 m-0 text-right">
+                        <label for = "search_google" class="col-form-label text-right ">Calle y núm.: </label>
+                    </td>
+                    <td class="w-5-percent p-0 m-0 text-center" >
+                        <small data-toggle="tooltip" class="text-rojo-morena mr-1 w-100-percent" title="Coloca aquí el nombre correcto de la calle, avenida, carretera… con su número. Asegúrate que salga el menú desplegable, de lo contrario recarga la página.">
+                            <i class="fa fa-question-circle pt-2"></i>
+                        </small>
+                    </td>
+                    <td class="w-80-percent p-0 m-0">
+                        <input type="text" name="search_google" id="search_google" class="form-control w-100-percent" value="{{ old('search_google') }}" placeholder="Escriba la calle y el número" >
+                        <small class="muted w-100-percent chikirimbita chikirimbita_1"></small>
+                    </td>
+                </tr>
+
+                <tr  class="p-0 m-0">
+                    <td class="w-15-percent p-0 m-0 text-left">
+                        <label for = "centro_localidad_id" class="col-form-label text-right w-100-percent">Localidad: </label>
+                    </td>
+                    <td class="w-5-percent p-0 m-0 text-center">
+                        <small data-toggle="tooltip" class="text-rojo-morena mr-1 w-100-percent" title="Selecciona la colonia y la delegación, asegúrate que salga el menú desplegable, de lo contrario recarga la página.">
+                            <i class="fa fa-question-circle pt-2"></i>
+                        </small>
+                    </td>
+                    <td class="w-80-percent p-0 m-0">
+                        <select id="centro_localidad_id" name="centro_localidad_id" class="form-control centro_localidad_id select2 w-100-percent" data-toggle="select2" size="1" value="{{ old('centro_localidad_id') }}">
+                            <option value="0"  >Seleccione una Localidad</option>
+                            @foreach($localidades_centro as $t)
+                                <option value="{{$t->id}}" >{{ $t->ItemColoniaDelegacion() }} </option>
+                            @endforeach
+                        </select>
+                    </td>
+                </tr>
+                <tr  class="p-0 m-0">
+                    <td class="w-15-percent p-0 m-0 text-left">
+                        <label for = "codigo_postal_manual" class="col-form-label text-right w-100-percent">Código Postal: </label>
+                    </td>
+                    <td class="w-5-percent p-0 m-0 text-center">
+                        <small data-toggle="tooltip" class="text-rojo-morena mr-1 w-100-percent" title="Escribe el código postal que le corresponda o el sugerido por google.">
+                            <i class="fa fa-question-circle pt-2"></i>
+                        </small>
+                    </td>
+                    <td class="w-80-percent p-0 m-0">
+                        <input type="text" name="codigo_postal_manual" id="codigo_postal_manual" class="form-control w-100-percent" value="{{ old('codigo_postal_manual') }}" placeholder="Escriba el Código Postal" >
+                    </td>
+                </tr>
+            </table>
+
+
+
+        </div>
+
+        <div class="grid-container rounded-lg-1em p-2 mt-2">
+
             <div class="form-row">
                 <label for = "search_google" class="col-sm-2 col-form-label text-right"> </label>
                 <div class="col-lg-10">
@@ -60,14 +94,13 @@
                 </div>
             </div>
 
-            <div class="form-row mb-1 ">
+            <div class="form-row mb-1 mt-1 ">
                 <label for = "searchGoogleResult" class="col-lg-2 col-form-label text-right"> </label>
                 <div class="col-lg-10">
                     <small class="text-success font-medium text-center p-0 m-0" id="searchGoogleResult"></small>
                     <small class="text-danger font-medium text-center p-0 m-0" id="searchGoogleError"></small>
                 </div>
-                <!-- Indicador de carga -->
-                <div class="cargando" id="cargando">Buscando dirección...</div>
+{{--                <div class="cargando" id="cargando">Buscando dirección...</div>--}}
             </div>
             <div class="form-row mb-1 ">
                 <label for = "latitud" class="col-lg-2 col-form-label text-right">Latitud: </label>
@@ -79,7 +112,6 @@
                     <input type="text" name="longitud" id="longitud" class="form-control longitud" value="" placeholder="-92.944787" >
                 </div>
             </div>
-            <hr>
             <div class="form-group row mb-1 mt-2">
                 <div class="col-lg-12 ">
 {{--                    <div id="map" class="hidden"></div>--}}
@@ -88,7 +120,6 @@
                     </div>
                 </div>
             </div>
-            <hr>
         </div>
     </div>
 
@@ -200,6 +231,8 @@
 
 <input type="hidden" name="altitud" id="altitud" value="{{ old('altitud') }}" >
 <input type="hidden" name="gd_ubicacion" id="gd_ubicacion" value="{{ old('gd_ubicacion') }}" >
+<input type="hidden" name="search_google_select" id="search_google_select" value="{{ old('search_google_select') }}" >
+
 <input type="hidden" name="referencia" id="referencia" value="...." >
 <input type="hidden" name="ambito_dependencia" id="ambito_dependencia" value="{{ old('ambito_dependencia',$ambito_dependencia) }}" >
 <input type="hidden" name="ambito_estatus" id="ambito_estatus" value="{{ old('ambito_estatus',$ambito_estatus) }}" >

@@ -26,7 +26,7 @@
             {{--                        <a href="{{ url('dashboard-statistics-general') }}" class="side-nav-link">--}}
             @include('.shared.svgs.__dashboard')
             <span class="badge badge-light float-right"></span>
-            <span>Dashboard</span>
+            <span>Panel de Control</span>
         </a>
     </li>
 @endif

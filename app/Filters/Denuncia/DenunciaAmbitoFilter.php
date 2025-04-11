@@ -89,19 +89,24 @@ class DenunciaAmbitoFilter extends QueryFilter
         if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
         $search = strtoupper($search);
 
-        return $query->where("curp_ciudadano",strtoupper(trim($search)));
+//        return $query->where("curp_ciudadano",strtoupper(trim($search)));
+
+        return $query->whereHas('ciudadano', function ($q) use ($search) {
+           return $q->where("curp",strtoupper(trim($search)));
+        });
+
+
+
      }
 
     public function ciudadano($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
-        return $query->whereHas('ciudadanos', function ($q) use ($search) {
-            $search = strtoupper($search);
+        return $query->whereHas('ciudadano', function ($q) use ($search) {
             $filters  = $search;
             $F        = new FuncionesController();
-            $tsString = $F->string_to_tsQuery( strtoupper($filters),' & ');
-        return $q->whereRaw("searchtext @@ to_tsquery('spanish', ?)", [$tsString]);
+            $tsString = $F->string_to_tsQuery( $filters,' & ');
+            return $q->whereRaw("searchtext @@ to_tsquery('spanish', ?)", [$tsString]);
         });
-
     }
 
     public function id($query, $search){
