@@ -76,7 +76,7 @@ class IUQDenunciaEvent implements ShouldBroadcast{
             $this->status = 204;
             $this->trigger_type = -1;
         }
-        $this->msg = " | " . $ad === 1 ? "Apoyos Sociales" : "Servicios Municipales";
+        $this->msg .= " | " . $ad === 1 ? "Apoyos Sociales" : "Servicios Municipales";
 
         Log::alert("Evento: ".$this->msg);
 
