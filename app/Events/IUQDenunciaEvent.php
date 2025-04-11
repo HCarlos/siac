@@ -53,21 +53,21 @@ class IUQDenunciaEvent implements ShouldBroadcast{
 
     public function broadcastWith(): array{
 
-//        $vid = new VistaDenunciaClass();
-//        $vid->vistaDenuncia($this->denuncia_id);
+        $den = Denuncia::find($this->denuncia_id);
+        $ad = (int) ($den->dependencia->ambito_dependencia ?? 1); //$den->dependencia->ambito_dependencia ?? 1;
 
         $this->status = 200;
         $fecha = Carbon::now()->format('d-m-Y H:i:s');
         $triger_status = "CREAR";
         if ($this->trigger_type===0){
-            $this->msg    =  strtoupper(Auth::user()->FullName)." ha CREADO una nueva denuncia: ".$this->denuncia_id."  ".$fecha;
+            $this->msg    =  strtoupper(Auth::user()->FullName)." ha CREADO una nueva solicitud: ".$this->denuncia_id."  ".$fecha;
             $this->icon   = "success";
         }else if ($this->trigger_type===1){
-            $this->msg    = strtoupper(Auth::user()->FullName)." ha MODIFICADO la denuncia: ".$this->denuncia_id."  ".$fecha;
+            $this->msg    = strtoupper(Auth::user()->FullName)." ha MODIFICADO la solicitud: ".$this->denuncia_id."  ".$fecha;
             $this->icon   = "info";
             $triger_status = "MODIFICAR";
         }else if ($this->trigger_type===2){
-            $this->msg    = strtoupper(Auth::user()->FullName)." ha ELIMINADO la denuncia: ".$this->denuncia_id."  ".$fecha;
+            $this->msg    = strtoupper(Auth::user()->FullName)." ha ELIMINADO la solicitud: ".$this->denuncia_id."  ".$fecha;
             $this->icon   = "warning";
             $triger_status = "ELIMINAR";
         }else{
@@ -76,7 +76,7 @@ class IUQDenunciaEvent implements ShouldBroadcast{
             $this->status = 204;
             $this->trigger_type = -1;
         }
-
+        $this->msg = " | " . $ad === 1 ? "Apoyos Sociales" : "Servicios Municipales";
 
         Log::alert("Evento: ".$this->msg);
 
@@ -132,6 +132,7 @@ class IUQDenunciaEvent implements ShouldBroadcast{
             'power'          => $this->power,
             'denuncias_hoy'  => $DenunciasHoy,
             'porcentaje_hoy' => number_format($porc, 2, '.', ','),
+            'categoria_sol'  => $ad,
         ];
     }
 

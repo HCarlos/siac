@@ -32,7 +32,7 @@ jQuery(function($) {
                         loader: true,
                         hideAfter: false,
                         loaderBg: '#9EC600',
-                        position: 'top-left',
+                        position: 'top-right',
                     })
                 }
                 i++;
