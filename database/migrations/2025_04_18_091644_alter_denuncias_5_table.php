@@ -18,17 +18,10 @@ class AlterDenuncias5Table extends Migration
         if (Schema::hasTable($Catalogos['denuncia_modificadopor'])) {
             Schema::table($Catalogos['denuncia_modificadopor'], function (Blueprint $table) use ($Catalogos) {
                 if (Schema::hasColumn($Catalogos['denuncia_modificadopor'], 'descripcion')) {
-                    $table->dropColumn('descripcion');
-                    $table->dropColumn('referencia');
-                    $table->dropColumn('oficio_envio');
-                    $table->dropColumn('fecha_oficio_dependencia');
-                    $table->dropColumn('fecha_limite');
-                    $table->dropColumn('fecha_ejecucion');
-                    $table->dropColumn('status_denuncia');
+                    $table->string('campos_modificados', 250)->default('')->comment('Guarda los campos modificados');
+                    $table->text('antes')->default('')->comment('valores antes');
+                    $table->text('despues')->default('')->comment('valores después');
                 }
-                $table->string('campos_modificados',250)->default('')->comment('Guarda los campos modificados');
-                $table->text('antes')->default('')->comment('valores antes');
-                $table->text('despues')->default('')->comment('valores después');
             });
         }
 

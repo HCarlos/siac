@@ -198,6 +198,12 @@ class Denuncia extends Model
             ->withPivot( 'campos_modificados','antes','despues');
     }
 
+    public function denuncia_modificado(){
+        return $this->hasMany(Denuncia_Modificado::class,'denuncia_id','id');
+    }
+
+
+
     public function respuesta(){
         return $this->hasOne(Respuesta::class,'id','respuesta_id');
     }
