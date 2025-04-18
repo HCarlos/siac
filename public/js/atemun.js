@@ -648,8 +648,8 @@ jQuery(function($) {
                             if (value.total_ciudadanos !== ""){
                                 TC = "(<strong class='text-danger'> <i class='fas fa-users'></i> "+value.total_ciudadanos+"</strong>)<br>";
                             }
-                            Tbl += "<tr class='bgc-h-yellow-l3'>";
-                            Tbl += "<td>"+
+                            Tbl = "<tr class='bgc-h-yellow-l3'>"+
+                                "<td>"+
                                 value.id+"<br>"+
                                 "<strong>"+value.denuncia+"</strong><br>"+
                                 "<small>"+value.fecha+"</small> (<small>"+value.latitud+", "+value.longitud+"</small>)<br>"+
@@ -658,11 +658,24 @@ jQuery(function($) {
                                 "<strong class='text-primary-dark'>"+value.ultimo_estatus+"</strong> " + TC +
                                 "</td>"+
                                 "<td>"+
-                                "<a href='/updateAddUserDenunciaGet/"+value.id+"/"+ciudadano_id+"' class='btn btn-danger btn-rounded btnSearchIdenticalAmbito' >Vincular</a>"+
-                                "</td>";
-                            Tbl += "</tr>";
+                                "<button type='button' id='"+"updateAddUserDenunciaGet-"+value.id+"-"+ciudadano_id+"' class='btn btn-danger btn-rounded btnSearchIdenticalAmbito' >Vincular</button>"+
+                                "</td>"+
+                                "</tr>";
+                            $("#tblBody").append(Tbl);
                         });
-                        $("#tblBody").append(Tbl);
+                        $(".btnSearchIdenticalAmbito").on('click',function(event){
+                            event.preventDefault();
+                            var Url = event.currentTarget.id.split("-");
+                            var x = confirm("Desea vincular este documento con la denuncia seleccionada ("+Url[1]+")?");
+                            if (!x){
+                                return false;
+                            }
+                            $(".btnSearchIdenticalAmbito").prop('disabled', true);
+                            window.location.href = "/"+Url[0]+"/"+Url[1]+"/"+Url[2];
+                        });
+
+
+
                     }else{
                         alert(response.mensaje);
                         $("#tblBody").empty();
@@ -673,9 +686,6 @@ jQuery(function($) {
         });
 
 
-        $(".btnSearchIdenticalAmbito").on('click',function(event){
-            $(".btnSearchIdenticalAmbito").prop('disabled', true);
-        });
 
 
         function lunchFormData(form){

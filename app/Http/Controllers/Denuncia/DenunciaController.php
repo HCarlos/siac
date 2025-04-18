@@ -630,7 +630,8 @@ class DenunciaController extends Controller{
             $item->ciudadanos()->detach($usuario_id);
             $item->ciudadanos()->attach($usuario_id);
         }
-        return Redirect::back();
+//        return Redirect::back();
+        return \redirect()->route('addUserDenunciaAmbito', ['Id' => $id]);
     }
 
 

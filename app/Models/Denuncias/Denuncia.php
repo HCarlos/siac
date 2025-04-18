@@ -194,7 +194,8 @@ class Denuncia extends Model
         return $this->hasOne(User::class,'id','modificadopor_id');
     }
     public function modificadospor(){
-        return $this->belongsToMany(User::class,'denuncia_modificadopor','denuncia_id','modificadopor_id');
+        return $this->belongsToMany(User::class,'denuncia_modificadopor','denuncia_id','modificadopor_id')
+            ->withPivot( 'campos_modificados','antes','despues');
     }
 
     public function respuesta(){

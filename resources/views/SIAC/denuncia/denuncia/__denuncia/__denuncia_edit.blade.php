@@ -317,8 +317,9 @@
     <div class="col-sm-3">
         <h6>MODIFICADO</h6>
         <address>
-            <strong class="orange">POR:</strong>  {{ $items->modificadopor->Fullname }}<br>
+            <strong class="orange">POR:</strong>  {{ $items->modificadopor->Fullname ?? 'N/A'}}<br>
             <strong class="purple">FECHA:</strong>  {{ date('d-m-Y H:i:s', strtotime($items->updated_at)) }}<br>
+            <strong class="info">MODIFICÓ:</strong> <small class="text-gray-darker">{{ $items->modificadospor->last()->pivot->campos_modificados ?? 'N/A'}}</small><br>
         </address>
     </div> <!-- end col-->
     <div class="col-sm-6">

@@ -242,9 +242,9 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 $Delegacion = $Loc->ItemDelegacion();
             }
 
-            foreach ($item->ciudadanos as $cds) {
+//            foreach ($item->ciudadanos as $cds) {
 
-                $telcel = $cds->telefonos . '; ' . $cds->celulares . '; ' . $cds->email;
+                $telcel = $item->ciudadano->telefonos . '; ' . $item->ciudadano->celulares . '; ' . $item->ciudadano->email;
                 $telcel = explode(';', $telcel);
 
 
@@ -269,7 +269,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('A' . $C, $item->id ?? 0)
                     ->setCellValue('B' . $C, trim($item->servicio_ultimo_estatus->servicio ?? ''))
                     ->setCellValue('C' . $C, $fechaIngreso ?? '')
-                    ->setCellValue('D' . $C, trim($cds->full_name ?? ''))
+                    ->setCellValue('D' . $C, trim($item->ciudadano->full_name ?? ''))
                     ->setCellValue('E' . $C, $cadcel)
                     ->setCellValue('F' . $C, trim($item->gd_ubicacion ?? ''))
                     ->setCellValue('G' . $C, trim($cadgdu0 ?? ''))
@@ -281,7 +281,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('M' . $C, $item->ultimo_estatus ?? '')
                     ->setCellValue('N' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y H:i:s') ?? '');
                 $C++;
-            }
+//            }
         }
 
         $Cx = $C  - 1;

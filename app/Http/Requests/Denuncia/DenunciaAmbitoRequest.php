@@ -103,23 +103,23 @@ class DenunciaAmbitoRequest extends FormRequest
 
             $Item = [
                 'fecha_ingreso'                => $this->fecha_ingreso ?? $fi,
-                'oficio_envio'                 => is_null($this->oficio_envio) ? "" : strtoupper($this->oficio_envio),
-                'folio_sas'                    => is_null($this->folio_sas) ? "" : strtoupper($this->folio_sas),
+                'oficio_envio'                 => is_null($this->oficio_envio) ? "" : strtoupper(trim($this->oficio_envio)),
+                'folio_sas'                    => is_null($this->folio_sas) ? "" : strtoupper(trim($this->folio_sas)),
                 'fecha_oficio_dependencia'     => $this->fecha_oficio_dependencia ?? $fecha_i,
                 'fecha_ejecucion'              => $this->fecha_ejecucion ?? $fecha->addDay(3)->format('Y-m-d'),
                 'fecha_limite'                 => $this->fecha_limite ?? $fecha->addDay(3)->format('Y-m-d'),
-                'descripcion'                  => isset($this->descripcion) ? strtoupper($this->descripcion) : '',
-                'referencia'                   => isset($this->referencia) ? strtoupper($this->referencia) : '',
+                'descripcion'                  => isset($this->descripcion) ? strtoupper(trim($this->descripcion)) : '',
+                'referencia'                   => isset($this->referencia) ? strtoupper(trim($this->referencia)) : '',
                 'clave_identificadora'         => $this->clave_identificadora,
-                'calle'                        => strtoupper($Ubicacion->calle),
-                'num_ext'                      => strtoupper($Ubicacion->num_ext),
-                'num_int'                      => strtoupper($Ubicacion->num_int),
-                'colonia'                      => strtoupper($Ubicacion->colonia),
-                'comunidad'                    => strtoupper($Ubicacion->comunidad),
-                'ciudad'                       => strtoupper($Ubicacion->ciudad),
-                'municipio'                    => strtoupper($Ubicacion->municipio),
-                'estado'                       => strtoupper($Ubicacion->estado),
-                'cp'                           => strtoupper($Ubicacion->cp),
+                'calle'                        => strtoupper(trim($Ubicacion->calle)),
+                'num_ext'                      => strtoupper(trim($Ubicacion->num_ext)),
+                'num_int'                      => strtoupper(trim($Ubicacion->num_int)),
+                'colonia'                      => strtoupper(trim($Ubicacion->colonia)),
+                'comunidad'                    => strtoupper(trim($Ubicacion->comunidad)),
+                'ciudad'                       => strtoupper(trim($Ubicacion->ciudad)),
+                'municipio'                    => strtoupper(trim($Ubicacion->municipio)),
+                'estado'                       => strtoupper(trim($Ubicacion->estado)),
+                'cp'                           => strtoupper(trim($Ubicacion->cp)),
                 'latitud'                      => $this->latitud ?? 0.0000,
                 'longitud'                     => $this->longitud ?? 0.0000,
                 'altitud'                      => $this->altitud ?? 0.0000,
@@ -127,8 +127,8 @@ class DenunciaAmbitoRequest extends FormRequest
                 'gd_ubicacion'                 => $this->gd_ubicacion ?? '',
                 'codigo_postal_manual'         => $this->codigo_postal_manual ?? '',
                 'search_google_select'         => $this->search_google_select ?? '',
-                'prioridad_id'                 => $this->prioridad_id ?? 2,
-                'origen_id'                    => $this->origen_id ?? 1,
+                'prioridad_id'                 => (int) ($this->prioridad_id ?? 2),
+                'origen_id'                    => (int) ($this->origen_id ?? 1),
                 'dependencia_id'               => $Servicio->dependencia_id,
                 'ubicacion_id'                 => (int)$this->ubicacion_id,
                 'servicio_id'                  => (int)$this->servicio_id,
@@ -140,8 +140,8 @@ class DenunciaAmbitoRequest extends FormRequest
                 'observaciones'                => $this->observaciones,
                 'ip'                           => FuncionesController::getIp(),
                 'host'                         => config('atemun.public_url'),
-                'ambito'                       => $this->ambito ?? 0,
-                'centro_localidad_id'          => $this->centro_localidad_id ?? 0,
+                'ambito'                       => (int)($this->ambito ?? 0),
+                'centro_localidad_id'          => (int)($this->centro_localidad_id ?? 0),
             ];
 
 
@@ -174,14 +174,15 @@ class DenunciaAmbitoRequest extends FormRequest
 //        dd($this->id);
         if ((int)$this->id === 0) {
             $item = Denuncia::create($Item);
-            $this->attaches($item);
+            $this->attaches($item, null, null);
             event(new DenunciaUpdateStatusGeneralAmbitoEvent($item->id,$user_id,$trigger_type));
         } else {
             $item = Denuncia::find($this->id);
+            $item_viejito = Denuncia::find($this->id);
             if ($item->cerrado === false){
                 $this->detaches($item);
                 $item->update($Item);
-                $this->attaches($item);
+                $this->attaches($item, $item_viejito, $Item);
                 $trigger_type = 1;
                 event(new DenunciaUpdateStatusGeneralAmbitoEvent($item->id,$user_id,$trigger_type));
             }
@@ -203,7 +204,7 @@ class DenunciaAmbitoRequest extends FormRequest
 
     }
 
-    public function attaches($Item){
+    public function attaches($Item, $item_viejito, $item_nuevo){
         try {
             $user_id = Auth::user()->id;
             $trigger_type = 0;
@@ -295,18 +296,27 @@ class DenunciaAmbitoRequest extends FormRequest
                 $Obj = $Item->creadospor()->attach($Item->creadopor_id);
 
             // Buscamos en denuncia_modificadopor
-            $Obj = DB::table('denuncia_modificadopor')
-                ->where('denuncia_id','=',$Item->id)
-                ->where('modificadopor_id','=',$Item->modificadopor_id)
-                ->get();
-            if ($Obj->count() <= 0 )
-                $Obj = $Item->modificadospor()->attach($Item->modificadopor_id);
+//            $Obj = DB::table('denuncia_modificadopor')
+//                ->where('denuncia_id','=',$Item->id)
+//                ->where('modificadopor_id','=',$Item->modificadopor_id)
+//                ->get();
+//            if ($Obj->count() <= 0 ){
+                $arrMod = FuncionesController::loQueSeModifico($Item, $item_viejito, $item_nuevo);
+                if ($arrMod['campos_modificados'] !== '' && $arrMod['antes'] !== '' && $arrMod['despues'] !== '') {
+                    $Obj = $Item->modificadospor()->attach($Item->modificadopor_id,[
+                        'campos_modificados' => $arrMod['campos_modificados'],
+                        'antes'              => $arrMod['antes'],
+                        'despues'            => $arrMod['despues']
+                    ]);
+                }
+//            }
 
         }catch (Exception $e){
             return $e->getMessage();
         }
         return $Item;
     }
+
 
     public function detaches($Item){
         $user_id = Auth::user()->id;
@@ -323,7 +333,8 @@ class DenunciaAmbitoRequest extends FormRequest
         DenunciaEstatu::where('denuncia_id',$this->id)->orderByDesc('id')->update(['ultimo'=>true]);
         $Item->ciudadanos()->detach($this->usuario_id);
         $Item->creadospor()->detach($this->creadopor_id);
-        $Item->modificadospor()->detach($this->modificadopor_id);
+
+//        $Item->modificadospor()->detach($this->modificadopor_id);
 
 
         return $Item;

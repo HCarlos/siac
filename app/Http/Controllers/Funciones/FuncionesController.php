@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Funciones;
 
 use App\Classes\MessageAlertClass;
 use App\Http\Controllers\Controller;
+use App\Models\Catalogos\CentroLocalidad;
 use App\User;
 use Carbon\Carbon;
 use Exception;
@@ -370,6 +371,131 @@ class FuncionesController extends Controller
 
         return $menu;
     }
+
+    public static function loQueSeModifico($item_viejito,$item_nuevo):array {
+        $item_nuevo = (object) $item_nuevo;
+        $campos_modificados = '';
+        $antes = '';
+        $despues = '';
+        if ( $item_viejito !== null ) {
+
+            if ($item_nuevo->descripcion !== $item_viejito->descripcion) {
+                $campos_modificados .= 'descripción, ';
+                $antes .= $item_viejito->descripcion . ',';
+                $despues .= $item_nuevo->descripcion . ',';
+            }
+
+            if ($item_nuevo->referencia !== $item_viejito->referencia) {
+                $campos_modificados .= 'referencia, ';
+                $antes .= $item_viejito->referencia . ',';
+                $despues .= $item_nuevo->referencia . ',';
+            }
+
+            if ($item_nuevo->latitud !== $item_viejito->latitud) {
+                $campos_modificados .= 'latitud, ';
+                $antes .= $item_viejito->latitud . ',';
+                $despues .= $item_nuevo->latitud . ',';
+            }
+
+            if ($item_nuevo->longitud !== $item_viejito->longitud) {
+                $campos_modificados .= 'longitud, ';
+                $antes .= $item_viejito->longitud . ',';
+                $despues .= $item_nuevo->longitud . ',';
+            }
+
+            if ($item_nuevo->search_google !== $item_viejito->search_google) {
+                $campos_modificados .= 'búsqueda_google, ';
+                $antes .= $item_viejito->search_google . ',';
+                $despues .= $item_nuevo->search_google . ',';
+            }
+
+            if ($item_nuevo->gd_ubicacion !== $item_viejito->gd_ubicacion) {
+                $campos_modificados .= 'google_ubicación, ';
+                $antes .= $item_viejito->gd_ubicacion . ',';
+                $despues .= $item_nuevo->gd_ubicacion . ',';
+            }
+
+            if ($item_nuevo->codigo_postal_manual !== $item_viejito->codigo_postal_manual) {
+                $campos_modificados .= 'codigo_postal_manual, ';
+                $antes .= $item_viejito->codigo_postal_manual . ',';
+                $despues .= $item_nuevo->codigo_postal_manual . ',';
+            }
+
+            if ($item_nuevo->search_google_select !== $item_viejito->search_google_select) {
+                $campos_modificados .= 'search_google_select, ';
+                $antes .= $item_viejito->search_google_select . ',';
+                $despues .= $item_nuevo->search_google_select . ',';
+            }
+
+            if ($item_nuevo->prioridad_id !== $item_viejito->prioridad_id) {
+                $campos_modificados .= 'prioridad_id, ';
+                $antes .= $item_viejito->prioridad_id . ',';
+                $despues .= $item_nuevo->prioridad_id . ',';
+            }
+            if ($item_nuevo->prioridad_id !== $item_viejito->prioridad_id) {
+                $campos_modificados .= 'prioridad, ';
+                $antes .= $item_viejito->prioridad->prioridad . ',';
+                $despues .= $item_nuevo->prioridad->prioridad . ',';
+            }
+            if ($item_nuevo->origen_id !== $item_viejito->origen_id) {
+                $campos_modificados .= 'origen_id, ';
+                $antes .= $item_viejito->origen_id . ',';
+                $despues .= $item_nuevo->origen_id . ',';
+            }
+            if ($item_nuevo->origen_id !== $item_viejito->origen_id) {
+                $campos_modificados .= 'origen, ';
+                $antes .= $item_viejito->origen->origen . ',';
+                $despues .= $item_nuevo->origen->origen . ',';
+            }
+            if ($item_nuevo->dependencia_id !== $item_viejito->dependencia_id) {
+                $campos_modificados .= 'dependencia_id, ';
+                $antes .= $item_viejito->dependencia_id . ',';
+                $despues .= $item_nuevo->dependencia_id . ',';
+            }
+            if ($item_nuevo->dependencia_id !== $item_viejito->dependencia_id) {
+                $campos_modificados .= 'dependencia, ';
+                $antes .= $item_viejito->dependencia->dependencia . ',';
+                $despues .= $item_nuevo->dependencia->dependencia . ',';
+            }
+            if ($item_nuevo->servicio_id !== $item_viejito->servicio_id) {
+                $campos_modificados .= 'servicio_id, ';
+                $antes .= $item_viejito->servicio_id . ',';
+                $despues .= $item_nuevo->servicio_id . ',';
+            }
+            if ($item_nuevo->servicio_id !== $item_viejito->servicio_id) {
+                $campos_modificados .= 'servicio, ';
+                $antes .= $item_viejito->servicio->servicio . ',';
+                $despues .= $item_nuevo->servicio->servicio . ',';
+            }
+
+            if ($item_nuevo->ambito !== $item_viejito->ambito) {
+                $campos_modificados .= 'ámbito, ';
+                $antes .= self::arrAmbitosSM()[$item_viejito->ambito] . ',';
+                $despues .= self::arrAmbitosSM()[$item_viejito->ambito] . ',';
+            }
+
+            if ($item_nuevo->centro_localidad_id !== $item_viejito->centro_localidad_id) {
+                $campos_modificados .= 'centro_localidad_id, ';
+                $antes .= $item_viejito->centro_localidad_id . ',';
+                $despues .= $item_nuevo->centro_localidad_id . ',';
+            }
+
+            if ($item_nuevo->centro_localidad_id !== $item_viejito->centro_localidad_id) {
+                $locViejita = CentroLocalidad::find($item_viejito->centro_localidad_id);
+                $locNuevo = CentroLocalidad::find($item_nuevo->centro_localidad_id);
+                $campos_modificados .= 'centro_localidad, ';
+                $antes .= $locViejita->ItemColoniaDelegacion() . ',';
+                $despues .= $locNuevo->ItemColoniaDelegacion() . ',';
+            }
+
+        }
+
+        return ['campos_modificados' => $campos_modificados,'antes' => $despues,'despues' => $antes];
+
+    }
+
+
+
 
 
 }
