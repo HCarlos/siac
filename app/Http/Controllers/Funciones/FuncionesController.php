@@ -427,62 +427,62 @@ class FuncionesController extends Controller
                 $despues .= $item_nuevo->search_google_select . ',';
             }
 
-            if ($item_nuevo->prioridad_id !== $item_viejito->prioridad_id) {
+            if ((int) $item_nuevo->prioridad_id !== (int) $item_viejito->prioridad_id) {
                 $campos_modificados .= 'prioridad_id, ';
-                $antes .= $item_viejito->prioridad_id . ',';
-                $despues .= $item_nuevo->prioridad_id . ',';
+                $antes .= (int) $item_viejito->prioridad_id . ',';
+                $despues .= (int) $item_nuevo->prioridad_id . ',';
             }
-            if ($item_nuevo->prioridad_id !== $item_viejito->prioridad_id) {
+            if ((int) $item_nuevo->prioridad_id !== (int) $item_viejito->prioridad_id) {
                 $campos_modificados .= 'prioridad, ';
                 $antes .= $item_viejito->prioridad->prioridad . ',';
                 $despues .= $item_nuevo->prioridad->prioridad . ',';
             }
-            if ($item_nuevo->origen_id !== $item_viejito->origen_id) {
+            if ((int) $item_nuevo->origen_id !== (int) $item_viejito->origen_id) {
                 $campos_modificados .= 'origen_id, ';
-                $antes .= $item_viejito->origen_id . ',';
-                $despues .= $item_nuevo->origen_id . ',';
+                $antes .= (int) $item_viejito->origen_id . ',';
+                $despues .= (int) $item_nuevo->origen_id . ',';
             }
-            if ($item_nuevo->origen_id !== $item_viejito->origen_id) {
+            if ((int) $item_nuevo->origen_id !== (int) $item_viejito->origen_id) {
                 $campos_modificados .= 'origen, ';
                 $antes .= $item_viejito->origen->origen . ',';
                 $despues .= $item_nuevo->origen->origen . ',';
             }
-            if ($item_nuevo->dependencia_id !== $item_viejito->dependencia_id) {
+            if ((int) $item_nuevo->dependencia_id !== (int) $item_viejito->dependencia_id) {
                 $campos_modificados .= 'dependencia_id, ';
-                $antes .= $item_viejito->dependencia_id . ',';
-                $despues .= $item_nuevo->dependencia_id . ',';
+                $antes .= (int) $item_viejito->dependencia_id . ',';
+                $despues .= (int) $item_nuevo->dependencia_id . ',';
             }
-            if ($item_nuevo->dependencia_id !== $item_viejito->dependencia_id) {
+            if ((int) $item_nuevo->dependencia_id !== (int) $item_viejito->dependencia_id) {
                 $campos_modificados .= 'dependencia, ';
                 $antes .= $item_viejito->dependencia->dependencia . ',';
                 $despues .= $item_nuevo->dependencia->dependencia . ',';
             }
-            if ($item_nuevo->servicio_id !== $item_viejito->servicio_id) {
+            if ((int) $item_nuevo->servicio_id !== (int) $item_viejito->servicio_id) {
                 $campos_modificados .= 'servicio_id, ';
-                $antes .= $item_viejito->servicio_id . ',';
-                $despues .= $item_nuevo->servicio_id . ',';
+                $antes .= (int) $item_viejito->servicio_id . ',';
+                $despues .= (int) $item_nuevo->servicio_id . ',';
             }
-            if ($item_nuevo->servicio_id !== $item_viejito->servicio_id) {
+            if ((int) $item_nuevo->servicio_id !== (int) $item_viejito->servicio_id) {
                 $campos_modificados .= 'servicio, ';
                 $antes .= $item_viejito->servicio->servicio . ',';
                 $despues .= $item_nuevo->servicio->servicio . ',';
             }
 
-            if ($item_nuevo->ambito !== $item_viejito->ambito) {
+            if ((int) $item_nuevo->ambito !== (int) $item_viejito->ambito) {
                 $campos_modificados .= 'ámbito, ';
                 $antes .= self::arrAmbitosSM()[$item_viejito->ambito] . ',';
                 $despues .= self::arrAmbitosSM()[$item_viejito->ambito] . ',';
             }
 
-            if ($item_nuevo->centro_localidad_id !== $item_viejito->centro_localidad_id) {
+            if ((int) $item_nuevo->centro_localidad_id !== (int) $item_viejito->centro_localidad_id) {
                 $campos_modificados .= 'centro_localidad_id, ';
-                $antes .= $item_viejito->centro_localidad_id . ',';
-                $despues .= $item_nuevo->centro_localidad_id . ',';
+                $antes .= (int) $item_viejito->centro_localidad_id . ',';
+                $despues .= (int) $item_nuevo->centro_localidad_id . ',';
             }
 
-            if ($item_nuevo->centro_localidad_id !== $item_viejito->centro_localidad_id) {
-                $locViejita = CentroLocalidad::find($item_viejito->centro_localidad_id);
-                $locNuevo = CentroLocalidad::find($item_nuevo->centro_localidad_id);
+            if ( (int) $item_nuevo->centro_localidad_id !== (int) $item_viejito->centro_localidad_id) {
+                $locViejita = CentroLocalidad::find((int) $item_viejito->centro_localidad_id);
+                $locNuevo = CentroLocalidad::find((int) $item_nuevo->centro_localidad_id);
                 $campos_modificados .= 'centro_localidad, ';
                 $antes .= $locViejita->ItemColoniaDelegacion() . ',';
                 $despues .= $locNuevo->ItemColoniaDelegacion() . ',';
