@@ -1,4 +1,8 @@
-jQuery(function($) {
+jQuery.noConflict();
+
+(function($) {
+
+    jQuery(function($) {
     $(document).ready(function() {
 
 
@@ -11,7 +15,7 @@ jQuery(function($) {
         // var Tabla;
         function evalNotificationBadge() {
 
-            if ( $(".drop-notification-list")  ){
+            if ( $(".drop-notification-list").length > 0){
                 $(".drop-notification-list").addClass('collapse');
                 // alert( $(".drop-notification-list").attr('id') );
                 var dat = $(".drop-notification-list").attr('id').split('*');
@@ -61,3 +65,5 @@ jQuery(function($) {
 
     });
 });
+
+})(jQuery);
