@@ -182,6 +182,7 @@ class DenunciaAmbitoRequest extends FormRequest
             if ($item->cerrado === false){
                 $this->detaches($item);
                 $item->update($Item);
+//                dd("Item ".$Item);
                 $this->attaches($item, $item_viejito, $Item);
                 $trigger_type = 1;
                 event(new DenunciaUpdateStatusGeneralAmbitoEvent($item->id,$user_id,$trigger_type));
@@ -296,14 +297,17 @@ class DenunciaAmbitoRequest extends FormRequest
                 $Obj = $Item->creadospor()->attach($Item->creadopor_id);
 
             // Buscamos en denuncia_modificadopor
-            $arrMod = FuncionesController::loQueSeModifico($Item, $item_viejito, $item_nuevo);
-            if ($arrMod['campos_modificados'] !== '' && $arrMod['antes'] !== '' && $arrMod['despues'] !== '') {
-                $Obj = $Item->modificadospor()->attach($Item->modificadopor_id,[
-                    'campos_modificados' => $arrMod['campos_modificados'],
-                    'antes'              => $arrMod['antes'],
-                    'despues'            => $arrMod['despues']
-                ]);
+            if ($item_nuevo != null) {
+                $arrMod = FuncionesController::loQueSeModifico($Item, $item_viejito, $item_nuevo);
+                if ($arrMod['campos_modificados'] !== '' && $arrMod['antes'] !== '' && $arrMod['despues'] !== '') {
+                    $Obj = $Item->modificadospor()->attach($Item->modificadopor_id, [
+                        'campos_modificados' => $arrMod['campos_modificados'],
+                        'antes' => $arrMod['antes'],
+                        'despues' => $arrMod['despues']
+                    ]);
+                }
             }
+
 
         }catch (Exception $e){
             return $e->getMessage();

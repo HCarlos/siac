@@ -374,6 +374,7 @@ class FuncionesController extends Controller
 
     public static function loQueSeModifico($item_viejito,$item_nuevo):array {
         $item_nuevo = (object) $item_nuevo;
+
         $campos_modificados = '';
         $antes = '';
         $despues = '';
