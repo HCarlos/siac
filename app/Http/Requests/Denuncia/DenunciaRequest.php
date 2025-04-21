@@ -121,15 +121,15 @@ class DenunciaRequest extends FormRequest
                 'altitud'                      => $this->altitud ?? 0.0000,
                 'search_google'                => trim($this->search_google) ?? '',
                 'gd_ubicacion'                 => trim($this->gd_ubicacion) ?? '',
-                'prioridad_id'                 => (int) $this->prioridad_id,
-                'origen_id'                    => (int) $this->origen_id,
-                'dependencia_id'               => (int) $this->dependencia_id,
-                'ubicacion_id'                 => (int) $this->ubicacion_id,
-                'servicio_id'                  => (int) $this->servicio_id,
-                'estatus_id'                   => (int) $this->estatus_id,
-                'ciudadano_id'                 => (int) $this->usuario_id,
-                'creadopor_id'                 => (int) $this->creadopor_id,
-                'modificadopor_id'             => (int) $this->modificadopor_id,
+                'prioridad_id'                 => $this->prioridad_id,
+                'origen_id'                    => $this->origen_id,
+                'dependencia_id'               => $this->dependencia_id,
+                'ubicacion_id'                 => $this->ubicacion_id,
+                'servicio_id'                  => $this->servicio_id,
+                'estatus_id'                   => $this->estatus_id,
+                'ciudadano_id'                 => $this->usuario_id,
+                'creadopor_id'                 => $this->creadopor_id,
+                'modificadopor_id'             => $this->modificadopor_id,
                 'domicilio_ciudadano_internet' => strtoupper(trim($this->domicilio_ciudadano_internet))  ?? '' ,
                 'observaciones'                => strtoupper(trim($this->observaciones)),
                 'ip'                           => FuncionesController::getIp(),
@@ -162,7 +162,7 @@ class DenunciaRequest extends FormRequest
         $trigger_type = 0;
         if ($this->id == 0) {
             $item = Denuncia::create($Item);
-            $this->attaches($item);
+            $this->attaches($item, null, null);
         } else {
             $item = Denuncia::find($this->id);
             $item_viejito = Denuncia::find($this->id);
@@ -267,6 +267,7 @@ class DenunciaRequest extends FormRequest
                 $Obj = $Item->creadospor()->attach($this->creadopor_id);
 
             // Buscamos en denuncia_modificadopor
+
 //            $Obj = DB::table('denuncia_modificadopor')
 //                ->where('denuncia_id','=',$Item->id)
 //                ->where('modificadopor_id','=',$this->modificadopor_id)
@@ -274,13 +275,15 @@ class DenunciaRequest extends FormRequest
 //            if ($Obj->count() <= 0 )
 //                $Obj = $Item->modificadospor()->attach($this->modificadopor_id);
 
-            $arrMod = FuncionesController::loQueSeModifico($Item, $item_viejito, $item_nuevo);
-            if ($arrMod['campos_modificados'] !== '' && $arrMod['antes'] !== '' && $arrMod['despues'] !== '') {
-                $Obj = $Item->modificadospor()->attach($Item->modificadopor_id,[
-                    'campos_modificados' => $arrMod['campos_modificados'],
-                    'antes'              => $arrMod['antes'],
-                    'despues'            => $arrMod['despues']
-                ]);
+            if ($item_nuevo != null) {
+                $arrMod = FuncionesController::loQueSeModifico($Item, $item_viejito, $item_nuevo);
+                if ($arrMod['campos_modificados'] !== '' && $arrMod['antes'] !== '' && $arrMod['despues'] !== '') {
+                    $Obj = $Item->modificadospor()->attach($Item->modificadopor_id, [
+                        'campos_modificados' => $arrMod['campos_modificados'],
+                        'antes' => $arrMod['antes'],
+                        'despues' => $arrMod['despues']
+                    ]);
+                }
             }
 
         }catch (Exception $e){
