@@ -741,8 +741,9 @@ class DenunciaAmbitoController extends Controller{
 
     protected function showModalSearchDenuncia($ambito_dependencia){
 
+        $ambito_dependencia = (int) $ambito_dependencia;
 
-        $this->ambito_dependencia = $ambito_dependencia ??session()->get('ambito_dependencia');
+        $this->ambito_dependencia = $ambito_dependencia ?? session()->get('ambito_dependencia');
 
         if (Auth::user()->isRole('ENLACE')){
 
@@ -780,7 +781,7 @@ class DenunciaAmbitoController extends Controller{
         }
 
         $Est = $this->ambito_dependencia === 1
-            ? FuncionesController::arrAmbitosViejitos()
+            ? FuncionesController::arrAmbitosApoyosSociales()
             : FuncionesController::arrAmbitosServiciosMunicipales();
 
 

@@ -281,7 +281,7 @@ class FuncionesController extends Controller
     }
 
     public static function arrAmbitosApoyosSociales(): array{
-        return [1];
+        return [1,99];
     }
 
     public static function arrAmbitosServiciosMunicipales(): array{

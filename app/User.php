@@ -40,6 +40,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $guard_name = 'web';
     protected $table = 'users';
+    
 //    protected $appends = [
 //        'full_name','full_name_with_username','path_image_profile','path_image_thumb_profile',
 //        'path_image_p_n_g_profile'
