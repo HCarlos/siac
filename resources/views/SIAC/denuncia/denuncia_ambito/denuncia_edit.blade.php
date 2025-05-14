@@ -25,3 +25,4 @@
 @endsection
 
 @include('partials.script_google_maps')
+{{--@include('partials.script_leaflet_maps')--}}

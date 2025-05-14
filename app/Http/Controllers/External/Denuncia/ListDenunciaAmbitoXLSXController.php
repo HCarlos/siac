@@ -6,12 +6,8 @@ use App\Classes\Denuncia\ActualizaEstadisticasARO;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Models\Catalogos\CentroLocalidad;
 use App\Models\Catalogos\Dependencia;
-use App\Models\Catalogos\Domicilios\Ubicacion;
 use App\Models\Catalogos\Estatu;
-use App\Models\Catalogos\Origen;
-use App\Models\Catalogos\Prioridad;
 use App\Models\Catalogos\Servicio;
-use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use App\Http\Controllers\Controller;
@@ -84,7 +80,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
         $sh->setCellValue('u1', Carbon::now()->format('d-m-Y h:i:s'));
         foreach ($Items as $item){
 //            dd($item);
-            $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y H:i:s');
+            $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
             $fechaIngreso   = isset($item->fecha_ingreso) ? $fechaIngreso : '';
 
             $Colonia = "";
@@ -142,6 +138,14 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     }
                 }
 
+                $atendidas = 0;
+                $pendientes = 0;
+                if ( in_array( ((int) $item->ue_id),array(17,20,21,22) )){
+                    $atendidas = 1;
+                }else{
+                    $pendientes = 1;
+                }
+
                 $gdu = explode(',',trim($item->gd_ubicacion));
                 $cadgdu = $gdu[1] ?? '';
 
@@ -167,14 +171,16 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('N'.$C, $item->prioridad->prioridad ?? '')
                     ->setCellValue('O'.$C, $item->origen->origen ?? '')
                     ->setCellValue('P'.$C, $item->ultimo_estatus ?? '')
-                    ->setCellValue('Q'.$C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y H:i:s') ?? '')
+                    ->setCellValue('Q'.$C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y') ?? '')
                     ->setCellValue('R'.$C, $respuesta )
                     ->setCellValue('S'.$C, $item->clave_identificadora )
                     ->setCellValue('T'.$C, trim($cds->StrGenero ?? ''))
                     ->setCellValue('U'.$C, $item->Ambito() ?? '')
                     ->setCellValue('V'.$C, $this->getColorSemaforo($item)['status'])
                     ->setCellValue('W'.$C, $item->dias_atendida ?? '' )
-                    ->setCellValue('X'.$C, $item->dias_rechazada ?? '' );
+                    ->setCellValue('X'.$C, $item->dias_rechazada ?? '' )
+                    ->setCellValue('Y'.$C, $atendidas  )
+                    ->setCellValue('Z'.$C, $pendientes  );
                 $sh
                     ->getStyle('A'.$C.':X'.$C)
                     ->getFill()
@@ -353,19 +359,6 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 $Dependencia = Dependencia::find($dependencia_id);
                 $Servicio    = Servicio::find($servicio_id);
                 $Estatus     = Estatu::find($estatu_id);
-
-//                $ciudadano   = User::find($Denuncia->ciudadano_id);
-//                $prioridad   = Prioridad::find($Denuncia->prioridad_id);
-//                $origen      = Origen::find($Denuncia->origen_id);
-//                $dependencia = Dependencia::find($Denuncia->dependencia_id);
-//                $servicio    = Servicio::find($Denuncia->servicio_id);
-//                $ubicacion   = Ubicacion::find($Denuncia->ubicacion_id);
-//                $estatus     = Estatu::find($Denuncia->estatus_id);
-//                $creadopor   = User::find($Denuncia->creadopor_id);
-
-//                $fechaIngreso   = Carbon::parse($Denuncia->fecha_ingreso)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
-//                $fechaLimite    = Carbon::parse($Denuncia->fecha_limite)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
-//                $fechaEjecucion = Carbon::parse($Denuncia->fecha_ejecucion)->format('d-m-Y'); //Carbon::createFromFormat('d-m-Y', $item->fecha_nacimiento);
 
                 $sh
                     ->setCellValue('A'.$C, $item->id)

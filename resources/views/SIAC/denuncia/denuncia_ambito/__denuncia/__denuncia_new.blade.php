@@ -42,6 +42,7 @@
                     </td>
                     <td class="w-80-percent p-0 m-0">
                         <input type="text" name="search_google" id="search_google" class="form-control w-100-percent" value="{{ old('search_google') }}" placeholder="Escriba la calle y el número" >
+                        <ul id="autocomplete-results"></ul>
                         <small class="muted w-100-percent chikirimbita chikirimbita_1"></small>
                     </td>
                 </tr>
