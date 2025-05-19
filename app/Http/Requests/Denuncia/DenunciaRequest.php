@@ -161,8 +161,8 @@ class DenunciaRequest extends FormRequest
     protected function guardar($Item){
         $trigger_type = 0;
         if ($this->id == 0) {
-            // $item = Denuncia::create($Item);
-            // $this->attaches($item, null, null);
+            $item = Denuncia::create($Item);
+            $this->attaches($item, null, null);
         } else {
             $item = Denuncia::find($this->id);
             $item_viejito = Denuncia::find($this->id);
