@@ -280,7 +280,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('C' . $C, $fechaIngreso ?? '')
                     ->setCellValue('D' . $C, trim($item->ciudadano->full_name ?? ''))
                     ->setCellValue('E' . $C, $cadcel)
-                    ->setCellValue('F' . $C, trim($cadgdu0 ?? ''))
+                    ->setCellValue('F' . $C, trim($item->search_google ?? ''))
                     ->setCellValue('G' . $C, trim($Colonia ?? ''))
                     ->setCellValue('H' . $C, trim($Delegacion ?? ''))
                     ->setCellValue('I' . $C, $item->descripcion ?? '')
