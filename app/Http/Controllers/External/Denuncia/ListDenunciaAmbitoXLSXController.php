@@ -182,7 +182,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('Y'.$C, $atendidas  )
                     ->setCellValue('Z'.$C, $pendientes  );
                 $sh
-                    ->getStyle('A'.$C.':X'.$C)
+                    ->getStyle('A'.$C.':Z'.$C)
                     ->getFill()
                     ->applyFromArray([
                             'fillType' => 'solid',
@@ -228,7 +228,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
     // Denuncia General Formato 01
     public function denunciaSASGeneral01($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
 
-        $sh->setCellValue('N1', Carbon::now()->format('d-m-Y H:i:s'));
+        $sh->setCellValue('L1', Carbon::now()->format('d-m-Y H:i:s'));
         foreach ($Items as $item) {
             $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y H:i:s');
             $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
@@ -271,21 +271,22 @@ class ListDenunciaAmbitoXLSXController extends Controller
 
 //                dd($cadgdu0.' - '.$cadgdu1);
 
+//            ->setCellValue('F' . $C, trim($item->gd_ubicacion ?? ''))
+//            ->setCellValue('H' . $C, trim($cadgdu1 ?? ''))
+
                 $sh
                     ->setCellValue('A' . $C, $item->id ?? 0)
                     ->setCellValue('B' . $C, trim($item->servicio_ultimo_estatus->servicio ?? ''))
                     ->setCellValue('C' . $C, $fechaIngreso ?? '')
                     ->setCellValue('D' . $C, trim($item->ciudadano->full_name ?? ''))
                     ->setCellValue('E' . $C, $cadcel)
-                    ->setCellValue('F' . $C, trim($item->gd_ubicacion ?? ''))
-                    ->setCellValue('G' . $C, trim($cadgdu0 ?? ''))
-                    ->setCellValue('H' . $C, trim($cadgdu1 ?? ''))
-                    ->setCellValue('I' . $C, trim($Colonia ?? ''))
-                    ->setCellValue('J' . $C, trim($Delegacion ?? ''))
-                    ->setCellValue('K' . $C, $item->descripcion ?? '')
-                    ->setCellValue('L' . $C, $item->Ambito() ?? '')
-                    ->setCellValue('M' . $C, $item->ultimo_estatus ?? '')
-                    ->setCellValue('N' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y H:i:s') ?? '');
+                    ->setCellValue('F' . $C, trim($cadgdu0 ?? ''))
+                    ->setCellValue('G' . $C, trim($Colonia ?? ''))
+                    ->setCellValue('H' . $C, trim($Delegacion ?? ''))
+                    ->setCellValue('I' . $C, $item->descripcion ?? '')
+                    ->setCellValue('J' . $C, $item->Ambito() ?? '')
+                    ->setCellValue('K' . $C, $item->ultimo_estatus ?? '')
+                    ->setCellValue('L' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y H:i:s') ?? '');
                 $C++;
 //            }
         }
@@ -294,13 +295,13 @@ class ListDenunciaAmbitoXLSXController extends Controller
         $oVal = $sh->getCell('I1')->getValue();
         $sh->setCellValue('B'.$C, 'TOTAL DE REGISTROS')
             ->setCellValue('C'.$C, '=COUNT(A'.$C0.':A'.$Cx.')')
-            ->setCellValue('I'.$C, $oVal);
+            ->setCellValue('L'.$C, $oVal);
 
-        $sh->getStyle('A'.$C0.':N'.$C)->getFont()
+        $sh->getStyle('A'.$C0.':L'.$C)->getFont()
             ->setName('Arial')
             ->setSize(8);
 
-        $sh->getStyle('A'.$C.':N'.$C)->getFont()->setBold(true);
+        $sh->getStyle('A'.$C.':L'.$C)->getFont()->setBold(true);
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="_'.$arrFE[0].'.'.$arrFE[1].'"');
