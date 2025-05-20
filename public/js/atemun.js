@@ -645,16 +645,19 @@ jQuery(function($) {
                         $.each(response.data, function( index, value ) {
                             var TC = "";
                             if (value.total_ciudadanos !== ""){
-                                TC = "(<strong class='text-danger'> <i class='fas fa-users'></i> "+value.total_ciudadanos+"</strong>)<br>";
+                                TC = "<a href='/addUserDenunciaAmbito/"+value.id+"' target='_blank'>" +
+                                    "(<strong class='text-danger'> <i class='fas fa-users'></i> "+value.total_ciudadanos+"</strong>)" +
+                                    "</a>" +
+                                    "<br>";
                             }
                             Tbl = "<tr class='bgc-h-yellow-l3'>"+
-                                "<td>"+
-                                value.id+"<br>"+
-                                value.servicio+"<br>"+
-                                "<strong>"+value.denuncia+"</strong><br>"+
+                                "<td><a href='/imprimir_denuncia_ambito_respuesta/"+value.uuid+"' target='_blank'>"+
+                                value.id+"</a><br>"+
+                                "<span class='orange'>"+value.servicio+"</span><br>"+
+                                "<strong class='text-verde-morena'>"+value.denuncia+"</strong><br>"+
                                 "<small>"+value.fecha+"</small> (<small>"+value.latitud+", "+value.longitud+"</small>)<br>"+
-                                "<strong class='text-green'>"+value.ciudadano+"</strong><br>"+
-                                "<small>"+value.search_google+" "+value.localidad+"</small><br>"+
+                                "<strong class='text-info'>"+value.ciudadano+"</strong><br>"+
+                                "<small class='text-secondary'>"+value.search_google+" "+value.localidad+"</small><br>"+
                                 "<strong class='text-primary-dark'>"+value.ultimo_estatus+"</strong> " + TC +
                                 "</td>"+
                                 "<td>"+

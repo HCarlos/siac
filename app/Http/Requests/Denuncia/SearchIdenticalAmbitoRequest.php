@@ -155,6 +155,7 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
                 'ultimo_estatus'   => $item->ultimo_estatus,
                 'localidad'        => $Del->ItemColoniaDelegacion(),
                 'total_ciudadanos' => $item->ciudadanos->count() > 1 ? $item->ciudadanos->count() : "",
+                'uuid'             => $item->uuid,
                 'id'               => $item->id
             );
 //            }
