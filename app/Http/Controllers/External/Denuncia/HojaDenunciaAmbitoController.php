@@ -7,6 +7,7 @@ use App\Classes\Denuncia\DenunciaArchivoTCPDF;
 use App\Classes\Denuncia\DenunciaTCPDF;
 use App\Classes\sector;
 use App\Http\Controllers\Controller;
+use App\Models\Catalogos\CentroLocalidad;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use Carbon\Carbon;
@@ -124,6 +125,8 @@ class HojaDenunciaAmbitoController extends Controller
         $roles = $den->ciudadano->RoleNameStrArray;
         $username = $den->ciudadano->username;
 
+        $Del = CentroLocalidad::find($den->centro_localidad_id);
+
         $pdf->alto  = 6;
         $pdf->setY( $pdf->getY() + 20 );
         $pdf->setX(10);
@@ -238,17 +241,26 @@ class HojaDenunciaAmbitoController extends Controller
         $pdf->SetFont(FONT_FREEMONO,'B',8);
         $pdf->Cell(185,$pdf->alto,$den->servicio->servicio,"L",1,"L");
 
+        // D   UBICACIÓN
+
+//        $pdf->SetFont(FONT_ARIALN,'B',10);
+//        $pdf->Cell(20,$pdf->alto,"UBICACIÓN : ","",0,"R");
+//        $pdf->SetFont(FONT_FREEMONO,'B',8);
+//        $pdf->Cell(185,$pdf->alto,$den->gd_ubicacion." - ".$Del->ItemColonia() ,"L",1,"L");
+
         $y = $pdf->GetY();
-        $pdf->setY( $pdf->getY() +0.5 );
+        $pdf->setY( $pdf->getY() + 0.5 );
         $y = $pdf->GetY();
         $pdf->SetFillColor(192);
-        $pdf->RoundedRect(5,$y,205,6.5,2,'1111','');
+        $pdf->RoundedRect(5,$y,205,16,2,'1111','');
 
-        // D   UBICACIÓN
         $pdf->SetFont(FONT_ARIALN,'B',10);
-        $pdf->Cell(20,$pdf->alto,"UBICACIÓN : ","",0,"R");
+        $pdf->Cell(205,$pdf->alto,"  UBICACIÓN : ","B",1,"L");
         $pdf->SetFont(FONT_FREEMONO,'B',8);
-        $pdf->Cell(185,$pdf->alto,$den->gd_ubicacion,"L",1,"L");
+        $pdf->WriteHTMLCell(200,$pdf->alto,8,$pdf->getY(),$den->gd_ubicacion." - ".$Del->ItemColonia(),0,1);
+        $y = $pdf->GetY()+10;
+
+
 
         // DENUNCIA
         $y = $pdf->GetY();

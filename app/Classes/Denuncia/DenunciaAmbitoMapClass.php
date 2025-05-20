@@ -39,7 +39,10 @@ class DenunciaAmbitoMapClass{
         $longitude =$den->longitud; // Coordenada longitud
 
         // Generar URL de Google Maps Static API
-        $googleMapsApiKey = env('GOOGLE_MAPS_KEY'); // Sustituye por tu propia API Key
+        $googleMapsApiKey = 'AIzaSyBUl6Jk2_5yVYdnwidOuU9c8_ZBk7gGnfo'; //env('GOOGLE_MAPS_KEY'); // Sustituye por tu propia API Key
+
+//        print $googleMapsApiKey;
+
         $mapUrl = "https://maps.googleapis.com/maps/api/staticmap?center={$latitude},{$longitude}&zoom=17&size=2550x3300&markers=color:red|{$latitude},{$longitude}&key={$googleMapsApiKey}";
 
         // Descargar el mapa como imagen temporal

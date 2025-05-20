@@ -77,27 +77,58 @@ async function initMap(lat, lon, siExiste) {
         }
 
         // alert(search_custom);
+
+        // alert(search_custom);
         const request = {
             query: search_custom,
             fields: ["name", "formatted_address", "geometry"],
         };
 
+        // Bounds (límites) para Tabasco, MX
+        const villahermosaBounds = {
+            north: 18.0500,  // Latitud máxima (Norte)
+            south: 17.9500,  // Latitud mínima (Sur)
+            west: -93.0000,  // Longitud mínima (Oeste)
+            east: -92.8500   // Longitud máxima (Este)
+        };
+
+        // Crear el objeto LatLngBounds
+        const bounds = new google.maps.LatLngBounds(
+            new google.maps.LatLng(villahermosaBounds.south, villahermosaBounds.west), // Esquina suroeste
+            new google.maps.LatLng(villahermosaBounds.north, villahermosaBounds.east)  // Esquina noreste
+        );
+
+        // Configurar el mapa para restringir la vista a Tabasco
+        map.fitBounds(bounds);
+
         const geocoder = new google.maps.Geocoder();
 
-        geocoder.geocode({ address: search_custom }, (resultados, estado) => {
-            // mostrarCargando(false);
+        geocoder.geocode({
+            address: search_custom,
+            bounds: bounds,
+            componentRestrictions: {
+                country: 'MX'
+            },
+            region: 'MX'
+        }, (resultados, estado) => {
 
             if (estado === 'OK' && resultados.length > 0) {
+
                 const mejorResultado = resultados[0];
-                // mostrarResultados(mejorResultado);
-                // actualizarMapa(mejorResultado.geometry.location);
+
+                if (!mejorResultado.address_components.some(comp =>
+                    comp.types.includes('country') &&
+                    comp.short_name === 'MX'
+                )) {
+                    $("#searchGoogleError").html('Solo se permiten direcciones en México').show(100);
+                    return false;
+                }
+
                 createMarker(mejorResultado, infoWindow, PinElement, AdvancedMarkerElement, map);
                 map.setZoom(zuum);
                 map.setCenter(mejorResultado.geometry.location);
                 geocodePosition(mejorResultado.geometry.location)
-
             } else {
-                // mostrarError('No se encontraron resultados para esta dirección');
                 $("#searchGoogleError").html('No se encontraron resultados para esta dirección').show(100);
                 return false;
             }

@@ -49,8 +49,8 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
         try {
             $search_google         = $this->search_google;
             $ubicacion_id        = (int) $this->ubicacion_id;
-            $lat                 = explode('.', $this->latitud);
-            $lon                 = explode('.', $this->longitud);
+            $lat                 = explode('.', $this->latitud ?? '17.998887170641467');
+            $lon                 = explode('.', $this->longitud ?? '-92.94474352674484');
             $usuario_id          = (int) $this->usuario_id;
             $servicio_id         = (int) $this->servicio_id;
             $centro_localidad_id = (int) $this->centro_localidad_id;
