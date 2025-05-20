@@ -141,7 +141,7 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
             $Ciudadano = User::find($item->ciudadano_id);
             $Del = CentroLocalidad::find($item->centro_localidad_id);
             $this->data[] = array(
-                'servicio'         => $item->servicio,
+                'servicio'         => $item->servicio_ultimo_estatus,
                 'denuncia'         => $item->denuncia,
                 'referencia'       => $item->referencia,
                 'ubicacion'        => $item->FullUbication,
