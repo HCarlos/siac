@@ -70,7 +70,7 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
                 $longitud = $lon[0] . '.' . substr($lon[1], 0, 2);
 
                 if($centro_localidad_id > 0){
-//                    $oFilters['ues_id'] = $servicio_id;
+//                    $oFilters['sue_id'] = $servicio_id;
 //                    $oFilters['centro_localidad_id'] = $centro_localidad_id;
 //                    $oFilters['search'] = $search_google;
 
@@ -90,8 +90,6 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
 
             if ($ambito_dependencia === 1 ){
 
-//                dd($oFilters);
-
                 $items = _viDDSs::query()
                     ->filterBy($oFilters)
                     ->orderByDesc('id')
@@ -100,8 +98,8 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
 
 //                $items = _viDDSs::query()
 //                    ->where('servicio_id', $servicio_id)
-//                    ->where('lati2', (float)$latitud)
-//                    ->where('long2', (float)$longitud)
+//                    ->where('lati3', (float)$latitud)
+//                    ->where('long3', (float)$longitud)
 //                    ->whereIn('ue_id',[16,18,19])
 //                    ->orderByDesc('id')
 //                    ->get();
@@ -113,10 +111,8 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
 
                 $oFilters['search_google'] = $tsString;
 
-//                dd($tsString);
-
                 $items = _viDDSs::query()
-                    ->where('servicio_id', $servicio_id)
+                    ->where('sue_id', $servicio_id)
                     ->where('centro_localidad_id', $centro_localidad_id)
                     ->ambitoFilterBy($oFilters)
                     ->whereIn('ue_id',[16,18,19])
