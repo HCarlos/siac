@@ -45,21 +45,15 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
     public function manage(){
         $this->data = [];
 
-//        dd($this->all());
 
         try {
-//            $descripcion         = strtoupper(trim($this->descripcion));
-//            $referencia          = strtoupper(trim($this->referencia));
-//            $ubicacion           = strtoupper(trim($this->ubicacion));
-//            $search_google       = $this->search_google;
-//            $searchgoogleresult  = $this->searchgoogleresult;
+            $search_google         = $this->search_google;
             $ubicacion_id        = (int) $this->ubicacion_id;
             $lat                 = explode('.', $this->latitud);
             $lon                 = explode('.', $this->longitud);
             $usuario_id          = (int) $this->usuario_id;
             $servicio_id         = (int) $this->servicio_id;
             $centro_localidad_id = (int) $this->centro_localidad_id;
-//            $id                  = (int) $this->id;
 
             $ambito_dependencia = (int) $this->ambito_dependencia;
 
@@ -76,9 +70,15 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
                 $longitud = $lon[0] . '.' . substr($lon[1], 0, 2);
 
                 if($centro_localidad_id > 0){
-                    $oFilters['centro_localidad_id'] = $centro_localidad_id;
-                    $oFilters['lati2'] = $latitud;
-                    $oFilters['long2'] = $longitud;
+//                    $oFilters['ues_id'] = $servicio_id;
+//                    $oFilters['centro_localidad_id'] = $centro_localidad_id;
+//                    $oFilters['search'] = $search_google;
+
+//                    dd($oFilters);
+
+
+//                    $oFilters['lati2'] = $latitud;
+//                    $oFilters['long2'] = $longitud;
                 }
 
 
@@ -97,13 +97,34 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
                     ->orderByDesc('id')
                     ->get();
             }else{
-//                ->ambitoFilterBy($oFilters)
+
+//                $items = _viDDSs::query()
+//                    ->where('servicio_id', $servicio_id)
+//                    ->where('lati2', (float)$latitud)
+//                    ->where('long2', (float)$longitud)
+//                    ->whereIn('ue_id',[16,18,19])
+//                    ->orderByDesc('id')
+//                    ->get();
+
+                $F           = new FuncionesController();
+                $filters      = strtolower($search_google);
+                $filters      = $F->str_sanitizer($filters);
+                $tsString     = $F->string_to_tsQuery( strtolower($filters),' & ');
+
+                $oFilters['search_google'] = $tsString;
+
+//                dd($tsString);
+
                 $items = _viDDSs::query()
                     ->where('servicio_id', $servicio_id)
-                    ->where('lati2', (float)$latitud)
-                    ->where('long2', (float)$longitud)
+                    ->where('centro_localidad_id', $centro_localidad_id)
+                    ->ambitoFilterBy($oFilters)
+                    ->whereIn('ue_id',[16,18,19])
                     ->orderByDesc('id')
                     ->get();
+
+
+
             }
 
             $this->llevarArray($items, $usuario_id);

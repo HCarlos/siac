@@ -34,8 +34,8 @@ class _viDDSs extends Model{
         'fecha_ingreso','dependencia_ultimo_estatus','area','subarea','servicio_ultimo_estatus','cp',
         'telefonoscelularesemails', 'calle','num_ext','num_int','colonia','ubicacion','ambito_dependencia',
         'denuncia','referencia', 'status_denuncia','prioridad_id','prioridad','origen','observaciones','genero','genero_ciudadano',
-        'cerrado','origen_id','ciudadano_id','ultimo_estatus','firmado','latitud','longitud',
-        'clave_identificadora','estatus_general','ambito','ambito_sas','ue_id','centro_localidad_id',
+        'cerrado','origen_id','ciudadano_id','ultimo_estatus','firmado','latitud','longitud','search_google',
+        'clave_identificadora','estatus_general','ambito','ambito_sas','ue_id','centro_localidad_id','calle_y_numero_searchtext',
     ];
 
     public function scopeFilterBy($query, $filters){

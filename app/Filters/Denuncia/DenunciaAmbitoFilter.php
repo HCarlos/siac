@@ -24,6 +24,7 @@ class DenunciaAmbitoFilter extends QueryFilter
             'ambito_dependencia'     => '',
             'ambito_estatus'         => '',
             'search'                 => '',
+            'search_google'          => '',
             'curp'                   => '',
             'ciudadano'              => '',
             'id'                     => '',
@@ -82,6 +83,17 @@ class DenunciaAmbitoFilter extends QueryFilter
 
         return $query->whereRaw("gd_searchtext @@ plainto_tsquery('spanish', ?)", [$search]
                     )->orderByRaw("descripcion, referencia, search_google, gd_ubicacion ");
+
+    }
+
+    public function search_google($query, $search){
+        if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
+
+        $search = trim($search); // Eliminar espacios en blanco innecesarios
+        $search = addslashes($search); // Escapar caracteres especiales
+
+        return $query->whereRaw("calle_y_numero_searchtext @@ plainto_tsquery('spanish', ?)", [$search]
+        )->orderByRaw("search_google");
 
     }
 
