@@ -257,7 +257,7 @@ class HojaDenunciaAmbitoController extends Controller
         $pdf->SetFont(FONT_ARIALN,'B',10);
         $pdf->Cell(205,$pdf->alto,"  UBICACIÓN : ","B",1,"L");
         $pdf->SetFont(FONT_FREEMONO,'B',8);
-        $pdf->WriteHTMLCell(200,$pdf->alto,8,$pdf->getY(),$den->gd_ubicacion." - ".$Del->ItemColonia(),0,1);
+        $pdf->WriteHTMLCell(200,$pdf->alto,8,$pdf->getY(),$den->search_google." - ".$Del->ItemColonia(),0,1);
         $y = $pdf->GetY()+10;
 
 
