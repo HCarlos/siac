@@ -134,8 +134,6 @@ async function initMap(lat, lon, siExiste) {
             }
         });
 
-
-
     }else{
         createMarker(plaza[0], infoWindow, PinElement, AdvancedMarkerElement, map);
         geocodePosition(plaza[0])

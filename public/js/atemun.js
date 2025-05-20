@@ -651,6 +651,7 @@ jQuery(function($) {
                                 "<td>"+
                                 value.id+"<br>"+
                                 "<strong>"+value.denuncia+"</strong><br>"+
+                                "<strong>"+value.servicio+"</strong><br>"+
                                 "<small>"+value.fecha+"</small> (<small>"+value.latitud+", "+value.longitud+"</small>)<br>"+
                                 "<strong class='text-green'>"+value.ciudadano+"</strong><br>"+
                                 "<small>"+value.search_google+" "+value.localidad+"</small><br>"+
