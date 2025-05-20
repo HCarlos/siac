@@ -48,15 +48,16 @@ class DenunciaAmbitoRequest extends FormRequest
     public function rules()
     {
 
+//        'ubicacion_id'        => ['required','numeric','min:1'],
+//            'latitud'             => ['required','numeric'],
+//            'longitud'            => ['required','numeric'],
+//            'gd_ubicacion'        => ['required','string','min:4'],
+
         return [
             'descripcion'         => ['required','string','min:4'],
             'servicio_id'         => ['required','numeric','min:1'],
             'usuario_id'          => ['required','numeric','min:1'],
             'origen_id'           => ['required','numeric','min:1'],
-            'ubicacion_id'        => ['required','numeric','min:1'],
-            'latitud'             => ['required','numeric'],
-            'longitud'            => ['required','numeric'],
-            'gd_ubicacion'        => ['required','string','min:4'],
             'centro_localidad_id' => ['required','numeric','gt:0'],
         ];
     }
@@ -68,15 +69,16 @@ class DenunciaAmbitoRequest extends FormRequest
     }
 
     public function attributes(){
+//        'ubicacion_id'        => 'Ubicación',
+//            'latitud'             => 'Latitud',
+//            'longitud'            => 'Longitud',
+//            'gd_ubicacion'        => 'Ubicación google',
+
         return [
             'descripcion'         => 'Solicitud',
             'servicio_id'         => 'Servicio',
             'origen_id'           => 'Fuente',
             'usuario_id'          => 'Usuario',
-            'ubicacion_id'        => 'Ubicación',
-            'latitud'             => 'Latitud',
-            'longitud'            => 'Longitud',
-            'gd_ubicacion'        => 'Ubicación google',
             'centro_localidad_id' => 'Localidad',
         ];
     }
@@ -87,9 +89,7 @@ class DenunciaAmbitoRequest extends FormRequest
             $Servicio  = _viServicios::findOrFail($this->servicio_id);
 
             $fecha = Carbon::now();
-//            $fecha_i = date('Y-m-d',strtotime($this->fecha_ingreso));
             $fecha_i = $fecha->format('Y-m-d');
-            $fecha_f = date('H:i:s');
             $fecha_f = $fecha->format('H:i:s');
 
             $fi = $fecha_i.' '.$fecha_f;
@@ -120,8 +120,8 @@ class DenunciaAmbitoRequest extends FormRequest
                 'municipio'                    => strtoupper(trim($Ubicacion->municipio)),
                 'estado'                       => strtoupper(trim($Ubicacion->estado)),
                 'cp'                           => strtoupper(trim($Ubicacion->cp)),
-                'latitud'                      => $this->latitud ?? 0.0000,
-                'longitud'                     => $this->longitud ?? 0.0000,
+                'latitud'                      => $this->latitud ?? 17.998887170641467,
+                'longitud'                     => $this->longitud ?? -92.94474352674484,
                 'altitud'                      => $this->altitud ?? 0.0000,
                 'search_google'                => $this->search_google ?? '',
                 'gd_ubicacion'                 => $this->gd_ubicacion ?? '',

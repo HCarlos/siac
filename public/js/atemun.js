@@ -617,20 +617,19 @@ jQuery(function($) {
                 return false;
             }
 
-            if ( $("#search_google").val() ){
-                if ($("#search_google").val() === '' && $("#searchGoogleResult").html() === ''){
-                    alert("Búsque la ubicación del problema");
-                    return false;
-                }
-            }else{
-                alert("Búsque la ubicación del problema");
-            }
+            // if ( $("#search_google").val() ){
+            //     if ($("#search_google").val() === '' && $("#searchGoogleResult").html() === ''){
+            //         alert("Búsque la ubicación del problema");
+            //         return false;
+            //     }
+            // }else{
+            //     alert("Búsque la ubicación del problema");
+            // }
 
             if ($("#centro_localidad_id").val() <= 0 && parseInt($("#ambito_dependencia").val()) === 2){
                 alert("Seleccione una Localidad");
                 return false;
             }
-
 
             $.ajax({
                 method: "POST",
