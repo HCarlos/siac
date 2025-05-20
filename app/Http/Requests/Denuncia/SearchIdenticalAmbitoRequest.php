@@ -7,6 +7,7 @@ namespace App\Http\Requests\Denuncia;
 
 use App\Classes\MessageAlertClass;
 use App\Http\Controllers\Funciones\FuncionesController;
+use App\Models\Catalogos\CentroLocalidad;
 use App\Models\Catalogos\Domicilios\Ubicacion;
 use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\Denuncia;
@@ -138,6 +139,7 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
         foreach ($Items as $item) {
 //            if ( $item->ciudadano_id != $usuario_id || $usuario_id = 0) {
             $Ciudadano = User::find($item->ciudadano_id);
+            $Del = CentroLocalidad::find($item->centro_localidad_id);
             $this->data[] = array(
                 'denuncia'         => $item->denuncia,
                 'referencia'       => $item->referencia,
@@ -150,6 +152,7 @@ class SearchIdenticalAmbitoRequest extends FormRequest{
                 'ciudadano'        => $Ciudadano->FullName,
                 'fecha'            => $item->fecha_ingreso_solicitud,
                 'ultimo_estatus'   => $item->ultimo_estatus,
+                'localidad'        => $Del->ItemColoniaDelegacion(),
                 'total_ciudadanos' => $item->ciudadanos->count() > 1 ? $item->ciudadanos->count() : "",
                 'id'               => $item->id
             );

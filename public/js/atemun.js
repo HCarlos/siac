@@ -653,7 +653,7 @@ jQuery(function($) {
                                 "<strong>"+value.denuncia+"</strong><br>"+
                                 "<small>"+value.fecha+"</small> (<small>"+value.latitud+", "+value.longitud+"</small>)<br>"+
                                 "<strong class='text-green'>"+value.ciudadano+"</strong><br>"+
-                                "<small>"+value.gd_ubicacion+"</small><br>"+
+                                "<small>"+value.search_google+" "+value.localidad+"</small><br>"+
                                 "<strong class='text-primary-dark'>"+value.ultimo_estatus+"</strong> " + TC +
                                 "</td>"+
                                 "<td>"+
