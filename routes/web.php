@@ -683,3 +683,4 @@ Route::get('/imprimir_denuncia_ambito_respuesta/{uuid}', 'External\Denuncia\Hoja
 
 //});
 
+Route::get('usuario/{curp}', 'UsuarioCURPController@buscarPorCurp');
