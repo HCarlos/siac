@@ -232,7 +232,7 @@
         </div>
         <hr>
         <div class="form-group row mb-1 ml-1">
-                @if ( Auth::user()->hasRole('Administrator|ENLACE|escanear') )
+                @if ( Auth::user()->hasRole('Administrator|ENLACE|ESCANEAR|test_admin') )
                     <button type="button" class="btn btn-sm btn-amarillo-morena btn-rounded text-white pb-3px float-left" id="addImage"  onclick="scanWithoutAspriseDialog();" style="padding-bottom: 0.3em !important;">Escanear documento</button>
                     <div id="scannerImages" name="scannerImages"></div><br><br>
                 @endif
