@@ -6,9 +6,10 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
 
-class UsuarioCURPController extends Controller
-{
+class UsuarioCURPController extends Controller{
+
     public function buscarPorCurp(Request $request, $curp = null) {
+
         if (!$curp) {
             $curp = $request->input('curp');
         }
@@ -19,9 +20,6 @@ class UsuarioCURPController extends Controller
                 'codigo' => 400
             ], 400);
         }
-
-
-//        dd($curp);
 
         // Validar formato básico de CURP (18 caracteres)
         if (strlen($curp) !== 18) {
@@ -52,6 +50,7 @@ class UsuarioCURPController extends Controller
             ],
             'codigo' => 200
         ]);
+
     }
 
 }
