@@ -77,7 +77,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
     // Denuncia General Formato 01
     public function denunciaGeneral01($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
 
-        $sh->setCellValue('u1', Carbon::now()->format('d-m-Y h:i:s'));
+        $sh->setCellValue('w1', Carbon::now()->format('d-m-Y h:i:s'));
         foreach ($Items as $item){
 //            dd($item);
             $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
@@ -157,7 +157,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('D'.$C, trim($cds->ap_materno ?? ''))
                     ->setCellValue('E'.$C, trim($cds->nombre ?? ''))
 
-                    ->setCellValue('F'.$C, trim($item->gd_ubicacion) ?? '')
+                    ->setCellValue('F'.$C, strtoupper(trim($item->search_google)) ?? '' )
                     ->setCellValue('G'.$C, $Colonia ?? '')
                     ->setCellValue('H'.$C, $Delegacion ?? '')
 
@@ -173,16 +173,13 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('P'.$C, $item->ultimo_estatus ?? '')
                     ->setCellValue('Q'.$C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y') ?? '')
                     ->setCellValue('R'.$C, $respuesta )
-                    ->setCellValue('S'.$C, $item->clave_identificadora )
-                    ->setCellValue('T'.$C, trim($cds->StrGenero ?? ''))
-                    ->setCellValue('U'.$C, $item->Ambito() ?? '')
-                    ->setCellValue('V'.$C, $this->getColorSemaforo($item)['status'])
-                    ->setCellValue('W'.$C, $item->dias_atendida ?? '' )
-                    ->setCellValue('X'.$C, $item->dias_rechazada ?? '' )
-                    ->setCellValue('Y'.$C, $atendidas  )
-                    ->setCellValue('Z'.$C, $pendientes  );
+                    ->setCellValue('S'.$C, $this->getColorSemaforo($item)['status'])
+                    ->setCellValue('T'.$C, $item->dias_atendida ?? '' )
+                    ->setCellValue('U'.$C, $item->dias_rechazada ?? '' )
+                    ->setCellValue('V'.$C, $atendidas  )
+                    ->setCellValue('W'.$C, $pendientes  );
                 $sh
-                    ->getStyle('A'.$C.':Z'.$C)
+                    ->getStyle('A'.$C.':W'.$C)
                     ->getFill()
                     ->applyFromArray([
                             'fillType' => 'solid',
