@@ -39,7 +39,20 @@ class UsuarioCURPController extends Controller{
         }
 
         // Formato de respuesta personalizado
+//        return response()->json([
+//            'data' => [
+//                'id' => $usuario->id,
+//                'nombre' => $usuario->nombre,
+//                'apellidos' => $usuario->ap_paterno . ' ' . $usuario->ap_materno,
+//                'email' => $usuario->email,
+//                'curp' => $usuario->curp,
+//                'fecha_registro' => $usuario->created_at->format('Y-m-d')
+//            ],
+//            'codigo' => 200
+//        ]);
+
         return response()->json([
+            'mensaje' => 'OK',
             'data' => [
                 'id' => $usuario->id,
                 'nombre' => $usuario->nombre,
@@ -48,8 +61,8 @@ class UsuarioCURPController extends Controller{
                 'curp' => $usuario->curp,
                 'fecha_registro' => $usuario->created_at->format('Y-m-d')
             ],
-            'codigo' => 200
-        ]);
+            'status' => '200'
+        ], 200);
 
     }
 
