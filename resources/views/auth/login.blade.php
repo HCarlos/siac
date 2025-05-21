@@ -19,7 +19,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/login_v2.css') }}">
 
-    <script async src="https://www.google.com/recaptcha/api.js"></script>
+{{--    <script async src="https://www.google.com/recaptcha/api.js"></script>--}}
 </head>
 <body>
 <div class="hero-section">
@@ -49,9 +49,9 @@
 
                 <a href="{{ route('password.request') }}" class=" float-right text-danger "><strong>¿Olvidaste tu contraseña?</strong></a>
 
-                <div class="captcha-container mt-1 mb-1">
-                    <div class="g-recaptcha " data-sitekey={{config('services.recaptcha.key')}}></div>
-                </div>
+{{--                <div class="captcha-container mt-1 mb-1">--}}
+{{--                    <div class="g-recaptcha " data-sitekey={{config('services.recaptcha.key')}}></div>--}}
+{{--                </div>--}}
 
                 <div class="options mb-1">
                     <input type="checkbox" id="remember" name="remember">

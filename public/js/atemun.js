@@ -617,6 +617,11 @@ jQuery(function($) {
                 return false;
             }
 
+            if ($("#search_google").val() <= 0){
+                alert("Proporcione la calle y el número");
+                return false;
+            }
+
             // if ( $("#search_google").val() ){
             //     if ($("#search_google").val() === '' && $("#searchGoogleResult").html() === ''){
             //         alert("Búsque la ubicación del problema");

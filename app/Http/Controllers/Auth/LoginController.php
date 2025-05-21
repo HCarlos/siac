@@ -59,28 +59,28 @@ class LoginController extends Controller
         $this->validate($request, [
             'username' => 'required',
             'password' => 'required',
-            'g-recaptcha-response' => 'required',
         ]);
+//        'g-recaptcha-response' => 'required',
 
-        $recaptcha_response = $request->input('g-recaptcha-response');
+//        $recaptcha_response = $request->input('g-recaptcha-response');
 
-        if (is_null($recaptcha_response)) {
-            return redirect()->back()->with('status', 'Please Complete the Recaptcha to proceed');
-        }
+//        if (is_null($recaptcha_response)) {
+//            return redirect()->back()->with('status', 'Please Complete the Recaptcha to proceed');
+//        }
 
-        $url = "https://www.google.com/recaptcha/api/siteverify";
+//        $url = "https://www.google.com/recaptcha/api/siteverify";
 
-        $body = [
-            'secret' => config('services.recaptcha.secret'),
-            'response' => $recaptcha_response,
-            'remoteip' => IpUtils::anonymize($request->ip()) //anonymize the ip to be GDPR compliant. Otherwise just pass the default ip address
-        ];
+//        $body = [
+//            'secret' => config('services.recaptcha.secret'),
+//            'response' => $recaptcha_response,
+//            'remoteip' => IpUtils::anonymize($request->ip()) //anonymize the ip to be GDPR compliant. Otherwise just pass the default ip address
+//        ];
 
-        $response = Http::asForm()->post($url, $body);
+//        $response = Http::asForm()->post($url, $body);
 
-        $result = json_decode($response);
+//        $result = json_decode($response);
 
-        if ($response->successful() && $result->success == true) {
+//        if ($response->successful() && $result->success == true) {
 
 
             $fieldType = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
@@ -107,9 +107,9 @@ class LoginController extends Controller
                     ->with('error','Username, email ó password incorrecto');
             }
 
-        } else {
-            return redirect()->back()->with('status', 'Please Complete the Recaptcha Again to proceed');
-        }
+//        } else {
+//            return redirect()->back()->with('status', 'Please Complete the Recaptcha Again to proceed');
+//        }
 
     }
 
