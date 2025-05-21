@@ -683,4 +683,9 @@ Route::get('/imprimir_denuncia_ambito_respuesta/{uuid}', 'External\Denuncia\Hoja
 
 //});
 
-Route::get('usuario/{curp}', 'UsuarioCURPController@buscarPorCurp');
+Route::get('/get-csrf-token', function() {
+    return response()->json(['csrf_token' => csrf_token()]);
+});
+
+Route::get('usuario/{curp}', 'Auth\UsuarioCURPController@buscarPorCurp');
+Route::post('usuariopost', 'Auth\UsuarioCURPController@buscarPorCurp');

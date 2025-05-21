@@ -8,8 +8,21 @@ use Illuminate\Http\Request;
 
 class UsuarioCURPController extends Controller
 {
-    public function buscarPorCurp($curp)
-    {
+    public function buscarPorCurp(Request $request, $curp = null) {
+        if (!$curp) {
+            $curp = $request->input('curp');
+        }
+
+        if (!$curp) {
+            return response()->json([
+                'error' => 'CURP no proporcionada',
+                'codigo' => 400
+            ], 400);
+        }
+
+
+//        dd($curp);
+
         // Validar formato básico de CURP (18 caracteres)
         if (strlen($curp) !== 18) {
             return response()->json([
@@ -40,4 +53,5 @@ class UsuarioCURPController extends Controller
             'codigo' => 200
         ]);
     }
+
 }
