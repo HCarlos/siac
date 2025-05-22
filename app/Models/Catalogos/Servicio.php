@@ -10,6 +10,8 @@ use App\Traits\Catalogos\Estructura\Servicio\ServicioTrait;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class Servicio extends Model
 {
@@ -99,17 +101,28 @@ class Servicio extends Model
 
 
 
-    static function getQueryServiciosFromDependencias($id=0){
+    static function getQueryServiciosFromDependencias($id=0,$efect=0){
+
+        $ServicioIdArray = Auth::user()->ServicioIdArray;
 
 
-       $items =  _viServicios::query()
-            ->where("dependencia_id",$id)
-            ->where("habilitado",true)
-            ->orderBy('servicio')
-            ->get();
+//        dd($ServicioIdArray);
 
-//        dd($items);
+        if ($efect == 0) {
+            $items = _viServicios::query()
+                ->where("dependencia_id", $id)
+                ->where("habilitado", true)
+                ->where('medida', '!=', 'SEGUIMIENTO')
+                ->orderBy('servicio')
+                ->get();
+        } else {
+            $items = _viServicios::query()
+                ->where("dependencia_id", $id)
+                ->where("habilitado", true)
+                ->orderBy('servicio')
+                ->get();
 
+        }
         $data = [];
         foreach ($items as $item){
             $suba = trim($item->subarea) === "GENERAL" ? "" : trim($item->subarea).' - ';

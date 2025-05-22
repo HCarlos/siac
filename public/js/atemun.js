@@ -166,7 +166,7 @@ jQuery(function($) {
                             $("#dependencia_id").on("change",function (event) {
                                 var Id = event.currentTarget.value;
                                 $("#servicio_id").empty();
-                                $.get( "/getServiciosFromDependencias/"+Id, function( data ) {
+                                $.get( "/getServiciosFromDependencias/"+Id+"/0", function( data ) {
                                     $("#servicio_id").empty();
                                     if ( data.data.length > 0 ){
                                         $("#servicio_id").append("<option value=0'>Seleccione un Servicio</option>");
@@ -177,6 +177,25 @@ jQuery(function($) {
                                 }, "json" );
                             });
                         }
+
+                        if ( $(".dependencia_status_id")){
+                            $(".dependencia_status_id").on("change",function (event) {
+                                var Id = event.currentTarget.value;
+                                alert("hola");
+                                $("#servicio_id").empty();
+                                $.get( "/getServiciosFromDependencias/"+Id+"/1", function( data ) {
+                                    $("#servicio_id").empty();
+                                    if ( data.data.length > 0 ){
+                                        $("#servicio_id").append("<option value=0'>Seleccione un Servicio</option>");
+                                        $.each(data.data, function(i, item) {
+                                            $("#servicio_id").append('<option value="'+item.id+'" >'+item.id+' - '+item.servicio+'</option>');
+                                        });
+                                    }
+                                }, "json" );
+                            });
+                        }
+
+
 
                         // alert("Hola 1");
 

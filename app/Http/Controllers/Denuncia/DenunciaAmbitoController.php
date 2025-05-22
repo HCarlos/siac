@@ -310,6 +310,7 @@ class DenunciaAmbitoController extends Controller{
                 ->select('id','servicio','abreviatura_dependencia')
                 ->where("habilitado", true)
                 ->where('ambito_dependencia',$this->ambito_dependencia)
+                ->where('medida', '!=', 'SEGUIMIENTO')
                 ->whereIn('id',$ServicioIdArray)
                 ->orderBy('servicio')
                 ->get();
@@ -319,9 +320,12 @@ class DenunciaAmbitoController extends Controller{
                 ->where("habilitado", true)
                 ->where('ambito_dependencia',$this->ambito_dependencia)
                 ->whereIn('dependencia_id',$dependencias_id)
+                ->where('medida', '!=', 'SEGUIMIENTO')
                 ->orderBy('servicio')
                 ->get();
         }
+
+
 
         $localidades_centro = CentroLocalidad::query()
             ->orderBy('prefijo_colonia', 'asc')
@@ -435,7 +439,7 @@ class DenunciaAmbitoController extends Controller{
 
         }
 
-        $Servicios = Servicio::getQueryServiciosFromDependencias($item->dependencia_id);
+        $Servicios = Servicio::getQueryServiciosFromDependencias($item->dependencia_id,1);
 
         $user_ubicacion = $item->Ciudadano->ubicaciones->first->id->id;
 
@@ -903,9 +907,9 @@ class DenunciaAmbitoController extends Controller{
 
 
 // ***************** ELIMINA EL ITEM VIA AJAX ++++++++++++++++++++ //
-    protected function getServiciosFromDependenciasAmbito($id= 0){
+    protected function getServiciosFromDependenciasAmbito($id= 0, $efect){
 
-        $item = Servicio::getQueryServiciosFromDependencias($id);
+        $item = Servicio::getQueryServiciosFromDependencias($id, $efect);
 
         if (isset($item)) {
             return Response::json(['mensaje' => 'OK', 'data' => $item, 'status' => '200'], 200);

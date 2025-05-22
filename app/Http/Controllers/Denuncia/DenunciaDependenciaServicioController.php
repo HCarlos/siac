@@ -83,10 +83,10 @@ class DenunciaDependenciaServicioController extends Controller
         if($IsEnlace){
             $dep_id = (int)Auth::user()->IsEnlaceDependencia;
             $Dependencias = Dependencia::all()->whereIn('id',$dep_id);
-            $Servicios    = Servicio::getQueryServiciosFromDependencias($items->dependencia_id);
+            $Servicios    = Servicio::getQueryServiciosFromDependencias($items->dependencia_id,1);
         }else{
             $Dependencias = Dependencia::all()->sortBy('dependencia');
-            $Servicios    = Servicio::getQueryServiciosFromDependencias($items->dependencia_id);
+            $Servicios    = Servicio::getQueryServiciosFromDependencias($items->dependencia_id,1);
         }
 
         if (Auth::user()->isRole('Administrator|SysOp|USER_OPERATOR_ADMIN|USER_ARCHIVO_ADMIN') ) {

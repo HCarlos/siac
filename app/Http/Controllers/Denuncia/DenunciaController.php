@@ -227,7 +227,7 @@ class DenunciaController extends Controller{
                 ->get();
         }
 
-        $Servicios = Servicio::getQueryServiciosFromDependencias($item->dependencia_id);
+        $Servicios = Servicio::getQueryServiciosFromDependencias($item->dependencia_id,1);
 
         $user_ubicacion = $item->Ciudadano->ubicaciones->first->id->id;
 
@@ -504,9 +504,9 @@ class DenunciaController extends Controller{
     }
 
 // ***************** ELIMINA EL ITEM VIA AJAX ++++++++++++++++++++ //
-    protected function getServiciosFromDependencias($id= 0){
+    protected function getServiciosFromDependencias($id= 0, $efect){
 
-        $item = Servicio::getQueryServiciosFromDependencias($id);
+        $item = Servicio::getQueryServiciosFromDependencias($id,$efect);
 
         if (isset($item)) {
             return Response::json(['mensaje' => 'OK', 'data' => $item, 'status' => '200'], 200);

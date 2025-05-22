@@ -205,7 +205,7 @@ class ServicioController extends Controller
 
     protected function getServiciosFromDependenciasAxios($id= 0){
 
-        $item = Servicio::getQueryServiciosFromDependencias($id);
+        $item = Servicio::getQueryServiciosFromDependencias($id,0);
 
         if (isset($item)) {
             return Response::json(['mensaje' => 'OK', 'data' => $item, 'status' => '200'], 200);

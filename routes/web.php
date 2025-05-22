@@ -597,8 +597,8 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|DELEGADO|DELEGADOS|
     Route::post('saveImagenAImagenDen/', 'Denuncia\Imagene\ImageneController@saveImagenAImagenDen')->name('saveImagenAImagenDen');
     Route::get('removeImagenParent/{id}', 'Denuncia\Imagene\ImageneController@removeImagenParent')->name('removeImagenParent');
 
-    Route::get('getServiciosFromDependencias/{id}', 'Denuncia\DenunciaController@getServiciosFromDependencias')->name('getServiciosFromDependencias');
-    Route::get('getServiciosFromDependenciasAmbito/{id}', 'Denuncia\DenunciaAmbitoController@getServiciosFromDependenciasAmbito')->name('getServiciosFromDependenciasAmbito');
+    Route::get('getServiciosFromDependencias/{id}/{efect}', 'Denuncia\DenunciaController@getServiciosFromDependencias')->name('getServiciosFromDependencias');
+    Route::get('getServiciosFromDependenciasAmbito/{id}/{efect}', 'Denuncia\DenunciaAmbitoController@getServiciosFromDependenciasAmbito')->name('getServiciosFromDependenciasAmbito');
 
     Route::post('searchIdentical', 'Denuncia\DenunciaController@searchIdentical')->name('searchIdentical');
 

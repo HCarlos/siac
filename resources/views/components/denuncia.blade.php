@@ -25,9 +25,9 @@
                     });
                 }
 
-                function getServicioFromDependencia(dependencia_id){
+                function getServicioFromDependencia(dependencia_id, efect){
                     $("#servicio_id").empty();
-                    $.get( "/getServiciosFromDependencias/"+dependencia_id, function( data ) {
+                    $.get( "/getServiciosFromDependencias/"+dependencia_id+"/"+efect, function( data ) {
                         $("#servicio_id").empty();
                         if ( data.data.length > 0 ){
                             $.each(data.data, function(i, item) {
@@ -40,8 +40,14 @@
 
                 $("#dependencia_id").on("change",function (event) {
                     var Id = event.currentTarget.value;
-                    getServicioFromDependencia(Id);
+                    getServicioFromDependencia(Id,0);
                 });
+
+                $(".dependencia_status_id").on("change",function (event) {
+                    var Id = event.currentTarget.value;
+                    getServicioFromDependencia(Id,1);
+                });
+
 
                 if ( $(".pregunta1").val() == 1 ){
                     $(".panelUbiProblem").show();

@@ -9,6 +9,7 @@ use App\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 
 class ServiciosUserController extends Controller{
@@ -23,8 +24,8 @@ class ServiciosUserController extends Controller{
     }
 
     public function index($Id = 0){
-        $listEle     = _viServicios::select('id','servicio as data')
-                        ->where('ambito_dependencia',2)
+        $listEle     = _viServicios::select('id', DB::raw("CONCAT(servicio,' - ',abreviatura_dependencia) AS data") )
+                        ->whereIn('ambito_dependencia',[1,2])
                         ->orderBy('servicio')
                         ->pluck('data','id');
         $listTarget  = null;

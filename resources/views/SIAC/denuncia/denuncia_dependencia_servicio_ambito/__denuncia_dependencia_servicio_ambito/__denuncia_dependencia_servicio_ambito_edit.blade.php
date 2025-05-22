@@ -4,7 +4,7 @@
             <div class="form-group row mb-1">
                 <label for = "dependencia_id" class="col-md-3 col-form-label">Dependencia</label>
                 <div class="col-md-9">
-                    <select id="dependencia_id" name="dependencia_id" class="form-control" size="1">
+                    <select name="dependencia_id" class="form-control dependencia_status_id" size="1">
                         @foreach($dependencias as $t)
                             <option value="{{$t->id}}" {{ $t->id == $items->dependencia_id  ? 'selected': '' }} >{{ $t->dependencia }} </option>
                         @endforeach
