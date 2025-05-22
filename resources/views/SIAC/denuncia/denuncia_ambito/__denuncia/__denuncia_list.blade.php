@@ -18,6 +18,11 @@
                 @foreach($items as $item)
                     @php
                         $Del = CentroLocalidad::find($item->centro_localidad_id);
+                        if (!$Del) {
+                            $Localidad = "Error en la localidad";
+                        }else{
+                            $Localidad = $Del->ItemColoniaDelegacion();
+                        }
                     @endphp
                     <tr class="@if($item->cerrado) bg-coral-denuncia-cerrada @endif" id="tr_{{$item->id}}">
                         <td class="table-user @if($item->origen_id == config('atemun.pagina_web_id')) text-danger @endif">
@@ -47,7 +52,7 @@
                             <br>
                             @if($item->ciudadanos->count() > 1)<span class="text-danger">( <i class="fas fa-users"></i> <strong>  {{$item->ciudadanos->count()}} </strong> )</span> @endif
                         </td>
-                        <td class="w-25">@if($item->dependencia->ambito_dependencia === 2) {{ strtoupper($item->search_google).' '.$Del->ItemColoniaDelegacion() }} @else {{ $item->ubicacion->ubicacion}} @endif
+                        <td class="w-25">@if($item->dependencia->ambito_dependencia === 2) {{ strtoupper($item->search_google).' '.$Localidad }} @else {{ $item->ubicacion->ubicacion}} @endif
                         </td>
                         <td class="table-action w-15">
                             <div class="button-list">

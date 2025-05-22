@@ -43,8 +43,12 @@ class CentroLocalidad extends Model{
     }
 
     public function ItemColoniaDelegacion(){
-        if (trim($this->colonia) === trim($this->delegacion)) return trim($this->prefijo_colonia).' '.trim($this->colonia);
-        return trim($this->prefijo_colonia).', '.trim($this->colonia).', '.trim($this->prefijo_delegacion).', '.trim($this->delegacion);
+        if ($this->colonia !== null || $this->delegacion !== null){
+            if (trim($this->colonia) === trim($this->delegacion)) return trim($this->prefijo_colonia).' '.trim($this->colonia);
+            return trim($this->prefijo_colonia).', '.trim($this->colonia).', '.trim($this->prefijo_delegacion).', '.trim($this->delegacion);
+        }else{
+            return "Error en la localidad";
+        }
     }
 
 
