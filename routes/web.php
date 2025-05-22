@@ -687,8 +687,8 @@ Route::get('/get-csrf-token', function() {
     return response()->json(['csrf_token' => csrf_token()]);
 });
 
-Route::get('usuario/{curp}', 'Auth\UsuarioCURPController@buscarPorCurp');
-Route::post('usuariopost', 'Auth\UsuarioCURPController@buscarPorCurp');
+Route::get('usuario/{curp}', 'Auth\UsuarioCURPController@buscarPorCurp')->name('usuario');
+Route::post('usuariopost', 'Auth\UsuarioCURPController@buscarPorCurp')->name('usuariopost');
 
 
 Route::get('/tokenizer', function () {
