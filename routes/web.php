@@ -11,13 +11,7 @@
 |
 */
 
-//use App\Classes\NotificationsMobile\SendNotificationFCM;
-//use App\Mail\SendMailToEnlace;
-//use App\Models\Denuncias\Denuncia;
-//use App\User;
-//use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Auth;
-//use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 
@@ -31,9 +25,6 @@ Route::post('createUbicacionV2', 'Catalogos\Domicilio\UbicacionController@create
 
 Auth::routes();
 Auth::routes(['verify' => false]);
-
-// Authentication Routes...
-// $this
 
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');

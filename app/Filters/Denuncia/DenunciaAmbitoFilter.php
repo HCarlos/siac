@@ -157,9 +157,6 @@ class DenunciaAmbitoFilter extends QueryFilter
         }else{
             return $query->where('due_id', (int)$search);
         }
-
-
-
     }
 
     public function prioridad_id($query, $search){
@@ -170,19 +167,15 @@ class DenunciaAmbitoFilter extends QueryFilter
 
     public function servicio_id($query, $search){
         if (is_null($search) || empty($search) || (isset($search) == false)) {return $query;}
-
         if ( !is_array($search) ){
             if ((int)$search === 0){
                 $search = Auth::user()->ServicioIdArray;
             }
         }
-
         if ( is_array($search) ){
             return $query->whereIn('sue_id', $search);
         }
-
         return $query->where('sue_id', (int)$search);
-
     }
 
     public function centro_localidad_id($query, $search){
@@ -213,7 +206,9 @@ class DenunciaAmbitoFilter extends QueryFilter
             $date2 .= ' 23:59:59';
 
         return $query->whereHas('ultimo_estatu_denuncia_dependencia_servicio', function ($q) use ($search, $date1, $date2, $estatu, $depend) {
-            $arr = Auth::user()->DependenciaIdArray;
+            $arr      = Auth::user()->DependenciaIdArray;
+            $arrAbrev = Auth::user()->DependenciaAbreviaturaArray;
+//            dd($arrAbrev);
             if (auth()->user()->hasAnyPermission(['buscar_solo_en_su_ámbito'])) {
                 if ($estatu > 0){
                     if ( is_array($arr) ) return $q->whereIn('dependencia_id',$arr)->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
@@ -224,7 +219,12 @@ class DenunciaAmbitoFilter extends QueryFilter
                 }
             }else{
                 if ($estatu > 0){
-                    if ($depend > 0) return $q->where('dependencia_id', $depend)->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
+                    if ($depend > 0)
+                        return $q
+                            ->where('dependencia_id', $depend)
+                            ->where('estatu_id', $estatu)
+                            ->whereDate('fecha_movimiento', '>=', $date1)
+                            ->whereDate('fecha_movimiento', '<=', $date2);
                     else return $q->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
                 }else{
                     if ($depend > 0) return $q->where('dependencia_id', $depend)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
@@ -300,19 +300,8 @@ class DenunciaAmbitoFilter extends QueryFilter
         return $query->orWhere('uuid',trim($search));
     }
 
-
-
     function IsEnlace(){
         return Session::get('IsEnlace');
     }
-
-//    function getDependencia(){
-//            return $DependenciaArray = explode('|',Session::get('DependenciaArray'));
-//    }
-//
-//    function getDependenciaId(){
-//        return $DependenciaIdArray = explode('|',Session::get('DependenciaIdArray'));
-//    }
-
 
 }

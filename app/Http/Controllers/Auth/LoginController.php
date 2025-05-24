@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\IpUtils;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class LoginController extends Controller
 {
@@ -98,7 +99,8 @@ class LoginController extends Controller
                 if ($role1) {
                     return redirect()->route('home');
                 } elseif($role2) {
-                    return redirect()->route('home-ciudadano');
+//                    return redirect()->route('home-ciudadano');
+                    throw new HttpException(403, 'Acceso restringido');
                 } else {
                     return redirect()->route('home');
                 }
