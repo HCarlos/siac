@@ -122,9 +122,9 @@ class ListDenunciaAmbitoXLSXController extends Controller
 //                $fechaUntiloEstatus   = Carbon::parse($arrUltimoEstatus->fecha)->format('d-m-Y');
 //            }
 
-            $arrDeps = $item->HasEstatuDependencia();
+//            $arrDeps = $item->HasEstatuDependencia();
 
-            dd($arrDeps);
+//            dd($arrDeps);
 
             foreach ($item->ciudadanos as $cds){
 
