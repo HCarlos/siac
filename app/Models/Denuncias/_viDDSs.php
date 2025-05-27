@@ -195,7 +195,7 @@ class _viDDSs extends Model{
     }
 
     public function servicio_ultimo_estatus(){
-        return $this->hasOne(Servicio::class,'id','due_id');
+        return $this->hasOne(Servicio::class,'id','sue_id');
     }
 
     public function semaforo_ultimo_estatus(){

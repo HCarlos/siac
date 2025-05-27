@@ -273,6 +273,9 @@ class FuncionesController extends Controller
             'ue_id','due_id','sue_id','fecha_ultimo_estatus',
             'centro_localidad_id',
             'dias_atendida','dias_rechazada','dias_observada',
+            'servicio_id','estatu_id','fecha_movimiento','telefonoscelularesemails',
+            'servicio','estatus','ubicacion_id','ciudadano','curp_ciudadano',
+            'ambito_dependencia',
         ];
     }
 

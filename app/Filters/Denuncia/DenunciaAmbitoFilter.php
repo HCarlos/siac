@@ -52,12 +52,20 @@ class DenunciaAmbitoFilter extends QueryFilter
         return $query->where('status_denuncia', (int)$search);
     }
 
+//    public function ambito_dependencia($query, $search){
+//        if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
+//        return $query->whereHas('dependencia', function ($q) use ($search) {
+//            return $q->where('ambito_dependencia',(int)$search);
+//        });
+//    }
+//
     public function ambito_dependencia($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
-        return $query->whereHas('dependencia', function ($q) use ($search) {
-            return $q->where('ambito_dependencia',(int)$search);
-        });
+//        return $query->whereHas('dependencia', function ($q) use ($search) {
+            return $query->where('ambito_dependencia',(int)$search);
+//        });
     }
+
 
     public function ambito_estatus($query, $search){
         if (is_null($search) || empty($search) || trim($search) === "") {return $query;}

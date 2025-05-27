@@ -32,19 +32,26 @@
                             @endif
                         </td>
                         <td class="w-25">
-                            {{$item->ciudadano->full_name}} <br>
-                            <small>{{$item->ciudadano->username}}</small>
+{{--                            {{$item->ciudadano->full_name}} <br>--}}
+{{--                            <small>{{$item->ciudadano->username}}</small>--}}
+                            {{$item->ciudadano}} <br>
+                            <small>{{$item->curp_ciudadano}}</small>
                         </td>
                         <td  class="w-15">{{ \Carbon\Carbon::parse($item->fecha_ingreso)->format('d-m-Y H:i') }}</td>
                         <td>
-                            <small title="{{($item->dependencia_ultimo_estatus->dependencia)}}">
-                                {{($item->dependencia_ultimo_estatus->dependencia)}}
-                            </small>
+{{--                            <small title="{{($item->dependencia_ultimo_estatus->dependencia)}}">--}}
+{{--                                {{($item->dependencia_ultimo_estatus->dependencia)}}--}}
+{{--                            </small>--}}
+                                <small title="{{($item->dependencia)}}">
+                                    {{($item->dependencia)}}
+                                </small>
                             <small class="fas fa-circle chikirimbita {{ $item->semaforo_ultimo_estatus()['class_color'] }}"> {{ $item->semaforo_ultimo_estatus()['dias'] }}</small>
                         </td>
                         <td class="w-25">
-                            {{($item->servicio_ultimo_estatus->servicio)}}<br>
-                            <small class="text-gray-lighter">{{( $item->ultimo_estatus )}}</small>
+{{--                            {{($item->servicio_ultimo_estatus->servicio)}}<br>--}}
+                            {{($item->servicio)}}<br>
+{{--                            <small class="text-gray-lighter">{{( $item->ultimo_estatus )}}</small>--}}
+                            <small class="text-gray-lighter">{{( $item->estatus )}}</small>
                             @if( $item->TotalRespuestas>0 )
                                 > <small class="text-danger"><strong> {{( $item->TotalRespuestas )}}</strong></small>
                                 <small class="chikirimbita"> {{ $item->semaforo_ultimo_estatus()['fecha_fin'] }}</small>
@@ -52,12 +59,14 @@
                             <br>
                             @if($item->ciudadanos->count() > 1)<span class="text-danger">( <i class="fas fa-users"></i> <strong>  {{$item->ciudadanos->count()}} </strong> )</span> @endif
                         </td>
-                        <td class="w-25">@if($item->dependencia->ambito_dependencia === 2) {{ strtoupper($item->search_google).' '.$Localidad }} @else {{ $item->ubicacion->ubicacion}} @endif
+{{--                        <td class="w-25">@if($item->dependencia->ambito_dependencia === 2) {{ strtoupper($item->search_google).' '.$Localidad }} @else {{ $item->ubicacion->ubicacion}} @endif--}}
+                        <td class="w-25">@if($item->ambito_dependencia === 2) {{ strtoupper($item->search_google).' '.$Localidad }} @else {{ $item->ubicacion->ubicacion}} @endif
                         </td>
                         <td class="table-action w-15">
                             <div class="button-list">
                                 @if($item->cerrado == false && $item->firmado == false)
-                                    @if($item->dependencia->ambito_dependencia === 2)
+{{--                                    @if($item->dependencia->ambito_dependencia === 2)--}}
+                                    @if($item->ambito_dependencia === 2)
                                         @include('shared.ui_kit.__remove_item_servicios_municipales')
                                         @include('shared.ui_kit.__edit_den_dep_ser_ambito_sm')
                                     @else
@@ -66,7 +75,8 @@
                                     @endif
                                 @endif
                                 @if( ($item->cerrado == false && $item->firmado == false) && auth()->user()->can('elimina_denuncia_general') )
-                                    @if($item->dependencia->ambito_dependencia === 2)
+{{--                                    @if($item->dependencia->ambito_dependencia === 2)--}}
+                                    @if($item->ambito_dependencia === 2)
                                         @include('shared.ui_kit.__remove_item_servicios_municipales')
                                     @else
                                         @include('shared.ui_kit.__remove_item_apoyos_sociales')
@@ -75,7 +85,8 @@
                                 @include('shared.ui_kit.__imagenes_list_item_ambito')
                                 @include('shared.ui_kit.__add_user_ambito_item')
                                 @include('shared.ui_kit.__edit_ambito_item')
-                                @if($item->dependencia->ambito_dependencia === 2)
+{{--                                @if($item->dependencia->ambito_dependencia === 2)--}}
+                                @if($item->ambito_dependencia === 2)
                                     @include('shared.ui_kit.__print_denuncia_ambito_item')
                                 @else
                                     @include('shared.ui_kit.__print_denuncia_item')

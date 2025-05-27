@@ -11,7 +11,8 @@
 
     </a>
 @else
-    <a href="{{route($showEdit,['ambito_dependencia'=>$item->dependencia->ambito_dependencia,'Id'=>$item->id])}}"
+{{--    <a href="{{route($showEdit,['ambito_dependencia'=>$item->dependencia->ambito_dependencia,'Id'=>$item->id])}}"--}}
+    <a href="{{route($showEdit,['ambito_dependencia'=>$item->ambito_dependencia,'Id'=>$item->id])}}"
        class="action-icon text-center icon_editar_interno" @isset($newWindow)     @endisset
        data-toggle="tooltip" title="Editar"
     >

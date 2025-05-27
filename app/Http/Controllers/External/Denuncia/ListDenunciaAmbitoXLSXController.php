@@ -252,20 +252,22 @@ class ListDenunciaAmbitoXLSXController extends Controller
 
 //            foreach ($item->ciudadanos as $cds) {
 
-                $telcel = $item->ciudadano->telefonos . '; ' . $item->ciudadano->celulares . '; ' . $item->ciudadano->email;
-                $telcel = explode(';', $telcel);
+//                $telcel = $item->ciudadano->telefonos . '; ' . $item->ciudadano->celulares . '; ' . $item->ciudadano->email;
+//                $telcel = explode(';', $telcel);
+
+                $cadcel = $item->telefonoscelularesemails;
 
 
-                $cadcel = '';
-                for ($i = 0; $i < count($telcel) - 1; $i++) {
-                    if ($cadcel === '') {
-                        $cadcel .= trim($telcel[$i]);
-                    } else if (trim($telcel[$i]) !== '') {
-                        $cadcel .= ', ' . trim($telcel[$i]);
-                    } else {
-                        $cadcel .= '';
-                    }
-                }
+//                $cadcel = '';
+//                for ($i = 0; $i < count($telcel) - 1; $i++) {
+//                    if ($cadcel === '') {
+//                        $cadcel .= trim($telcel[$i]);
+//                    } else if (trim($telcel[$i]) !== '') {
+//                        $cadcel .= ', ' . trim($telcel[$i]);
+//                    } else {
+//                        $cadcel .= '';
+//                    }
+//                }
 
                 $gdu = explode(',', trim($item->gd_ubicacion));
                 $cadgdu0 = $gdu[0] ?? '';
@@ -273,22 +275,24 @@ class ListDenunciaAmbitoXLSXController extends Controller
 
 //                dd($cadgdu0.' - '.$cadgdu1);
 
-//            ->setCellValue('F' . $C, trim($item->gd_ubicacion ?? ''))
-//            ->setCellValue('H' . $C, trim($cadgdu1 ?? ''))
+
+//            ->setCellValue('B' . $C, trim($item->servicio_ultimo_estatus->servicio ?? ''))
+//            ->setCellValue('K' . $C, $item->ultimo_estatus ?? '')
+//            ->setCellValue('L' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y H:i:s') ?? '');
 
                 $sh
                     ->setCellValue('A' . $C, $item->id ?? 0)
-                    ->setCellValue('B' . $C, trim($item->servicio_ultimo_estatus->servicio ?? ''))
+                    ->setCellValue('B' . $C, trim($item->servicio ?? ''))
                     ->setCellValue('C' . $C, $fechaIngreso ?? '')
-                    ->setCellValue('D' . $C, trim($item->ciudadano->full_name ?? ''))
+                    ->setCellValue('D' . $C, trim($item->ciudadano ?? ''))
                     ->setCellValue('E' . $C, $cadcel)
                     ->setCellValue('F' . $C, trim($item->search_google ?? ''))
                     ->setCellValue('G' . $C, trim($Colonia ?? ''))
                     ->setCellValue('H' . $C, trim($Delegacion ?? ''))
                     ->setCellValue('I' . $C, $item->descripcion ?? '')
                     ->setCellValue('J' . $C, $item->Ambito() ?? '')
-                    ->setCellValue('K' . $C, $item->ultimo_estatus ?? '')
-                    ->setCellValue('L' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y H:i:s') ?? '');
+                    ->setCellValue('K' . $C, $item->estatus ?? '')
+                    ->setCellValue('L' . $C, Carbon::parse($item->fecha_movimiento)->format('d-m-Y H:i:s') ?? '');
                 $C++;
 //            }
         }
@@ -411,52 +415,10 @@ class ListDenunciaAmbitoXLSXController extends Controller
 
     function getColorSemaforo($g){
 
-        return ActualizaEstadisticasARO::semaforo_ultimo_estatus_off($g->ue_id, new DateTime($g->fecha_movimiento), $g->fecha_ingreso);
+        $fecha_menor = new DateTime($g->fecha_ingreso);
+        $fecha_mayor = new DateTime($g->fecha_movimiento);
 
-//        $finicio = Carbon::now();
-//        $ffin = Carbon::parse($g->fecha_ingreso)->format('Y-m-d');
-//        $cffin = "";
-//
-//        if ($g->estatu_id === 17 ||
-//            $g->estatu_id === 20
-//        ) {
-//            $finicio = Carbon::parse($g->fecha_ingreso)->format('Y-m-d');
-//        }
-//
-//
-//
-//        $status = "white";
-//        $status_i = "white";
-//        $dias_vencidos = 0;
-//        switch ( $g->ue_id ) {
-//            case 16:
-//            case 19:
-//                $ser = _viDDSs::find($g->id);
-//                $ffin = Carbon::parse($ser->fecha_movimiento);
-//                $cffin = Carbon::parse($ser->fecha_movimiento);
-//                $fex = Carbon::parse($ffin)->diffInDays(Carbon::parse($ser->fecha_dias_maximos_ejecucion),false);
-//                if ($fex >= 0) {
-//                    $status = "amarillo";
-//                    $status_i = "yellow";
-//                }else{
-//                    $status = "rojo";
-//                    $status_i = "red";
-//                    $dias_vencidos = abs($fex);
-//                }
-//                break;
-//            case 17:
-//            case 20:
-//            case 21:
-//            case 22:
-//                $status = "verde";
-//                $status_i = "green";
-//                break;
-//            default:
-//                $status = "amarillo";
-//                $status_i = "yellow";
-//                break;
-//        }
-//        return [$status,$status_i];
+        return ActualizaEstadisticasARO::semaforo_ultimo_estatus_off($g->ue_id, $fecha_mayor, $fecha_menor);
 
     }
 

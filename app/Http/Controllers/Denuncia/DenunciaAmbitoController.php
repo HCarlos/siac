@@ -20,6 +20,7 @@ use App\Models\Catalogos\Prioridad;
 use App\Models\Catalogos\Servicio;
 use App\Models\Catalogos\ServicioCategoria;
 use App\Models\Denuncias\_viDDSs;
+use App\Models\Denuncias\_viDepDenServEstatus;
 use App\Models\Denuncias\_viServicios;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Firma;
@@ -73,14 +74,14 @@ class DenunciaAmbitoController extends Controller{
         $this->ambito_estatus = $ambito_estatus;
 
         if ( $search !== [] && isEmpty($search) !== null && $search !== "" ) {
-            $items = Denuncia::query()
+            $items = _viDepDenServEstatus::query()
                 ->select(FuncionesController::itemSelectDenuncias())
                 ->GetDenunciasAmbitoItemCustomFilter($filters)
                 ->orderByDesc('id')
                 ->get();
             session(['is_pagination' => false]);
         }else{
-            $items = Denuncia::query()
+            $items = _viDepDenServEstatus::query()
                 ->select(FuncionesController::itemSelectDenuncias())
                 ->GetDenunciasAmbitoItemCustomFilter($filters)
                 ->orderByDesc('id')
@@ -860,7 +861,7 @@ class DenunciaAmbitoController extends Controller{
             $this->max_item_for_query = session::get('items_for_query');
         }
 
-        $items = Denuncia::query()
+        $items = _viDepDenServEstatus::query()
             ->select(FuncionesController::itemSelectDenuncias())
             ->ambitoFilterBy($queryFilters)
             ->orderByDesc('id')

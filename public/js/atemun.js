@@ -181,7 +181,7 @@ jQuery(function($) {
                         if ( $(".dependencia_status_id")){
                             $(".dependencia_status_id").on("change",function (event) {
                                 var Id = event.currentTarget.value;
-                                alert("hola");
+                                // alert("hola");
                                 $("#servicio_id").empty();
                                 $.get( "/getServiciosFromDependencias/"+Id+"/1", function( data ) {
                                     $("#servicio_id").empty();
