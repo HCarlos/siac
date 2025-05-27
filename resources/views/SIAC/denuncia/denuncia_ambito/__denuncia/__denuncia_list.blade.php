@@ -8,7 +8,7 @@
                     <th class="sorting_asc" aria-sort="ascending" aria-label="Name: activate to sort column descending">ID</th>
                     <th class="sorting">CIUDADANO</th>
                     <th class="sorting">FECHA</th>
-                    <th class="sorting">ÁREA</th>
+                    <th class="sorting">UNIDAD</th>
                     <th class="sorting">SERVICIO</th>
                     <th class="sorting ">UBICACIÓN</th>
                     <th></th>
