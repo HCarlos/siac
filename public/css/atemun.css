@@ -972,8 +972,29 @@ img.scanned {
     margin-right: 12px;
 }
 
+.recibida-toast {
+    background-color: rgba(255, 127, 80, 0.85) !important;  /* Azul */
+    color: #fff !important;
+    border: 2px solid rgba(239, 185, 165, 0.85) !important;
+}
 
+.atendida-toast {
+    background-color: rgb(134, 207, 9) !important;  /* Azul */
+    color: #1b1919 !important;
+    border: 2px solid rgba(177, 239, 165, 0.85) !important;
+}
 
+.rechazada-toast {
+    background-color: rgb(135, 6, 6) !important;  /* Azul */
+    color: #f9f4f4 !important;
+    border: 2px solid rgba(255, 127, 80, 0.85) !important;
+}
+
+.otra-toast {
+    background-color: rgb(54, 47, 47) !important;  /* Azul */
+    color: #f9f4f4 !important;
+    border: 2px solid rgb(115, 113, 113) !important;
+}
 
 /*.asprise-footer, .asprise-footer a:visited { font-family: Arial, Helvetica, sans-serif; color: #999; font-size: 13px; }*/
 /*.asprise-footer a {  text-decoration: none; color: #999; }*/

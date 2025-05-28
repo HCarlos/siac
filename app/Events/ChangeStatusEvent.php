@@ -65,7 +65,23 @@ class ChangeStatusEvent  implements ShouldBroadcast{
         $this->user_id = $user->id;
         $fecha = Carbon::now()->format('d-m-Y H:i'); //$fecha
         $this->msg    =  strtoupper($user->FullName)." ha cambiado a ".$this->status." la solicitud: ".$this->denuncia_id." | ".$fecha;
-        $this->icon   = "coral";
+        $this->icon = "info";
+        $clase   = "otra-toast";
+        switch ( (int) $this->estatus_id ) {
+            case 16:
+            case 18:
+            case 19:
+                $clase = "recibida-toast";
+                break;
+            case 21:
+            case 17:
+                $clase = "atendida-toast";
+                break;
+            case 20:
+            case 22:
+                $clase = "rechazada-toast";
+                break;
+        }
 
         if ($this->onFly){
             if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -106,6 +122,7 @@ class ChangeStatusEvent  implements ShouldBroadcast{
             'denuncias_hoy'  => 0,
             'porcentaje_hoy' => 0,
             'categoria_sol'  => 0,
+            'clase'          => $clase
         ];
 
     }

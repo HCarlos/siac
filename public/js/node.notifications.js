@@ -43,11 +43,10 @@ jQuery(function($) {
                         $.toast({
                             heading: 'SIAC',
                             text: data.msg,
+                            icon: data.icon,
+                            class: data.clase,
                             loader: true,
-                            icon: 'info',
-                            bgColor: '#8e44ad',  // Color de fondo personalizado (morado)
-                            textColor: '#ffffff',  // Color del texto
-                            loaderBg: '#9EC600',  // Color del loader
+                            hideAfter: false,
                             position: 'top-right',
                         });
                         console.log(data.msg);
