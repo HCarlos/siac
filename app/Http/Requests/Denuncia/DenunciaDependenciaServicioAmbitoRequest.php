@@ -7,6 +7,7 @@ namespace App\Http\Requests\Denuncia;
 
 use App\Classes\MessageAlertClass;
 use App\Classes\NotificationsMobile\SendNotificationFCM;
+use App\Events\ChangeStatusEvent;
 use App\Events\DenunciaAtendidaEvent;
 use App\Events\DenunciaUpdateStatusGeneralAmbitoEvent;
 use App\Events\IUQDenunciaEvent;
@@ -17,6 +18,7 @@ use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Session;
 
 class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
@@ -81,6 +83,7 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
                 ];
                 $item = Denuncia_Dependencia_Servicio::findOrFail($this->id);
                 $item->update($Item);
+                event(new ChangeStatusEvent($item->denuncia_id,$this->estatus_id,$item->id));
                 return $this->sendInfo($item);
 
             }
@@ -117,6 +120,8 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
             ->where('servicio_id',$this->servicio_id)
             ->where('estatu_id',$this->estatus_id)
             ->orderByDesc('id')->first();
+
+        event(new ChangeStatusEvent($Item->id,$this->estatus_id,$it->id));
 
         return $this->sendInfo($it);
 
