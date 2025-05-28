@@ -973,14 +973,14 @@ img.scanned {
 }
 
 .recibida-toast {
-    background-color: rgba(255, 127, 80, 0.85) !important;  /* Azul */
+    background-color: rgba(214, 107, 71, 0.85) !important;  /* Azul */
     color: #fff !important;
     border: 2px solid rgba(239, 185, 165, 0.85) !important;
 }
 
 .atendida-toast {
-    background-color: rgb(134, 207, 9) !important;  /* Azul */
-    color: #1b1919 !important;
+    background-color: rgb(102, 160, 2) !important;  /* Azul */
+    color: #f9f5f5 !important;
     border: 2px solid rgba(177, 239, 165, 0.85) !important;
 }
 
