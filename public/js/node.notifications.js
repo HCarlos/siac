@@ -1,4 +1,3 @@
-import Echo from 'laravel-echo';
 jQuery(function($) {
     $(document).ready(function() {
 
@@ -43,14 +42,14 @@ jQuery(function($) {
                     // if ( parseInt(localStorage.isToast) === 1) {
                         $.toast({
                             heading: 'SIAC',
-                            text: data.msg,
-                            icon: data.icon,
+                            text: "data.msg",
+                            icon: "success",
                             loader: true,
                             hideAfter: false,
                             loaderBg: '#9EC600',
                             position: 'top-left',
                         });
-                        alert(data.msg);
+                        console.log(data.msg);
                     // }
         });
 
