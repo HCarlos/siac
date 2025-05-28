@@ -95,7 +95,7 @@ jQuery(function($) {
 
         window.Echo.channel('channel-update-denuncia-estatus-atendida')
             .listen('.DenunciaAtendidaEvent', (data) => {
-                if ( parseInt(localStorage.isToast) === 1) {
+                // if ( parseInt(localStorage.isToast) === 1) {
                     $.toast({
                         heading: 'SIAC',
                         text: data.msg,
@@ -105,7 +105,7 @@ jQuery(function($) {
                         loaderBg: '#9EC600',
                         position: 'top-left',
                     })
-                }
+                // }
             });
 
 

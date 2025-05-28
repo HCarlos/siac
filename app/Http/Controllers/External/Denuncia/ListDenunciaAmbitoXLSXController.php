@@ -8,6 +8,7 @@ use App\Models\Catalogos\CentroLocalidad;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Estatu;
 use App\Models\Catalogos\Servicio;
+use App\Models\Denuncias\_viDepDenServEstatus;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use App\Http\Controllers\Controller;
@@ -434,7 +435,13 @@ class ListDenunciaAmbitoXLSXController extends Controller
             })
             ->toArray();
 
-        $items = Denuncia::query()
+//        $items = Denuncia::query()
+//            ->select(FuncionesController::itemSelectDenuncias())
+//            ->whereIn('id', $ids)
+//            ->orderByDesc('id')
+//            ->get();
+
+        $items = _viDepDenServEstatus::query()
             ->select(FuncionesController::itemSelectDenuncias())
             ->whereIn('id', $ids)
             ->orderByDesc('id')
