@@ -74,7 +74,6 @@ jQuery(function($) {
                     // }
                 });
 
-            });
 
         localStorage.setItems = 0;
         window.Echo.channel('api-channel')
@@ -109,6 +108,7 @@ jQuery(function($) {
             });
 
 
-});
+    });
 
+});
 

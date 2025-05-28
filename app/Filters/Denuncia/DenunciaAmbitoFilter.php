@@ -109,11 +109,11 @@ class DenunciaAmbitoFilter extends QueryFilter
         if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
         $search = strtoupper($search);
 
-//        return $query->where("curp_ciudadano",strtoupper(trim($search)));
+        return $query->where("curp_ciudadano",strtoupper(trim($search)));
 
-        return $query->whereHas('ciudadano', function ($q) use ($search) {
-           return $q->where("curp",strtoupper(trim($search)));
-        });
+//        return $query->whereHas('ciudadano_simple', function ($q) use ($search) {
+//           return $q->where("curp",strtoupper(trim($search)));
+//        });
 
 
 
@@ -121,7 +121,7 @@ class DenunciaAmbitoFilter extends QueryFilter
 
     public function ciudadano($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
-        return $query->whereHas('ciudadano', function ($q) use ($search) {
+        return $query->whereHas('ciudadano_simple', function ($q) use ($search) {
             $filters  = $search;
             $F        = new FuncionesController();
             $tsString = $F->string_to_tsQuery( $filters,' & ');
@@ -194,7 +194,8 @@ class DenunciaAmbitoFilter extends QueryFilter
 
     public function estatus_id($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "0") {return $query;}
-            return $query->where('ue_id', (int)$search);
+//            return $query->where('ue_id', (int)$search);
+        return $query->where('estatu_id', (int)$search);
     }
 
     public function fecha_movimiento($query, $search){

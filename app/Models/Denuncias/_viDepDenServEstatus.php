@@ -128,7 +128,7 @@ class _viDepDenServEstatus extends Model{
         return $this->belongsToMany(Estatu::class,'denuncia_estatu','denuncia_id','estatus_id');
     }
 
-    public function Dependencia_simple(){
+    public function dependencia_simple(){
         return $this->hasOne(Dependencia::class,'id','dependencia_id');
     }
 
@@ -167,7 +167,7 @@ class _viDepDenServEstatus extends Model{
         return $this->belongsToMany(Servicio::class,'denuncia_servicio','denuncia_id','servicio_id');
     }
 
-    public function Ciudadano_simple(){
+    public function ciudadano_simple(){
         return $this->hasOne(User::class,'id','ciudadano_id');
     }
 
