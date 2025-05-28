@@ -2,27 +2,16 @@
 
 namespace App\Events;
 
-use App\Classes\Denuncia\VistaDenunciaClass;
 use App\Http\Controllers\Funciones\FuncionesController;
-use App\Mail\SendMailToEnlace;
-use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\Denuncia;
-use App\Notifications\SendEmailToEnlaceNotification;
-use App\User;
 use Carbon\Carbon;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-//use Predis\Command\Redis\AUTH;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use function PHPUnit\Framework\isNull;
 
 class IUQDenunciaEvent implements ShouldBroadcast{
 
