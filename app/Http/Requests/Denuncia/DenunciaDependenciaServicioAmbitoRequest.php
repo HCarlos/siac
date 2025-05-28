@@ -83,7 +83,7 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
                 ];
                 $item = Denuncia_Dependencia_Servicio::findOrFail($this->id);
                 $item->update($Item);
-                event(new ChangeStatusEvent($item->denuncia_id,$this->estatus_id,$item->id));
+                event(new ChangeStatusEvent($item->denuncia_id,$this->estatus_id,$item->id,1));
                 return $this->sendInfo($item);
 
             }
@@ -121,7 +121,7 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
             ->where('estatu_id',$this->estatus_id)
             ->orderByDesc('id')->first();
 
-        event(new ChangeStatusEvent($Item->id,$this->estatus_id,$it->id));
+        event(new ChangeStatusEvent($Item->id,$this->estatus_id,$it->id,0));
 
         return $this->sendInfo($it);
 

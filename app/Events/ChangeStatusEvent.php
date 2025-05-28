@@ -2,15 +2,10 @@
 
 namespace App\Events;
 
-use App\Classes\Denuncia\VistaDenunciaClass;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Models\Catalogos\Estatu;
-use App\Models\Denuncias\Denuncia;
-use App\User;
 use Carbon\Carbon;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -23,7 +18,7 @@ class ChangeStatusEvent  implements ShouldBroadcast{
 
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $denuncia_id, $user_id, $trigger_type, $msg, $icon, $status, $estatus_id, $onFly, $viDen, $id;
+    public $denuncia_id, $user_id, $trigger_type, $msg, $icon, $status, $estatus_id, $onFly, $viDen, $id, $power;
 
 
     /**
@@ -31,17 +26,18 @@ class ChangeStatusEvent  implements ShouldBroadcast{
      *
      * @return void
      */
-    public function __construct($denuncia_id, $estatus_id, $id){
+    public function __construct($denuncia_id, $estatus_id, $id, $trigger_type){
         $this->id = $id;
         $this->denuncia_id = $denuncia_id;
         $this->user_id = 0;
         $this->status = "";
         $this->estatus_id = $estatus_id;
-        $this->trigger_type = 0;
+        $this->trigger_type = $trigger_type;
         $this->onFly = false;
         $this->viDen = false;
         $this->msg = '';
         $this->icon = 'info';
+        $this->power = 10;
     }
 
     /**
@@ -106,10 +102,11 @@ class ChangeStatusEvent  implements ShouldBroadcast{
             'msg'            => $this->msg,
             'icon'           => $this->icon,
             'status'         => $this->status,
+            'power'          => $this->power,
+            'denuncias_hoy'  => 0,
+            'porcentaje_hoy' => 0,
+            'categoria_sol'  => 0,
         ];
-
-//    return [];
-
 
     }
 

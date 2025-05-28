@@ -1,4 +1,4 @@
-
+import Echo from 'laravel-echo';
 jQuery(function($) {
     $(document).ready(function() {
 
@@ -38,26 +38,6 @@ jQuery(function($) {
                 i++;
                 $("#power").html(parseInt(data.power) * i);
                 console.log(data.denuncia_id + " :: " + data.user_id);
-
-                if ($('#dashboard-home').length > 0) {
-                    if (data.trigger_type === 0) {
-                        localStorage.last_denuncia_id = data.denuncia_id
-                        localStorage.last_user_id = data.user_id
-                        $('#denuncias_hoy').html(data.denuncias_hoy)
-                        $('#porcentaje_hoy').removeClass('text-blue-m1')
-                        $('#porcentaje_hoy').removeClass('text-danger-m1')
-                        if (parseInt(data.porcentaje_hoy) > 0) {
-                            $('#porcentaje_hoy').addClass('text-blue-m1');
-                            $('#porcentaje_hoy').html(data.porcentaje_hoy + '% <i class="fa fa-arrow-up"></i>')
-                        } else {
-                            $('#porcentaje_hoy').addClass('text-danger-m1')
-                            $('#porcentaje_hoy').html(data.porcentaje_hoy + '% <i class="fa fa-arrow-down"></i>')
-                        }
-                        // window.location.reload();
-
-                        //evalNotificationBadge();
-                    }
-                }
             })
             .listen('.ChangeStatusEvent', (data) => {
                     // if ( parseInt(localStorage.isToast) === 1) {
@@ -72,7 +52,7 @@ jQuery(function($) {
                         });
                         alert(data.msg);
                     // }
-                });
+        });
 
 
         localStorage.setItems = 0;
@@ -89,7 +69,7 @@ jQuery(function($) {
                     }
                     console.log(data.denuncia_id+" : Mobile : "+data.user_id);
                 }
-            });
+        });
 
 
         window.Echo.channel('channel-update-denuncia-estatus-atendida')
@@ -105,10 +85,10 @@ jQuery(function($) {
                         position: 'top-left',
                     })
                 // }
-            });
-
+        });
 
     });
 
 });
+
 

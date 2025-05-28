@@ -20,7 +20,8 @@
 
 <script>
     window.laravel_echo_port='{{env("LARAVEL_ECHO_PORT")}}';
-@auth()
+
+    @auth()
     @if(\Illuminate\Support\Facades\Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_ADMIN'))
     localStorage.isToast = 1
     @else
