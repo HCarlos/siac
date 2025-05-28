@@ -50,7 +50,7 @@ class ChangeStatusEvent  implements ShouldBroadcast{
      * @return \Illuminate\Broadcasting\Channel|array
      */
     public function broadcastOn(){
-        return new PrivateChannel('channel-status-event');
+        return new PrivateChannel('test-channel');
     }
 
     public function broadcastAs(): string{

@@ -23,7 +23,7 @@ jQuery(function($) {
                 console.log(data.power)
             })
             .listen('.IUQDenunciaEvent', (data) => {
-                if ( parseInt(localStorage.isToast) === 1) {
+                if (parseInt(localStorage.isToast) === 1) {
                     // alert(Boolean(localStorage.isToast));
                     $.toast({
                         heading: 'SIAC',
@@ -37,19 +37,19 @@ jQuery(function($) {
                 }
                 i++;
                 $("#power").html(parseInt(data.power) * i);
-                console.log(data.denuncia_id+" :: "+data.user_id);
+                console.log(data.denuncia_id + " :: " + data.user_id);
 
-                if ( $('#dashboard-home').length > 0 ){
-                    if ( data.trigger_type === 0){
+                if ($('#dashboard-home').length > 0) {
+                    if (data.trigger_type === 0) {
                         localStorage.last_denuncia_id = data.denuncia_id
                         localStorage.last_user_id = data.user_id
                         $('#denuncias_hoy').html(data.denuncias_hoy)
                         $('#porcentaje_hoy').removeClass('text-blue-m1')
                         $('#porcentaje_hoy').removeClass('text-danger-m1')
-                        if (parseInt(data.porcentaje_hoy) > 0){
+                        if (parseInt(data.porcentaje_hoy) > 0) {
                             $('#porcentaje_hoy').addClass('text-blue-m1');
                             $('#porcentaje_hoy').html(data.porcentaje_hoy + '% <i class="fa fa-arrow-up"></i>')
-                        }else{
+                        } else {
                             $('#porcentaje_hoy').addClass('text-danger-m1')
                             $('#porcentaje_hoy').html(data.porcentaje_hoy + '% <i class="fa fa-arrow-down"></i>')
                         }
@@ -58,6 +58,21 @@ jQuery(function($) {
                         evalNotificationBadge();
                     }
                 }
+            })
+            .listen('.ChangeStatusEvent', (data) => {
+                    if ( parseInt(localStorage.isToast) === 1) {
+                        $.toast({
+                            heading: 'SIAC',
+                            text: data.msg,
+                            icon: data.icon,
+                            loader: true,
+                            hideAfter: false,
+                            loaderBg: '#9EC600',
+                            position: 'top-left',
+                        });
+                        alert(data.msg);
+                    }
+                });
 
             });
 
@@ -93,22 +108,23 @@ jQuery(function($) {
                 }
             });
 
-        window.Echo.channel('channel-status-event')
-            .listen('.ChangeStatusEvent', (data) => {
-                if ( parseInt(localStorage.isToast) === 1) {
-                    $.toast({
-                        heading: 'SIAC',
-                        text: data.msg,
-                        icon: data.icon,
-                        loader: true,
-                        hideAfter: false,
-                        loaderBg: '#9EC600',
-                        position: 'top-left',
-                    })
-                }
-            });
+        // window.Echo.channel('channel-status-event')
+        //     .listen('.ChangeStatusEvent', (data) => {
+        //         if ( parseInt(localStorage.isToast) === 1) {
+        //             $.toast({
+        //                 heading: 'SIAC',
+        //                 text: data.msg,
+        //                 icon: data.icon,
+        //                 loader: true,
+        //                 hideAfter: false,
+        //                 loaderBg: '#9EC600',
+        //                 position: 'top-left',
+        //             });
+        //             alert(data.msg);
+        //         }
+        //     });
 
-    });
+    // });
 
     // alert( localStorage.isToast );
 
