@@ -39,18 +39,18 @@ jQuery(function($) {
                 console.log(data.denuncia_id + " :: " + data.user_id);
             })
             .listen('.ChangeStatusEvent', (data) => {
-                    // if ( parseInt(localStorage.isToast) === 1) {
+                    if ( parseInt(localStorage.isToast) === 1) {
                         $.toast({
                             heading: 'SIAC',
-                            text: "data.msg",
-                            icon: "success",
+                            text: data.msg,
+                            icon: data.icon,
                             loader: true,
                             hideAfter: false,
                             loaderBg: '#9EC600',
-                            position: 'top-left',
+                            position: 'top-right',
                         });
                         console.log(data.msg);
-                    // }
+                    }
         });
 
 
