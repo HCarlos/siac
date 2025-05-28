@@ -55,12 +55,12 @@ jQuery(function($) {
                         }
                         // window.location.reload();
 
-                        evalNotificationBadge();
+                        //evalNotificationBadge();
                     }
                 }
             })
             .listen('.ChangeStatusEvent', (data) => {
-                    if ( parseInt(localStorage.isToast) === 1) {
+                    // if ( parseInt(localStorage.isToast) === 1) {
                         $.toast({
                             heading: 'SIAC',
                             text: data.msg,
@@ -71,7 +71,7 @@ jQuery(function($) {
                             position: 'top-left',
                         });
                         alert(data.msg);
-                    }
+                    // }
                 });
 
             });
@@ -108,25 +108,6 @@ jQuery(function($) {
                 }
             });
 
-        // window.Echo.channel('channel-status-event')
-        //     .listen('.ChangeStatusEvent', (data) => {
-        //         if ( parseInt(localStorage.isToast) === 1) {
-        //             $.toast({
-        //                 heading: 'SIAC',
-        //                 text: data.msg,
-        //                 icon: data.icon,
-        //                 loader: true,
-        //                 hideAfter: false,
-        //                 loaderBg: '#9EC600',
-        //                 position: 'top-left',
-        //             });
-        //             alert(data.msg);
-        //         }
-        //     });
-
-    // });
-
-    // alert( localStorage.isToast );
 
 });
 
