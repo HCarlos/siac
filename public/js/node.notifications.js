@@ -46,7 +46,7 @@ jQuery(function($) {
                             icon: data.icon,
                             loader: true,
                             hideAfter: false,
-                            loaderBg: '#9EC600',
+                            loaderBg: 'rgba(38,95,91,0)',
                             position: 'top-right',
                         });
                         console.log(data.msg);
