@@ -110,7 +110,7 @@ class DenunciaAmbitoMapClass{
             logger()->error("PDF incompatible: " . $e->getMessage());
             $pdf->AddPage();
             $pdf->setY( 100  );
-            $pdf->WriteHTMLCell(200,$pdf->alto,10,30,'Error al intentar agregare el pdf. No coincide la resolucióón.','0',1);
+            $pdf->WriteHTMLCell(200,$pdf->alto,10,30,'Error al intentar agregare el pdf. No coincide la resolución.','0',1);
         }
 
 
