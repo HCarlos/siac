@@ -115,14 +115,55 @@ class DenunciaAmbitoMapClass{
         $pdf->Init();
         $pdf->AddPage();
 
+        $pdf->SetY(20);
+
         $pdf->setCellPaddings(1, 1, 1, 1);
 
-        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+//        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
 
+        $imagePath = storage_path('app/public/denuncia/'.$img->image);
+
+        // 1. Obtener dimensiones de la imagen
+        list($imgWidth, $imgHeight) = getimagesize($imagePath);
+
+        // 2. Calcular dimensiones disponibles (área imprimible)
+        $pageWidth = $pdf->getPageWidth() - $pdf->getMargins()['left'] - $pdf->getMargins()['right'];
+        $pageHeight = $pdf->getPageHeight() - $pdf->getMargins()['top'] - $pdf->getMargins()['bottom'] - 10;
+
+        // 3. Calcular relación de escalado
+        $widthRatio = $pageWidth / $imgWidth;
+        $heightRatio = $pageHeight / $imgHeight;
+        $scale = min($widthRatio, $heightRatio);
+
+        // 4. Calcular nuevas dimensiones
+        $newWidth = $imgWidth * $scale;
+        $newHeight = $imgHeight * $scale;
+
+        // 5. Calcular posición centrada
+        $x = ($pageWidth - $newWidth) / 2 + $pdf->getMargins()['left'];
+        $y = ($pageHeight - $newHeight) / 2 + $pdf->getMargins()['top'];
+
+
+        // 6. Insertar imagen ajustada
         $pdf->Image(
-            storage_path('app/public/denuncia/'.$img->image),
-            140, 100, 30, 15, $ext
+            $imagePath,
+            $x,
+            $y,
+            $newWidth,
+            $newHeight,
+            '',  // Tipo (se detecta automáticamente)
+            '',
+            'T',
+            true,
+            300,
+            '',
+            false,
+            false,
+            0,
+            false,
+            false,
+            true
         );
 
 

@@ -320,7 +320,7 @@ class HojaDenunciaAmbitoController extends Controller
 
                     DenunciaAmbitoMapClass::importPDFFile($img, $pdf, $ext);
 
-                } elseif (in_array($ext, ["png", "jpeg", "jpg", "gif"])) {
+                } elseif (in_array($ext, ["png", "jpeg", "jpg", "gif", "bmp", "svg"])) {
 
                     DenunciaAmbitoMapClass::importImageFile($img, $pdf, $ext);
 
