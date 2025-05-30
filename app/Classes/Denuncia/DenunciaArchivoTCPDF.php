@@ -18,12 +18,14 @@ namespace App\Classes\Denuncia;
 
 
 use App\Traits\TCPDF\InitTrait;
+use setasign\Fpdi\Tcpdf\Fpdi;
 use TCPDF;
 use TCPDF_COLORS;
 use TCPDF_STATIC;
 use App\Classes\sector;
 
-class DenunciaArchivoTCPDF extends TCPDF{
+//extends TCPDF{
+class DenunciaArchivoTCPDF extends Fpdi{
 
     use InitTrait;
 

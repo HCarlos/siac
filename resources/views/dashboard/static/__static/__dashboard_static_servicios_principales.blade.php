@@ -139,24 +139,6 @@
                         <canvas id="chart-area-4">[Gráfico de Barras]</canvas>
                     </div>
                 </div>
-{{--                <div class="card">--}}
-{{--                    <div class="stat-2">--}}
-{{--                        <h1 class="count" id="h2Cerradas">0</h1>--}}
-{{--                        <p>Cerradas</p>--}}
-{{--                    </div>--}}
-{{--                    <div class="chart">--}}
-{{--                        <canvas id="chart-area-6"></canvas>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <div class="card">--}}
-{{--                    <div class="stat-2">--}}
-{{--                        <h1 class="count" id="h2Observadas">0</h1>--}}
-{{--                        <p>Observadas</p>--}}
-{{--                    </div>--}}
-{{--                    <div class="chart">--}}
-{{--                        <canvas id="chart-area-5"></canvas>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
 
                 <div class="card">
                     <div class="card-stat-2">
@@ -521,7 +503,7 @@
                     search : "",
                     items : inputDenuncias.value,
                     fileoutput : "fmt_lista_denuncias_sm.xlsx",
-                    indice : 0,
+                    indice : 2,
                     _token : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 };
 

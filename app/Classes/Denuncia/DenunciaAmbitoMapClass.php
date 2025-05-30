@@ -6,6 +6,7 @@
 namespace App\Classes\Denuncia;
 
 use App\Models\Denuncias\Denuncia;
+use App\Models\Denuncias\Imagene;
 use Elibyy\TCPDF\Facades\TCPDF;
 
 class DenunciaAmbitoMapClass{
@@ -39,7 +40,8 @@ class DenunciaAmbitoMapClass{
         $longitude =$den->longitud; // Coordenada longitud
 
         // Generar URL de Google Maps Static API
-        $googleMapsApiKey = 'AIzaSyBUl6Jk2_5yVYdnwidOuU9c8_ZBk7gGnfo'; //env('GOOGLE_MAPS_KEY'); // Sustituye por tu propia API Key
+//        $googleMapsApiKey = 'AIzaSyBUl6Jk2_5yVYdnwidOuU9c8_ZBk7gGnfo'; //env('GOOGLE_MAPS_KEY'); // Sustituye por tu propia API Key
+        $googleMapsApiKey = env('GOOGLE_MAPS_KEY'); // Sustituye por tu propia API Key
 
 //        print $googleMapsApiKey;
 
@@ -59,5 +61,73 @@ class DenunciaAmbitoMapClass{
 
         return $pdf;
     }
+
+    public static function importPDFFile(Imagene $img, DenunciaArchivoTCPDF $pdf, String $ext = "pdf"){
+
+//                $pdf->setSourceFile(storage_path('app/public/denuncia/'.$img->image));
+//                $templateId = $pdf->importPage(1);
+//                $pdf->useTemplate($templateId, 0, 0, 210);
+
+
+        $originalPdf = storage_path('app/public/denuncia/'.$img->image);
+        $pageCount = $pdf->setSourceFile($originalPdf);
+
+        for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+
+            $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+            if (is_callable(array($pdf, 'AliasNbPages'))) {
+                $pdf->AliasNbPages();
+            }
+            $pdf->Init();
+            $pdf->AddPage();
+
+            $pdf->setCellPaddings(1, 1, 1, 1);
+
+            $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+            $templateId = $pdf->importPage($pageNo);
+            $pdf->useTemplate($templateId);
+
+            // Agregar encabezado a cada página
+            $pdf->SetFont('helvetica', 'I', 8);
+            $pdf->SetY(10);
+            $pdf->Cell(0, 0, "Página $pageNo/$pageCount | " . date('d/m/Y'), 0, 0, 'C');
+
+            // Agregar sello en páginas impares
+            if ($pageNo % 2 == 1) {
+//                $pdf->Image(
+//                    public_path('images/sello_pequeno.png'),
+//                    180, 280, 15
+//                );
+            }
+        }
+
+
+
+    }
+
+    public static function importImageFile(Imagene $img, DenunciaArchivoTCPDF $pdf, String $ext = "png"){
+
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        if (is_callable(array($pdf, 'AliasNbPages'))) {
+            $pdf->AliasNbPages();
+        }
+        $pdf->Init();
+        $pdf->AddPage();
+
+        $pdf->setCellPaddings(1, 1, 1, 1);
+
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+
+        $pdf->Image(
+            storage_path('app/public/denuncia/'.$img->image),
+            140, 100, 30, 15, $ext
+        );
+
+
+    }
+
+
 
 }

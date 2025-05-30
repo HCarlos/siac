@@ -307,6 +307,29 @@ class HojaDenunciaAmbitoController extends Controller
 
         DenunciaAmbitoMapClass::printDenunciaAmbitoMap($den,$pdf);
 
+        foreach ($den->imagenes as $img){
+
+
+            if (file_exists( storage_path('app/public/denuncia/'.$img->image) )) {
+
+
+                $arrFile = explode('.', $img->image);
+                $ext = $arrFile[1];
+
+                if ($ext === "pdf") {
+
+                    DenunciaAmbitoMapClass::importPDFFile($img, $pdf, $ext);
+
+                } elseif (in_array($ext, ["png", "jpeg", "jpg", "gif"])) {
+
+                    DenunciaAmbitoMapClass::importImageFile($img, $pdf, $ext);
+
+                }
+
+            }
+
+        }
+
         $pdf->Output($pdf->FOLIO . '.pdf');
 
     }

@@ -33,6 +33,8 @@
         "rapidapi/rapidapi-connect": "^0.0.2",
         "scannerjs/scanner.js": "^2.10.3",
         "setasign/fpdf": "^1.8.6",
+        "setasign/fpdi": "^2.6",
+        "setasign/fpdi-tcpdf": "^2.3",
         "sngrl/php-firebase-cloud-messaging": "dev-master",
         "spatie/laravel-backup": "^6.16.5",
         "spatie/laravel-html": "^2.30.0",
