@@ -64,44 +64,54 @@ class DenunciaAmbitoMapClass{
 
     public static function importPDFFile(Imagene $img, DenunciaArchivoTCPDF $pdf, String $ext = "pdf"){
 
-//                $pdf->setSourceFile(storage_path('app/public/denuncia/'.$img->image));
-//                $templateId = $pdf->importPage(1);
-//                $pdf->useTemplate($templateId, 0, 0, 210);
-
-
         $originalPdf = storage_path('app/public/denuncia/'.$img->image);
-        $pageCount = $pdf->setSourceFile($originalPdf);
+        try{
 
-        for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+            $pageCount = $pdf->setSourceFile($originalPdf);
 
-            $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-            if (is_callable(array($pdf, 'AliasNbPages'))) {
-                $pdf->AliasNbPages();
+            for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+
+                $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+                if (is_callable(array($pdf, 'AliasNbPages'))) {
+                    $pdf->AliasNbPages();
+                }
+                $pdf->Init();
+                $pdf->AddPage();
+
+                $y = $pdf->GetY();
+                $pdf->setY( $pdf->getY() + 15 );
+                $y = $pdf->GetY();
+                $pdf->setY( $y  );
+
+
+                $pdf->setCellPaddings(1, 1, 1, 1);
+
+//                $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+                $templateId = $pdf->importPage($pageNo);
+                $pdf->useTemplate($templateId);
+
+                // Agregar encabezado a cada página
+                $pdf->SetFont('helvetica', 'I', 8);
+                $pdf->SetY(10);
+                $pdf->Cell(0, 0, "Página $pageNo/$pageCount | " . date('d/m/Y'), 0, 0, 'C');
+
+                // Agregar sello en páginas impares
+                if ($pageNo % 2 == 1) {
+    //                $pdf->Image(
+    //                    public_path('images/sello_pequeno.png'),
+    //                    180, 280, 15
+    //                );
+                }
             }
-            $pdf->Init();
+
+
+        }catch ( \Exception $e){
+            logger()->error("PDF incompatible: " . $e->getMessage());
             $pdf->AddPage();
-
-            $pdf->setCellPaddings(1, 1, 1, 1);
-
-            $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-
-            $templateId = $pdf->importPage($pageNo);
-            $pdf->useTemplate($templateId);
-
-            // Agregar encabezado a cada página
-            $pdf->SetFont('helvetica', 'I', 8);
-            $pdf->SetY(10);
-            $pdf->Cell(0, 0, "Página $pageNo/$pageCount | " . date('d/m/Y'), 0, 0, 'C');
-
-            // Agregar sello en páginas impares
-            if ($pageNo % 2 == 1) {
-//                $pdf->Image(
-//                    public_path('images/sello_pequeno.png'),
-//                    180, 280, 15
-//                );
-            }
+            $pdf->setY( 100  );
+            $pdf->WriteHTMLCell(200,$pdf->alto,10,30,'Error al intentar agregare el pdf. No coincide la resolucióón.','0',1);
         }
-
 
 
     }
@@ -115,7 +125,10 @@ class DenunciaAmbitoMapClass{
         $pdf->Init();
         $pdf->AddPage();
 
-        $pdf->SetY(20);
+        $y = $pdf->GetY();
+        $pdf->setY( $pdf->getY() + 15 );
+        $y = $pdf->GetY();
+        $pdf->setY( $y  );
 
         $pdf->setCellPaddings(1, 1, 1, 1);
 
@@ -142,7 +155,7 @@ class DenunciaAmbitoMapClass{
 
         // 5. Calcular posición centrada
         $x = ($pageWidth - $newWidth) / 2 + $pdf->getMargins()['left'];
-        $y = ($pageHeight - $newHeight) / 2 + $pdf->getMargins()['top'];
+        $y = ($pageHeight - $newHeight) / 2 + $pdf->getMargins()['top'] + 10;
 
 
         // 6. Insertar imagen ajustada
