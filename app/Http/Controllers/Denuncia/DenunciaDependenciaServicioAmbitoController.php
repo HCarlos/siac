@@ -201,8 +201,10 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
                 $servicio_id = $items->servicio_id;
             } else {
 
+//                ->where('ambito_dependencia', $this->ambito_dependencia)
+
                 $Dependencias = Dependencia::query()
-                    ->where('ambito_dependencia', $this->ambito_dependencia)
+                    ->whereIn('ambito_dependencia', [1,2])
                     ->where("estatus_cve", 1)
                     ->orderBy('dependencia')
                     ->get();

@@ -37,7 +37,7 @@
                             {{$item->ciudadano}} <br>
                             <small>{{$item->curp_ciudadano}}</small>
                         </td>
-                        <td  class="w-15">{{ \Carbon\Carbon::parse($item->fecha_ingreso)->format('d-m-Y H:i') }}</td>
+                        <td  class="w-15">{{ \Carbon\Carbon::parse($item->fecha_movimiento)->format('d-m-Y H:i') }}</td>
                         <td>
 {{--                            <small title="{{($item->dependencia_ultimo_estatus->dependencia)}}">--}}
 {{--                                {{($item->dependencia_ultimo_estatus->dependencia)}}--}}
