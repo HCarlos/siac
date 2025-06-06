@@ -52,6 +52,6 @@
 </div>
 
 <input type="hidden" name="id" value="{{$Id}}" >
-<input type="hidden" name="denuncia_id" value="{{ $items->denuncia_id }}" >
+<input type="hidden" name="denuncia_id" id="denuncia_id" value="{{ $items->denuncia_id }}" >
 <input type="hidden" name="creadopor_id" id="creadopor_id" value="{{$user->id}}" >
 <hr>

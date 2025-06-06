@@ -287,13 +287,18 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
         }
 
     protected function lastDepDen(Request $request){
-        $dependecia_id = $request["dep_id"];
-        $denuncia_id = $request["den_id"];
+        $dependecia_id = (int)$request["dependencia_id"];
+        $denuncia_id = (int)$request["denuncia_id"];
 
+//        dd($denuncia_id);
+//
         $items = Denuncia_Dependencia_Servicio::where('denuncia_id', $denuncia_id)
             ->where('dependencia_id', $dependecia_id)
             ->orderBy('servicio_id', 'desc')
             ->first();
+
+//        dd($items);
+
         if ($items === null) {
             return Response::json(['mensaje' => 'Error', 'data' => 'Error', 'status' => '200'], 200);
         }else{

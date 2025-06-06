@@ -76,6 +76,8 @@
                             if (confirm("Esta Unidad Adminitrativa ("+dependencia_text+") no se ha utilizado en esta Solicitud. \n\n ¿Desea continuar?") === true) {
                                 $form.submit();
                             }
+                        }else{
+                            $form.submit();
                         }
                     });
 
