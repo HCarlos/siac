@@ -53,6 +53,36 @@
                     $(".panelUbiProblem").show();
                 }
 
+                $(".btnGuardarDenuncia").on("click",function (event) {
+
+                    event.preventDefault();
+                    var $form = $("#formData");
+                    var url = $form.attr('action');
+                    var formData = {};
+                    $form.find("input, select").each(function() {
+                        formData[ $(this).attr('name') ] = $(this).val();
+                    });
+
+                    var dep_id = $(".dependencia_status_id").val();
+                    var den_id = $("#denuncia_id").val();
+                    var dependencia_text = $( ".dependencia_status_id option:selected" ).text();
+
+                    var formDatax = {};
+                    formDatax['denuncia_id'] = den_id;
+                    formDatax['dependencia_id'] = dep_id;
+
+                    $.post('/lastDepDen', formDatax, function(response) {
+                        if (response.data === "Error") {
+                            if (confirm("Esta Unidad Adminitrativa ("+dependencia_text+") no se ha utilizado en esta Solicitud. \n\n ¿Desea continuar?") === true) {
+                                $form.submit();
+                            }
+                        }
+                    });
+
+
+
+                });
+
             });
 
         });

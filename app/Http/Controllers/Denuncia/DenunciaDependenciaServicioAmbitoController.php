@@ -249,9 +249,9 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
                     'removeItem' => 'removeImagene',
                 ]
             );
-        }else{
-            return \redirect()->route('home');
         }
+
+        return \redirect()->route('home');
     }
 
 
@@ -286,6 +286,20 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
 
         }
 
+    protected function lastDepDen(Request $request){
+        $dependecia_id = $request["dep_id"];
+        $denuncia_id = $request["den_id"];
+
+        $items = Denuncia_Dependencia_Servicio::where('denuncia_id', $denuncia_id)
+            ->where('dependencia_id', $dependecia_id)
+            ->orderBy('servicio_id', 'desc')
+            ->first();
+        if ($items === null) {
+            return Response::json(['mensaje' => 'Error', 'data' => 'Error', 'status' => '200'], 200);
+        }else{
+            return Response::json(['mensaje' => 'OK', 'data' => 'OK', 'status' => '200'], 200);
+        }
+    }
 
 
 

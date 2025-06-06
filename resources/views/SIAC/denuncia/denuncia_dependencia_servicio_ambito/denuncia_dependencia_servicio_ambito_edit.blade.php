@@ -11,7 +11,7 @@
                     <form method="POST" action="{{ route($postNew) }}" accept-charset="UTF-8" enctype="multipart/form-data" class="formData" id="formData">
                         @csrf
                         @include('SIAC.denuncia.denuncia_dependencia_servicio_ambito.__denuncia_dependencia_servicio_ambito.__denuncia_dependencia_servicio_ambito_edit')
-                        @component('components.tools.buttons-form-denuncia')
+                        @component('components.tools.buttons-form-denuncia-ajax')
                             @slot('msgLeft',' ')
                         @endcomponent
                     </form>
