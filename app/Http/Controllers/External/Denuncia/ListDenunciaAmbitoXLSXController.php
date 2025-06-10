@@ -413,20 +413,20 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 ->orderByDesc('id')
                 ->first();
 
-            $respuesta = "";
-            try{
-                if ( $resp->observaciones !== null){
-                    $res = trim($resp->observaciones) ?? '';
-                    if ( $res != ""){
-                        $dep = Dependencia::find($resp->dependencia_id);
-                        $respuesta = $dep->abreviatura.' - '.$res.'. ';
-                    }
-                }else{
-                    $respuesta = '';
-                }
-            }catch (Exception $e) {
-                $respuesta = '';
-            }
+//            $respuesta = "";
+//            try{
+//                if ( $resp->observaciones !== null){
+//                    $res = trim($resp->observaciones) ?? '';
+//                    if ( $res != ""){
+//                        $dep = Dependencia::find($resp->dependencia_id);
+//                        $respuesta = $dep->abreviatura.' - '.$res.'. ';
+//                    }
+//                }else{
+//                    $respuesta = '';
+//                }
+//            }catch (Exception $e) {
+//                $respuesta = '';
+//            }
 
             $cds = $item->ciudadano_simple;
 
@@ -470,16 +470,16 @@ class ListDenunciaAmbitoXLSXController extends Controller
 
                 ->setCellValue('I'.$C, $cadcel ?? '')
                 ->setCellValue('J'.$C, $fechaIngreso ?? '')
-                ->setCellValue('K'.$C, $item->dependencia_ultimo_estatus->dependencia ?? '')
-                ->setCellValue('L'.$C, $item->servicio_ultimo_estatus->servicio ?? '')
+                ->setCellValue('K'.$C, $item->dependencia ?? '')
+                ->setCellValue('L'.$C, $item->servicio ?? '')
 
                 ->setCellValue('M'.$C, $item->descripcion ?? '')
 
                 ->setCellValue('N'.$C, $item->prioridad->prioridad ?? '')
                 ->setCellValue('O'.$C, $item->origen->origen ?? '')
-                ->setCellValue('P'.$C, $item->ultimo_estatus ?? '')
-                ->setCellValue('Q'.$C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y') ?? '')
-                ->setCellValue('R'.$C, $respuesta )
+                ->setCellValue('P'.$C, $item->estatus ?? '')
+                ->setCellValue('Q'.$C, Carbon::parse($item->fecha_movimiento)->format('d-m-Y') ?? '')
+                ->setCellValue('R'.$C, $item->observaciones ?? '' )
                 ->setCellValue('S'.$C, $this->getColorSemaforo($item)['status'])
                 ->setCellValue('T'.$C, $item->dias_atendida ?? '' )
                 ->setCellValue('U'.$C, $item->dias_rechazada ?? '' )
