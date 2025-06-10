@@ -4,7 +4,7 @@
             <div class="form-group row mb-1">
                 <label for = "dependencia_id" class="col-md-3 col-form-label">Dependencia</label>
                 <div class="col-md-9">
-                    <select id="dependencia_id" name="dependencia_id" class="form-control dependencia_status_id" size="1">
+                    <select name="dependencia_id" class="form-control dependencia_status_id" size="1">
                         <option value="0" selected >Seleccione una Dependencia</option>
                         @foreach($dependencias as $t)
                             <option value="{{$t->id}}" @if($t->id == $dependencia_id) selected @endif >{{ $t->dependencia }} </option>
