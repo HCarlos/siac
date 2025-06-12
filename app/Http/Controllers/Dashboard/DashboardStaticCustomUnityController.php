@@ -7,7 +7,6 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Classes\Denuncia\ActualizaEstadisticasARO;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\External\Denuncia\ListDenunciaAmbitoXLSXController;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Models\Catalogos\CentroLocalidad;
 use App\Models\Denuncias\Denuncia;
@@ -15,7 +14,6 @@ use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
