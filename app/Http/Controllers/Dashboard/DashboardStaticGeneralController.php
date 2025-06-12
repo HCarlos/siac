@@ -407,58 +407,124 @@ class DashboardStaticGeneralController extends Controller{
     // INICIA EL MODULO DE FUNCIONES AUXILIARES
 
     static function getUltimoEstatus($start_date,$end_date){
-        return DB::table("_viddss")
-            ->select(["ultimo_estatus as name", "ue_id", DB::raw("count(ue_id) as data")])
+
+//        return DB::table("_viddss")
+//            ->select(["ultimo_estatus as name", "ue_id", DB::raw("count(ue_id) as data")])
+//            ->where("ambito_dependencia",2)
+//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+//            ->groupBy(["ultimo_estatus","ue_id"])
+//            ->get();
+
+        return DB::table("_videpdenservestatus")
+            ->select(["estatus as name", "estatu_id as ue_id", DB::raw("count(estatu_id) as data")])
             ->where("ambito_dependencia",2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-            ->groupBy(["ultimo_estatus","ue_id"])
+            ->groupBy(["estatus","estatu_id"])
             ->get();
+
     }
 
     static function getEstatusDependencia($start_date,$end_date,$dependencia_id,$ue_id){
-        return DB::table("_viddss")
+
+//        return DB::table("_viddss")
+//            ->select('abreviatura as label', DB::raw('count(dependencia_id) as data'))
+//            ->where('ambito_dependencia',2)
+//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+//            ->where('dependencia_id',$dependencia_id)
+//            ->where('ue_id',$ue_id)
+//            ->groupBy('abreviatura')
+//            ->first();
+
+        return DB::table("_videpdenservestatus")
             ->select('abreviatura as label', DB::raw('count(dependencia_id) as data'))
             ->where('ambito_dependencia',2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->where('dependencia_id',$dependencia_id)
-            ->where('ue_id',$ue_id)
+            ->where('estatu_id',$ue_id)
             ->groupBy('abreviatura')
             ->first();
+
     }
     static function getEstatus($start_date,$end_date,$dependencia_id){
-        return DB::table("_viddss")
+
+//        return DB::table("_viddss")
+//            ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
+//            ->where('ambito_dependencia',2)
+//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+//            ->where('dependencia_id',$dependencia_id)
+//            ->groupBy('dependencia_id')
+//            ->first();
+//
+        return DB::table("_videpdenservestatus")
             ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
             ->where('ambito_dependencia',2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->where('dependencia_id',$dependencia_id)
             ->groupBy('dependencia_id')
             ->first();
+
     }
     static function getEstatusUE($start_date,$end_date,$dependencia_id,$ue_id){
-        return DB::table("_viddss")
+
+//        return DB::table("_viddss")
+//            ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
+//            ->where('ambito_dependencia',2)
+//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+//            ->where('dependencia_id',$dependencia_id)
+//            ->where('ue_id',$ue_id)
+//            ->groupBy('dependencia_id')
+//            ->first();
+//
+        return DB::table("_videpdenservestatus")
             ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
             ->where('ambito_dependencia',2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->where('dependencia_id',$dependencia_id)
-            ->where('ue_id',$ue_id)
+            ->where('estatu_id',$ue_id)
             ->groupBy('dependencia_id')
             ->first();
+
+
     }
 
     static function getServiciosDependencia($start_date,$end_date,$sue_id){
-        return DB::table("_viddss")
-            ->select('abreviatura as label', DB::raw('count(sue_id) as total'))
+
+//        return DB::table("_viddss")
+//            ->select('abreviatura as label', DB::raw('count(sue_id) as total'))
+//            ->where('ambito_dependencia',2)
+//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+//            ->where('sue_id',$sue_id)
+//            ->groupBy('abreviatura')
+//            ->first();
+//
+
+        return DB::table("_videpdenservestatus")
+            ->select('abreviatura as label', DB::raw('count(servicio_id) as total'))
             ->where('ambito_dependencia',2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-            ->where('sue_id',$sue_id)
+            ->where('servicio_id',$sue_id)
             ->groupBy('abreviatura')
             ->first();
+
     }
 
 //DB::raw("SUM(CASE WHEN fecha_dias_ejecucion <= CURRENT_DATE THEN DATE_PART('day', CURRENT_DATE - fecha_dias_ejecucion) ELSE 0 END) AS atiempo"),
 //DB::raw("SUM(CASE WHEN fecha_dias_ejecucion > CURRENT_DATE THEN DATE_PART('day', fecha_dias_ejecucion - CURRENT_DATE ) ELSE 0 END) AS conrezago")
     static function getAtiempoVsDestiempo($start_date,$end_date,$unidad_id,$ue_id){
-        return DB::table("_viddss")
+
+//        return DB::table("_viddss")
+//            ->select(
+//                DB::raw("SUM(CASE WHEN fecha_dias_ejecucion >= CURRENT_DATE THEN 1 ELSE 0 END) AS atiempo"),
+//                DB::raw("SUM(CASE WHEN CURRENT_DATE > fecha_dias_ejecucion THEN 1 ELSE 0 END) AS conrezago")
+//            )
+//            ->where('ambito_dependencia', 2)
+//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+//            ->where('dependencia_id', $unidad_id)
+//            ->where('ue_id', $ue_id)
+//            ->groupBy('ue_id')
+//            ->first();
+
+        return DB::table("_videpdenservestatus")
             ->select(
                 DB::raw("SUM(CASE WHEN fecha_dias_ejecucion >= CURRENT_DATE THEN 1 ELSE 0 END) AS atiempo"),
                 DB::raw("SUM(CASE WHEN CURRENT_DATE > fecha_dias_ejecucion THEN 1 ELSE 0 END) AS conrezago")
@@ -466,24 +532,39 @@ class DashboardStaticGeneralController extends Controller{
             ->where('ambito_dependencia', 2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->where('dependencia_id', $unidad_id)
-            ->where('ue_id', $ue_id)
-            ->groupBy('ue_id')
+            ->where('estatu_id', $ue_id)
+            ->groupBy('estatu_id')
             ->first();
+
     }
 
     static function getGeoDenuncias($start_date,$end_date,$unidad_id,$ue_id){
 
-        return DB::table("_viddss")
+//        return DB::table("_viddss")
+//            ->select(
+//                'id','latitud','longitud','dependencia','abreviatura',
+//                'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
+//                'fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','ultimo_estatus',
+//                'sue_id','servicio_ultimo_estatus','ue_id','dependencia_id','uuid',
+//                'denuncia','centro_localidad_id'
+//            )
+//            ->where('ambito_dependencia', 2)
+//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+//            ->get();
+
+        return DB::table("_videpdenservestatus")
             ->select(
                 'id','latitud','longitud','dependencia','abreviatura',
                 'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
-                'fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','ultimo_estatus',
-                'sue_id','servicio_ultimo_estatus','ue_id','dependencia_id','uuid',
-                'denuncia','centro_localidad_id'
+                'fecha_movimiento as fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','estatus as ultimo_estatus',
+                'servicio_id as sue_id','servicio as servicio_ultimo_estatus','estatu_id as ue_id','dependencia_id','uuid',
+                'descripcion as denuncia','centro_localidad_id'
             )
             ->where('ambito_dependencia', 2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->get();
+
+
     }
 
 
