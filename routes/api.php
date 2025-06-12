@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\DenunciaAPIController;
+use App\Http\Controllers\API\KioskoAPIController;
 use App\Http\Controllers\API\NoticiasAPIController;
 use App\Http\Controllers\API\OperadoresAPIController;
 use App\Http\Controllers\API\UserAPIController;
@@ -30,6 +31,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('/mobile/token', [UserAPIController::class, 'userMobileToken']);
     Route::post('/register', [UserAPIController::class, 'register']);
     Route::post('/user/recovery/password', [UserAPIController::class, 'recoveryPassword']);
+    Route::post('/logincurp', [KioskoAPIController::class, 'userCURPLogin']);
 
     Route::middleware('auth:sanctum')->get('/user', function(Request $request){
         return $request->user();
@@ -74,6 +76,13 @@ Route::group(['prefix' => 'v1'], function () {
 
 
     });
+
+
+
+    // API KIOSKO
+
+    Route::post('/logincurp', [KioskoAPIController::class, 'userCURPLogin']);
+
 
 
 });
