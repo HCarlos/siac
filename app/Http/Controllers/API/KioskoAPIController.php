@@ -17,8 +17,7 @@ class KioskoAPIController extends Controller{
 
     protected $ServiciosMonitoreados;
 
-    public function __construct()
-    {
+    public function __construct(){
         $this->ServiciosMonitoreados = [
             (object)['servicio_id' => 483, 'servicio' => "BACHEO DE VIALIDADES"],
             (object)['servicio_id' => 508, 'servicio' => "DESAZOLVE DE DRENAJE"],
@@ -52,14 +51,14 @@ class KioskoAPIController extends Controller{
         return response()->json($response);
     }
 
-    public function getLocalidades(Request $request): JsonResponse{
+    public function getLocalidades(): JsonResponse{
         $response = ["status"=>0, "msg"=>""];
-        $data = (object) $request->all();
 
         $loc = CentroLocalidad::query()
             ->orderBy('prefijo_colonia')
             ->orderBy('colonia')
             ->get();
+
         $Loc = [];
         foreach ($loc as $l){
             $Loc[] = (object)["centro_localidad_id" => $l->id, "localidad" => $l->ItemColonia()];
@@ -69,9 +68,8 @@ class KioskoAPIController extends Controller{
             $response["msg"] = "OK";
             $response["localidades"] = $Loc;
         }else{
-            $response["status"] = 0;
             $response["msg"] = "Error";
-            $response["localidades"] = null;
+            $response["localidades"] = [];
         }
         return response()->json($response);
 

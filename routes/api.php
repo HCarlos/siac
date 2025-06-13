@@ -90,7 +90,7 @@ Route::group(['prefix' => 'v1'], function () {
 Route::group(['prefix' => 'v1b'], function () {
     Route::post('/logincurp', [KioskoAPIController::class, 'userCURPLogin']);
     Route::group(['middleware' => 'auth:sanctum'], function () {
-        Route::post('/localidades', [KioskoAPIController::class, 'getLocalidades']);
+        Route::get('/localidades', [KioskoAPIController::class, 'getLocalidades']);
         Route::post('/solicitud/insert', [KioskoAPIController::class, 'insertDenunciaMobile']);
         Route::post('/solicitud/getlist', [KioskoAPIController::class, 'getDenuncias']);
     });
