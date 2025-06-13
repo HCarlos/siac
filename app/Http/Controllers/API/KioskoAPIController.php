@@ -71,10 +71,19 @@ class KioskoAPIController extends Controller{
             $response["msg"] = "Error";
             $response["localidades"] = [];
         }
+        $response["last_update"] = Carbon::now();
+
         return response()->json($response);
 
     }
 
+    public function getSergicios(): JsonResponse{
+        $response["status"] = 1;
+        $response["msg"] = "OK";
+        $response["servicios"] = $this->ServiciosMonitoreados;
+        $response["last_update"] = Carbon::now();
+        return response()->json($response);
+    }
 
 
 

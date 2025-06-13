@@ -23,6 +23,7 @@
                         }else{
                             $Localidad = $Del->ItemColoniaDelegacion();
                         }
+                        $fm = \Carbon\Carbon::parse($item->fecha_movimiento)->format('d-m-Y H:i');
                     @endphp
                     <tr class="@if($item->cerrado) bg-coral-denuncia-cerrada @endif" id="tr_{{$item->id}}">
                         <td class="table-user @if($item->origen_id == config('atemun.pagina_web_id')) text-danger @endif">
@@ -37,7 +38,7 @@
                             {{$item->ciudadano}} <br>
                             <small>{{$item->curp_ciudadano}}</small>
                         </td>
-                        <td  class="w-15">{{ \Carbon\Carbon::parse($item->fecha_movimiento)->format('d-m-Y H:i') }}</td>
+                        <td  class="w-15">{{ $fm }}</td>
                         <td>
 {{--                            <small title="{{($item->dependencia_ultimo_estatus->dependencia)}}">--}}
 {{--                                {{($item->dependencia_ultimo_estatus->dependencia)}}--}}
@@ -52,7 +53,7 @@
                             {{($item->servicio)}}<br>
 {{--                            <small class="text-gray-lighter">{{( $item->ultimo_estatus )}}</small>--}}
                             <small class="text-gray-lighter">{{( $item->estatus )}}</small>
-                            @if( $item->TotalRespuestas>0 )
+                            @if( $item->TotalRespuestas > 0 )
                                 > <small class="text-danger"><strong> {{( $item->TotalRespuestas )}}</strong></small>
                                 <small class="chikirimbita"> {{ $item->semaforo_ultimo_estatus()['fecha_fin'] }}</small>
                             @endif
