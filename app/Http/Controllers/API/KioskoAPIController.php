@@ -11,14 +11,20 @@ use Illuminate\Support\Facades\Hash;
 
 class KioskoAPIController extends Controller{
 
-    protected $ServiciosMonitoreados = [
-        (object)["servicio_id" => 483, "servicio" => "BACHEO DE VIALIDADES"],
-        (object)["servicio_id" => 508, "servicio" => "DESAZOLVE DE DRENAJE"],
-        (object)["servicio_id" => 476, "servicio" => "FUGA DE AGUA POTABLE"],
-        (object)["servicio_id" => 503, "servicio" => "RECOLECCIÓN DE BASURA"],
-        (object)["servicio_id" => 479, "servicio" => "REPARACIÓN DE ALCANTARILLA"],
-        (object)["servicio_id" => 466, "servicio" => "REPARACIÓN DE LUMINARIAS"],
-    ];
+    protected $ServiciosMonitoreados;
+
+    public function __construct()
+    {
+        $this->ServiciosMonitoreados = [
+            (object)['servicio_id' => 483, 'servicio' => "BACHEO DE VIALIDADES"],
+            (object)['servicio_id' => 508, 'servicio' => "DESAZOLVE DE DRENAJE"],
+            (object)['servicio_id' => 476, 'servicio' => "FUGA DE AGUA POTABLE"],
+            (object)['servicio_id' => 503, 'servicio' => "RECOLECCIÓN DE BASURA"],
+            (object)['servicio_id' => 479, 'servicio' => "REPARACIÓN DE ALCANTARILLA"],
+            (object)['servicio_id' => 466, 'servicio' => "REPARACIÓN DE LUMINARIAS"],
+        ];
+    }
+
 
 
     public function userCURPLogin(Request $request):JsonResponse {
