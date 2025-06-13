@@ -84,7 +84,6 @@ class DashboardStaticCustomUnityController extends Controller{
 
         if ( ! $isExistFile) {
 
-
             // INICIA EL MODULO DE ESTATUS
             $arrEstatus = [
                 (object)["ue_id" => 16, "Estatus"=> "RECIBIDA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],

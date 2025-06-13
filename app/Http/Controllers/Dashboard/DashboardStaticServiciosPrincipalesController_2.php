@@ -19,7 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class DashboardStaticServiciosPrincipalesController_old extends Controller{
+class DashboardStaticServiciosPrincipalesController2 extends Controller{
 
     public function __construct(){
         ini_set('max_execution_time', 300);
@@ -244,7 +244,8 @@ class DashboardStaticServiciosPrincipalesController_old extends Controller{
                 $fme1 = Carbon::parse($g->fecha_dias_ejecucion);
                 $fme2 = Carbon::parse($g->fecha_dias_maximos_ejecucion);
                 $fi = Carbon::parse($g->fecha_ingreso);
-                $fue = Carbon::parse($g->fecha_ultimo_estatus);
+//                $fue = Carbon::parse($g->fecha_ultimo_estatus);
+                $fue = Carbon::parse($g->fecha_movimiento);
 
                 $icon = "";
                 foreach ($vectorUnidades as $u) {
@@ -297,7 +298,7 @@ class DashboardStaticServiciosPrincipalesController_old extends Controller{
 //                    dd($g->fecha_dias_maximos_ejecucion);
                 }
 
-                $semaforo = ActualizaEstadisticasARO::semaforo_ultimo_estatus_off($g->ue_id, new DateTime($g->fecha_dias_maximos_ejecucion), new DateTime($g->fecha_ultimo_estatus));
+                $semaforo = ActualizaEstadisticasARO::semaforo_ultimo_estatus_off($g->estatu_id, new DateTime($g->fecha_dias_maximos_ejecucion), new DateTime($g->fecha_movimiento));
                 $status = $semaforo['status'];
                 $dias_vencidos = $semaforo['dias_vencidos'];
 
@@ -324,18 +325,18 @@ class DashboardStaticServiciosPrincipalesController_old extends Controller{
 
                 $arrGeos[] = (object)[
                     "denuncia_id"=> $g->id,
-                    "denuncia"=> $g->denuncia,
+                    "denuncia"=> $g->descripcion,
                     "latitud"=> (float) $g->latitud,
                     "longitud"=> (float) $g->longitud,
                     "dependencia_id" => $g->dependencia_id,
                     "dependencia"=> $g->dependencia,
                     "abreviatura"=> $g->abreviatura,
-                    "sue_id" => $g->sue_id,
+                    "sue_id" => $g->servicio_id,
                     "servicio" => $g->nombre_corto_ss,
                     "ciudadano" => $g->ciudadano,
-                    "ue_id" => $g->ue_id,
-                    "ultimo_estatus" => $g->ultimo_estatus,
-                    "fecha_ultimo_estatus" => Carbon::parse($g->fecha_ultimo_estatus)->format('d-m-Y H:i:s'),
+                    "ue_id" => $g->estatu_id,
+                    "ultimo_estatus" => $g->estatus,
+                    "fecha_ultimo_estatus" => Carbon::parse($g->fecha_movimiento)->format('d-m-Y H:i:s'),
                     "fecha_ingreso" => Carbon::parse($g->fecha_ingreso)->format('d-m-Y H:i:s'),
                     "fecha_ejecucion_minima" => Carbon::parse($g->fecha_dias_ejecucion)->format('d-m-Y H:i:s'),
                     "fecha_ejecucion_maxima" => Carbon::parse($g->fecha_dias_maximos_ejecucion)->format('d-m-Y H:i:s'),
@@ -357,17 +358,17 @@ class DashboardStaticServiciosPrincipalesController_old extends Controller{
                 }
 
                 if ($initArr){
-                    $arrDepServ[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia,"sue_id" => $g->sue_id,"servicio" => $g->nombre_corto_ss];
+                    $arrDepServ[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia,"sue_id" => $g->servicio_id,"servicio" => $g->nombre_corto_ss];
                     $initArr = false;
                 }else{
                     $Encontrado = false;
                     foreach ($arrDepServ as $key => $value) {
-                        if ($value['dependencia_id'] === $g->dependencia_id && $value['sue_id'] === $g->sue_id) {
+                        if ($value['dependencia_id'] === $g->dependencia_id && $value['sue_id'] === $g->servicio_id) {
                             $Encontrado = true;
                         }
                     }
                     if (!$Encontrado) {
-                        $arrDepServ[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia,"sue_id" => $g->sue_id,"servicio" => $g->nombre_corto_ss];
+                        $arrDepServ[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia,"sue_id" => $g->servicio_id,"servicio" => $g->nombre_corto_ss];
                     }
 
                 }
@@ -487,9 +488,9 @@ class DashboardStaticServiciosPrincipalesController_old extends Controller{
 //            ->get();
 
         return DB::table("_videpdenservestatus")
-            ->select(["estatus as name", "estatu_id", DB::raw("count(estatu_id) as data")])
+            ->select(["estatus as name", "estatu_id as ue_id", DB::raw("count(estatu_id) as data")])
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-            ->whereIn('estatu_id', [483,508,476,503,479,466])
+            ->whereIn('servicio_id', [483,508,476,503,479,466])
             ->groupBy(["estatus","estatu_id"])
             ->get();
 
@@ -632,13 +633,13 @@ class DashboardStaticServiciosPrincipalesController_old extends Controller{
 //            ->whereIn('sue_id', $ServiciosPrincipales)
 //            ->get();
 
-        return DB::table("_viddss")
+        return DB::table("_videpdenservestatus")
             ->select(
                 'id','latitud','longitud','dependencia','abreviatura',
                 'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
-                'fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','ultimo_estatus',
-                'servicio_id','servicio_ultimo_estatus','ue_id','dependencia_id','uuid',
-                'denuncia','centro_localidad_id'
+                'fecha_movimiento', 'fecha_dias_maximos_ejecucion','estatus',
+                'servicio_id','servicio','estatu_id','dependencia_id','uuid',
+                'descripcion','centro_localidad_id'
             )
             ->where('ambito_dependencia', 2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])

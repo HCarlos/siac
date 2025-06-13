@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class DashboardStaticCustomUnityController_1 extends Controller{
+class DashboardStaticCustomUnityController_2 extends Controller{
 
     private $unity_id = 46;
 

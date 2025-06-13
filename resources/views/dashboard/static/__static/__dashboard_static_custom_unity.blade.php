@@ -380,7 +380,7 @@
                     search : "",
                     items : inputDenuncias.value,
                     fileoutput : "fmt_lista_denuncias_sm.xlsx",
-                    indice : 2,
+                    indice : 3,
                     _token : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 };
 

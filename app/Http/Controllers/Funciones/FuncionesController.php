@@ -275,7 +275,7 @@ class FuncionesController extends Controller
             'dias_atendida','dias_rechazada','dias_observada',
             'servicio_id','estatu_id','fecha_movimiento','telefonoscelularesemails',
             'servicio','estatus','ubicacion_id','ciudadano','curp_ciudadano','dependencia',
-            'ambito_dependencia','observaciones',
+            'ambito_dependencia','observaciones','medida_id',
         ];
     }
 
