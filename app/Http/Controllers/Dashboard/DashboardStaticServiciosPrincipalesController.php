@@ -556,7 +556,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
 
     static function getGeoDenuncias($start_date,$end_date,$ServiciosPrincipales){
 
-        return DB::table("_viddss")
+        $doc =  DB::table("_viddss")
             ->select(
                 'id','latitud','longitud','dependencia','abreviatura',
                 'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
@@ -568,6 +568,13 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
             ->where('ambito_dependencia', 2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->get();
+
+//        ->where('id',118952)
+
+
+//        dd($doc);
+
+        return $doc;
     }
 
 

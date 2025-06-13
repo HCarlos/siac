@@ -254,12 +254,12 @@ class FuncionesController extends Controller
     public static function itemSelectDenunciasV1(): array{
             return ['id','uuid','ciudadano','curp_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano',
                         'fecha_ingreso','dependencia_ultimo_estatus','area','subarea','servicio_ultimo_estatus','cp',
-                        'telefonoscelularesemails', 'calle','num_ext','num_int','colonia','ubicacion','ambito_dependencia',
+                        'celulares','telefonos','email','telefonoscelularesemails', 'calle','num_ext','num_int','colonia','ubicacion','ambito_dependencia',
                         'denuncia','referencia', 'status_denuncia','prioridad','origen','observaciones','genero_ciudadano',
                         'cerrado','origen_id','ciudadano_id','ultimo_estatus','firmado','latitud','longitud',
                         'clave_identificadora','estatus_general','ambito_sas','fecha_ultimo_estatus',
                         'creadopor_id','modificadopor_id','dias_ejecucion','dias_maximos_ejecucion',
-                        'fecha_dias_ejecucion','fecha_dias_maximos_ejecucion',
+                        'fecha_dias_ejecucion','fecha_dias_maximos_ejecucion','username',
                         'search_google','gd_ubicacion','prioridad_id','centro_localidad_id',
                         'ue_id'
                     ];

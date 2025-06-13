@@ -491,6 +491,8 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|test_admin|USER_OPE
 
     Route::post('showDataListDenunciaAmbitoExcel1A/', 'External\Denuncia\ListDenunciaAmbitoXLSXController@getListDenunciaAmbitoXLSX')->name('showDataListDenunciaAmbitoExcel1A');
     Route::post('exportDataFilterMap/', 'External\Denuncia\ListDenunciaAmbitoXLSXController@exportDataFilterMap')->name('exportDataFilterMap');
+    Route::post('exportDataFilterMap2/', 'External\Denuncia\ListDenunciaAmbitoXLSXController@exportDataFilterMap2')->name('exportDataFilterMap2');
+    Route::post('exportDataFilterMap3/', 'External\Denuncia\ListDenunciaAmbitoXLSXController@exportDataFilterMap3')->name('exportDataFilterMap3');
     Route::post('showDataListDenunciaAmbitoRespuestaExcel1A/', 'External\Denuncia\ListDenunciaAmbitoXLSXController@showDataListDenunciaAmbitoRespuestaExcel1A')->name('showDataListDenunciaAmbitoRespuestaExcel1A');
 
     Route::get('cerrarDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@closeItem')->name('cerrarDenunciaAmbito');

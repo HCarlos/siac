@@ -385,7 +385,7 @@
                 };
 
                 var temp=document.createElement("form");
-                temp.action='/exportDataFilterMap';
+                temp.action='/exportDataFilterMap3';
                 temp.method="POST";
                 temp.target="_blank";
                 temp.style.display="none";

@@ -8,6 +8,7 @@ use App\Models\Catalogos\CentroLocalidad;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Estatu;
 use App\Models\Catalogos\Servicio;
+use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\_viDepDenServEstatus;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
@@ -396,8 +397,15 @@ class ListDenunciaAmbitoXLSXController extends Controller
     public function denunciaGeneralMap02($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
 
         $sh->setCellValue('w1', Carbon::now()->format('d-m-Y h:i:s'));
+
+
+//        dd($Items->count());
+
         foreach ($Items as $item){
-            $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y') . " @DevCH";
+
+//            dd($item);
+
+            $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
             $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
 
             $Colonia = "";
@@ -409,28 +417,22 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 $Delegacion = $Loc->ItemDelegacion();
             }
 
-            $resp = Denuncia_Dependencia_Servicio::query()
-                ->select(['id', 'observaciones', 'dependencia_id', 'favorable', 'denuncia_id'])
-                ->where('denuncia_id', $item->id)
-                ->orderByDesc('id')
-                ->first();
-
             $cds = $item->ciudadano_simple;
 
 
-            $telcel = $cds->celulares . '; ' . $cds->telefonos;
-            $telcel = explode(';', $telcel);
-
-            $cadcel = '';
-            for ($i = 0; $i < count($telcel) - 1; $i++) {
-                if ($cadcel === '') {
-                    $cadcel .= trim($telcel[$i]);
-                } else if (trim($telcel[$i]) !== '') {
-                    $cadcel .= ', ' . trim($telcel[$i]);
-                } else {
-                    $cadcel .= '';
-                }
-            }
+//            $telcel = $cds->celulares . '; ' . $cds->telefonos;
+//            $telcel = explode(';', $telcel);
+//
+//            $cadcel = '';
+//            for ($i = 0; $i < count($telcel) - 1; $i++) {
+//                if ($cadcel === '') {
+//                    $cadcel .= trim($telcel[$i]);
+//                } else if (trim($telcel[$i]) !== '') {
+//                    $cadcel .= ', ' . trim($telcel[$i]);
+//                } else {
+//                    $cadcel .= '';
+//                }
+//            }
 
             $atendidas = 0;
             $pendientes = 0;
@@ -446,21 +448,21 @@ class ListDenunciaAmbitoXLSXController extends Controller
 
             $sh
                 ->setCellValue('A' . $C, $item->id ?? 0)
-                ->setCellValue('B' . $C, trim($cds->username ?? ''))
-                ->setCellValue('C' . $C, trim($cds->ap_paterno ?? ''))
-                ->setCellValue('D' . $C, trim($cds->ap_materno ?? ''))
-                ->setCellValue('E' . $C, trim($cds->nombre ?? ''))
+                ->setCellValue('B' . $C, trim($item->username ?? ''))
+                ->setCellValue('C' . $C, trim($item->ap_paterno_ciudadano ?? ''))
+                ->setCellValue('D' . $C, trim($item->ap_materno_ciudadano ?? ''))
+                ->setCellValue('E' . $C, trim($item->nombre_ciudadano ?? ''))
                 ->setCellValue('F' . $C, strtoupper(trim($item->search_google)) ?? '')
                 ->setCellValue('G' . $C, $Colonia ?? '')
                 ->setCellValue('H' . $C, $Delegacion ?? '')
-                ->setCellValue('I' . $C, $cadcel ?? '')
+                ->setCellValue('I' . $C, $item->telefonoscelularesemails ?? '')
                 ->setCellValue('J' . $C, $fechaIngreso ?? '')
-                ->setCellValue('K' . $C, $item->dependencia_ultimo_estatus->dependencia ?? '')
-                ->setCellValue('L' . $C, $item->servicio_ultimo_estatus->servicio ?? '')
-                ->setCellValue('M' . $C, $item->descripcion ?? '')
-                ->setCellValue('N' . $C, $item->prioridad->prioridad ?? '')
-                ->setCellValue('O' . $C, $item->origen->origen ?? '')
-                ->setCellValue('P' . $C, $item->ultimo_estatus->estatus ?? '')
+                ->setCellValue('K' . $C, $item->dependencia_ultimo_estatus ?? '')
+                ->setCellValue('L' . $C, $item->servicio_ultimo_estatus ?? '')
+                ->setCellValue('M' . $C, $item->denuncia ?? '')
+                ->setCellValue('N' . $C, $item->prioridad ?? '')
+                ->setCellValue('O' . $C, $item->origen ?? '')
+                ->setCellValue('P' . $C, $item->ultimo_estatus ?? '')
                 ->setCellValue('Q' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y') ?? '')
                 ->setCellValue('R' . $C, $item->observaciones ?? '')
                 ->setCellValue('S' . $C, $this->getColorSemaforo($item)['status'])
@@ -574,7 +576,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('J' . $C, $fechaIngreso ?? '')
                     ->setCellValue('K' . $C, $item->dependencia ?? '')
                     ->setCellValue('L' . $C, $item->servicio ?? '')
-                    ->setCellValue('M' . $C, $item->descripcion ?? '')
+                    ->setCellValue('M' . $C, $item->denuncia ?? '')
                     ->setCellValue('N' . $C, $item->prioridad->prioridad ?? '')
                     ->setCellValue('O' . $C, $item->origen->origen ?? '')
                     ->setCellValue('P' . $C, $item->estatus ?? '')
@@ -628,8 +630,34 @@ class ListDenunciaAmbitoXLSXController extends Controller
 
 
 
+    function exportDataFilterMap2(Request $request){
+        $data = $request->all();
 
-    function exportDataFilterMap(Request $request){
+        $dids = $data['items'];
+
+        $ids = Str::of($dids)
+            ->explode(',')
+            ->map(function ($value) {
+                return (int) $value;
+            })
+            ->toArray();
+
+        $items = _viDDSs::query()
+            ->select(FuncionesController::itemSelectDenunciasV1())
+            ->whereIn('id', $ids)
+            ->orderByDesc('id')
+            ->get();
+
+        $request->session()->put('items', $items);
+
+        return $this->getListDenunciaAmbitoXLSX($request);
+
+    }
+
+
+
+
+    function exportDataFilterMap3(Request $request){
         $data = $request->all();
 
         $dids = $data['items'];

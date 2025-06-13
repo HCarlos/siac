@@ -499,6 +499,9 @@
                 // Deshabilita el botón si es necesario
                 btnFilterDataExport.disabled = true;
                 const inputDenuncias = document.getElementById('denuncias');
+
+                // alert(inputDenuncias);
+
                 var PARAMS = {
                     search : "",
                     items : inputDenuncias.value,
@@ -508,7 +511,7 @@
                 };
 
                 var temp=document.createElement("form");
-                temp.action='/exportDataFilterMap';
+                temp.action='/exportDataFilterMap2';
                 temp.method="POST";
                 temp.target="_blank";
                 temp.style.display="none";
