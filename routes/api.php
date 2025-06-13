@@ -31,7 +31,6 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('/mobile/token', [UserAPIController::class, 'userMobileToken']);
     Route::post('/register', [UserAPIController::class, 'register']);
     Route::post('/user/recovery/password', [UserAPIController::class, 'recoveryPassword']);
-    Route::post('/logincurp', [KioskoAPIController::class, 'userCURPLogin']);
 
     Route::middleware('auth:sanctum')->get('/user', function(Request $request){
         return $request->user();
@@ -81,8 +80,19 @@ Route::group(['prefix' => 'v1'], function () {
 
     // API KIOSKO
 
+//    Route::post('/logincurp', [KioskoAPIController::class, 'userCURPLogin']);
+
+
+
+});
+
+// Para el Kiosko
+Route::group(['prefix' => 'v1b'], function () {
     Route::post('/logincurp', [KioskoAPIController::class, 'userCURPLogin']);
-
-
+    Route::group(['middleware' => 'auth:sanctum'], function () {
+        Route::post('/localidades', [KioskoAPIController::class, 'getLocalidades']);
+        Route::post('/solicitud/insert', [KioskoAPIController::class, 'insertDenunciaMobile']);
+        Route::post('/solicitud/getlist', [KioskoAPIController::class, 'getDenuncias']);
+    });
 
 });
