@@ -564,9 +564,9 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 'sue_id','servicio_ultimo_estatus','ue_id','dependencia_id','uuid',
                 'denuncia','centro_localidad_id'
             )
+            ->whereIn('sue_id', $ServiciosPrincipales)
             ->where('ambito_dependencia', 2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-            ->whereIn('sue_id', $ServiciosPrincipales)
             ->get();
     }
 
