@@ -14,62 +14,72 @@
 
     jQuery(function($) {
         $(document).ready(function() {
-
-            var token = "2708|v2LToSSFvvtiE3bHOc6jJJoQBoWPAMk6x8QuHkfY";
-            // 1. Configuración global de cabeceras
-            // $.ajaxSetup({
-            //     headers: {
-            //         'X-CSRF-Token': $("meta[name='csrf-token']").attr("content"),
-            //         'Authorization': 'Bearer ' + token + '' , // Token de autenticación
-            //         'Accept': 'application/json' // Asegurar formato JSON
-            //     }
-            // });
+            // Configurar token CSRF
+            const csrfToken = $("meta[name='csrf-token']").attr("content");
 
             $("#myForm").on('submit', function(event) {
                 event.preventDefault();
 
-                // 2. Obtener datos del formulario
-                const formData = {
-                    curp: $("#curp").val() // Mejor práctica usando jQuery
-                };
+                // $.ajax({
+                //     url: 'https://siac.villahermosa.gob.mx/api/v1b/localidades',
+                //     method: 'GET',
+                //     success: function(data, status, xhr) {
+                //         const allowedHeaders = xhr.getResponseHeader('Access-Control-Allow-Headers');
+                //         console.log("Cabeceras permitidas:", allowedHeaders);
+                //     },
+                //     error: function(xhr) {
+                //         console.error("Error en OPTIONS:", xhr.getAllResponseHeaders());
+                //     }
+                // });
+                // return false;
 
-                // url: 'http://localhost:8000/api/v1b/localidades/', // URL completa para evitar CORS
+                const curp = $("#curp").val();
+                const token = "2716|qrTWDsyWX6JYUVsABCodIJC2CCjO3ZCaHZzmI9Qg"; //localStorage.getItem('access_token'); // Obtener token Bearer
 
-                // 3. Configuración AJAX con soporte CORS
+                // Configurar proxy si es necesario (reemplazar con tu dominio)
+                const PROXY_URL = "https://cors-proxy.tudominio.com/";
+                const TARGET_URL = "https://siac.villahermosa.gob.mx/api/v1b/localidades";
+                const FULL_URL = PROXY_URL ? PROXY_URL + TARGET_URL : TARGET_URL;
+
                 $.ajax({
-                    url: 'https://siac.villahermosa.gob.mx/api/v1b/localidades', // URL completa para evitar CORS
-                    data: formData,
+                    url: TARGET_URL,
                     method: 'GET',
-                    dataType: 'json', // Esperar respuesta JSON
-                    crossDomain: true, // Habilitar solicitudes entre dominios
-                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    data: { username: curp },
                     beforeSend: function(xhr) {
+                        // Agregar cabeceras requeridas
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                        xhr.setRequestHeader('X-CSRF-Token', csrfToken);
+                        xhr.setRequestHeader('Accept', 'application/json');
 
-                        xhr.setRequestHeader('Authorization','Bearer ' + token);
+                        // Cabeceras adicionales para CORS
+                        xhr.setRequestHeader('Access-Control-Request-Headers', 'Authorization');
+                        xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+                    },
+                    crossDomain: true,
+                    dataType: 'json',
+                    success: function(response) {
+                        $("#resultado").html(JSON.stringify(response));
+                    },
+                    error: function(xhr, status, error) {
 
-                        // 4. Validar token antes de enviar
-                        // if (!localStorage.getItem('access_token')) {
-                        //     alert("Token de acceso no disponible");
-                        //     return false;
-                        // }
-                    }
-                })
-                    .done(function(response) {
-                        if (response.msg === "OK") {
-                            $("#resultado").html(JSON.stringify(response.localidades));
+                        // alert("error " + JSON.stringify(xhr));
+
+                        let errorMsg = "Error: ";
+
+                        if (xhr.status === 0) {
+                            errorMsg += "Verifica tu conexión a internet o configuración CORS";
+                        } else if (xhr.status === 401) {
+                            errorMsg += "No autorizado. Token inválido o expirado";
+                        } else if (xhr.status === 403) {
+                            errorMsg += "Acceso prohibido por CORS: " + xhr.responseText;
                         } else {
-                            alert(response.msg || "Error en la respuesta");
+                            errorMsg += xhr.status + " - " + error;
                         }
-                    })
-                    .fail(function(jqXHR) {
-                        // 5. Manejo mejorado de errores CORS
-                        const errorMsg = jqXHR.status === 0 ?
-                            "Error de red/CORS. Verifique la URL y los encabezados del servidor "+token :
-                            "Error " + jqXHR.status + ": " + jqXHR.responseText;
 
+                        console.error("Detalles del error:", xhr);
                         alert(errorMsg);
-
-                    });
+                    }
+                });
             });
         });
     });
