@@ -22,7 +22,7 @@ return [
      * Example: ['api/*']
      */
 //    'paths' => ['localhost:3000/*','localhost:6001/*','localhost:6379/*','127.0.0.1:6001/*','servimun.mx:6001/*','127.0.0.1:6379/*'],
-    'paths' => ['*'],
+    'paths' => ['api/*', '*'],
 
     /*
     * Matches the request method. `['*']` allows all methods.
@@ -32,7 +32,7 @@ return [
     /*
      * Matches the request origin. `['*']` allows all origins. Wildcards can be used, eg `*.mydomain.com`
      */
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['https://siac.villahermosa.gob.mx'],
 
     /*
      * Patterns that can be used with `preg_match` to match the origin.
