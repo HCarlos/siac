@@ -35,10 +35,11 @@
 
                 // 3. Configuración AJAX con soporte CORS
                 $.ajax({
-                    url: 'https://siac.villahermosa.gob.mx/api/v1b/localidades/', // URL completa para evitar CORS
+                    url: 'https://siac.villahermosa.gob.mx/api/v1b/localidades', // URL completa para evitar CORS
                     data: formData,
                     method: 'GET',
                     dataType: 'json', // Esperar respuesta JSON
+                    crossDomain: true, // Habilitar solicitudes entre dominios
                     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                     beforeSend: function(xhr) {
                         // 4. Validar token antes de enviar
