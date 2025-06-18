@@ -5,6 +5,7 @@ use App\Http\Controllers\API\KioskoAPIController;
 use App\Http\Controllers\API\NoticiasAPIController;
 use App\Http\Controllers\API\OperadoresAPIController;
 use App\Http\Controllers\API\UserAPIController;
+use App\Http\Controllers\Denuncia\DenunciaKioskoController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -32,9 +33,9 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('/register', [UserAPIController::class, 'register']);
     Route::post('/user/recovery/password', [UserAPIController::class, 'recoveryPassword']);
 
-    Route::middleware('auth:sanctum')->get('/user', function(Request $request){
-        return $request->user();
-    });
+//    Route::middleware('auth:sanctum')->get('/user', function(Request $request){
+//        return $request->user();
+//    });
     Route::group(['middleware' => 'auth:sanctum'], function () {
 
         // Useers should
@@ -63,15 +64,14 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/operador/solicitudes_list', [OperadoresAPIController::class, 'getSolicitudesOperador']);
 
 
-        Route::get('fire', function () {
-            // this fires the event
-            event(new App\Events\APIDenunciaEvent(1,1));
-            return "event fired";
-        });
+//        Route::get('fire', function () {
+//            event(new App\Events\APIDenunciaEvent(1,1));
+//            return "event fired";
+//        });
 
-        Route::middleware('avaluateUbicación')->get('/ubi', function(Request $request){
-            //return $request->user();
-        });
+//        Route::middleware('avaluateUbicación')->get('/ubi', function(Request $request){
+//            //return $request->user();
+//        });
 
 
     });
@@ -92,8 +92,7 @@ Route::group(['prefix' => 'v1b'], function () {
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('/localidades', [KioskoAPIController::class, 'getLocalidades']);
         Route::get('/servicios', [KioskoAPIController::class, 'getSergicios']);
-        Route::post('/solicitud/insert', [KioskoAPIController::class, 'insertDenunciaMobile']);
-        Route::post('/solicitud/getlist', [KioskoAPIController::class, 'getDenuncias']);
+        Route::post('solicitud-kiosko-insert', [DenunciaKioskoController::class, 'createItemKiosko']);
     });
 
 });

@@ -15,10 +15,16 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', static function () {return view('welcome');});
-Route::get('/privacidad', static function () {return view('privacidad');});
-Route::get('/about_app', static function () {return view("partials.others.about_app");});
-Route::get('/aviso_app', static function () {return view("partials.others.aviso_app");});
+//Route::get('/', static function () {return view('welcome');});
+//Route::get('/privacidad', static function () {return view('privacidad');});
+//Route::get('/about_app', static function () {return view("partials.others.about_app");});
+//Route::get('/aviso_app', static function () {return view("partials.others.aviso_app");});
+
+Route::get('/', 'Catalogos\Otros\ShisheroAnonimoController@welcome')->name('welcome');
+Route::get('/privacidad', 'Catalogos\Otros\ShisheroAnonimoController@privacidad')->name('privacidad');
+Route::get('/about_app', 'Catalogos\Otros\ShisheroAnonimoController@about_app')->name('about_app');
+Route::get('/aviso_app', 'Catalogos\Otros\ShisheroAnonimoController@welcome')->name('aviso_app');
+
 
 Route::get('newUbicacionV2', 'Catalogos\Domicilio\UbicacionController@newItemV2')->name('newUbicacionV2');
 Route::post('createUbicacionV2', 'Catalogos\Domicilio\UbicacionController@createItemV2')->name('createUbicacionV2');
@@ -512,9 +518,13 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|test_admin|USER_OPE
 
 
 
-    Route::get('delegaciones_colonias', static function () {
-        return view("partials.others.delegaciones_y_colonias");
-    })->name("delegaciones_colonias");
+//    Route::get('delegaciones_colonias', static function () {
+//        return view("partials.others.delegaciones_y_colonias");
+//    })->name("delegaciones_colonias");
+
+    Route::get('/delegaciones_colonias', 'Catalogos\Otros\ShisheroAnonimoController@delegaciones_colonias')->name('delegaciones_colonias');
+
+
 
 });
 
@@ -605,7 +615,7 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|DELEGADO|DELEGADOS|
 
 Route::get('getNotificationDependencias/{dependencia_id_str}', 'External\Denuncia\AjaxController@getNotificationDependencias')->name('getNotificationDependencias');
 
-Route::get('getServiciosFromDependencias/{id}', 'Denuncia\DenunciaController@getServiciosFromDependencias')->name('getServiciosFromDependencias');
+//Route::get('getServiciosFromDependencias/{id}', 'Denuncia\DenunciaController@getServiciosFromDependencias')->name('getServiciosFromDependencias');
 
 
 //Route::get('enviar', ['as' => 'enviar', function () {
@@ -627,16 +637,19 @@ Route::get('/imprimir_denuncia_ambito_respuesta/{uuid}', 'External\Denuncia\Hoja
 //Route::group(['middleware' => 'cors'], function(){
 
 
-    Route::get('fire', static function () {
-        // this fires the event
-        event(new App\Events\APIDenunciaEvent(1,1));
-        return "event fired";
-    });
+//    Route::get('fire', static function () {
+//        event(new App\Events\APIDenunciaEvent(1,1));
+//        return "event fired";
+//    });
+//
+//    Route::get('test', static function () {
+//        return "event test";
+//    });
 
-    Route::get('test', static function () {
-        // this checks for the event
-        return "event test";
-    });
+
+Route::get('/fire', 'Catalogos\Otros\ShisheroAnonimoController@fire')->name('fire');
+Route::get('/test', 'Catalogos\Otros\ShisheroAnonimoController@test')->name('test');
+
 
 
 //    Route::get('test_send_ios/',function (){
@@ -677,14 +690,18 @@ Route::get('/imprimir_denuncia_ambito_respuesta/{uuid}', 'External\Denuncia\Hoja
 
 //});
 
-Route::get('/get-csrf-token', function() {
-    return response()->json(['csrf_token' => csrf_token()]);
-});
+//Route::get('/get-csrf-token', function() {
+//    return response()->json(['csrf_token' => csrf_token()]);
+//});
 
 Route::get('usuario/{curp}', 'Auth\UsuarioCURPController@buscarPorCurp')->name('usuario');
 Route::post('usuariopost', 'Auth\UsuarioCURPController@buscarPorCurp')->name('usuariopost');
 
 
-Route::get('/tokenizer', function () {
-    return view('partials.tokenizer');
-})->name('tokenizer');
+//Route::get('/tokenizer', function () {
+//    return view('partials.tokenizer');
+//})->name('tokenizer');
+
+Route::get('/get-csrf-token', 'Catalogos\Otros\ShisheroAnonimoController@get_csrf_token')->name('get-csrf-token');
+Route::get('/tokenizer', 'Catalogos\Otros\ShisheroAnonimoController@tokenizer')->name('tokenizer');
+

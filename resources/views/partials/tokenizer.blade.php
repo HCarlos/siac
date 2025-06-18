@@ -34,7 +34,7 @@
                 // return false;
 
                 const curp = $("#curp").val();
-                const token = "2716|qrTWDsyWX6JYUVsABCodIJC2CCjO3ZCaHZzmI9Qg"; //localStorage.getItem('access_token'); // Obtener token Bearer
+                const token = "2722|P5hlFXZH3HsPPsJuEB8rzzb1r1xSb0lWfNFIaKqA"; //localStorage.getItem('access_token'); // Obtener token Bearer
 
                 // Configurar proxy si es necesario (reemplazar con tu dominio)
                 const PROXY_URL = "https://cors-proxy.tudominio.com/";
@@ -52,7 +52,7 @@
                         xhr.setRequestHeader('Accept', 'application/json');
 
                         // Cabeceras adicionales para CORS
-                        xhr.setRequestHeader('Access-Control-Request-Headers', 'Authorization');
+                        xhr.setRequestHeader('Access-Control-Request-Headers', 'authorization');
                         xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
                     },
                     crossDomain: true,
