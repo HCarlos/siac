@@ -85,7 +85,9 @@ class DenunciaKioskoRequest extends FormRequest{
 
     protected function prepareDenunciaData($usuario, $ubicacion, $servicio){
 
-//        dd($servicio->dependencia_id);
+//        dd($this->celular);
+
+        $this->guardarCelular($usuario);
 
         $now = now();
         $fechaEjecucion = $now->copy()->addDays(3);
@@ -132,6 +134,9 @@ class DenunciaKioskoRequest extends FormRequest{
             'ambito'                       => 2,
             'centro_localidad_id'          => $this->centro_localidad_id,
         ];
+
+
+
     }
 
     protected function saveDenunciaWithPermissions(array $itemData){
@@ -158,14 +163,6 @@ class DenunciaKioskoRequest extends FormRequest{
             if (empty($this->id)) {
                 $item = Denuncia::create($itemData);
                 $this->attaches($item, null, null);
-                event(new DenunciaUpdateStatusGeneralAmbitoEvent($item->id, $user_id, $trigger_type));
-            } else {
-                $item = Denuncia::findOrFail($this->id);
-
-                $item_viejito = clone $item;
-                $item->update($itemData);
-                $this->attaches($item, $item_viejito, $itemData);
-                $trigger_type = 1;
                 event(new DenunciaUpdateStatusGeneralAmbitoEvent($item->id, $user_id, $trigger_type));
             }
 
@@ -329,6 +326,37 @@ class DenunciaKioskoRequest extends FormRequest{
             'line' => $e->getLine(),
             'trace' => config('app.debug') ? $e->getTrace() : []
         ], $status);
+    }
+
+    protected function guardarCelular($usuario){
+        // Función para normalizar números de teléfono
+        $normalizar = function($numero) {
+            if (empty($numero)) return '';
+            $normalizado = preg_replace('/[\s\-()]/', '', $numero);
+            return str_replace('+52', '', $normalizado);
+        };
+
+        // Normalizar números existentes y nuevo número
+        $celularesExistentes = $normalizar($usuario->celulares ?? '');
+        $nuevoCelular = $normalizar($this->celular ?? '');
+
+        // Procesar solo si el nuevo número es válido
+        if (!empty($nuevoCelular)) {
+            // Convertir números existentes a array
+            $numerosArray = !empty($celularesExistentes)
+                ? array_map('trim', explode(',', $celularesExistentes))
+                : [];
+
+            // Verificar si el nuevo número ya existe
+            $existe = in_array($nuevoCelular, $numerosArray, true);
+
+            // Agregar solo si no existe
+            if (!$existe) {
+                $numerosArray[] = $nuevoCelular;
+                $usuario->celulares = implode(', ', $numerosArray);
+                $usuario->save();
+            }
+        }
     }
 
 }
