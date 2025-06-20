@@ -7,6 +7,7 @@ use App\Models\Catalogos\CentroLocalidad;
 use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\_viDepDenServEstatus;
 use App\Models\Denuncias\Denuncia;
+use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use App\Models\Mobiles\Denunciamobile;
 use App\Models\Mobiles\Serviciomobile;
 use App\Models\Users\UserMobile;
@@ -95,15 +96,20 @@ class KioskoAPIController extends Controller{
             $sols = _viDDSs::query()->where("ciudadano_id", $user_id)->get();
             $solicitudes = [];
             foreach ($sols as $sol){
+                $resp = Denuncia_Dependencia_Servicio::query()
+                    ->where("denuncia_id", $sol->id)
+                    ->orderBy("id", "desc")
+                    ->first();
                 $solicitudes[] = (object)[
                     "unidad_administrativa" => $sol->dependencia_ultimo_estatus,
                     "servicio_ultimo_estatus" => $sol->servicio_ultimo_estatus,
                     "ultimo_estatus" => $sol->ultimo_estatus,
-                    "fecha_ultimo_estatus" => $sol->fecha_ultimo_estatus,
-                    "respuesta" => $sol->observaciones
+                    "fecha_ultimo_estatus" => Carbon::parse($resp->fecha_movimiento ?? now())->format('d-m-Y h:i:s'),
+                    "respuesta" => $resp->observaciones ?? '',
                     ];
             }
             $response["solicitudes"] = $solicitudes;
+            $response["msg"] = "OK";
         }else{
             $response["msg"] = "Usuario no encontrado";
         }
