@@ -4,6 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Catalogos\CentroLocalidad;
+use App\Models\Denuncias\_viDDSs;
+use App\Models\Denuncias\_viDepDenServEstatus;
+use App\Models\Denuncias\Denuncia;
 use App\Models\Mobiles\Denunciamobile;
 use App\Models\Mobiles\Serviciomobile;
 use App\Models\Users\UserMobile;
@@ -83,6 +86,29 @@ class KioskoAPIController extends Controller{
         $response["servicios"] = $this->ServiciosMonitoreados;
         $response["last_update"] = Carbon::now();
         return response()->json($response);
+    }
+
+    public function getSolicitudesCiudadano($user_id){
+        $response = ["status"=>0, "msg"=>""];
+        $user = User::find($user_id);
+        if ($user){
+            $sols = _viDDSs::query()->where("ciudadano_id", $user_id)->get();
+            $solicitudes = [];
+            foreach ($sols as $sol){
+                $solicitudes[] = (object)[
+                    "unidad_administrativa" => $sol->dependencia_ultimo_estatus,
+                    "servicio_ultimo_estatus" => $sol->servicio_ultimo_estatus,
+                    "ultimo_estatus" => $sol->ultimo_estatus,
+                    "fecha_ultimo_estatus" => $sol->fecha_ultimo_estatus,
+                    "respuesta" => $sol->observaciones
+                    ];
+            }
+            $response["solicitudes"] = $solicitudes;
+        }else{
+            $response["msg"] = "Usuario no encontrado";
+        }
+        return response()->json($response);
+
     }
 
 

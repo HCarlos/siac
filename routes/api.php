@@ -93,6 +93,7 @@ Route::group(['prefix' => 'v1b'], function () {
         Route::get('/localidades', [KioskoAPIController::class, 'getLocalidades']);
         Route::get('/servicios', [KioskoAPIController::class, 'getSergicios']);
         Route::post('solicitud-kiosko-insert', [DenunciaKioskoController::class, 'createItemKiosko']);
+        Route::get('/ciudadano/{user_id}', [KioskoAPIController::class, 'getSolicitudesCiudadano']);
     });
 
 });
