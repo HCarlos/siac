@@ -93,7 +93,10 @@ class KioskoAPIController extends Controller{
         $response = ["status"=>0, "msg"=>""];
         $user = User::find($user_id);
         if ($user){
-            $sols = _viDDSs::query()->where("ciudadano_id", $user_id)->get();
+            $sols = _viDDSs::query()
+                ->where("ciudadano_id", $user_id)
+                ->orderBy('id', 'desc')
+                ->get();
             $solicitudes = [];
             foreach ($sols as $sol){
                 $resp = Denuncia_Dependencia_Servicio::query()
