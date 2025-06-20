@@ -143,12 +143,14 @@ class DenunciaKioskoRequest extends FormRequest{
         $user = $this->getUser();
         $permission = 'guardar_expediente';
 
-        if ( !$user->isRole('Administrator|SysOp') ) {
-            if (!$user->isRole('ENLACE|DELEGADOS|COORDINACION_DE_DELEGADOS|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN') ||
-                !$user->hasAnyPermission(['all', $permission, 'modificar_expediente'])) {
-                throw new AuthorizationException('No tiene permisos para realizar esta acción');
-            }
-    }
+//        if ( !$user->isRole('Administrator|SysOp') ) {
+//            if (!$user->isRole(
+//                'ENLACE|DELEGADOS|COORDINACION_DE_DELEGADOS|USER_OPERATOR_SIAC|USER_OPERATOR_ADMIN'
+//                ) ||
+//                !$user->hasAnyPermission(['all', $permission, 'modificar_expediente'])) {
+//                throw new AuthorizationException('No tiene permisos para realizar esta acción');
+//            }
+//        }
 
         return $this->guardar($itemData);
     }
