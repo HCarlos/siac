@@ -39,7 +39,9 @@ class KioskoAPIController extends Controller{
         if (trim($data->username) !== "Admin" && trim($data->username) !== "SysOp") {
             $data->username = strtoupper(trim($data->username));
         }
+
         $user = User::where("curp",trim($data->username))->first();
+
         if ($user){
             $token = $user->createToken("devch53");
             $response["status"] = 1;

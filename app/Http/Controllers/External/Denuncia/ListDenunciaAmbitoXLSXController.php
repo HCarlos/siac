@@ -405,7 +405,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
 
 //            dd($item);
 
-            $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
+            $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y'). " @Ch50Dev";
             $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
 
             $Colonia = "";
@@ -464,7 +464,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 ->setCellValue('O' . $C, $item->origen ?? '')
                 ->setCellValue('P' . $C, $item->ultimo_estatus ?? '')
                 ->setCellValue('Q' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y') ?? '')
-                ->setCellValue('R' . $C, $item->observaciones ?? '')
+                ->setCellValue('R' . $C, strtoupper(trim($item->ultima_respuesta)) ?? '')
                 ->setCellValue('S' . $C, $this->getColorSemaforo($item)['status'])
                 ->setCellValue('T' . $C, $item->dias_atendida ?? '')
                 ->setCellValue('U' . $C, $item->dias_rechazada ?? '')
