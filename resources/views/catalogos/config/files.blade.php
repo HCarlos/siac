@@ -30,6 +30,16 @@
                 @endforeach
             </ul>
 
+            <hr/>
+
+            <p class="text-success">Descarga de datos:</p>
+            <ul>
+                <li>
+                    <a href="{{ route('viddss.descargar_csv') }}" target="_blank">Descarga de datos de último estatus</a>
+                </li>
+            </ul>
+ú
+
         </div> <!-- end col-->
 
         <div class="col-md-8">
@@ -71,4 +81,18 @@
     @endslot
     @endcomponent
 
+@endsection
+
+@section('script')
+<script type="javascript">
+    document.getElementById('btn-print-viddss').addEventListener('click', function() {
+    // Redirige el navegador a la ruta de descarga.
+    // Esto forzará la descarga del archivo.
+    window.location.href = '{{ route('viddss.descargar_csv') }}';
+
+    // Si necesitas pasar filtros o parámetros, puedes añadirlos así:
+    // const filtro = 'algun_valor'; // O toma el valor de un input
+    // window.location.href = `{{ route('viddss.descargar_csv') }}?filtro=${filtro}`;
+    });
+</script>
 @endsection

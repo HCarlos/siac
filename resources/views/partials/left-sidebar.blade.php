@@ -521,7 +521,7 @@
                             <li>
                                 <a href="{{route('archivosConfig')}}">
                                     <i class="fas fa-file-excel"></i>
-                                    <span>Formatos Excel</span>
+                                    <span>Formatos y datos abiertos</span>
                                 </a>
                             </li>
                         @endif

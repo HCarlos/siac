@@ -437,14 +437,12 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|test_admin|USER_OPE
     // EXTERNAL FILES
     Route::get('archivosConfig','Storage\StorageExternalFilesController@archivos_config')->name('archivosConfig');
     Route::post('subirArchivoBase/', 'Storage\StorageExternalFilesController@subirArchivoBase')->name('subirArchivoBase/');
-
     Route::post('quitarArchivoBase', 'Storage\StorageExternalFilesController@quitarArchivoBase')->name('quitarArchivoBase');
-
     Route::post('showFileListUserExcel1A','External\User\ListUserXLSXController@getListUserXLSX')->name('showFileListUserExcel1A');
-
     Route::post('getUserByRoleToXLSX','External\User\ListUserXLSXController@getUserByRoleToXLSX')->name('getUserByRoleToXLSX');
-
     Route::post('getModelListXlS/{model}','External\ListModelXLSXController@getListModelXLSX')->name('getModelListXlS');
+//    Route::get('/descargar-viddss-csv', [ViddssController::class, 'descargarCsv'])->name('viddss.descargar_csv');
+    Route::get('/descargar-viddss-csv','Storage\StorageExternalFilesController@descargarCsv01')->name('viddss.descargar_csv');
 
     // Catálogo de Denuncias
     Route::get('listDenuncias/', 'Denuncia\DenunciaController@index')->name('listDenuncias');
