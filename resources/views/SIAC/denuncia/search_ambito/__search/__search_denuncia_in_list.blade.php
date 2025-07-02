@@ -172,11 +172,12 @@
     </div>
     <div class="col-md-6 ">
         <div class="custom-control custom-checkbox mt-1 float-left">
+            @if( Auth::user()->isPermission('Ver solicitudes locales|all') )
             <input type="checkbox" class="custom-control-input" id="solicitudesLocales" name="solicitudesLocales">
             <label class="custom-control-label" for="solicitudesLocales">Solicitudes Locales</label>
             <input type="hidden" name="latitud" id="latitud" value="17.998887170641" >
             <input type="hidden" name="longitud" id="longitud" value="-92.944743526745" >
-
+            @endif
         </div>
     </div>
 
