@@ -35,6 +35,7 @@ return [
         'fmt_lista_denuncias_sas_sm'  => 'fmt_lista_denuncias_sas_sm.xlsx',
         'fmt_lista_respuestas'        => 'fmt_lista_respuestas.xlsx',
         'icono_video'                 => 'icon-video.png',
+        'fmt_graficos_diarios'        => 'fmt_graficos_diarios.xlsx',
     ],
 
     'menu_archivos'=>[

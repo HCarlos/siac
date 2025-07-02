@@ -150,8 +150,8 @@
 
 <hr>
 <div class="form-row mb-1">
-    <label for = "items_for_query" class="col-md-2 col-form-label">{{ $ambito_dependencia }}.- Regs. consulta </label>
-    <div class="col-md-10">
+    <label for = "items_for_query" class="col-md-2 col-form-label">Regs. consulta </label>
+    <div class="col-md-4">
         <select id="items_for_query" name="items_for_query" class="form-control" size="1">
             <option value="250" selected >250</option>
             <option value="500" >500</option>
@@ -170,6 +170,16 @@
         </select>
         <small class="text-muted">La cantidad de registros, es directamente proporcional al tiempo que tarda la consulta.</small>
     </div>
+    <div class="col-md-6 ">
+        <div class="custom-control custom-checkbox mt-1 float-left">
+            <input type="checkbox" class="custom-control-input" id="solicitudesLocales" name="solicitudesLocales">
+            <label class="custom-control-label" for="solicitudesLocales">Solicitudes Locales</label>
+            <input type="hidden" name="latitud" id="latitud" value="17.998887170641" >
+            <input type="hidden" name="longitud" id="longitud" value="-92.944743526745" >
+
+        </div>
+    </div>
+
 </div>
 
 <input type="hidden" name="ambito_dependencia" id="ambito_dependencia" value="{{ $ambito_dependencia }}" >

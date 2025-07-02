@@ -18,7 +18,12 @@ class FiltersRules
 {
 
     public function filterRulesDenuncia(Request $request){
-        $data = $request->all(['ambito_estatus','ambito_dependencia','curp','ciudadano','id','desde','hasta','prioridad_id','dependencia_id','servicio_id','estatus_id','creadopor_id','incluirFecha','conRespuesta','clave_identificadora','uuid','incluirFechaMovto','origen_id','ciudadano_id','centro_localidad_id']);
+        $data = $request->all(
+            ['ambito_estatus','ambito_dependencia','curp','ciudadano','id','desde','hasta','prioridad_id','dependencia_id',
+                'servicio_id','estatus_id','creadopor_id','incluirFecha','conRespuesta','clave_identificadora','uuid',
+                'incluirFechaMovto','origen_id','ciudadano_id','centro_localidad_id',
+                'solicitudesLocales','latitud','longitud'
+            ]);
         $data['status_denuncia']      = 1;
         $data['ambito_dependencia']   = $data['ambito_dependencia']   == null ? "" : $data['ambito_dependencia'];
         $data['ambito_estatus']       = $data['ambito_estatus']       == null ? "" : $data['ambito_estatus'];
@@ -43,6 +48,10 @@ class FiltersRules
         $data['estatus_id']           = $data['estatus_id']           == "0" ? "" : $data['estatus_id'];
         $data['creadopor_id']         = $data['creadopor_id']         == "0" ? "" : $data['creadopor_id'];
 
+        $data['solicitudesLocales']   = $data['solicitudesLocales']   == null ? "" : $data['solicitudesLocales'];
+        $data['latitud']              = $data['latitud']              == null ? "" : $data['latitud'];
+        $data['longitud']             = $data['longitud']             == null ? "" : $data['longitud'];
+
         $filters = [
             'status_denuncia'    => $data['status_denuncia'],
             'ambito_dependencia' => $data['ambito_dependencia'],
@@ -56,6 +65,12 @@ class FiltersRules
         }
         if ($data['incluirFechaMovto'] != null){
             $filters = array_merge($filters, ['fecha_movimiento' => $data['desde'].'|'.$data['hasta'].'|'.$data['estatus_id'].'|'.$data['dependencia_id'] ] );
+        }
+
+        if ($data['solicitudesLocales'] != null){
+            $filters = array_merge($filters, ['solicitudesLocales' => $data['solicitudesLocales'].'|'.$data['latitud'].'|'.$data['longitud']]);
+            $filters = array_merge($filters, ['latitud' => $data['latitud']]);
+            $filters = array_merge($filters, ['longitud' => $data['longitud']]);
         }
 
         if ($data['dependencia_id'] === ""){

@@ -16,10 +16,10 @@
             @foreach(config("atemun.menu_archivos_sm") as $key=>$value )
                 <a class="dropdown-item btnGetItems" href="{{ route($showProcess1)}}-{{$value}}-{{++$indice}}">{{$key}}</a>
             @endforeach
-             @if( Auth::user()->isPermission('Ver solicitudes locales|all') )
-                <a class="dropdown-item disabled text-muted "></a>
-                <a class="dropdown-item " href="{{route('listDenunciasLocales')}}" >Solicitudes locales</a>
-            @endcan
+{{--             @if( Auth::user()->isPermission('Ver solicitudes locales|all') )--}}
+{{--                <a class="dropdown-item disabled text-muted "></a>--}}
+{{--                <a class="dropdown-item " href="{{route('listDenunciasLocales')}}" >Solicitudes locales</a>--}}
+{{--            @endcan--}}
         </div>
     @endisset
     @isset($showModalSearchDenuncia)

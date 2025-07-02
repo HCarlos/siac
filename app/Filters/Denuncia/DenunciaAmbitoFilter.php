@@ -44,6 +44,9 @@ class DenunciaAmbitoFilter extends QueryFilter
             'cerrado'                => '',
             'clave_identificadora'   => '',
             'uuid'                   => '',
+            'latitud'                => '',
+            'longitud'               => '',
+            'solicitudesLocales'     => '',
         ];
     }
 
@@ -312,5 +315,19 @@ class DenunciaAmbitoFilter extends QueryFilter
     function IsEnlace(){
         return Session::get('IsEnlace');
     }
+
+    public function solicitudesLocales($query, $search){
+        if (is_null($search) || empty ($search) || trim($search) == "0") {return $query;}
+
+        $cad = explode('|',$search);
+        $latitud = $cad[1];
+        $longitud = $cad[2];
+        return $query
+            ->where('latitud', $latitud)
+            ->where('longitud', $longitud);
+
+    }
+
+
 
 }

@@ -25,8 +25,7 @@ class StorageDenunciaController extends Controller{
         $this->F = new FuncionesController();
     }
 
-    public function subirArchivoDenuncia(Request $request, $DenunciaObject)
-    {
+    public function subirArchivoDenuncia(Request $request, $DenunciaObject){
         $ip     = $_SERVER['REMOTE_ADDR'];
         $host   = gethostbyaddr($_SERVER['REMOTE_ADDR']);
         $idemp  = 1;
@@ -93,8 +92,6 @@ class StorageDenunciaController extends Controller{
                 $this->F->fitImage($file, $thumbnail, 128, 128, true, $this->disk, "DENUNCIA_ROOT");
                 $this->F->fitImage($file, $fileName2, 300, 300, true, $this->disk, "DENUNCIA_ROOT");
             }
-//            $this->F->fitImage( $file,$thumbnail,128,128,true,$this->disk,"DENUNCIA_ROOT");
-
         }
         return true;
     }

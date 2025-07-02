@@ -33,12 +33,11 @@
             <hr/>
 
             <p class="text-success">Descarga de datos:</p>
-            <ul>
-                <li>
+            <ul class="bg-muted">
+                <li class="list list-activity">
                     <a href="{{ route('viddss.descargar_csv') }}" target="_blank">Descarga de datos de último estatus</a>
                 </li>
             </ul>
-ú
 
         </div> <!-- end col-->
 
