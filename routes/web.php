@@ -492,6 +492,7 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|test_admin|USER_OPE
     Route::get('getUbiAmbito/{IdUbi}', 'Denuncia\DenunciaAmbitoController@getUbi')->name('getUbiAmbito');
     Route::get('showModalSearchDenunciaAmbito/{ambito_dependencia}', 'Denuncia\DenunciaAmbitoController@showModalSearchDenuncia')->name('showModalSearchDenunciaAmbito');
     Route::match(['get','put','post'],'findDataInDenunciaAmbito/', 'Denuncia\DenunciaAmbitoController@findDataInDenuncia')->name('findDataInDenunciaAmbito');
+    Route::get('listDenunciasLocales/', 'Denuncia\DenunciaAmbitoController@indexLocales')->name('listDenunciasLocales');
 
     Route::post('showDataListDenunciaAmbitoExcel1A/', 'External\Denuncia\ListDenunciaAmbitoXLSXController@getListDenunciaAmbitoXLSX')->name('showDataListDenunciaAmbitoExcel1A');
     Route::post('exportDataFilterMap/', 'External\Denuncia\ListDenunciaAmbitoXLSXController@exportDataFilterMap')->name('exportDataFilterMap');

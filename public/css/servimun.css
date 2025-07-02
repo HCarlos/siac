@@ -298,3 +298,9 @@ div.help-box2  p  {
         opacity: 0; /* Oculto */
     }
 }
+
+.dropdown-item.disabled {
+    pointer-events: none;   /* Desactiva clics */
+    opacity: 0.6;           /* Reduce visibilidad */
+    cursor: not-allowed;    /* Cambia cursor */
+}

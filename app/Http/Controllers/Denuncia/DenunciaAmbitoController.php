@@ -57,8 +57,6 @@ class DenunciaAmbitoController extends Controller{
         ini_set('max_execution_time', 300);
         $search = $request->only(['search']);
 
-//        dd($search);
-
         $filters['filterdata'] = $search;
 
         if (Session::has('ambito_dependencia')){
@@ -127,6 +125,7 @@ class DenunciaAmbitoController extends Controller{
             ]
         );
     }
+
 
     protected function index1(Request $request){
         return $this->index($request, 1,0);
@@ -1083,6 +1082,76 @@ class DenunciaAmbitoController extends Controller{
         $viDen->vistaDenuncia($denuncia_id);
         return \redirect()->route('listDenunciasAmbito'.$this->ambito_dependencia);
     }
+
+    protected function indexLocales(Request $request, $ambito_dependencia = 2, $ambito_estatus = 16){
+        ini_set('max_execution_time', 300);
+
+        if (Session::has('ambito_dependencia')){
+            Session::forget('ambito_dependencia');
+            Session::forget('ambito_estatus');
+            Session::forget('is_pagination');
+            Session::put('ambito_dependencia', $ambito_dependencia);
+            Session::put('ambito_estatus', $ambito_estatus);
+            Session::put('is_pagination', true);
+        }
+
+        $this->ambito_dependencia = $ambito_dependencia;
+        $this->ambito_estatus = $ambito_estatus;
+
+            $items = _viDepDenServEstatus::query()
+                ->select(FuncionesController::itemSelectDenuncias())
+                ->where('latitud',17.998887170641)
+                ->where('longitud',-92.944743526745)
+                ->orderByDesc('id')
+                ->paginate(1000);
+
+
+        $request->session()->put('items', $items);
+
+        session(['msg' => '']);
+
+        $user = Auth::User();
+
+        return view('SIAC.denuncia.denuncia_ambito.denuncia_list',
+            [
+                'items'                               => $items,
+                'titulo_catalogo'                     => "Catálogo de " . ucwords($this->tableName),
+                'titulo_header'                       => $this->ambito_dependencia === 1 ? "Apoyos Sociales" : "Servicios Municipales",
+                'user'                                => $user,
+                'showListDenuciasOperator'            => 'denuncia_operador_list',
+                'searchInListDenuncia'                => 'listDenunciasAmbito'.$this->ambito_dependencia,
+                'newWindow'                           => true,
+                'tableName'                           => $this->tableName,
+                'showEdit'                            => 'editDenunciaAmbito',
+                'showAddUser'                         => 'addUserDenunciaAmbito',
+                'showEditDenunciaDependenciaServicio' => $this->ambito_dependencia === 2 ? 'listDenunciaDependenciaServicioAmbito' : 'listDenunciaDependenciaServicio',
+                'showProcess1'                        => $this->ambito_dependencia === 1 ? 'showDataListDenunciaExcel1A' : 'showDataListDenunciaAmbitoExcel1A',
+                'newItem'                             => 'newDenunciaAmbito/'.$this->ambito_dependencia.'/'.$this->ambito_estatus,
+                'removeItem'                          => 'removeDenunciaAmbito',
+                'respuestasDenunciaItem'              => 'listRespuestas',
+                'respuestasDenunciaCiudadanaItem'     => 'listRespuestasCiudadanasAmbito',
+                'imagenesDenunciaItem'                => 'listImagenes',
+                'searchAdressDenuncia'                => 'listDenunciasAmbito'.$this->ambito_dependencia,
+                'showModalSearchDenuncia'             => 'showModalSearchDenunciaAmbito/'.$this->ambito_dependencia,
+                'findDataInDenunciaAmbito'            => 'findDataInDenunciaAmbito',
+                'imprimirDenuncia'                    => "imprimir_denuncia_archivo/",
+                'IsEnlace'                            => session('IsEnlace'),
+                'DependenciaArray'                    => session('DependenciaArray'),
+                'is_pagination'                       => session('is_pagination'),
+                'ambito'                              => null, //FuncionesController::arrAmbitosSM(),
+                'prefijo_toolbar'                     => $this->ambito_dependencia === 1 ? 'as' : 'sm',
+            ]
+        );
+    }
+
+
+
+
+
+
+
+
+
 
 
 
