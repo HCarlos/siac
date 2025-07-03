@@ -5,6 +5,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Classes\Dashboard\DashboardClass;
 use App\Classes\Denuncia\ActualizaEstadisticasARO;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Funciones\FuncionesController;
@@ -13,6 +14,7 @@ use App\Models\Catalogos\Servicio;
 use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\_viServicios;
 use App\Models\Denuncias\Denuncia;
+use App\User;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
@@ -30,11 +32,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
 
         $data = $request->all();
 
-//        $arrJson = [];
-
         $f = new FuncionesController();
-
-//        $data['filter'] = 'anio';
 
         if ($data === []){
             $start_date = Carbon::now();
@@ -72,8 +70,6 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
         $data['start_date'] = $start_date;
         $data['end_date'] = $end_date;
         $data['filter'] = $filter;
-
-//        dd($data);
 
         $file_out = "file_servicios_principales_".$start_date.'_'.$end_date.'.json';
         $isExistFile = false; //Storage::disk('public')->exists($file_out);
@@ -242,6 +238,22 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
             $arrG = static::getGeoDenuncias($start_date,$end_date,$ServiciosPrincipales);
             $initArr = true;
 
+            $ArrSolicitudesInternasLabel = ["SAS", "LIMPIA"];
+            $ArrSolicitudesInternasValue = [508833, 519442];
+
+            $arrCoorDelegados = User::whereHas('roles', function ($query) {
+                $query->whereIn('name', ['DELEGADOS', 'COORDINACION_DE_DELEGADOS']);
+            })
+                ->pluck('id')
+                ->toArray();
+
+
+            //DELEGADOS
+//COORDINACION_DE_DELEGADOS
+
+
+//            dd( $arrG[0] );
+
             foreach ($arrG as $g) {
                 $fme1 = Carbon::parse($g->fecha_dias_ejecucion);
                 $fme2 = Carbon::parse($g->fecha_dias_maximos_ejecucion);
@@ -273,36 +285,10 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
 
                 $status = "white";
                 $dias_vencidos = 0;
-//                switch ( $g->ue_id ) {
-//                    case 16: // Recibida
-//                    case 19:
-//                            $fex = Carbon::parse(now())->diffInDays(Carbon::parse($fme2),false);
-//                            if ($fex >= 0) {
-//                                $status = "amarillo";
-//                            }else{
-//                                $status = "rojo";
-//                                $dias_vencidos = abs($fex);
-//                            }
-//                            break;
-//                    case 17:
-//                    case 20:
-//                    case 21:
-//                    case 22:
-//                            $status = "verde";
-//                            break;
-//                    default:
-//                            $status = "amarillo";
-//                            break;
-//                }
-
-                if ($g->id == 104096){
-//                    dd($g->fecha_dias_maximos_ejecucion);
-                }
 
                 $semaforo = ActualizaEstadisticasARO::semaforo_ultimo_estatus_off($g->ue_id, new DateTime($g->fecha_dias_maximos_ejecucion), new DateTime($g->fecha_ultimo_estatus));
                 $status = $semaforo['status'];
                 $dias_vencidos = $semaforo['dias_vencidos'];
-
 
                 $Colonia_Id    = 0;
                 $Colonia       = "";
@@ -313,16 +299,13 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 $CenLoc        = $g->centro_localidad_id;
                 if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0){
                     $Loc            = CentroLocalidad::find($CenLoc);
-//                    dd($Loc);
-                    $Colonia_Id    = $Loc->colonia_id;
+                    $Colonia_Id     = $Loc->colonia_id;
                     $Colonia        = $Loc->ItemColonia();
-                    $Delegacion_Id = $Loc->delegacion_id;
+                    $Delegacion_Id  = $Loc->delegacion_id;
                     $Delegacion     = $Loc->ItemDelegacion();
                     $ColDel         = $Loc->ItemColoniaDelegacion();
                     $ColDelId       = $Loc->id;
                 }
-
-
 
                 $arrGeos[] = (object)[
                     "denuncia_id"=> $g->id,
@@ -376,7 +359,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
 
             }
 
-//            dd($arrDepServ);
+
 
             // INICIA EL MODULO DE OTROS DATOS
             $arrGeos = collect($arrGeos);
@@ -411,7 +394,6 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 ->orderBy('colonia', 'asc')
                 ->get();
 
-//            $arrLocDel[] = (object)['id' => 0,"colonia_id" => 0,"colonia"=>"","delegacion_id" => 0,"delegacion"=>"","colonia_delegacion"=>"Seleccione una Colonia"];
             $arrLocDel = array();
             foreach ($localidades_centro as $item) {
                 $arrLocDel[] = (object)[
@@ -442,7 +424,6 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 ];
             }
 
-
             // SE CONSTRUYE EL JSON GENERAL
             $arrJson = [
                 (object)["estatus" => $arrEstatus],
@@ -456,8 +437,6 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 (object)["filtro_delegaciones" => $arrDel],
             ];
 
-//           dd($arrJson);
-
             $jsonData = json_encode($arrJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
             Storage::disk('public')->put($file_out, $jsonData);
         }
@@ -465,10 +444,6 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
         $f = new FuncionesController();
 
         $menu = $f->menuDashBoard(0);
-
-//        dd( Storage::disk('public')->url($file_out) );
-
-//        'rango_de_consulta' => $f->fechaEspanol($start_date).' - '.$f->fechaEspanol($end_date),
 
         return view('dashboard.static.dashboard_static_servicios_principales',
             [
@@ -562,17 +537,12 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
                 'fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','ultimo_estatus',
                 'sue_id','servicio_ultimo_estatus','ue_id','dependencia_id','uuid',
-                'denuncia','centro_localidad_id'
+                'denuncia','centro_localidad_id','ciudadano_id'
             )
             ->whereIn('sue_id', $ServiciosPrincipales)
             ->where('ambito_dependencia', 2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->get();
-
-//        ->where('id',118952)
-
-
-//        dd($doc);
 
         return $doc;
     }

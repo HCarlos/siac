@@ -226,6 +226,9 @@
                             <button type="button" id="frmFilterDataExport" class="btn btn-primary btn-export-excel ms-auto">
                                 <i class="fas fa-file-excel text-white"></i> Exportar
                             </button>
+                            <button type="button" id="frmReporteDiario" class="btn btn-info btn-reporte-diario ms-auto">
+                                <i class="fas fa-file-fragment text-white"></i> Reporte Diario
+                            </button>
                         </form>
                     </div>
 
@@ -437,6 +440,7 @@
             });
             inputDenuncias.value = denuncias_id.join(',');
             frmFilterDataExport.disabled = false;
+            frmReporteDiario.disabled = false;
 
             const selectZona = document.getElementById('zona');
             const selectServicios = document.getElementById('servicios');
@@ -514,6 +518,39 @@
                 temp.action='/exportDataFilterMap2';
                 temp.method="POST";
                 temp.target="_blank";
+                temp.style.display="none";
+                for(var x in PARAMS) {
+                    var opt=document.createElement("textarea");
+                    opt.name=x;
+                    opt.value=PARAMS[x];
+                    temp.appendChild(opt);
+                }
+                document.body.appendChild(temp);
+                temp.submit();
+                return temp;
+
+            });
+
+
+            const btnReporteDiario = document.getElementById('frmReporteDiario');
+            btnReporteDiario.addEventListener('click', function () {
+                // Deshabilita el botón si es necesario
+                btnReporteDiario.disabled = true;
+
+                // alert(inputDenuncias);
+
+                var PARAMS = {
+                    search : "",
+                    start_date : "{{ $start_date }}",
+                    end_date : "{{ $end_date }}",
+                    _token : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                };
+
+                // console.log(PARAMS);
+
+                var temp=document.createElement("form");
+                temp.action='reporteDiarioExcel';
+                temp.method="POST";
                 temp.style.display="none";
                 for(var x in PARAMS) {
                     var opt=document.createElement("textarea");
@@ -620,9 +657,11 @@
 
         if (dataSetLocations.length == 0) {
             frmFilterDataExport.disabled = true;
+            frmReporteDiario.disabled = true;
             alert("No hay datos para mostrar");
         }else{
             frmFilterDataExport.disabled = false;
+            frmReporteDiario.disabled = false;
         }
 
     }

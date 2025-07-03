@@ -37,7 +37,7 @@ trait DenunciaTrait
     }
 
 
-    public function getUltimoEstatusAttribute(){
+    public function getUltimosEstatusAttribute(){
         if ( $this->ultimo_estatu_denuncia_dependencia_servicio->count() > 0){
             try {
                 if (Auth::user()->isRole('ENLACE')) {

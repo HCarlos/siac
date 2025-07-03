@@ -500,6 +500,8 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|test_admin|USER_OPE
     Route::post('exportDataFilterMap3/', 'External\Denuncia\ListDenunciaAmbitoXLSXController@exportDataFilterMap3')->name('exportDataFilterMap3');
     Route::post('showDataListDenunciaAmbitoRespuestaExcel1A/', 'External\Denuncia\ListDenunciaAmbitoXLSXController@showDataListDenunciaAmbitoRespuestaExcel1A')->name('showDataListDenunciaAmbitoRespuestaExcel1A');
 
+    Route::post('reporteDiarioExcel', 'External\Denuncia\ReportesExcelAutollenablesController@reporteDiarioExcel')->name('reporteDiarioExcel');
+
     Route::get('cerrarDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@closeItem')->name('cerrarDenunciaAmbito');
     Route::get('firmarDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@signItem')->name('firmarDenunciaAmbito');
 
