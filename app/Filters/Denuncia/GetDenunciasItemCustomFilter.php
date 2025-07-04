@@ -53,7 +53,6 @@ class GetDenunciasItemCustomFilter extends QueryFilter{
 
         $filters['status_denuncia'] = 1;
         $filters['ambito_dependencia'] = 99;
-//        $filters['ambito_dependencia'] = FuncionesController::arrAmbitosViejitos();
         session(['IsEnlace' => $IsEnlace]);
         session(['IsAdminArchivo' => $IsAdminArchivo]);
         session(['DependenciaArray' => $DependenciaArray]);

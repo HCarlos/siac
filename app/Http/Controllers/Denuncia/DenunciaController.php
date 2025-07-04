@@ -17,7 +17,7 @@ use App\Models\Catalogos\Estatu;
 use App\Models\Catalogos\Origen;
 use App\Models\Catalogos\Prioridad;
 use App\Models\Catalogos\Servicio;
-use App\Models\Denuncias\_viDDSs;
+use App\Models\Denuncias\_viDDSS_Viejitas;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use App\Models\Denuncias\Firma;
@@ -59,14 +59,14 @@ class DenunciaController extends Controller{
 
 
         if ( $search !== [] && isEmpty($search) !== null && $search !== "" ) {
-            $items = _viDDSs::query()
+            $items = _viDDSS_Viejitas::query()
                 ->select(FuncionesController::itemSelectDenunciasV1())
                 ->GetDenunciasItemCustomFilter($filters)
                 ->orderByDesc('id')
                 ->get();
             session(['is_pagination' => false]);
         }else{
-            $items = _viDDSs::query()
+            $items = _viDDSS_Viejitas::query()
                 ->select(FuncionesController::itemSelectDenunciasV1())
                 ->GetDenunciasItemCustomFilter($filters)
                 ->orderByDesc('id')
@@ -467,7 +467,7 @@ class DenunciaController extends Controller{
             $this->max_item_for_query = session::get('items_for_query');
         }
 
-        $items = _viDDSs::query()->select(FuncionesController::itemSelectDenunciasV1())
+        $items = _viDDSS_Viejitas::query()->select(FuncionesController::itemSelectDenunciasV1())
             ->filterBy($queryFilters)
             ->orderByDesc('id')
             ->paginate($this->max_item_for_query);

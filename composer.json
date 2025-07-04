@@ -28,7 +28,7 @@
         "opsway/doctrine-dbal-postgresql": "^0.8.1",
         "php-parallel-lint/php-console-color": "^0.3",
         "php-parallel-lint/php-console-highlighter": "^0.5",
-        "phpoffice/phpspreadsheet": "^1.29.5",
+        "phpoffice/phpspreadsheet": "^1.29.10",
         "picqer/php-barcode-generator": "^2.4.0",
         "predis/predis": "^2.3.0",
         "rapidapi/rapidapi-connect": "^0.0.2",
