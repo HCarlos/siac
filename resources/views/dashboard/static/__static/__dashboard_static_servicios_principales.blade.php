@@ -551,6 +551,7 @@
                 var temp=document.createElement("form");
                 temp.action='reporteDiarioExcel';
                 temp.method="POST";
+                temp.target="_blank";
                 temp.style.display="none";
                 for(var x in PARAMS) {
                     var opt=document.createElement("textarea");

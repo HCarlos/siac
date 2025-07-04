@@ -51,22 +51,22 @@ class DashboardClass{
 //        dd($this->arrCoorDR);
 
         $geo =  DB::table("_viddss")
-            ->select('sue_id','ue_id','ciudadano_id','fecha_ultimo_estatus')
+            ->select('sue_id','ue_id','ciudadano_id','fecha_ultimo_estatus','creadopor_id','fecha_ingreso')
             ->whereIn('sue_id', $this->ServiciosPrincipales)
             ->where('ambito_dependencia', 2)
-            ->whereBetween('fecha_ingreso',[$end_date." 00:00:00",$end_date." 23:59:59"])
+            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->get();
 
         foreach($geo as $g){
-            $this->setAsigndata($g->sue_id,$g->ciudadano_id,$g->ue_id,$end_date,$g->fecha_ultimo_estatus);
+            $this->setAsigndata($g->sue_id,$g->ciudadano_id,$g->ue_id,$end_date,$g->fecha_ultimo_estatus, $g->creadopor_id, $g->fecha_ingreso);
         }
         return $this->vectorServicios;
     }
 
-    private function setAsigndata($sue_id, $ciudadano_id, $ue_id, $end_date,$fecha_ultimo_estatus){
+    private function setAsigndata($sue_id, $ciudadano_id, $ue_id, $end_date,$fecha_ultimo_estatus, $creadopor_id,$fecha_ingreso){
 
         $fecha_ultimo_estatus = Carbon::parse($fecha_ultimo_estatus)->format('Y-m-d');
-
+        $fecha_ingreso = Carbon::parse($fecha_ingreso)->format('Y-m-d');
         // Encontrar el índice usando el método search
         $index = $this->vectorServicios->search(function ($item) use ($sue_id) {
             return $item['sue_id'] == $sue_id;
@@ -76,20 +76,22 @@ class DashboardClass{
 
         // Obtener referencia mutable al servicio
         $servicio = $this->vectorServicios[$index];
+//        $this->arrCoorDR = collect([10370,362040,490266,465595,492201,238292,235944,519004,509898]);
 
-        if ($ue_id === 17 && $end_date === $fecha_ultimo_estatus) {
+        if ($ue_id === 17 && $fecha_ingreso === $fecha_ultimo_estatus) {
             if ($this->ArrSolicitudesIRValue->contains($ciudadano_id)) {
                 $servicio['IA']++;
-            } elseif ($this->arrCoorDR->contains($ciudadano_id)) {
+            } elseif ($this->arrCoorDR->contains($creadopor_id)) {
                 $servicio['DA']++;
             } else {
                 $servicio['CA']++;
             }
             $servicio['TA']++;
-        } else {
+        }
+        if ($ue_id !== 17 && $fecha_ingreso === $fecha_ultimo_estatus) {
             if ($this->ArrSolicitudesIRValue->contains($ciudadano_id)) {
                 $servicio['IR']++;
-            } elseif ($this->arrCoorDR->contains($ciudadano_id)) {
+            } elseif ($this->arrCoorDR->contains($creadopor_id)) {
                 $servicio['DR']++;
             } else {
                 $servicio['CR']++;
@@ -97,7 +99,6 @@ class DashboardClass{
             $servicio['TR']++;
         }
 
-        // Actualizar directamente en la colección
         $this->vectorServicios[$index] = $servicio;
 
         return true;
