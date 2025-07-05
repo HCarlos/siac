@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'RapidApi\\' => array($vendorDir . '/rapidapi/rapidapi-connect/src'),
+    'PHPExcel' => array($vendorDir . '/phpoffice/phpexcel/Classes'),
     'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
     'Evenement' => array($vendorDir . '/evenement/evenement/src'),
 );

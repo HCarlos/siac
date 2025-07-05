@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9613b10ffe41529838b76f1f47de7ff4",
+    "content-hash": "47fa787820837032bb437298a57a7d8f",
     "packages": [
         {
             "name": "brick/math",
@@ -4446,6 +4446,73 @@
                 "source": "https://github.com/php-parallel-lint/PHP-Console-Highlighter/tree/master"
             },
             "time": "2020-05-13T07:37:49+00:00"
+        },
+        {
+            "name": "phpoffice/phpexcel",
+            "version": "1.8.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPOffice/PHPExcel.git",
+                "reference": "1441011fb7ecdd8cc689878f54f8b58a6805f870"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/1441011fb7ecdd8cc689878f54f8b58a6805f870",
+                "reference": "1441011fb7ecdd8cc689878f54f8b58a6805f870",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "ext-xml": "*",
+                "ext-xmlwriter": "*",
+                "php": "^5.2|^7.0"
+            },
+            "require-dev": {
+                "squizlabs/php_codesniffer": "2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PHPExcel": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "Maarten Balliauw",
+                    "homepage": "http://blog.maartenballiauw.be"
+                },
+                {
+                    "name": "Erik Tilt"
+                },
+                {
+                    "name": "Franck Lefevre",
+                    "homepage": "http://rootslabs.net"
+                },
+                {
+                    "name": "Mark Baker",
+                    "homepage": "http://markbakeruk.net"
+                }
+            ],
+            "description": "PHPExcel - OpenXML - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
+            "homepage": "https://github.com/PHPOffice/PHPExcel",
+            "keywords": [
+                "OpenXML",
+                "excel",
+                "php",
+                "spreadsheet",
+                "xls",
+                "xlsx"
+            ],
+            "support": {
+                "issues": "https://github.com/PHPOffice/PHPExcel/issues",
+                "source": "https://github.com/PHPOffice/PHPExcel/tree/master"
+            },
+            "abandoned": "phpoffice/phpspreadsheet",
+            "time": "2018-11-22T23:07:24+00:00"
         },
         {
             "name": "phpoffice/phpspreadsheet",
@@ -9518,6 +9585,101 @@
             "time": "2024-12-21T16:25:41+00:00"
         },
         {
+            "name": "tinybutstrong/opentbs",
+            "version": "v1.12.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Skrol29/opentbs.git",
+                "reference": "7525dcfd9d9afb10e46b2afe58c20bedb544afe1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Skrol29/opentbs/zipball/7525dcfd9d9afb10e46b2afe58c20bedb544afe1",
+                "reference": "7525dcfd9d9afb10e46b2afe58c20bedb544afe1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.0",
+                "tinybutstrong/tinybutstrong": ">=3.15.1"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "tbs_plugin_opentbs.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Skrol29",
+                    "email": "skrol29dev@gmail.com"
+                }
+            ],
+            "description": "With OpenTBS you can merge LibreOffice, OpenOffice and Ms Office documents with PHP using the TinyButStrong template engine. Simple use LibreOffice, OpenOffice or Ms Office to edit your templates : DOCX, XLSX, PPTX, ODT, OSD, ODP and other formats.",
+            "homepage": "http://www.tinybutstrong.com/opentbs.php",
+            "keywords": [
+                "docx",
+                "odp",
+                "ods",
+                "odt",
+                "pptx",
+                "templating",
+                "xlsx"
+            ],
+            "support": {
+                "issues": "https://github.com/Skrol29/opentbs/issues",
+                "source": "https://github.com/Skrol29/opentbs/tree/v1.12.1"
+            },
+            "time": "2024-03-07T02:19:17+00:00"
+        },
+        {
+            "name": "tinybutstrong/tinybutstrong",
+            "version": "v3.15.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Skrol29/tinybutstrong.git",
+                "reference": "c4344b3599570cdf283692b2ad0d4682dc85ae52"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Skrol29/tinybutstrong/zipball/c4344b3599570cdf283692b2ad0d4682dc85ae52",
+                "reference": "c4344b3599570cdf283692b2ad0d4682dc85ae52",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "tbs_class.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Skrol29",
+                    "email": "skrol29dev@gmail.com"
+                }
+            ],
+            "description": "Template Engine for Pro and Beginners ",
+            "homepage": "http://www.tinybutstrong.com",
+            "keywords": [
+                "templating"
+            ],
+            "support": {
+                "issues": "https://github.com/Skrol29/tinybutstrong/issues",
+                "source": "https://github.com/Skrol29/tinybutstrong/tree/v3.15.2"
+            },
+            "time": "2024-05-08T01:00:58+00:00"
+        },
+        {
             "name": "twilio/sdk",
             "version": "8.6.4",
             "source": {
@@ -11602,7 +11764,9 @@
         "php": "^7.4",
         "ext-curl": "*",
         "ext-json": "*",
-        "ext-openssl": "*"
+        "ext-openssl": "*",
+        "ext-dom": "*",
+        "ext-zip": "*"
     },
     "platform-dev": {},
     "plugin-api-version": "2.6.0"
