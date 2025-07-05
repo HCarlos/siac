@@ -117,7 +117,7 @@ class ReportesExcelAutollenablesController extends Controller{
 
         $file_external = "fmt_graficos_diarios.xlsx";
         $archivo = LoadTemplateExcel::getFileTemplate($file_external);
-        $newFileName = 'grafico_diario_' . Carbon::parse($end_date)->format('dmY') . '.xlsx';
+        $newFileName = storage_path('app/public/externo/grafico_diario_' . Carbon::parse($end_date)->format('dmY') . '.xlsx');
 
         $template = $archivo;
         $output   = $newFileName;
