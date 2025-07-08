@@ -65,7 +65,8 @@ class ReportesExcelAutollenablesController extends Controller{
             // Excel Day 1 es 1900-01-01. El timestamp de Unix es 1970-01-01.
             // La diferencia en días entre 1900-01-01 y 1970-01-01 es 25569.
             // Se añade 1 día extra por el "bug" del año bisiesto de Excel en 1900.
-            return ($timestamp / (24 * 60 * 60)) + 25569 + 1;
+//            return ($timestamp / (24 * 60 * 60)) + 25569 + 1;
+            return ($timestamp / (24 * 60 * 60)) + 25569 + 0;
         };
 
         // Modifica setCell para aceptar un styleId y mejorar la lógica de fechas
@@ -215,7 +216,7 @@ class ReportesExcelAutollenablesController extends Controller{
         $zip->close();
 
         return response()
-            ->download($output, 'reporte_diario_' . date('Ymd_His') . '.xlsx')
+            ->download($output, 'reporte_diario_'. Carbon::parse($end_date)->format('dmY') .'_'. date('dmY_His') . '.xlsx')
             ->deleteFileAfterSend(true);
 
 
