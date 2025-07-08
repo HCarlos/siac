@@ -147,6 +147,8 @@ class ReportesExcelAutollenablesController extends Controller{
             $zip->addFromString($sheetXmlPath, $newXml);
         };
 
+        // Inicia procesamiento de datos
+
         $DC = new DashboardClass();
         $Items = $DC->getRecibidasAtendidas($start_date, $end_date);
 
@@ -185,6 +187,8 @@ class ReportesExcelAutollenablesController extends Controller{
             }
         }
 
+        // Finaliza procesamiento de datos
+
 
         $nodesF = $xp1->query("//d:c[@r='E4']/d:v | //d:c[@r='E14']/d:v");
         foreach ($nodesF as $v) {
@@ -211,7 +215,7 @@ class ReportesExcelAutollenablesController extends Controller{
         $zip->close();
 
         return response()
-            ->download($output, 'Reporte Diario Modificado.xlsx')
+            ->download($output, 'reporte_diario_' . date('Ymd_His') . '.xlsx')
             ->deleteFileAfterSend(true);
 
 
