@@ -31,8 +31,7 @@ class StorageExternalFilesController extends Controller{
         'ciudadano','genero','genero_ciudadano','creadopor_id','creadopor','curp_creadopor','creadopor_el',
         'modificadopor_id','modificadopor','curp_modificadopor','fecha_modificado','celulares',
         'telefonos','email','telefonoscelularesemails','curp_ciudadano','domicilio_ciudadano_internet',
-        'observaciones','clave_identificadora','ambito_sas','servicio_habilitado','ambito_servicio',
-        'estatus_general','ue_id','ultimo_estatus','fecha_ultimo_estatus','ultimo_estatus_resuelto',
+        'observaciones','clave_identificadora','ambito_sas','servicio_habilitado','ambito_servicio','ue_id','ultimo_estatus','fecha_ultimo_estatus','ultimo_estatus_resuelto',
         'due_id','dependencia_ultimo_estatus','sue_id','servicio_ultimo_estatus','fecha_dias_ejecucion',
         'fecha_dias_maximos_ejecucion','centro_localidad_id','dias_atendida','dias_rechazada',
         'dias_observada','codigo_postal_manual','search_google_select'];
