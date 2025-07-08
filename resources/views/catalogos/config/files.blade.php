@@ -34,8 +34,17 @@
 
             <p class="text-success">Descarga de datos:</p>
             <ul class="bg-muted">
+{{--                <li class="list list-activity">--}}
+{{--                    <a href="{{ route('viddss.descargar_csv') }}" target="_blank">Descarga de datos de último estatus</a>--}}
+{{--                </li>--}}
                 <li class="list list-activity">
-                    <a href="{{ route('viddss.descargar_csv') }}" target="_blank">Descarga de datos de último estatus</a>
+                    <a href="{{ route('viddss.descargar_csv_02') }}" target="_blank">Base de datos completa solo 19-ene-2025 hacia atrás solo de Apoyo Social</a>
+                </li>
+                <li class="list list-activity">
+                    <a href="{{ route('viddss.descargar_csv_03') }}" target="_blank">Base de datos completa solo 20-ene-2025 a la fecha solo de Apoyo Social</a>
+                </li>
+                <li class="list list-activity">
+                    <a href="{{ route('viddss.descargar_csv_04') }}" target="_blank">Base de datos completa solo 19-ene-2025 hacia atrás solo de 'Servicios Municipales'</a>
                 </li>
             </ul>
 

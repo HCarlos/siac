@@ -442,7 +442,10 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|test_admin|USER_OPE
     Route::post('getUserByRoleToXLSX','External\User\ListUserXLSXController@getUserByRoleToXLSX')->name('getUserByRoleToXLSX');
     Route::post('getModelListXlS/{model}','External\ListModelXLSXController@getListModelXLSX')->name('getModelListXlS');
 //    Route::get('/descargar-viddss-csv', [ViddssController::class, 'descargarCsv'])->name('viddss.descargar_csv');
-    Route::get('/descargar-viddss-csv','Storage\StorageExternalFilesController@descargarCsv01')->name('viddss.descargar_csv');
+    Route::get('/descargar-viddss-csv','Storage\StorageExternalFilesController@descargarCsv00')->name('viddss.descargar_csv');
+    Route::get('/descargar-viddss-02-csv','Storage\StorageExternalFilesController@descargarCsv02')->name('viddss.descargar_csv_02');
+    Route::get('/descargar-viddss-03-csv','Storage\StorageExternalFilesController@descargarCsv03')->name('viddss.descargar_csv_03');
+    Route::get('/descargar-viddss-04-csv','Storage\StorageExternalFilesController@descargarCsv04')->name('viddss.descargar_csv_04');
 
     // Catálogo de Denuncias
     Route::get('listDenuncias/', 'Denuncia\DenunciaController@index')->name('listDenuncias');
