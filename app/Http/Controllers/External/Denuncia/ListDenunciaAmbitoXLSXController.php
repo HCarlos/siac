@@ -405,7 +405,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
 
 //            dd($item);
 
-            $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y'). " @Ch50Dev";
+            $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
             $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
 
             $Colonia = "";

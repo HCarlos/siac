@@ -44,14 +44,10 @@ class ReportesExcelAutollenablesController extends Controller{
         $xp1  = new \DOMXPath($dom1);
         $xp1->registerNamespace('d','http://schemas.openxmlformats.org/spreadsheetml/2006/main');
 
-
-
-        // Función para convertir PHP Date a Excel Serial Number
         $convertPhpDateToExcelSerial = function($date) {
             if ($date instanceof \Carbon\Carbon || $date instanceof \DateTime) {
                 $timestamp = $date->getTimestamp();
             } elseif (is_string($date)) {
-                // Intentar parsear la cadena de fecha. strtotime es flexible.
                 $timestamp = strtotime($date);
             } else {
                 return null; // No es un formato de fecha reconocido
@@ -60,16 +56,9 @@ class ReportesExcelAutollenablesController extends Controller{
             if ($timestamp === false) {
                 return null; // Fallback si strtotime falla
             }
-
-            // Cálculo robusto para convertir timestamp de PHP a número serial de Excel
-            // Excel Day 1 es 1900-01-01. El timestamp de Unix es 1970-01-01.
-            // La diferencia en días entre 1900-01-01 y 1970-01-01 es 25569.
-            // Se añade 1 día extra por el "bug" del año bisiesto de Excel en 1900.
-//            return ($timestamp / (24 * 60 * 60)) + 25569 + 1;
-            return ($timestamp / (24 * 60 * 60)) + 25569 + 0;
+            return ($timestamp / (24 * 60 * 60)) + 25569;
         };
 
-        // Modifica setCell para aceptar un styleId y mejorar la lógica de fechas
         $setCell = function(\DOMXPath $xp, \DOMDocument $dom, string $sheetXmlPath, string $cellRef, $value, ?int $styleId = null) use ($zip, $convertPhpDateToExcelSerial) {
             $query = "//d:c[@r='$cellRef']";
             $nodes = $xp->query($query);
@@ -137,16 +126,24 @@ class ReportesExcelAutollenablesController extends Controller{
                 $v = $dom->createElementNS('http://schemas.openxmlformats.org/spreadsheetml/2006/main','v',$excelValue);
                 $c->appendChild($v);
             } else {
-                $is = $dom->createElementNS('http://schemas.openxmlformats/spreadsheetml/2006/main','is');
-                $t  = $dom->createElementNS('http://schemas.openxmlformats/spreadsheetml/2006/main','t',$value);
+                $is = $dom->createElementNS('http://schemas.openxmlformats.org/spreadsheetml/2006/main','is');
+                $t  = $dom->createElementNS('http://schemas.openxmlformats.org/spreadsheetml/2006/main','t',$value);
                 $is->appendChild($t);
                 $c->appendChild($is);
             }
 
             // Guardar el XML de la hoja en el archivo ZIP
             $newXml = $dom->saveXML();
+
+            // Actualizar el archivo en el ZIP (borrar y agregar de nuevo)
+            $zip->deleteName($sheetXmlPath);
             $zip->addFromString($sheetXmlPath, $newXml);
+
+
+            // Debug: Guarda el XML a un archivo para inspeccionar
+            file_put_contents('/tmp/sheet2_modificado.xml', $newXml);
         };
+
 
         // Inicia procesamiento de datos
 
@@ -154,6 +151,7 @@ class ReportesExcelAutollenablesController extends Controller{
         $Items = $DC->getRecibidasAtendidas($start_date, $end_date);
 
 //        dd($Items);
+
 
         $bloques = [
             ['cols'=>['B','C','D'], 'keys'=>['CR','DR','IR'], 'startRow'=>4],
@@ -191,6 +189,7 @@ class ReportesExcelAutollenablesController extends Controller{
         // Finaliza procesamiento de datos
 
 
+//        $nodesF = $xp1->query("//d:c[@r='C2']/d:v | //d:c[@r='E4']/d:v | //d:c[@r='E14']/d:v");
         $nodesF = $xp1->query("//d:c[@r='E4']/d:v | //d:c[@r='E14']/d:v");
         foreach ($nodesF as $v) {
             $v->parentNode->removeChild($v);
@@ -209,9 +208,13 @@ class ReportesExcelAutollenablesController extends Controller{
 
         $tr = $Items[0]["TR"] + $Items[1]["TR"] + $Items[2]["TR"] + $Items[3]["TR"] + $Items[4]["TR"] + $Items[5]["TR"];
         $ta = $Items[0]["TA"] + $Items[1]["TA"] + $Items[2]["TA"] + $Items[3]["TA"] + $Items[4]["TA"] + $Items[5]["TA"];
+        $fechaCarbon = Carbon::now(); // Obtiene la fecha y hora actual
+        $fechaFormateada = $fechaCarbon->locale('es_MX')->isoFormat('dddd DD [de] MMMM [de] YYYY [corte a las] HH:mm[hrs.]');
 
         $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'D5', $tr);
         $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'H5', $ta);
+        $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'C2', ucfirst($fechaFormateada));
+
 
         $zip->close();
 

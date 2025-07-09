@@ -76,17 +76,22 @@ class DashboardClass{
 
         $servicio = $this->vectorServicios[$index];
 
+
         if ($ue_id === 17 && $fecha_ingreso === $fecha_ultimo_estatus) {
+//            dd($fecha_ingreso,$fecha_ultimo_estatus,"IA");
             if ($this->ArrSolicitudesIRValue->contains($ciudadano_id)) {
                 $servicio['IA']++;
+                $servicio['IR']++;
             } elseif ($this->arrCoorDR->contains($creadopor_id)) {
                 $servicio['DA']++;
+                $servicio['DR']++;
             } else {
                 $servicio['CA']++;
+                $servicio['CR']++;
             }
             $servicio['TA']++;
-        }
-        if ($ue_id !== 17 && $fecha_ingreso === $fecha_ultimo_estatus) {
+            $servicio['TR']++;
+        }else{
             if ($this->ArrSolicitudesIRValue->contains($ciudadano_id)) {
                 $servicio['IR']++;
             } elseif ($this->arrCoorDR->contains($creadopor_id)) {
@@ -130,20 +135,25 @@ class DashboardClass{
         $pendientes = 0;
 //        $sue_id = 0;
         foreach ($geo as $g) {
-            if ($g->fecha_ingreso === $g->fecha_ultimo_estatus) {
+            $fecha_ultimo_estatus = Carbon::parse($g->fecha_ultimo_estatus)->format('Y-m-d');
+            $fecha_ingreso = Carbon::parse($g->fecha_ingreso)->format('Y-m-d');
+//            if ($g->fecha_ingreso === $g->fecha_ultimo_estatus) {
                 switch ($g->ue_id) {
                     case 6:
                     case 17:
+                    case 21:
                         $atendidas++;
                         break;
+                    case 18:
                     case 20:
+                    case 22:
                         $rechazadas++;
                         break;
                     case 16:
                     case 19:
                         $pendientes++;
                         break;
-                }
+//                }
             }
 //            $sue_id = $g->sue_id;
         }
