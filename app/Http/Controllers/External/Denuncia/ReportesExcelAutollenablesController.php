@@ -190,7 +190,9 @@ class ReportesExcelAutollenablesController extends Controller{
 
 
 //        $nodesF = $xp1->query("//d:c[@r='C2']/d:v | //d:c[@r='E4']/d:v | //d:c[@r='E14']/d:v");
-        $nodesF = $xp1->query("//d:c[@r='E4']/d:v | //d:c[@r='E14']/d:v");
+        $query = "//d:c[starts-with(@r, 'E') and number(substring(@r, 2)) >= 4 and number(substring(@r, 2)) <= 79 and (number(substring(@r, 2)) - 4) mod 10 < 6]/d:v";
+        $nodesF = $xp1->query($query);
+
         foreach ($nodesF as $v) {
             $v->parentNode->removeChild($v);
         }
@@ -211,8 +213,8 @@ class ReportesExcelAutollenablesController extends Controller{
         $fechaCarbon = Carbon::now(); // Obtiene la fecha y hora actual
         $fechaFormateada = $fechaCarbon->locale('es_MX')->isoFormat('dddd DD [de] MMMM [de] YYYY [corte a las] HH:mm[hrs.]');
 
-        $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'D5', $tr);
-        $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'H5', $ta);
+        $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'C5', $tr);
+        $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'G5', $ta);
         $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'C2', ucfirst($fechaFormateada));
 
 
