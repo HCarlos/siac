@@ -252,7 +252,7 @@
             frmFilterDataExport.disabled = true;
 
             let frmResumenBasicoExport = document.getElementById("frmResumenBasicoExport");
-            frmResumenBasicoExport.disabled = true;
+            frmResumenBasicoExport ? frmResumenBasicoExport.disabled = true : console.warn("El elemento con ID 'frmResumenBasicoExport' no se encontró en el DOM.");
 
             document.getElementById("h2Recibidas").innerHTML = Estatus.estatus[0].Total;
             document.getElementById("h2EnProcesoTotal").innerHTML = Estatus.estatus[1].Total + Estatus.estatus[4].Total;
@@ -331,7 +331,8 @@
             });
             inputDenuncias.value = denuncias_id.join(',');
             frmFilterDataExport.disabled = false;
-            frmResumenBasicoExport.disabled = false;
+            // frmResumenBasicoExport.disabled = false;
+            frmResumenBasicoExport ? frmResumenBasicoExport.disabled = false : console.warn("");
 
             const selectZona = document.getElementById('zona');
             const selectServicios = document.getElementById('servicios');
@@ -411,33 +412,34 @@
 
 
             const btnResumenBasicoExport = document.getElementById('frmResumenBasicoExport');
-            btnResumenBasicoExport.addEventListener('click', function () {
-                btnResumenBasicoExport.disabled = true;
-                var PARAMS = {
-                    start_date : "{{ $start_date }}",
-                    end_date : "{{ $end_date }}",
-                    unity_id: {{ $unity_id }},
-                    fileoutput : "fmt_resumen_basico_01.xlsx",
-                    indice : 4,
-                    _token : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                };
+            if (btnResumenBasicoExport) {
+                btnResumenBasicoExport.addEventListener('click', function () {
+                    btnResumenBasicoExport.disabled = true;
+                    var PARAMS = {
+                        start_date : "{{ $start_date }}",
+                        end_date : "{{ $end_date }}",
+                        unity_id: {{ $unity_id }},
+                        fileoutput : "fmt_resumen_basico_01.xlsx",
+                        indice : 4,
+                        _token : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    };
 
-                var temp=document.createElement("form");
-                temp.action='/resumenBasico01Export';
-                temp.method="POST";
-                temp.target="_blank";
-                temp.style.display="none";
-                for(var x in PARAMS) {
-                    var opt=document.createElement("textarea");
-                    opt.name=x;
-                    opt.value=PARAMS[x];
-                    temp.appendChild(opt);
-                }
-                document.body.appendChild(temp);
-                temp.submit();
-                return temp;
-
-            });
+                    var temp=document.createElement("form");
+                    temp.action='/resumenBasico01Export';
+                    temp.method="POST";
+                    temp.target="_blank";
+                    temp.style.display="none";
+                    for(var x in PARAMS) {
+                        var opt=document.createElement("textarea");
+                        opt.name=x;
+                        opt.value=PARAMS[x];
+                        temp.appendChild(opt);
+                    }
+                    document.body.appendChild(temp);
+                    temp.submit();
+                    return temp;
+                });
+            }
 
 
             let lat = 17.9919;
@@ -514,12 +516,12 @@
 
         if (dataSetLocations.length == 0) {
             frmFilterDataExport.disabled = true;
-            frmResumenBasicoExport.disabled = true;
+            btnResumenBasicoExport ? frmResumenBasicoExport.disabled = true : console.log("");
 
             alert("No hay datos para mostrar");
         }else{
             frmFilterDataExport.disabled = false;
-            frmResumenBasicoExport.disabled = true;
+            btnResumenBasicoExport ? frmResumenBasicoExport.disabled = false : console.log("");
 
         }
 
