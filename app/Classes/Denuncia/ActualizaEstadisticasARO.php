@@ -35,7 +35,6 @@ class ActualizaEstadisticasARO{
             if (count($dens) > 0) {
                 foreach ($dens as $d) {
                     if ( in_array($d->estatu_id, [17, 20]) ) {
-//                        Log::alert("Evento: ".$d->denuncia_id." ".$d->dependencia_id." ".$d->servicio_id." ".$d->estatu_id);
                         event(new DenunciaAtendidaEvent($d->denuncia_id, 1, 1, $d->estatu_id, false, $d));
                     }
                 }

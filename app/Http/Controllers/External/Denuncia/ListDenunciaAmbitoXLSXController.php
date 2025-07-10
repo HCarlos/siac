@@ -138,12 +138,29 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     }
                 }
 
+//                $atendidas = 0;
+//                $pendientes = 0;
+//                if ( in_array( ((int) $item->estatu_id),array(17,20,21,22) )){
+//                    $atendidas = 1;
+//                }else{
+//                    $pendientes = 1;
+//                }
+
                 $atendidas = 0;
+                $rechazadas = 0;
                 $pendientes = 0;
-                if ( in_array( ((int) $item->estatu_id),array(17,20,21,22) )){
+                $observadas = 0;
+                if (in_array(((int)$item->ue_id), array(17, 21))) {
                     $atendidas = 1;
-                }else{
+                }
+                if (in_array(((int)$item->ue_id), array(22, 22))) {
+                    $rechazadas = 1;
+                }
+                if (in_array(((int)$item->ue_id), array(16, 19))) {
                     $pendientes = 1;
+                }
+                if (((int)$item->ue_id) === 18) {
+                    $observadas = 1;
                 }
 
                 $gdu = explode(',',trim($item->gd_ubicacion));
@@ -177,7 +194,9 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('T'.$C, $item->dias_atendida ?? '' )
                     ->setCellValue('U'.$C, $item->dias_rechazada ?? '' )
                     ->setCellValue('V'.$C, $atendidas  )
-                    ->setCellValue('W'.$C, $pendientes  );
+                    ->setCellValue('W'.$C, $rechazadas  )
+                    ->setCellValue('X'.$C, $pendientes  )
+                    ->setCellValue('Y'.$C, $observadas  );
                 $sh
                     ->getStyle('A'.$C.':W'.$C)
                     ->getFill()
@@ -435,11 +454,20 @@ class ListDenunciaAmbitoXLSXController extends Controller
 //            }
 
             $atendidas = 0;
+            $rechazadas = 0;
             $pendientes = 0;
-            if (in_array(((int)$item->ue_id), array(17, 20, 21, 22))) {
+            $observadas = 0;
+            if (in_array(((int)$item->ue_id), array(17, 21))) {
                 $atendidas = 1;
-            } else {
+            }
+            if (in_array(((int)$item->ue_id), array(22, 22))) {
+                $rechazadas = 1;
+            }
+            if (in_array(((int)$item->ue_id), array(16, 19))) {
                 $pendientes = 1;
+            }
+            if (((int)$item->ue_id) === 18) {
+                $observadas = 1;
             }
 
             $gdu = explode(',', trim($item->gd_ubicacion));
@@ -469,7 +497,9 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 ->setCellValue('T' . $C, $item->dias_atendida ?? '')
                 ->setCellValue('U' . $C, $item->dias_rechazada ?? '')
                 ->setCellValue('V' . $C, $atendidas)
-                ->setCellValue('W' . $C, $pendientes);
+                ->setCellValue('W' . $C, $rechazadas)
+                ->setCellValue('X' . $C, $pendientes)
+                ->setCellValue('Y' . $C, $observadas);
             $sh
                 ->getStyle('A' . $C . ':W' . $C)
                 ->getFill()
@@ -551,12 +581,29 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     }
                 }
 
+//                $atendidas = 0;
+//                $pendientes = 0;
+//                if (in_array(((int)$item->ue_id), array(17, 20, 21, 22))) {
+//                    $atendidas = 1;
+//                } else {
+//                    $pendientes = 1;
+//                }
+
                 $atendidas = 0;
+                $rechazadas = 0;
                 $pendientes = 0;
-                if (in_array(((int)$item->ue_id), array(17, 20, 21, 22))) {
+                $observadas = 0;
+                if (in_array(((int)$item->ue_id), array(17, 21))) {
                     $atendidas = 1;
-                } else {
+                }
+                if (in_array(((int)$item->ue_id), array(22, 22))) {
+                    $rechazadas = 1;
+                }
+                if (in_array(((int)$item->ue_id), array(16, 19))) {
                     $pendientes = 1;
+                }
+                if (((int)$item->ue_id) === 18) {
+                    $observadas = 1;
                 }
 
                 $gdu = explode(',', trim($item->gd_ubicacion));
@@ -586,7 +633,9 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('T' . $C, $item->dias_atendida ?? '')
                     ->setCellValue('U' . $C, $item->dias_rechazada ?? '')
                     ->setCellValue('V' . $C, $atendidas)
-                    ->setCellValue('W' . $C, $pendientes);
+                    ->setCellValue('W' . $C, $rechazadas)
+                    ->setCellValue('X' . $C, $pendientes)
+                    ->setCellValue('Y' . $C, $observadas);
                 $sh
                     ->getStyle('A' . $C . ':W' . $C)
                     ->getFill()
