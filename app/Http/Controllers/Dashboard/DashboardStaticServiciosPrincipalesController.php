@@ -5,15 +5,10 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Classes\Dashboard\DashboardClass;
 use App\Classes\Denuncia\ActualizaEstadisticasARO;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Models\Catalogos\CentroLocalidad;
-use App\Models\Catalogos\Servicio;
-use App\Models\Denuncias\_viDDSs;
-use App\Models\Denuncias\_viServicios;
-use App\Models\Denuncias\Denuncia;
 use App\User;
 use Carbon\Carbon;
 use DateTime;

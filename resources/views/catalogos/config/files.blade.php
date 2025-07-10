@@ -32,19 +32,22 @@
 
             <hr/>
 
-            <p class="text-success">Descarga de datos:</p>
-            <ul class="bg-muted">
-{{--                <li class="list list-activity">--}}
-{{--                    <a href="{{ route('viddss.descargar_csv') }}" target="_blank">Descarga de datos de último estatus</a>--}}
-{{--                </li>--}}
-                <li class="list list-activity">
-                    <a href="{{ route('viddss.descargar_csv_02') }}" target="_blank">Base de datos completa solo 19-ene-2025 hacia atrás solo de Apoyo Social</a>
+            <p class="text-success">Descargar base de datos:</p>
+            <ul class="list-group">
+                <li class="list list-group-item">
+                    <a href="{{ route('viddss.descargar_csv') }}" target="_blank">Datos desde el 05-Oct-2024 a la fecha</a>
                 </li>
-                <li class="list list-activity">
-                    <a href="{{ route('viddss.descargar_csv_03') }}" target="_blank">Base de datos completa solo 20-ene-2025 a la fecha solo de Apoyo Social</a>
+                <li class="list list-group-item">
+                    <a href="{{ route('viddss.descargar_csv_02') }}" target="_blank">Datos desde el 19-ene-2025 hacia atrás de Apoyo Social</a>
                 </li>
-                <li class="list list-activity">
-                    <a href="{{ route('viddss.descargar_csv_04') }}" target="_blank">Base de datos completa solo 19-ene-2025 hacia atrás solo de 'Servicios Municipales'</a>
+                <li class="list list-group-item">
+                    <a href="{{ route('viddss.descargar_csv_03') }}" target="_blank">Datos desde el 20-ene-2025 a la fecha de Apoyo Social</a>
+                </li>
+                <li class="list list-group-item">
+                    <a href="{{ route('viddss.descargar_csv_04') }}" target="_blank">Datos desde el 19-ene-2025 hacia atrás de Servicios Municipales</a>
+                </li>
+                <li class="list list-group-item">
+                    <a href="{{ route('viddss.descargar_csv_05') }}" target="_blank">Datos desde el 20-ene-2025 a la fecha de Servicios Municipales</a>
                 </li>
             </ul>
 

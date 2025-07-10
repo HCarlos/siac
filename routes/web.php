@@ -441,11 +441,13 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|test_admin|USER_OPE
     Route::post('showFileListUserExcel1A','External\User\ListUserXLSXController@getListUserXLSX')->name('showFileListUserExcel1A');
     Route::post('getUserByRoleToXLSX','External\User\ListUserXLSXController@getUserByRoleToXLSX')->name('getUserByRoleToXLSX');
     Route::post('getModelListXlS/{model}','External\ListModelXLSXController@getListModelXLSX')->name('getModelListXlS');
-//    Route::get('/descargar-viddss-csv', [ViddssController::class, 'descargarCsv'])->name('viddss.descargar_csv');
-    Route::get('/descargar-viddss-csv','Storage\StorageExternalFilesController@descargarCsv00')->name('viddss.descargar_csv');
-    Route::get('/descargar-viddss-02-csv','Storage\StorageExternalFilesController@descargarCsv02')->name('viddss.descargar_csv_02');
-    Route::get('/descargar-viddss-03-csv','Storage\StorageExternalFilesController@descargarCsv03')->name('viddss.descargar_csv_03');
-    Route::get('/descargar-viddss-04-csv','Storage\StorageExternalFilesController@descargarCsv04')->name('viddss.descargar_csv_04');
+
+    // Streamed Response
+    Route::get('/descargar-viddss-csv','StreamedResponse\Csv\VolcadoDBtoCSVController@descargarCsv00')->name('viddss.descargar_csv');
+    Route::get('/descargar-viddss-02-csv','StreamedResponse\Csv\VolcadoDBtoCSVController@descargarCsv02')->name('viddss.descargar_csv_02');
+    Route::get('/descargar-viddss-03-csv','StreamedResponse\Csv\VolcadoDBtoCSVController@descargarCsv03')->name('viddss.descargar_csv_03');
+    Route::get('/descargar-viddss-04-csv','StreamedResponse\Csv\VolcadoDBtoCSVController@descargarCsv04')->name('viddss.descargar_csv_04');
+    Route::get('/descargar-viddss-05-csv','StreamedResponse\Csv\VolcadoDBtoCSVController@descargarCsv05')->name('viddss.descargar_csv_05');
 
     // Catálogo de Denuncias
     Route::get('listDenuncias/', 'Denuncia\DenunciaController@index')->name('listDenuncias');
@@ -503,7 +505,7 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|test_admin|USER_OPE
     Route::post('exportDataFilterMap3/', 'External\Denuncia\ListDenunciaAmbitoXLSXController@exportDataFilterMap3')->name('exportDataFilterMap3');
     Route::post('showDataListDenunciaAmbitoRespuestaExcel1A/', 'External\Denuncia\ListDenunciaAmbitoXLSXController@showDataListDenunciaAmbitoRespuestaExcel1A')->name('showDataListDenunciaAmbitoRespuestaExcel1A');
 
-    Route::post('reporteDiarioExcel', 'External\Denuncia\ReportesExcelAutollenablesController@reporteDiarioExcel')->name('reporteDiarioExcel');
+    Route::post('reporteDiarioExcel', 'ExcelAutollenable\ReporteDiario\ReporteDiarioController@reporteDiarioExcel')->name('reporteDiarioExcel');
 
     Route::get('cerrarDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@closeItem')->name('cerrarDenunciaAmbito');
     Route::get('firmarDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@signItem')->name('firmarDenunciaAmbito');

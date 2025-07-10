@@ -3,17 +3,15 @@
  * Copyright (c) 2025. Realizado por Carlos Hidalgo
  */
 
-namespace App\Http\Controllers\External\Denuncia;
+namespace App\Http\Controllers\ExcelAutollenable\ReporteDiario;
 
-use App\Classes\Dashboard\DashboardClass;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\ExcelAutollenable\ReporteDiario;
 use App\Http\Controllers\Funciones\LoadTemplateExcel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-class ReportesExcelAutollenablesController extends Controller{
+class ReporteDiarioController extends Controller{
 
     public function __construct(){
         $this->middleware('auth');
@@ -147,7 +145,7 @@ class ReportesExcelAutollenablesController extends Controller{
 
         // Inicia procesamiento de datos
 
-        $DC = new DashboardClass();
+        $DC = new ReporteDiarioClass();
         $Items = $DC->getRecibidasAtendidas($start_date, $end_date);
 
 //        dd($Items);
@@ -208,8 +206,12 @@ class ReportesExcelAutollenablesController extends Controller{
         $xp2  = new \DOMXPath($dom2);
         $xp2->registerNamespace('d','http://schemas.openxmlformats.org/spreadsheetml/2006/main');
 
-        $tr = $Items[0]["TR"] + $Items[1]["TR"] + $Items[2]["TR"] + $Items[3]["TR"] + $Items[4]["TR"] + $Items[5]["TR"];
-        $ta = $Items[0]["TA"] + $Items[1]["TA"] + $Items[2]["TA"] + $Items[3]["TA"] + $Items[4]["TA"] + $Items[5]["TA"];
+//        $tr = $Items[0]["TR"] + $Items[1]["TR"] + $Items[2]["TR"] + $Items[3]["TR"] + $Items[4]["TR"] + $Items[5]["TR"];
+//        $ta = $Items[0]["TA"] + $Items[1]["TA"] + $Items[2]["TA"] + $Items[3]["TA"] + $Items[4]["TA"] + $Items[5]["TA"];
+
+        $tr = array_sum(array_column($Items->toArray(), 'TR'));
+        $ta = array_sum(array_column($Items->toArray(), 'TA'));
+
         $fechaCarbon = Carbon::now(); // Obtiene la fecha y hora actual
         $fechaFormateada = $fechaCarbon->locale('es_MX')->isoFormat('dddd DD [de] MMMM [de] YYYY [corte a las] HH:mm[hrs.]');
 

@@ -3,16 +3,14 @@
  * Copyright (c) 2025. Realizado por Carlos Hidalgo
  */
 
-namespace App\Classes\Dashboard;
+namespace App\Http\Controllers\ExcelAutollenable\ReporteDiario;
 
-use App\Http\Controllers\Funciones\FuncionesController;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use function PHPUnit\Framework\lessThanOrEqual;
 
-class DashboardClass{
+class ReporteDiarioClass{
 
     public $vectorServicios;
     protected $ServiciosPrincipales;
