@@ -460,7 +460,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
             if (in_array(((int)$item->ue_id), array(17, 21))) {
                 $atendidas = 1;
             }
-            if (in_array(((int)$item->ue_id), array(22, 22))) {
+            if (in_array(((int)$item->ue_id), array(20, 22))) {
                 $rechazadas = 1;
             }
             if (in_array(((int)$item->ue_id), array(16, 19))) {
@@ -599,7 +599,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 if (in_array(((int)$item->ue_id), array(17, 21))) {
                     $atendidas = 1;
                 }
-                if (in_array(((int)$item->ue_id), array(22, 22))) {
+                if (in_array(((int)$item->ue_id), array(20, 22))) {
                     $rechazadas = 1;
                 }
                 if (in_array(((int)$item->ue_id), array(16, 19))) {
