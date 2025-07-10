@@ -153,7 +153,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 if (in_array(((int)$item->ue_id), array(17, 21))) {
                     $atendidas = 1;
                 }
-                if (in_array(((int)$item->ue_id), array(22, 22))) {
+                if (in_array(((int)$item->ue_id), array(20, 22))) {
                     $rechazadas = 1;
                 }
                 if (in_array(((int)$item->ue_id), array(16, 19))) {
@@ -197,8 +197,9 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('W'.$C, $rechazadas  )
                     ->setCellValue('X'.$C, $pendientes  )
                     ->setCellValue('Y'.$C, $observadas  );
+
                 $sh
-                    ->getStyle('A'.$C.':W'.$C)
+                    ->getStyle('A'.$C.':Y'.$C)
                     ->getFill()
                     ->applyFromArray([
                             'fillType' => 'solid',
@@ -501,14 +502,14 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 ->setCellValue('X' . $C, $pendientes)
                 ->setCellValue('Y' . $C, $observadas);
 
-//            $sh
-//                ->getStyle('A' . $C . ':Y' . $C)
-//                ->getFill()
-//                ->applyFromArray([
-//                    'fillType' => 'solid',
-//                    'rotation' => 0,
-//                    'color' => ['rgb' => $this->getColorSemaforo($item)['status_i']],
-//                ]);
+            $sh
+                ->getStyle('A' . $C . ':Y' . $C)
+                ->getFill()
+                ->applyFromArray([
+                    'fillType' => 'solid',
+                    'rotation' => 0,
+                    'color' => ['rgb' => $this->getColorSemaforo($item)['status_i']],
+                ]);
 
             $C++;
 
@@ -640,14 +641,14 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->setCellValue('X' . $C, $pendientes)
                     ->setCellValue('Y' . $C, $observadas);
 
-//                $sh
-//                    ->getStyle('A' . $C . ':Y' . $C)
-//                    ->getFill()
-//                    ->applyFromArray([
-//                        'fillType' => 'solid',
-//                        'rotation' => 0,
-//                        'color' => ['rgb' => $this->getColorSemaforo($item)['status_i']],
-//                    ]);
+                $sh
+                    ->getStyle('A' . $C . ':Y' . $C)
+                    ->getFill()
+                    ->applyFromArray([
+                        'fillType' => 'solid',
+                        'rotation' => 0,
+                        'color' => ['rgb' => $this->getColorSemaforo($item)['status_i']],
+                    ]);
 
                 $C++;
 
