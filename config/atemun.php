@@ -36,6 +36,7 @@ return [
         'fmt_lista_respuestas'        => 'fmt_lista_respuestas.xlsx',
         'icono_video'                 => 'icon-video.png',
         'fmt_graficos_diarios'        => 'fmt_graficos_diarios.xlsx',
+        'fmt_resumen_basico_01'       => 'fmt_resumen_basico_01.xlsx',
     ],
 
     'menu_archivos'=>[

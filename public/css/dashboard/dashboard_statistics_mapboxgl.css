@@ -570,6 +570,31 @@ main {
     color: white;
 }
 
+.btn-resume-basico {
+    padding: 12px 24px;
+    background-color: #1a3485;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    white-space: nowrap;
+    font-weight: bold;
+}
+.btn-resume-basico:hover {
+    background-color: #1a3485;
+    color: white;
+}
+.btn-resume-basico:disabled {
+    background-color: #737171;
+    color: white;
+}
+
+
+
+
 /* Estilo del cuerpo del card */
 .card-body {
     padding: 20px;

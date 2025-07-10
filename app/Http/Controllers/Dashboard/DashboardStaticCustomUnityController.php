@@ -13,9 +13,11 @@ use App\Models\Denuncias\Denuncia;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use mysql_xdevapi\Collection;
 
 class DashboardStaticCustomUnityController extends Controller{
 
@@ -38,6 +40,8 @@ class DashboardStaticCustomUnityController extends Controller{
         $data = $request->all();
 
         $f = new FuncionesController();
+
+//        dd($this->unity_id);
 
         if ($data === []){
             $start_date = Carbon::now();
@@ -261,27 +265,8 @@ class DashboardStaticCustomUnityController extends Controller{
 
                 $status = "white";
                 $dias_vencidos = 0;
-//                switch ( $g->ue_id ) {
-//                    case 16: // Recibida
-//                    case 19:
-//                        $fex = Carbon::parse(now())->diffInDays(Carbon::parse($fme2),false);
-//                        if ($fex >= 0) {
-//                            $status = "amarillo";
-//                        }else{
-//                            $status = "rojo";
-//                            $dias_vencidos = abs($fex);
-//                        }
-//                        break;
-//                    case 17:
-//                    case 20:
-//                    case 21:
-//                    case 22:
-//                        $status = "verde";
-//                        break;
-//                    default:
-//                        $status = "amarillo";
-//                        break;
-//                }
+
+
 
                 $semaforo = ActualizaEstadisticasARO::semaforo_ultimo_estatus_off($g->ue_id, new DateTime($g->fecha_dias_maximos_ejecucion), new DateTime($g->fecha_ultimo_estatus));
                 $status = $semaforo['status'];
@@ -432,6 +417,8 @@ class DashboardStaticCustomUnityController extends Controller{
                     "delegacion"=> $item->ItemDelegacion(),
                 ];
             }
+
+//            $arrResumenBasico = self::ResumenBasico01($start_date,$end_date,$this->unity_id);
 
 
             // SE CONSTRUYE EL JSON GENERAL
@@ -692,6 +679,10 @@ class DashboardStaticCustomUnityController extends Controller{
 
     }
 
+
+
+
+
     public function exportFilterData(Request $request){
         $data = $request->all();
 
@@ -717,22 +708,6 @@ class DashboardStaticCustomUnityController extends Controller{
             ->get();
 
         $request->session()->put('items', $items);
-
-//        $cont = app(ListDenunciaAmbitoXLSXController::class);
-//
-//        return $cont->getListDenunciaAmbitoXLSX($request);
-
-//        $data = ['items' => $items];
-//
-//        // Crea una petición POST interna a la ruta deseada
-//        $internalRequest = Request::create('showDataListDenunciaAmbitoExcel1A', 'POST', $data);
-//
-//        // Despacha la petición y obtiene la respuesta
-//        $response = Route::dispatch($internalRequest);
-//
-//        // Retorna o procesa la respuesta según sea necesario
-//        return $response;
-
 
 
     }

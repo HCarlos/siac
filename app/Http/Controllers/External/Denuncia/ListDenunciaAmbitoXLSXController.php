@@ -22,6 +22,8 @@ use App\User;
 use Carbon\Carbon;
 use Exception;
 
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
@@ -72,6 +74,8 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     break;
                 case 3:
                     $this->denunciaGeneralMap03($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension);
+                case 4:
+                    $this->resumenBasico01($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension);
                     break;
             }
 
@@ -682,6 +686,33 @@ class ListDenunciaAmbitoXLSXController extends Controller
     }
 
 
+    public function resumenBasico01($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
+
+        $sh->setCellValue('F1', Carbon::now()->format('d-m-Y h:i:s'));
+        $C = 5;
+        foreach ($Items as $item){
+            $sh
+                ->setCellValue('A' . $C, $item["servicio"] ?? '')
+                ->setCellValue('B' . $C, $item["atendidas"] ?? 0)
+                ->setCellValue('C' . $C, $item["rechazadas"] ?? 0)
+                ->setCellValue('D' . $C, $item["pendientes"] ?? 0)
+                ->setCellValue('E' . $C, $item["observadas"] ?? 0)
+                ->setCellValue('F' . $C, $item["total"] ?? 0);
+            $C++;
+        }
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="_'.$arrFE[0].'.'.$arrFE[1].'"');
+        header('Cache-Control: max-age=0');
+        header('Cache-Control: max-age=1');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        header('Cache-Control: cache, must-revalidate');
+        header('Pragma: public');
+        $writer = IOFactory::createWriter($spreadsheet, $extension);
+        $writer->save('php://output');
+        exit;
+    }
 
 
     function exportDataFilterMap2(Request $request){
@@ -734,6 +765,82 @@ class ListDenunciaAmbitoXLSXController extends Controller
         return $this->getListDenunciaAmbitoXLSX($request);
 
     }
+
+    function resumenBasico01Export(Request $request){
+        $data = $request->all();
+
+        $start_date = $data['start_date'];
+        $end_date = $data['end_date'];
+        $unidad_id = $data['unity_id'];
+
+
+        $arrColl = [
+            ["sue_id" => 483, "servicio" => "FUGA DE AGUA POTABLE", "atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0],
+            ["sue_id" => 508, "servicio" => "DESASOLVE DE DRENAJE","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0],
+            ["sue_id" => 479, "servicio" => "REPARACION DE ALCANTARILLA","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0],
+        ];
+
+        $arrServ = Cache::remember('arrServ_key', 60, function () use ($unidad_id, $start_date, $end_date) {
+            return DB::table("_videpdenservestatus")
+                ->select('sue_id','ue_id')
+                ->where('ambito_dependencia', 2)
+                ->where('dependencia_id', $unidad_id)
+                ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+                ->get();
+        });
+
+        foreach ($arrServ as $item) {
+            switch ($item->sue_id) {
+                case 476:
+                case 568:
+                    $indice = 0;
+                    break;
+                case 508:
+                    $indice = 1;
+                    break;
+                case 479:
+                    $indice = 2;
+                    break;
+                default:
+                    $indice = 999;
+            }
+
+            if ($indice !== 999) {
+                $ue_id = (int) $item->ue_id; // Castea a entero una sola vez
+                if (!isset($arrColl[$indice])) {
+                    $arrColl[$indice] = [
+                        "atendidas" => 0,
+                        "rechazadas" => 0,
+                        "pendientes" => 0,
+                        "observadas" => 0,
+                        "total" => 0
+                    ];
+                }
+
+                if (in_array($ue_id, [17, 21])) {
+                    $arrColl[$indice]["atendidas"]++;
+                }
+                if (in_array($ue_id, [20, 22])) {
+                    $arrColl[$indice]["rechazadas"]++;
+                }
+                if (in_array($ue_id, [16, 19])) {
+                    $arrColl[$indice]["pendientes"]++;
+                }
+                if ($ue_id === 18) {
+                    $arrColl[$indice]["observadas"]++;
+                }
+                $arrColl[$indice]["total"]++;
+            }
+        }
+
+        $collection = collect($arrColl);
+
+        $request->session()->put('items', $collection);
+
+        return $this->getListDenunciaAmbitoXLSX($request);
+
+    }
+
 
 
 
