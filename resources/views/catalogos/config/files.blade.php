@@ -51,6 +51,18 @@
                 </li>
             </ul>
 
+            <hr/>
+
+            <p class="text-success">Otros (formato *.CSV):</p>
+            <ul class="list-group">
+                <li class="list list-group-item">
+                    <a href="{{ route('servicios.descargar_csv') }}" target="_blank">Catálogo de servicios</a>
+                </li>
+                <li class="list list-group-item">
+                    <a href="{{ route('estatus.descargar_csv') }}" target="_blank">Catálogo de estatus</a>
+                </li>
+            </ul>
+
         </div> <!-- end col-->
 
         <div class="col-md-8">
