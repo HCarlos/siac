@@ -107,6 +107,8 @@
 @endsection
 
 @section('script')
+
+
 <script type="javascript">
     document.getElementById('btn-print-viddss').addEventListener('click', function() {
     // Redirige el navegador a la ruta de descarga.
@@ -118,4 +120,6 @@
     // window.location.href = `{{ route('viddss.descargar_csv') }}?filtro=${filtro}`;
     });
 </script>
+
+
 @endsection
