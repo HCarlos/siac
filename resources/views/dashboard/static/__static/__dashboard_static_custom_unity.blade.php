@@ -170,33 +170,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Charts Section -->
-{{--            <div class="section">--}}
-{{--                <div class="card">--}}
-{{--                    <h3>Top 5 de servicios</h3>--}}
-{{--                    <div class="top-requests">--}}
-{{--                        <div><span id="u0"></span><span id="u0p" class="ml-1"></span></div>--}}
-{{--                        <div><span id="u1"></span><span id="u1p" class="ml-1"></span></div>--}}
-{{--                        <div><span id="u2"></span><span id="u2p" class="ml-1"></span></div>--}}
-{{--                        <div><span id="u3"></span><span id="u3p" class="ml-1"></span></div>--}}
-{{--                        <div><span id="u4"></span><span id="u4p" class="ml-1"></span></div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <div class="card">--}}
-{{--                    <div class="chart-container">--}}
-{{--                        <h3>Solicitudes cerradas</h3>--}}
-{{--                        <canvas id="closedRequestsChart" class="canvas_uno"></canvas>--}}
-{{--                    </div>--}}
-
-{{--                </div>--}}
-{{--                <div class="card">--}}
-{{--                    <div class="chart-container">--}}
-{{--                        <h3>% solicitudes atendidas / rechazadas</h3>--}}
-{{--                        <canvas id="solicitudesChart"></canvas>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
         </div>
     </main>
     <input type="hidden" id="zona" name="zona" value="0">
@@ -288,40 +261,6 @@
                 }
             });
 
-
-
-            // % Atendidas vs Rechazadas
-            // const ctx7a = document.getElementById('solicitudesChart');
-            // const chart7a = new Chart(ctx7a, {
-            //     type: 'bar',
-            //     data: data3([Otros.otros[0].atendidas, Otros.otros[0].rechazadas]),
-            //     options: opciones3()
-            // });
-            //
-            // const ctx8a = document.getElementById('closedRequestsChart');
-            // const chart8a = new Chart(ctx8a, {
-            //     type: 'doughnut',
-            //     data: data4([Otros.otros[0].atendidas, Otros.otros[0].observadas]),
-            //     options: opciones4()
-            // });
-            //
-            // Llamar a la función de inicialización cuando la página cargue
-
-            // let Services = [];
-            // let LabelServices = [];
-            // Servicios.servicios.forEach( (servicio) => {
-            //     Services.push(servicio.Total);
-            //     LabelServices.push(servicio.Servicio);
-            //     i++;
-            // });
-
-            // const ctx9a = document.getElementById('servicesChart');
-            // const chart9a = new Chart(ctx9a, {
-            //     type: 'bar',
-            //     data: data5(LabelServices,Services),
-            //     options: opciones5()
-            // });
-
             const inputDenuncias = document.getElementById('denuncias');
 
             let dataSetLocations = [];
@@ -331,7 +270,6 @@
             });
             inputDenuncias.value = denuncias_id.join(',');
             frmFilterDataExport.disabled = false;
-            // frmResumenBasicoExport.disabled = false;
             frmResumenBasicoExport ? frmResumenBasicoExport.disabled = false : console.warn("");
 
             const selectZona = document.getElementById('zona');
@@ -414,7 +352,6 @@
             const btnResumenBasicoExport = document.getElementById('frmResumenBasicoExport');
             if (btnResumenBasicoExport) {
                 btnResumenBasicoExport.addEventListener('click', function () {
-                    btnResumenBasicoExport.disabled = true;
                     const inputDenuncias = document.getElementById('denuncias');
                     var PARAMS = {
                         items : inputDenuncias.value,
@@ -439,6 +376,7 @@
                     }
                     document.body.appendChild(temp);
                     temp.submit();
+                    btnResumenBasicoExport.disabled = false;
                     return temp;
                 });
             }

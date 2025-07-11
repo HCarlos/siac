@@ -223,12 +223,17 @@
                                 <label for="items">Items:</label>
                                 <input type="text" name="items" id="items" value="0" class="totalItems" disabled>
                             </div>
+                            <div class="btn-group">
                             <button type="button" id="frmFilterDataExport" class="btn btn-primary btn-export-excel ms-auto">
                                 <i class="fas fa-file-excel text-white"></i> Exportar
                             </button>
                             <button type="button" id="frmReporteDiario" class="btn btn-info btn-reporte-diario ms-auto">
                                 <i class="fas fa-file-fragment text-white"></i> Reporte Diario
                             </button>
+                            <button type="button" id="frmResumenBasicoExport" class="btn btn-primary btn-resume-basico ms-auto">
+                                <i class="fas fa-file-excel text-white"></i> Resumen SAS
+                            </button>
+                            </div>
                         </form>
                     </div>
 
@@ -289,6 +294,12 @@
 
             let frmFilterDataExport = document.getElementById("frmFilterDataExport");
             frmFilterDataExport.disabled = true;
+
+            let frmReporteDiario = document.getElementById("frmReporteDiario");
+            frmReporteDiario.disabled = true;
+
+            let frmResumenBasicoExport = document.getElementById("frmResumenBasicoExport");
+            frmResumenBasicoExport.disabled = true;
 
             document.getElementById("h2Recibidas").innerHTML  = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[0].Total);
             document.getElementById("h2EnProcesoTotal").innerHTML = getCommaSeparatedTwoDecimalsNumber(Estatus.estatus[1].Total + Estatus.estatus[4].Total);
@@ -372,23 +383,6 @@
             });
 
 
-            // Cerradas
-            // const ctx5a = document.getElementById('chart-area-5');
-            // const chart5a = new Chart(ctx5a, {
-            //     type: 'bar',
-            //     data: data1(data5data),
-            //     options: opciones1()
-            // });
-
-            // Observadas
-            // const ctx6a = document.getElementById('chart-area-6');
-            // const chart6a = new Chart(ctx6a, {
-            //     type: 'bar',
-            //     data: data1(data6data),
-            //     options: opciones1()
-            // });
-
-
             // Total
             const ctx6b = document.getElementById('chart-area-7');
             const chart6b = new Chart(ctx6b, {
@@ -441,6 +435,7 @@
             inputDenuncias.value = denuncias_id.join(',');
             frmFilterDataExport.disabled = false;
             frmReporteDiario.disabled = false;
+            frmResumenBasicoExport.disabled = false;
 
             const selectZona = document.getElementById('zona');
             const selectServicios = document.getElementById('servicios');
@@ -500,12 +495,8 @@
 
             const btnFilterDataExport = document.getElementById('frmFilterDataExport');
             btnFilterDataExport.addEventListener('click', function () {
-                // Deshabilita el botón si es necesario
                 btnFilterDataExport.disabled = true;
                 const inputDenuncias = document.getElementById('denuncias');
-
-                // alert(inputDenuncias);
-
                 var PARAMS = {
                     search : "",
                     items : inputDenuncias.value,
@@ -531,22 +522,15 @@
 
             });
 
-
             const btnReporteDiario = document.getElementById('frmReporteDiario');
             btnReporteDiario.addEventListener('click', function () {
-                // Deshabilita el botón si es necesario
                 btnReporteDiario.disabled = true;
-
-                // alert(inputDenuncias);
-
                 var PARAMS = {
                     search : "",
                     start_date : "{{ $start_date }}",
                     end_date : "{{ $end_date }}",
                     _token : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 };
-
-                // console.log(PARAMS);
 
                 var temp=document.createElement("form");
                 temp.action='reporteDiarioExcel';
@@ -561,10 +545,41 @@
                 }
                 document.body.appendChild(temp);
                 temp.submit();
+                btnReporteDiario.disabled = false;
                 return temp;
 
             });
 
+            const btnResumenBasicoExport = document.getElementById('frmResumenBasicoExport');
+            if (btnResumenBasicoExport) {
+                btnResumenBasicoExport.addEventListener('click', function () {
+                    const inputDenuncias = document.getElementById('denuncias');
+                    var PARAMS = {
+                        items : inputDenuncias.value,
+                        start_date : "{{ $start_date }}",
+                        end_date : "{{ $end_date }}",
+                        fileoutput : "fmt_resumen_basico_01.xlsx",
+                        indice : 4,
+                        _token : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    };
+
+                    var temp=document.createElement("form");
+                    temp.action='/resumenBasico01Export';
+                    temp.method="POST";
+                    temp.target="_blank";
+                    temp.style.display="none";
+                    for(var x in PARAMS) {
+                        var opt=document.createElement("textarea");
+                        opt.name=x;
+                        opt.value=PARAMS[x];
+                        temp.appendChild(opt);
+                    }
+                    document.body.appendChild(temp);
+                    temp.submit();
+                    btnResumenBasicoExport.disabled = false;
+                    return temp;
+                });
+            }
 
             let lat = 17.9919;
             let lon = -92.9303;
@@ -659,10 +674,13 @@
         if (dataSetLocations.length == 0) {
             frmFilterDataExport.disabled = true;
             frmReporteDiario.disabled = true;
+            frmResumenBasicoExport.disabled = true;
+
             alert("No hay datos para mostrar");
         }else{
             frmFilterDataExport.disabled = false;
             frmReporteDiario.disabled = false;
+            frmResumenBasicoExport.disabled = false;
         }
 
     }
