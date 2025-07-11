@@ -54,8 +54,7 @@ class StorageDenunciaAmbitoController extends Controller{
             }
 
         }catch (\Exception $e){
-//            dd($e);
-            throw new $e->getMessage();
+            throw new \RuntimeException($e->getMessage());
         }
         return redirect($this->redirectTo);
     }
