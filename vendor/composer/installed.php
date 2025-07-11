@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '433d584adaddeedbef958017d8e13b682b38f0dc',
+        'reference' => '18b2927b1380ec15701867b81f28225fd7d9178b',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -421,15 +421,6 @@
                 0 => 'v7.30.7',
             ),
         ),
-        'illuminate/macroable' => array(
-            'pretty_version' => 'v8.83.27',
-            'version' => '8.83.27.0',
-            'reference' => 'aed81891a6e046fdee72edd497f822190f61c162',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../illuminate/macroable',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
         'illuminate/mail' => array(
             'dev_requirement' => false,
             'replaced' => array(
@@ -550,18 +541,9 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '433d584adaddeedbef958017d8e13b682b38f0dc',
+            'reference' => '18b2927b1380ec15701867b81f28225fd7d9178b',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
-        'laravel/legacy-factories' => array(
-            'pretty_version' => 'v1.4.1',
-            'version' => '1.4.1.0',
-            'reference' => 'cd0f8c77d116bac121e9779fcff1f71801aaac50',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../laravel/legacy-factories',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -683,9 +665,9 @@
             'dev_requirement' => false,
         ),
         'myclabs/deep-copy' => array(
-            'pretty_version' => '1.13.2',
-            'version' => '1.13.2.0',
-            'reference' => 'd25e62e636b0a9b01e3bdebb7823b474876dd829',
+            'pretty_version' => '1.13.3',
+            'version' => '1.13.3.0',
+            'reference' => 'faed855a7b5f4d4637717c2b3863e277116beb36',
             'type' => 'library',
             'install_path' => __DIR__ . '/../myclabs/deep-copy',
             'aliases' => array(),
@@ -728,9 +710,9 @@
             'dev_requirement' => true,
         ),
         'opis/closure' => array(
-            'pretty_version' => '3.6.3',
-            'version' => '3.6.3.0',
-            'reference' => '3d81e4309d2a927abbe66df935f4bb60082805ad',
+            'pretty_version' => '3.7.0',
+            'version' => '3.7.0.0',
+            'reference' => 'b1a22a6be71c1263f3ca6e68f00b3fd4d394abc4',
             'type' => 'library',
             'install_path' => __DIR__ . '/../opis/closure',
             'aliases' => array(),
@@ -1748,9 +1730,9 @@
             'dev_requirement' => false,
         ),
         'twilio/sdk' => array(
-            'pretty_version' => '8.6.4',
-            'version' => '8.6.4.0',
-            'reference' => 'd8c69844909eb73f1870a2398f6b87309ea29918',
+            'pretty_version' => '8.6.5',
+            'version' => '8.6.5.0',
+            'reference' => '4a914d4fcbab9ee6b7ea84f8df171022f208fdf5',
             'type' => 'library',
             'install_path' => __DIR__ . '/../twilio/sdk',
             'aliases' => array(),
@@ -1785,3 +1767,4 @@
         ),
     ),
 );
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            

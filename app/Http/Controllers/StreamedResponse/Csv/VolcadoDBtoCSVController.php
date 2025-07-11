@@ -6,6 +6,7 @@
 namespace App\Http\Controllers\StreamedResponse\Csv;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Funciones\FuncionesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -46,56 +47,35 @@ class VolcadoDBtoCSVController extends Controller{
     }
 
     public function descargarCsv00(Request $request){
-        ini_set('max_execution_time', 600);
-        @ini_set( 'upload_max_size' , '32768M' );
-        @ini_set( 'post_max_size', '32768M');
-        @ini_set( 'max_execution_time', '256000000' );
-        @ini_set('memory_limit', '-1');
+        FuncionesController::setConfigOne();
 
+        $filename = 'datos_viddss_' . date('Ymd_His') . '.csv'; // Nombre del archivo con extensión
+        $headers = $this->arSelect;
 
+        $callback = function() use ($headers) {
+            $data = DB::table('_viddss')
+                ->select($headers) // Pasa $headers directamente
+                ->cursor(); // Usar cursor para eficiencia de memoria
 
-        // 1. Obtener los datos de la vista
-//        $data = _viDDSs::where('fecha_ingreso','>=','2025-01-20 00:00:00')->get($arSelect); // O aplica filtros: Viddss::where(...)->get();
-
-        $data = DB::table('_viddss')
-            ->select($this->arSelect)
-            ->get($this->arSelect);
-
-        if ($data->isEmpty()) {
-            $headers = $this->arSelect;
-        } else {
-            $headers = $this->arSelect;
-        }
-
-        $callback = function() use ($data, $headers) {
             $file = fopen('php://output', 'w');
             fputcsv($file, $headers);
+
             foreach ($data as $row) {
                 $csvRow = [];
                 foreach ($headers as $header) {
-                    $csvRow[] = $row->$header;
+                    $csvRow[] = data_get($row, $header); // Usar data_get() para acceso seguro
                 }
                 fputcsv($file, $csvRow);
             }
             fclose($file);
         };
 
-        return new StreamedResponse($callback, 200, [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="datos_viddss_' . date('Ymd_His') . '.csv"',
-            'Pragma' => 'no-cache',
-            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
-            'Expires' => '0',
-        ]);
+        return streamCsvResponse($callback, $filename);
 
     }
 
     public function descargarCsv02(Request $request){
-        ini_set('max_execution_time', 600);
-        @ini_set( 'upload_max_size' , '32768M' );
-        @ini_set( 'post_max_size', '32768M');
-        @ini_set( 'max_execution_time', '256000000' );
-        @ini_set('memory_limit', '-1');
+        FuncionesController::setConfigOne();
 
         $data = DB::table('_viddss_completa')
             ->select($this->arrSelDatbaseComplete)
@@ -133,11 +113,7 @@ class VolcadoDBtoCSVController extends Controller{
     }
 
     public function descargarCsv03(Request $request){
-        ini_set('max_execution_time', 600);
-        @ini_set( 'upload_max_size' , '32768M' );
-        @ini_set( 'post_max_size', '32768M');
-        @ini_set( 'max_execution_time', '256000000' );
-        @ini_set('memory_limit', '-1');
+        FuncionesController::setConfigOne();
 
         $data = DB::table('_viddss_completa')
             ->select($this->arrSelDatbaseComplete)
@@ -174,11 +150,7 @@ class VolcadoDBtoCSVController extends Controller{
     }
 
     public function descargarCsv04(Request $request){
-        ini_set('max_execution_time', 600);
-        @ini_set( 'upload_max_size' , '32768M' );
-        @ini_set( 'post_max_size', '32768M');
-        @ini_set( 'max_execution_time', '256000000' );
-        @ini_set('memory_limit', '-1');
+        FuncionesController::setConfigOne();
 
         $data = DB::table('_viddss_completa')
             ->select($this->arrSelDatbaseComplete)
@@ -216,11 +188,44 @@ class VolcadoDBtoCSVController extends Controller{
     }
 
     public function descargarCsv05(Request $request){
-        ini_set('max_execution_time', 600);
-        @ini_set( 'upload_max_size' , '32768M' );
-        @ini_set( 'post_max_size', '32768M');
-        @ini_set( 'max_execution_time', '256000000' );
-        @ini_set('memory_limit', '-1');
+        FuncionesController::setConfigOne();
+
+        $data = DB::table('_viddss_completa')
+            ->select($this->arrSelDatbaseComplete)
+            ->where('ambito_dependencia',2)
+            ->where('fecha_ingreso','>','2025-01-19 00:00:00')
+            ->orderBy('id','desc')
+            ->get($this->arrSelDatbaseComplete);
+        if ($data->isEmpty()) {
+            $headers = $this->arrSelDatbaseComplete;
+        } else {
+            $headers = $this->arrSelDatbaseComplete;
+        }
+
+        $callback = function() use ($data, $headers) {
+            $file = fopen('php://output', 'wb');
+            fputcsv($file, $headers);
+            foreach ($data as $row) {
+                $csvRow = [];
+                foreach ($headers as $header) {
+                    $csvRow[] = $row->$header;
+                }
+                fputcsv($file, $csvRow);
+            }
+            fclose($file);
+        };
+        return new StreamedResponse($callback, 200, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="Datos_SM_20-01-2025_a_la_fecha' . '.csv"',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
+        ]);
+
+    }
+
+    public function descargarServicios(Request $request){
+        FuncionesController::setConfigOne();
 
         $data = DB::table('_viddss_completa')
             ->select($this->arrSelDatbaseComplete)
@@ -257,7 +262,7 @@ class VolcadoDBtoCSVController extends Controller{
     }
 
 
-
+    // relleno 01
 
 
 

@@ -32,7 +32,7 @@
 
             <hr/>
 
-            <p class="text-success">Descargar base de datos:</p>
+            <p class="text-success">Descargar base de datos (formato *.CSV):</p>
             <ul class="list-group">
                 <li class="list list-group-item">
                     <a href="{{ route('viddss.descargar_csv') }}" target="_blank">Datos desde el 05-Oct-2024 a la fecha</a>

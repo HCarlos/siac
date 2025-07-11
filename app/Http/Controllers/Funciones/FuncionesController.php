@@ -24,10 +24,18 @@ use RapidApi\RapidApiConnect;
 class FuncionesController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('auth');
+    public function __construct(){}
+
+    public static function setConfigOne(){
+        ini_set('max_execution_time', 600);
+        @ini_set( 'upload_max_size' , '32768M' );
+        @ini_set( 'post_max_size', '32768M');
+        @ini_set( 'max_execution_time', '256000000' );
+        @ini_set('memory_limit', '-1');
+        return true;
     }
+
+
     //
     public function toMayus($str=""){
         return strtr(strtoupper($str), "áéíóúñ", "ÁÉÍÓÚÑ");
