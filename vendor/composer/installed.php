@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '18b2927b1380ec15701867b81f28225fd7d9178b',
+        'reference' => 'f46bf2dad6bd96d0fc92abfb21251f61cdd91e34',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -421,6 +421,15 @@
                 0 => 'v7.30.7',
             ),
         ),
+        'illuminate/macroable' => array(
+            'pretty_version' => 'v8.83.27',
+            'version' => '8.83.27.0',
+            'reference' => 'aed81891a6e046fdee72edd497f822190f61c162',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../illuminate/macroable',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'illuminate/mail' => array(
             'dev_requirement' => false,
             'replaced' => array(
@@ -541,9 +550,18 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '18b2927b1380ec15701867b81f28225fd7d9178b',
+            'reference' => 'f46bf2dad6bd96d0fc92abfb21251f61cdd91e34',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'laravel/legacy-factories' => array(
+            'pretty_version' => 'v1.4.1',
+            'version' => '1.4.1.0',
+            'reference' => 'cd0f8c77d116bac121e9779fcff1f71801aaac50',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../laravel/legacy-factories',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -1767,4 +1785,3 @@
         ),
     ),
 );
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
