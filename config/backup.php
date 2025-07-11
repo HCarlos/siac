@@ -175,19 +175,20 @@ return [
             ],
         ],
 
-        'slack' => [
-            'webhook_url' => 'cmi2124.slack.com',
+//        'slack' => [
+//            'webhook_url' => 'cmi2124.slack.com',
+//
+//            /*
+//             * If this is set to null the default channel of the webhook will be used.
+//             */
+//            'channel' => 'soporte_tecnico',
+//
+//            'username' => 'Carlos Hidalgo',
+//
+//            'icon' => null,
+//
+//        ],
 
-            /*
-             * If this is set to null the default channel of the webhook will be used.
-             */
-            'channel' => 'soporte_tecnico',
-
-            'username' => 'Carlos Hidalgo',
-
-            'icon' => null,
-
-        ],
     ],
 
     /*
