@@ -7,6 +7,8 @@ namespace App\Http\Controllers\StreamedResponse\Csv;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Funciones\FuncionesController;
+use App\Models\Catalogos\Servicio;
+use App\Models\Denuncias\_viServicios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -41,6 +43,9 @@ class VolcadoDBtoCSVController extends Controller{
         'due_id','dependencia_ultimo_estatus','sue_id','servicio_ultimo_estatus','fecha_dias_ejecucion',
         'fecha_dias_maximos_ejecucion','centro_localidad_id','dias_atendida','dias_rechazada',
         'dias_observada','codigo_postal_manual','search_google_select'];
+
+    protected $arrSelectServicios = ['id','servicio','habilitado','subarea','area', 'dependencia', 'ambito_dependencia','ambito_dependencia_descripcion'];
+    protected $arrSelectEstatus = ['id','estatus','abreviatura_estatus','estatus_orden_impresion','estatus_habilitado', 'resuelto', 'favorable','ambito_estatus','ambito_estatus_descripcion'];
 
     public function __construct(){
         $this->middleware('auth');
@@ -77,17 +82,15 @@ class VolcadoDBtoCSVController extends Controller{
     public function descargarCsv02(Request $request){
         FuncionesController::setConfigOne();
 
+        $filename = "Datos_AS_19-01-2025_hacia_atras' . '.csv";
+        $headers = $this->arrSelDatbaseComplete;
+
         $data = DB::table('_viddss_completa')
-            ->select($this->arrSelDatbaseComplete)
+            ->select($headers)
             ->where('ambito_dependencia',1)
             ->where('fecha_ingreso','<','2025-01-20 00:00:00')
             ->orderBy('id','desc')
-            ->get($this->arrSelDatbaseComplete);
-        if ($data->isEmpty()) {
-            $headers = $this->arrSelDatbaseComplete; // Si no hay datos, los encabezados serán las columnas solicitadas
-        } else {
-            $headers = $this->arrSelDatbaseComplete;
-        }
+            ->get($headers);
 
         $callback = function() use ($data, $headers) {
             $file = fopen('php://output', 'wb');
@@ -102,30 +105,23 @@ class VolcadoDBtoCSVController extends Controller{
             }
             fclose($file);
         };
-        return new StreamedResponse($callback, 200, [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="Datos_AS_19-01-2025_hacia_atras' . '.csv"',
-            'Pragma' => 'no-cache',
-            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
-            'Expires' => '0',
-        ]);
+
+        return streamCsvResponse($callback, $filename);
 
     }
 
     public function descargarCsv03(Request $request){
         FuncionesController::setConfigOne();
 
+        $filename = "Datos_AS_20-01-2025_a_la_fecha' . '.csv";
+        $headers = $this->arrSelDatbaseComplete;
+
         $data = DB::table('_viddss_completa')
-            ->select($this->arrSelDatbaseComplete)
+            ->select($headers)
             ->where('ambito_dependencia',1)
             ->where('fecha_ingreso','>','2025-01-19 00:00:00')
             ->orderBy('id','desc')
-            ->get($this->arrSelDatbaseComplete);
-        if ($data->isEmpty()) {
-            $headers = $this->arrSelDatbaseComplete; // Si no hay datos, los encabezados serán las columnas solicitadas
-        } else {
-            $headers = $this->arrSelDatbaseComplete;
-        }
+            ->get($headers);
 
         $callback = function() use ($data, $headers) {
             $file = fopen('php://output', 'wb');
@@ -139,30 +135,21 @@ class VolcadoDBtoCSVController extends Controller{
             }
             fclose($file);
         };
-        return new StreamedResponse($callback, 200, [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="Datos_AS_20-01-2025_a_la_fecha' . '.csv"',
-            'Pragma' => 'no-cache',
-            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
-            'Expires' => '0',
-        ]);
+        return streamCsvResponse($callback, $filename);
 
     }
 
     public function descargarCsv04(Request $request){
         FuncionesController::setConfigOne();
+        $filename = "Datos_SM_19-01-2025_hacia_atras' . '.csv";
+        $headers = $this->arrSelDatbaseComplete;
 
         $data = DB::table('_viddss_completa')
-            ->select($this->arrSelDatbaseComplete)
+            ->select($headers)
             ->where('ambito_dependencia',99)
             ->where('fecha_ingreso','<','2025-01-20 00:00:00')
             ->orderBy('id','desc')
-            ->get($this->arrSelDatbaseComplete);
-        if ($data->isEmpty()) {
-            $headers = $this->arrSelDatbaseComplete; // Si no hay datos, los encabezados serán las columnas solicitadas
-        } else {
-            $headers = $this->arrSelDatbaseComplete;
-        }
+            ->get($headers);
 
         $callback = function() use ($data, $headers) {
             $file = fopen('php://output', 'wb');
@@ -177,30 +164,21 @@ class VolcadoDBtoCSVController extends Controller{
             }
             fclose($file);
         };
-        return new StreamedResponse($callback, 200, [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="Datos_SM_19-01-2025_hacia_atras' . '.csv"',
-            'Pragma' => 'no-cache',
-            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
-            'Expires' => '0',
-        ]);
+        return streamCsvResponse($callback, $filename);
 
     }
 
     public function descargarCsv05(Request $request){
         FuncionesController::setConfigOne();
+        $filename = "Datos_SM_20-01-2025_a_la_fecha' . '.csv";
+        $headers = $this->arrSelDatbaseComplete;
 
         $data = DB::table('_viddss_completa')
-            ->select($this->arrSelDatbaseComplete)
+            ->select($headers)
             ->where('ambito_dependencia',2)
             ->where('fecha_ingreso','>','2025-01-19 00:00:00')
             ->orderBy('id','desc')
-            ->get($this->arrSelDatbaseComplete);
-        if ($data->isEmpty()) {
-            $headers = $this->arrSelDatbaseComplete;
-        } else {
-            $headers = $this->arrSelDatbaseComplete;
-        }
+            ->get($headers);
 
         $callback = function() use ($data, $headers) {
             $file = fopen('php://output', 'wb');
@@ -214,55 +192,67 @@ class VolcadoDBtoCSVController extends Controller{
             }
             fclose($file);
         };
-        return new StreamedResponse($callback, 200, [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="Datos_SM_20-01-2025_a_la_fecha' . '.csv"',
-            'Pragma' => 'no-cache',
-            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
-            'Expires' => '0',
-        ]);
+        return streamCsvResponse($callback, $filename);
 
     }
 
     public function descargarServicios(Request $request){
         FuncionesController::setConfigOne();
 
-        $data = DB::table('_viddss_completa')
-            ->select($this->arrSelDatbaseComplete)
-            ->where('ambito_dependencia',2)
-            ->where('fecha_ingreso','>','2025-01-19 00:00:00')
-            ->orderBy('id','desc')
-            ->get($this->arrSelDatbaseComplete);
-        if ($data->isEmpty()) {
-            $headers = $this->arrSelDatbaseComplete;
-        } else {
-            $headers = $this->arrSelDatbaseComplete;
-        }
+        $filename = 'datos_servicios.csv'; // Nombre del archivo con extensión
+        $headers = $this->arrSelectServicios;
 
-        $callback = function() use ($data, $headers) {
-            $file = fopen('php://output', 'wb');
+        $callback = function() use ($headers) {
+            $data = DB::table('_viservicios')
+                ->select($headers)
+                ->cursor(); // Usar cursor para eficiencia de memoria
+
+            $file = fopen('php://output', 'w');
             fputcsv($file, $headers);
+
             foreach ($data as $row) {
                 $csvRow = [];
                 foreach ($headers as $header) {
-                    $csvRow[] = $row->$header;
+                    $csvRow[] = data_get($row, $header); // Usar data_get() para acceso seguro
                 }
                 fputcsv($file, $csvRow);
             }
             fclose($file);
         };
-        return new StreamedResponse($callback, 200, [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="Datos_SM_20-01-2025_a_la_fecha' . '.csv"',
-            'Pragma' => 'no-cache',
-            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
-            'Expires' => '0',
-        ]);
+
+        return streamCsvResponse($callback, $filename);
+
+    }
+
+    public function descargarEstatus(Request $request){
+        FuncionesController::setConfigOne();
+
+        $filename = 'datos_estatus.csv'; // Nombre del archivo con extensión
+        $headers = $this->arrSelectEstatus;
+
+        $callback = function() use ($headers) {
+            $data = DB::table('_viestatus')
+                ->select($headers)
+                ->cursor(); // Usar cursor para eficiencia de memoria
+
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $headers);
+
+            foreach ($data as $row) {
+                $csvRow = [];
+                foreach ($headers as $header) {
+                    $csvRow[] = data_get($row, $header); // Usar data_get() para acceso seguro
+                }
+                fputcsv($file, $csvRow);
+            }
+            fclose($file);
+        };
+
+        return streamCsvResponse($callback, $filename);
 
     }
 
 
-    // relleno 01
 
 
 
