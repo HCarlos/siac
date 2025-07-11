@@ -642,18 +642,43 @@ class DashboardStaticCustomUnityController extends Controller{
 //            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
 //            ->get();
 //
-        return DB::table("_videpdenservestatus")
-            ->select(
-                'id','latitud','longitud','dependencia','abreviatura','servicio as servicio_ultimo_estatus',
-                'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
-                'fecha_movimiento as fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','estatus as ultimo_estatus',
-                'servicio_id as sue_id','servicio as servicio_ultimo_estatus','ue_id','dependencia_id','uuid',
-                'descripcion as denuncia','centro_localidad_id'
-            )
-            ->where('ambito_dependencia', 2)
-            ->where('dependencia_id', $unidad_id)
-            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-            ->get();
+
+
+//        return DB::table("_videpdenservestatus")
+//            ->select(
+//                'id','latitud','longitud','dependencia','abreviatura','servicio as servicio_ultimo_estatus',
+//                'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
+//                'fecha_movimiento as fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','estatus as ultimo_estatus',
+//                'servicio_id as sue_id','servicio as servicio_ultimo_estatus','ue_id','dependencia_id','uuid',
+//                'descripcion as denuncia','centro_localidad_id'
+//            )
+//            ->where('ambito_dependencia', 2)
+//            ->where('dependencia_id', $unidad_id)
+//            ->where('fecha_ingreso', '>=', $start_date." 00:00:00")
+//            ->where('fecha_ingreso', '<=', $end_date." 23:59:59")
+//            ->get();
+
+        $cacheKey = 'videpdenservestatus_' . md5($unidad_id . $start_date . $end_date); // Genera una clave de caché única
+
+        $data = Cache::remember($cacheKey, 60, function () use ($unidad_id, $start_date, $end_date) {
+            return DB::table("_videpdenservestatus")
+                ->select(
+                    'id','latitud','longitud','dependencia','abreviatura','servicio as servicio_ultimo_estatus',
+                    'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
+                    'fecha_movimiento as fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','estatus as ultimo_estatus',
+                    'servicio_id as sue_id','servicio as servicio_ultimo_estatus','ue_id','dependencia_id','uuid',
+                    'descripcion as denuncia','centro_localidad_id'
+                )
+                ->where('ambito_dependencia', 2)
+                ->where('dependencia_id', $unidad_id)
+                ->where('fecha_ingreso', '>=', $start_date." 00:00:00")
+                ->where('fecha_ingreso', '<=', $end_date." 23:59:59")
+                ->get();
+        });
+
+        return $data;
+
+
 
     }
 

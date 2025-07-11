@@ -767,30 +767,59 @@ class ListDenunciaAmbitoXLSXController extends Controller
     }
 
     function resumenBasico01Export(Request $request){
-        $data = $request->all();
-
-        $start_date = $data['start_date'];
-        $end_date = $data['end_date'];
-        $unidad_id = $data['unity_id'];
-
-
         $arrColl = [
-            ["sue_id" => 483, "servicio" => "FUGA DE AGUA POTABLE", "atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0],
+            ["sue_id" => 476, "servicio" => "FUGA DE AGUA POTABLE", "atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0],
             ["sue_id" => 508, "servicio" => "DESASOLVE DE DRENAJE","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0],
             ["sue_id" => 479, "servicio" => "REPARACION DE ALCANTARILLA","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0],
         ];
 
-        $arrServ = Cache::remember('arrServ_key', 60, function () use ($unidad_id, $start_date, $end_date) {
-            return DB::table("_videpdenservestatus")
-                ->select('sue_id','ue_id')
-                ->where('ambito_dependencia', 2)
-                ->where('dependencia_id', $unidad_id)
-                ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-                ->get();
-        });
+        $data = $request->validate([
+            'items' => 'required|string',
+        ]);
+
+        $ids = collect(explode(',', $data['items']))
+            ->map(function ($value) {
+                return (int) $value;
+            })
+            ->toArray();
+
+        $arrServ = _viDepDenServEstatus::query()
+            ->select(FuncionesController::itemSelectDenuncias())
+            ->whereIn('id', $ids)
+            ->whereIn('servicio_id', [476,568,508,479])
+            ->orderByDesc('id')
+            ->get();
+
+
+        $sueIdsDiferentes = $arrServ->pluck('servicio_id')->unique()->values();
+        $numeroSueIdDiferentes = $sueIdsDiferentes->count();
+//        echo $numeroSueIdDiferentes;
+
+        // Ahora $sueIdsDiferentes es una Collection que contiene los sue_id diferentes.
+        // Puedes convertirla a un array si lo prefieres:
+        $arraySueIdsDiferentes = $sueIdsDiferentes->toArray();
+
+        // Para imprimirlos:
+//        foreach ($arraySueIdsDiferentes as $sueId) {
+//            echo $sueId . "<br>";
+//        }
+
+//        return false;
+
+
+        $ue_id_mappings = [
+            17 => 'atendidas',
+            21 => 'atendidas',
+            20 => 'rechazadas',
+            22 => 'rechazadas',
+            16 => 'pendientes',
+            19 => 'pendientes',
+            18 => 'observadas',
+        ];
 
         foreach ($arrServ as $item) {
-            switch ($item->sue_id) {
+            $indice = null;
+            switch ($item->servicio_id) {
                 case 476:
                 case 568:
                     $indice = 0;
@@ -801,21 +830,10 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 case 479:
                     $indice = 2;
                     break;
-                default:
-                    $indice = 999;
             }
 
-            if ($indice !== 999) {
-                $ue_id = (int) $item->ue_id; // Castea a entero una sola vez
-                if (!isset($arrColl[$indice])) {
-                    $arrColl[$indice] = [
-                        "atendidas" => 0,
-                        "rechazadas" => 0,
-                        "pendientes" => 0,
-                        "observadas" => 0,
-                        "total" => 0
-                    ];
-                }
+            if ($indice !== null) {
+                $ue_id = (int) $item->estatu_id; // Castea a entero una sola vez
 
                 if (in_array($ue_id, [17, 21])) {
                     $arrColl[$indice]["atendidas"]++;
@@ -831,16 +849,14 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 }
                 $arrColl[$indice]["total"]++;
             }
+
         }
 
-        $collection = collect($arrColl);
-
-        $request->session()->put('items', $collection);
+        $request->session()->put('items', $arrColl);
 
         return $this->getListDenunciaAmbitoXLSX($request);
 
     }
-
 
 
 

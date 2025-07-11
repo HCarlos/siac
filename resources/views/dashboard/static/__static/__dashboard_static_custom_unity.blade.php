@@ -415,7 +415,9 @@
             if (btnResumenBasicoExport) {
                 btnResumenBasicoExport.addEventListener('click', function () {
                     btnResumenBasicoExport.disabled = true;
+                    const inputDenuncias = document.getElementById('denuncias');
                     var PARAMS = {
+                        items : inputDenuncias.value,
                         start_date : "{{ $start_date }}",
                         end_date : "{{ $end_date }}",
                         unity_id: {{ $unity_id }},
