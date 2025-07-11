@@ -659,7 +659,6 @@ class DashboardStaticCustomUnityController extends Controller{
 //            ->get();
 
         $cacheKey = 'videpdenservestatus_' . md5($unidad_id . $start_date . $end_date); // Genera una clave de caché única
-
         $data = Cache::remember($cacheKey, 60, function () use ($unidad_id, $start_date, $end_date) {
             return DB::table("_videpdenservestatus")
                 ->select(
@@ -720,8 +719,6 @@ class DashboardStaticCustomUnityController extends Controller{
             })
             ->toArray();
 
-//        dd($ids);
-
         $item = Denuncia::query()
             ->whereIn('id', $ids)
             ->get();
@@ -733,7 +730,6 @@ class DashboardStaticCustomUnityController extends Controller{
             ->get();
 
         $request->session()->put('items', $items);
-
 
     }
 

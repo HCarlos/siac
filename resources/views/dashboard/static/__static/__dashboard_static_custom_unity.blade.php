@@ -278,7 +278,7 @@
             const selectDelegaciones = document.getElementById('delegaciones');
             const items = document.getElementById('items');
 
-            selectZona.value = FiltroUnidades.filtro_unidades[0].dependencia_id;
+            selectZona.value = FiltroUnidades.filtro_unidades[0]?.dependencia_id ?? 0;
 
             FiltroServicios.filtro_servicios.forEach(item => {
                 if (parseInt(item.dependencia_id) === parseInt(selectZona.value)) {

@@ -13,6 +13,7 @@ use App\User;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -526,20 +527,26 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
 
     static function getGeoDenuncias($start_date,$end_date,$ServiciosPrincipales){
 
-        $doc =  DB::table("_viddss")
-            ->select(
-                'id','latitud','longitud','dependencia','abreviatura',
-                'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
-                'fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','ultimo_estatus',
-                'sue_id','servicio_ultimo_estatus','ue_id','dependencia_id','uuid',
-                'denuncia','centro_localidad_id','ciudadano_id'
-            )
-            ->whereIn('sue_id', $ServiciosPrincipales)
-            ->where('ambito_dependencia', 2)
-            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-            ->get();
+        $cacheKey = '_viddss_' . md5($ServiciosPrincipales[0] . $start_date . $end_date);
+        $data = Cache::remember($cacheKey, 60, function () use ($ServiciosPrincipales, $start_date, $end_date) {
+            return DB::table("_viddss")
+                ->select(
+                    'id','latitud','longitud','dependencia','abreviatura',
+                    'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
+                    'fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','ultimo_estatus',
+                    'sue_id','servicio_ultimo_estatus','ue_id','dependencia_id','uuid',
+                    'denuncia','centro_localidad_id','ciudadano_id'
+                )
+                ->whereIn('sue_id', $ServiciosPrincipales)
+                ->where('ambito_dependencia', 2)
+                ->where('fecha_ingreso', '>=', $start_date." 00:00:00")
+                ->where('fecha_ingreso', '<=', $end_date." 23:59:59")
+                ->get();
+        });
 
-        return $doc;
+        //            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+
+        return $data;
     }
 
 

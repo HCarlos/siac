@@ -16,6 +16,7 @@ use App\Models\Denuncias\Denuncia;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -552,6 +553,9 @@ class DashboardStaticGeneralController extends Controller{
 //            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
 //            ->get();
 
+        $cacheKey = '_videpdenservestatus_' . md5($unidad_id . $start_date . $end_date);
+        $data = Cache::remember($cacheKey, 60, function () use ($unidad_id, $start_date, $end_date) {
+
         return DB::table("_videpdenservestatus")
             ->select(
                 'id','latitud','longitud','dependencia','abreviatura',
@@ -561,9 +565,14 @@ class DashboardStaticGeneralController extends Controller{
                 'descripcion as denuncia','centro_localidad_id'
             )
             ->where('ambito_dependencia', 2)
-            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+            ->where('fecha_ingreso', '>=', $start_date." 00:00:00")
+            ->where('fecha_ingreso', '<=', $end_date." 23:59:59")
             ->get();
+        });
 
+//        ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+
+        return $data;
 
     }
 
