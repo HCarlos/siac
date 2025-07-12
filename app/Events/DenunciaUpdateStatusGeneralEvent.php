@@ -4,10 +4,6 @@ namespace App\Events;
 
 use App\Classes\Denuncia\VistaDenunciaClass;
 use App\Http\Controllers\Funciones\FuncionesController;
-use App\Mail\SendMailToEnlace;
-use App\Models\Denuncias\_viDDSs;
-use App\Models\Denuncias\Denuncia;
-use App\User;
 use Carbon\Carbon;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;

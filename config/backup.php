@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 return [
 
     'backup' => [
@@ -105,13 +107,14 @@ return [
          * The file extension should be specified without a leading .
          */
         'database_dump_file_extension' => 'backup',
+        'archive_filename' => env('BACKUP_ARCHIVE_FILENAME', 'respaldo_servimun_' . Carbon::now()->format('Y-m-d-H-i-s') . '.tar'),
 
         'destination' => [
 
             /*
              * The filename prefix used for the backup zip file.
              */
-            'filename_prefix' => 'respaldo_servimun_',
+            'filename_prefix' => 'respaldo_servimun_' ,
 
             /*
              * The disk names on which the backups will be stored.
@@ -119,6 +122,7 @@ return [
             'disks' => [
                 'local',
             ],
+            'compression' => 'tar', // Cambia de 'zip' a 'tar'
         ],
 
         /*
@@ -140,6 +144,7 @@ return [
          * available on your system.
          */
         'encryption' => 'default',
+        'compression' => 'tar', // Cambia de 'zip' a 'tar'
     ],
 
     /*
