@@ -378,7 +378,7 @@ class DenunciaController extends Controller{
 
             $Dependencias = Dependencia::query()
                 ->where("estatus_cve", 1)
-                ->whereIn("ambito_dependencia", FuncionesController::arrAmbitosViejitos())
+                ->whereIn("ambito_dependencia", FuncionesController::arrAmbitosApoyosSociales())
                 ->whereIn('id',$dependencia_id_array)
                 ->orderBy('dependencia')
                 ->pluck('dependencia','id');
@@ -396,7 +396,7 @@ class DenunciaController extends Controller{
         }else{
             $Dependencias = Dependencia::query()
                                 ->where("estatus_cve", 1)
-                                ->whereIn("ambito_dependencia", FuncionesController::arrAmbitosViejitos())
+                                ->whereIn("ambito_dependencia", FuncionesController::arrAmbitosApoyosSociales())
                                 ->orderBy('dependencia')
                                 ->pluck('dependencia','id');
 //            $Servicios    = Servicio::query()
