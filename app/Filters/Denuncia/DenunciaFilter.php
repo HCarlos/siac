@@ -56,8 +56,9 @@ class DenunciaFilter extends QueryFilter
     }
 
     public function ambito_dependencia($query, $search){
-        if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
+        if ( is_null($search) || empty($search) ) {return $query;}
         return $query->whereIn('ambito_dependencia', FuncionesController::arrAmbitosApoyosSociales());
+//        if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
 //        return $query->where('ambito_dependencia', (int)$search);
     }
 
