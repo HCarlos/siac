@@ -9,6 +9,7 @@ use App\Models\Catalogos\Origen;
 use App\Models\Catalogos\Prioridad;
 use App\Models\Catalogos\Servicio;
 use App\Models\Denuncias\_viDDSs;
+use App\Models\Denuncias\_viDDSS_Viejitas;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use Illuminate\Http\Request;
@@ -74,78 +75,84 @@ class ListDenunciaXLSXController extends Controller
 
         $sh->setCellValue('S1', Carbon::now()->format('d-m-Y h:m:s'));
         foreach ($Items as $it){
-            $item = _viDDSs::find($it->id);
-            $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
-            $fechaIngreso   = isset($item->fecha_ingreso) ? $fechaIngreso : '';
+            if ($it->id) {
 
-            $resp = Denuncia_Dependencia_Servicio::query()
-                    ->select(['id','observaciones','dependencia_id','favorable','denuncia_id'])
-                    ->where('denuncia_id',$item->id)
-                    ->orderByDesc('id')
-                    ->first();
+                $item = _viDDSS_Viejitas::find($it->id);
+                if ($item) {
 
-            $respuesta = "";
-            $favorable = false;
-            try{
-                if ( $resp->observaciones !== null){
-                    $res = trim($resp->observaciones) ?? '';
-                    if ( $res != ""){
-                        $dep = Dependencia::find($resp->dependencia_id);
-                        $respuesta = $dep->abreviatura.' - '.$res.'. ';
-                        $favorable = $resp->favorable;
+                    if (isset($item->fecha_ingreso)) {
+                        $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
+                        $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
+                    } else {
+                        $fechaIngreso = '';
                     }
-                }else{
-                    $respuesta = '';
-                    $favorable = '';
+
+                    $resp = Denuncia_Dependencia_Servicio::query()
+                        ->select(['id', 'observaciones', 'dependencia_id', 'favorable', 'denuncia_id'])
+                        ->where('denuncia_id', $item->id)
+                        ->orderByDesc('id')
+                        ->first();
+
+                    $respuesta = "";
+                    $favorable = false;
+                    try {
+                        if ($resp->observaciones !== null) {
+                            $res = trim($resp->observaciones) ?? '';
+                            if ($res != "") {
+                                $dep = Dependencia::find($resp->dependencia_id);
+                                $respuesta = $dep->abreviatura . ' - ' . $res . '. ';
+                                $favorable = $resp->favorable;
+                            }
+                        } else {
+                            $respuesta = '';
+                            $favorable = '';
+                        }
+                    } catch (Exception $e) {
+                        $respuesta = '';
+                        $favorable = '';
+                    }
+
+
+                    if (json_decode($item->estatus_general) == null) {
+                        $fechaUntiloEstatus = "";
+                    } else {
+                        $arrUltimoEstatus = last(json_decode($item->estatus_general));
+                        $fechaUntiloEstatus = Carbon::parse($arrUltimoEstatus->fecha)->format('d-m-Y');
+                    }
+
+                    $sh
+                        ->setCellValue('A' . $C, $item->id ?? 0)
+                        ->setCellValue('B' . $C, trim($item->curp_ciudadano ?? ''))
+                        ->setCellValue('C' . $C, trim($item->ap_paterno_ciudadano ?? ''))
+                        ->setCellValue('D' . $C, trim($item->ap_materno_ciudadano ?? ''))
+                        ->setCellValue('E' . $C, trim($item->nombre_ciudadano ?? ''))
+                        ->setCellValue('F' . $C, trim($item->calle ?? ''))
+                        ->setCellValue('G' . $C, trim($item->num_ext ?? ''))
+                        ->setCellValue('H' . $C, trim($item->num_int ?? ''))
+                        ->setCellValue('I' . $C, trim($item->colonia ?? ''))
+                        ->setCellValue('J' . $C, trim($item->cp ?? ''))
+                        ->setCellValue('K' . $C, $item->ubicacion ?? '')
+                        ->setCellValue('L' . $C, $item->telefonoscelularesemails ?? '')
+                        ->setCellValue('M' . $C, $fechaIngreso ?? '')
+                        ->setCellValue('N' . $C, $item->dependencia_ultimo_estatus ?? '')
+                        ->setCellValue('O' . $C, $item->area ?? '')
+                        ->setCellValue('P' . $C, $item->subarea ?? '')
+                        ->setCellValue('Q' . $C, $item->servicio_ultimo_estatus ?? '')
+                        ->setCellValue('R' . $C, $item->denuncia ?? '')
+                        ->setCellValue('S' . $C, $item->referencia ?? '')
+                        ->setCellValue('T' . $C, $item->prioridad ?? '')
+                        ->setCellValue('U' . $C, $item->origen ?? '')
+                        ->setCellValue('V' . $C, $arrUltimoEstatus->estatus ?? '')
+                        ->setCellValue('W' . $C, $fechaUntiloEstatus ?? '')
+                        ->setCellValue('X' . $C, $respuesta)
+                        ->setCellValue('Y' . $C, $favorable ? "SI" : "NO")
+                        ->setCellValue('Z' . $C, $item->clave_identificadora)
+                        ->setCellValue('AA' . $C, trim($item->genero_ciudadano ?? ''))
+                        ->setCellValue('AB' . $C, trim($item->creadopor ?? ''));
+                    $C++;
                 }
-            }catch (Exception $e) {
-                $respuesta = '';
-                $favorable = '';
             }
-
-
-            if (json_decode($item->estatus_general) == null){
-                $fechaUntiloEstatus = "";
-            }else{
-                $arrUltimoEstatus = last(json_decode($item->estatus_general));
-                $fechaUntiloEstatus   = Carbon::parse($arrUltimoEstatus->fecha)->format('d-m-Y');
-            }
-
-            $sh
-                ->setCellValue('A'.$C, $item->id ?? 0)
-                ->setCellValue('B'.$C, trim($item->curp_ciudadano ?? ''))
-                ->setCellValue('C'.$C, trim($item->ap_paterno_ciudadano ?? ''))
-                ->setCellValue('D'.$C, trim($item->ap_materno_ciudadano ?? ''))
-                ->setCellValue('E'.$C, trim($item->nombre_ciudadano ?? ''))
-
-                ->setCellValue('F'.$C, trim($item->calle ?? ''))
-                ->setCellValue('G'.$C, trim($item->num_ext ?? ''))
-                ->setCellValue('H'.$C, trim($item->num_int ?? ''))
-                ->setCellValue('I'.$C, trim($item->colonia ?? ''))
-                ->setCellValue('J'.$C, trim($item->cp ?? ''))
-
-                ->setCellValue('K'.$C, $item->ubicacion ?? '')
-                ->setCellValue('L'.$C, $item->telefonoscelularesemails ?? '')
-                ->setCellValue('M'.$C, $fechaIngreso ?? '')
-                ->setCellValue('N'.$C, $item->dependencia_ultimo_estatus ?? '')
-                ->setCellValue('O'.$C, $item->area ?? '')
-                ->setCellValue('P'.$C, $item->subarea ?? '')
-                ->setCellValue('Q'.$C, $item->servicio_ultimo_estatus ?? '')
-                ->setCellValue('R'.$C, $item->denuncia ?? '')
-                ->setCellValue('S'.$C, $item->referencia ?? '')
-                ->setCellValue('T'.$C, $item->prioridad ?? '')
-                ->setCellValue('U'.$C, $item->origen ?? '')
-                ->setCellValue('V'.$C, $arrUltimoEstatus->estatus ?? '')
-                ->setCellValue('W'.$C, $fechaUntiloEstatus ?? '')
-                ->setCellValue('X'.$C, $respuesta )
-                ->setCellValue('Y'.$C, $favorable ? "SI" : "NO" )
-                ->setCellValue('Z'.$C, $item->clave_identificadora )
-                ->setCellValue('AA'.$C, trim($item->genero_ciudadano ?? ''))
-                ->setCellValue('AB'.$C, trim($item->creadopor ?? ''));
-            $C++;
         }
-//        ->setCellValue('N'.$C, $servicio->subarea->area->dependencia->dependencia ?? '')
-//        ->setCellValue('Q'.$C, $servicio->servicio ?? '')
 
         $Cx = $C  - 1;
         $oVal = $sh->getCell('G1')->getValue();
@@ -170,6 +177,7 @@ class ListDenunciaXLSXController extends Controller
         $writer = IOFactory::createWriter($spreadsheet, $extension);
         $writer->save('php://output');
         exit;
+
     }
 
 
@@ -181,7 +189,7 @@ class ListDenunciaXLSXController extends Controller
 
         $sh->setCellValue('M1', Carbon::now()->format('d-m-Y h:m:s'));
         foreach ($Items as $it){
-            $item = _viDDSs::find($it->id);
+            $item = _viDDSS_Viejitas::find($it->id);
             $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
             $fechaIngreso   = isset($item->fecha_ingreso) ? $fechaIngreso : '';
 
