@@ -1,11 +1,8 @@
 <?php
-/*
- * Copyright (c) 2025. Realizado por Carlos Hidalgo
- */
+
 
 namespace App\Models\Denuncias;
 
-use App\Classes\Denuncia\ActualizaEstadisticasARO;
 use App\Filters\Denuncia\Count\DenunciaAmbitoFilterCount;
 use App\Filters\Denuncia\Count\GetDenunciasAmbitoFilterCount;
 use App\Filters\Denuncia\Count\GetDenunciasEstatusAmbitoFilterCount;
@@ -22,64 +19,24 @@ use App\Models\Catalogos\Servicio;
 use App\Traits\Denuncia\DenunciaTrait;
 use App\User;
 use Carbon\Carbon;
-use DateTime;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Facades\Auth;
 
-class _viDepDenServEstatus extends Model{
+class _viMovimientos extends Model{
 
+//    use SoftDeletes;
     use DenunciaTrait;
 
     protected $guard_name = 'web';
+    protected $table = '_vimovimientos';
 
-    protected $table = '_videpdenservestatus';
-
-    protected $fillable = [
-        'id','uuid','ciudadano','curp_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano',
-        'fecha_ingreso','dependencia_ultimo_estatus','area','subarea','servicio_ultimo_estatus','cp',
-        'telefonoscelularesemails', 'calle','num_ext','num_int','colonia','ubicacion','ambito_dependencia',
-        'denuncia','referencia', 'status_denuncia','prioridad_id','prioridad','origen','observaciones','genero','genero_ciudadano',
-        'cerrado','origen_id','ciudadano_id','ultimo_estatus','firmado','latitud','longitud','search_google',
-        'clave_identificadora','estatus_general','ambito','ambito_sas','due_id','sue_id','ue_id','centro_localidad_id',
-        'calle_y_numero_searchtext',
-        'ubicacion_id',
-    ];
-
-
-    public function scopeLatestStatusByDependencias(Builder $query, array $dependencias = null): Builder
-    {
-        // Obtener dependencias del usuario si no se pasan como parámetro
-        $dependencias = $dependencias ?: Auth::user()->DependenciaInArray();
-
-        // Nombre de la tabla del modelo dinámicamente
-        $table = $query->getModel()->getTable();
-
-        // Subconsulta: el máximo id por (denuncia, dependencia, servicio)
-        $sub = static::selectRaw('MAX(id) AS max_id')
-            ->when($dependencias, fn($q) => $q->whereIn('dependencia_id', $dependencias))
-            ->groupBy('denuncia_id', 'dependencia_id', 'servicio_id');
-
-        // Join de la subconsulta y retorno del query para que siga encadenable
-        return $query->joinSub($sub, 'latest', function ($join) use ($table) {
-            $join->on("{$table}.id", '=', 'latest.max_id');
-        })
-            // opcional: seleccionar explícitamente todos los campos del modelo
-            ->select("{$table}.*");
-    }
-
-// Sin parámetro: usa dependencias del usuario autenticado
-// $registros = _viDepDenServEstatus::latestStatusByDependencias()->get();
-
-// Pasando un arreglo de dependencias concreto
-// $depIds    = [1,2,3];
-// $registros = _viDepDenServEstatus::latestStatusByDependencias($depIds)->get();
-
-//SELECT DISTINCT ON (denuncia_id, dependencia_id, servicio_id) *
-//FROM _videpdenservestatus
-//WHERE dependencia_id in (49,50)
-//ORDER BY denuncia_id, dependencia_id, servicio_id, id DESC;
-
+//    protected $fillable = [
+//        'id','uuid','ciudadano','curp_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano',
+//        'fecha_ingreso','dependencia_ultimo_estatus','area','subarea','servicio_ultimo_estatus','cp',
+//        'telefonoscelularesemails', 'calle','num_ext','num_int','colonia','ubicacion','ambito_dependencia',
+//        'denuncia','referencia', 'status_denuncia','prioridad_id','prioridad','origen','observaciones','genero','genero_ciudadano',
+//        'cerrado','origen_id','ciudadano_id','ultimo_estatus','firmado','latitud','longitud','search_google',
+//        'clave_identificadora','estatus_general','ambito','ambito_sas','ue_id','centro_localidad_id','calle_y_numero_searchtext',
+//    ];
 
     public function scopeFilterBy($query, $filters){
         return (new DenunciaFilter())->applyTo($query, $filters);
@@ -129,7 +86,7 @@ class _viDepDenServEstatus extends Model{
         return $this->belongsToMany(Estatu::class,'denuncia_estatu','denuncia_id','estatus_id');
     }
 
-    public function dependencia_simple(){
+    public function dependencia(){
         return $this->hasOne(Dependencia::class,'id','dependencia_id');
     }
 
@@ -152,7 +109,7 @@ class _viDepDenServEstatus extends Model{
         return $this->belongsToMany(Estatu::class,'denuncia_dependencia_servicio_estatus','denuncia_id','estatu_id')
             ->withPivot('fecha_movimiento','observaciones','favorable','fue_leida','creadopor_id');
     }
-//
+
     public function ubicacion(){
         return $this->hasOne(Ubicacion::class,'id','ubicacion_id');
     }
@@ -160,7 +117,7 @@ class _viDepDenServEstatus extends Model{
         return $this->belongsToMany(Ubicacion::class,'denuncia_ubicacion','denuncia_id','ubicacion_id');
     }
 
-    public function Servicio(){
+    public function servicio(){
         return $this->hasOne(Servicio::class,'id','servicio_id');
     }
 
@@ -168,14 +125,12 @@ class _viDepDenServEstatus extends Model{
         return $this->belongsToMany(Servicio::class,'denuncia_servicio','denuncia_id','servicio_id');
     }
 
-    public function ciudadano_simple(){
+    public function ciudadano(){
         return $this->hasOne(User::class,'id','ciudadano_id');
     }
-
     public function ciudadanos(){
         return $this->belongsToMany(User::class,'ciudadano_denuncia','denuncia_id','ciudadano_id');
     }
-
 
     public function creadopor(){
         return $this->hasOne(User::class,'id','creadopor_id');
@@ -207,14 +162,14 @@ class _viDepDenServEstatus extends Model{
         return $this->belongsToMany(Imagene::class,'denuncia_imagene','denuncia_id','imagene_id');
     }
 
-    public function user(){
-        return $this->hasOne(User::class,'id','user_id');
-    }
-
-    public function users(){
-        return $this->belongsToMany(User::class,'denuncia_user','denuncia_id','user_id');
-    }
-
+//    public function user(){
+//        return $this->hasOne(User::class,'id','user_id');
+//    }
+//
+//    public function users(){
+//        return $this->belongsToMany(User::class,'denuncia_user','denuncia_id','user_id');
+//    }
+//
     public function firma(){
         return $this->hasOne(Firma::class,'id','firma_id');
     }
@@ -245,10 +200,29 @@ class _viDepDenServEstatus extends Model{
 
     public function semaforo_ultimo_estatus(){
 
-        $fecha_menor = new DateTime($this->fecha_ingreso);
-        $fecha_mayor = new DateTime($this->fecha_movimientoi);
+        $sem = 1;
 
-        return ActualizaEstadisticasARO::semaforo_ultimo_estatus_off($this->ue_id, $fecha_mayor, $fecha_menor);
+        $finicio = Carbon::now();
+        $ffin = Carbon::parse($this->fecha_ingreso);
+
+        if ($this->ultimo_estatus === "ATENDIDO" ||
+            $this->ultimo_estatus === "ATENDIDA" ||
+            $this->ultimo_estatus === "RECHAZADA"
+        ){
+            $finicio = Carbon::parse($this->fecha_ingreso);
+            $ffin = Carbon::parse($this->fecha_ultimo_estatus);
+        }
+        $dias = $finicio->diffInDays($ffin);
+
+        if ( $dias <= $this->dias_ejecucion ){ $sem = 1; $class_color = 'text-verde-semaforo';  }
+        if ( $dias > $this->dias_ejecucion && $dias <= $this->dias_maximos_ejecucion ){ $sem = 2; $class_color = 'text-amarillo-semaforo';}
+        if ( $dias > $this->dias_maximos_ejecucion ){ $sem = 3; $class_color = 'text-rojo-semaforo';}
+
+        return [
+            'sem' => $sem,
+            'dias' => $dias,
+            'class_color' => $class_color,
+            ];
 
     }
 

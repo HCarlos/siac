@@ -6,6 +6,7 @@
 namespace App\Classes\Denuncia;
 
 use App\Events\DenunciaAtendidaEvent;
+use App\Models\Catalogos\Estatu;
 use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
@@ -47,6 +48,10 @@ class ActualizaEstadisticasARO{
 
     public static function semaforo_ultimo_estatus_off($ue_id, $fecha_mayor, $fecha_menor){
 
+        $ue = Estatu::find($ue_id);
+//        dd($ue->id);
+        $ue_id = $ue->id;
+
         $sem = 1;
         $dias_vencidos = 0;
 
@@ -71,6 +76,8 @@ class ActualizaEstadisticasARO{
         $ffin = Carbon::parse($ffin);
 
         $dias = $ffin->diffInDays($finicio);
+
+//        dd($ue_id);
 
         switch ($ue_id) {
             case 16:

@@ -61,12 +61,12 @@ Route::group(['middleware' => 'auth'], static function () {
     Route::match(['get','put','post'],'dashboard-statistics-general', 'Dashboard\DashboardStaticGeneralController@index')->name('dashboard-statistics-general');
 
     // Dashboard Servicios Principales
-    Route::match(['get','put','post'],'dashboard-statistics-servicios-principales', 'Dashboard\DashboardStaticServiciosPrincipalesController@index')->name('dashboard-statistics-servicios-principales');
+    Route::match(['get','put','post'],'dashboard-statistics-servicios-principales', 'Dashboard\ServiciosMonitoreadosController@index')->name('dashboard-statistics-servicios-principales');
 
     // Dashboard Servicios por Unidad
-    Route::match(['get'],'dashboard-statistics-custom-unity/{unity_id}', 'Dashboard\DashboardStaticCustomUnityController@index')->name('dashboard-statistics-custom-unity');
-    Route::match(['put','post'],'dashboard-statistics-custom-unity-post', 'Dashboard\DashboardStaticCustomUnityController@indexPost')->name('dashboard-statistics-custom-unity-post');
-    Route::match(['post'],'dashboard-statistics-custom-unity-export-filter-data', 'Dashboard\DashboardStaticCustomUnityController@exportFilterData')->name('dashboard-statistics-custom-unity-export-filter-data');
+    Route::match(['get'],'dashboard-statistics-custom-unity/{unity_id}', 'Dashboard\SMUnidadesAdmitivasController@index')->name('dashboard-statistics-custom-unity');
+    Route::match(['put','post'],'dashboard-statistics-custom-unity-post', 'Dashboard\SMUnidadesAdmitivasController@indexPost')->name('dashboard-statistics-custom-unity-post');
+    Route::match(['post'],'dashboard-statistics-custom-unity-export-filter-data', 'Dashboard\SMUnidadesAdmitivasController@exportFilterData')->name('dashboard-statistics-custom-unity-export-filter-data');
 
     // USUARIOS
     Route::get('edit', 'Catalogos\User\UserDataController@showEditUserData')->name('edit');
@@ -510,7 +510,9 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|test_admin|USER_OPE
     Route::post('exportDataFilterMap2/', 'External\Denuncia\ListDenunciaAmbitoXLSXController@exportDataFilterMap2')->name('exportDataFilterMap2');
     Route::post('exportDataFilterMap3/', 'External\Denuncia\ListDenunciaAmbitoXLSXController@exportDataFilterMap3')->name('exportDataFilterMap3');
     Route::post('showDataListDenunciaAmbitoRespuestaExcel1A/', 'External\Denuncia\ListDenunciaAmbitoXLSXController@showDataListDenunciaAmbitoRespuestaExcel1A')->name('showDataListDenunciaAmbitoRespuestaExcel1A');
-    Route::post('resumenBasico01Export/', 'External\Denuncia\ListDenunciaAmbitoXLSXController@resumenBasico01Export')->name('resumenBasico01Export');
+
+    Route::post('resumenBasico01Export/', 'External\Denuncia\ResumenSMController@resumenBasico01Export')->name('resumenBasico01Export');
+    Route::post('resumenBasico02Export/', 'External\Denuncia\ResumenSMController@resumenBasico02Export')->name('resumenBasico02Export');
 
     Route::post('reporteDiarioExcel', 'ExcelAutollenable\ReporteDiario\ReporteDiarioController@reporteDiarioExcel')->name('reporteDiarioExcel');
 

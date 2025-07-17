@@ -10,6 +10,8 @@ use App\Models\Catalogos\Estatu;
 use App\Models\Catalogos\Servicio;
 use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\_viDepDenServEstatus;
+use App\Models\Denuncias\_viMovimientos;
+use App\Models\Denuncias\_viMovSM;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use App\Http\Controllers\Controller;
@@ -29,8 +31,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 
 
-class ListDenunciaAmbitoXLSXController extends Controller
-{
+class ListDenunciaAmbitoXLSXController extends Controller{
 
     public function __construct(){
         $this->middleware('auth');
@@ -74,8 +75,6 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     break;
                 case 3:
                     $this->denunciaGeneralMap03($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension);
-                case 4:
-                    $this->resumenBasico01($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension);
                     break;
             }
 
@@ -423,11 +422,7 @@ class ListDenunciaAmbitoXLSXController extends Controller
         $sh->setCellValue('w1', Carbon::now()->format('d-m-Y h:i:s'));
 
 
-//        dd($Items->count());
-
         foreach ($Items as $item){
-
-//            dd($item);
 
             $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
             $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
@@ -443,20 +438,6 @@ class ListDenunciaAmbitoXLSXController extends Controller
 
             $cds = $item->ciudadano_simple;
 
-
-//            $telcel = $cds->celulares . '; ' . $cds->telefonos;
-//            $telcel = explode(';', $telcel);
-//
-//            $cadcel = '';
-//            for ($i = 0; $i < count($telcel) - 1; $i++) {
-//                if ($cadcel === '') {
-//                    $cadcel .= trim($telcel[$i]);
-//                } else if (trim($telcel[$i]) !== '') {
-//                    $cadcel .= ', ' . trim($telcel[$i]);
-//                } else {
-//                    $cadcel .= '';
-//                }
-//            }
 
             $atendidas = 0;
             $rechazadas = 0;
@@ -480,8 +461,8 @@ class ListDenunciaAmbitoXLSXController extends Controller
 
 
             $sh
-                ->setCellValue('A' . $C, $item->id ?? 0)
-                ->setCellValue('B' . $C, trim($item->username ?? ''))
+                ->setCellValue('A' . $C, $item->denuncia_id ?? 0)
+                ->setCellValue('B' . $C, trim($item->curp_ciudadano ?? ''))
                 ->setCellValue('C' . $C, trim($item->ap_paterno_ciudadano ?? ''))
                 ->setCellValue('D' . $C, trim($item->ap_materno_ciudadano ?? ''))
                 ->setCellValue('E' . $C, trim($item->nombre_ciudadano ?? ''))
@@ -490,14 +471,14 @@ class ListDenunciaAmbitoXLSXController extends Controller
                 ->setCellValue('H' . $C, $Delegacion ?? '')
                 ->setCellValue('I' . $C, $item->telefonoscelularesemails ?? '')
                 ->setCellValue('J' . $C, $fechaIngreso ?? '')
-                ->setCellValue('K' . $C, $item->dependencia_ultimo_estatus ?? '')
-                ->setCellValue('L' . $C, $item->servicio_ultimo_estatus ?? '')
-                ->setCellValue('M' . $C, $item->denuncia ?? '')
+                ->setCellValue('K' . $C, $item->dependencia ?? '')
+                ->setCellValue('L' . $C, $item->servicio ?? '')
+                ->setCellValue('M' . $C, $item->descripcion ?? '')
                 ->setCellValue('N' . $C, $item->prioridad ?? '')
                 ->setCellValue('O' . $C, $item->origen ?? '')
-                ->setCellValue('P' . $C, $item->ultimo_estatus ?? '')
+                ->setCellValue('P' . $C, $item->estatus ?? '')
                 ->setCellValue('Q' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y') ?? '')
-                ->setCellValue('R' . $C, strtoupper(trim($item->ultima_respuesta)) ?? '')
+                ->setCellValue('R' . $C, $item->observaciones ?? '')
                 ->setCellValue('S' . $C, $this->getColorSemaforo($item)['status'])
                 ->setCellValue('T' . $C, $item->dias_atendida ?? '')
                 ->setCellValue('U' . $C, $item->dias_rechazada ?? '')
@@ -573,28 +554,20 @@ class ListDenunciaAmbitoXLSXController extends Controller
                     ->orderByDesc('id')
                     ->first();
 
-                $cds = $item->ciudadano_simple;
+//                $cds = $item->ciudadano_simple;
 
-                $telcel = $cds->telefonos . '; ' . $cds->celulares . '; ' . $cds->email;
-                $telcel = explode(';', $telcel);
-
-                $cadcel = '';
-                for ($i = 0; $i < count($telcel) - 1; $i++) {
-                    if ($cadcel === '') {
-                        $cadcel .= trim($telcel[$i]);
-                    } else if (trim($telcel[$i]) !== '') {
-                        $cadcel .= ', ' . trim($telcel[$i]);
-                    } else {
-                        $cadcel .= '';
-                    }
-                }
-
-//                $atendidas = 0;
-//                $pendientes = 0;
-//                if (in_array(((int)$item->ue_id), array(17, 20, 21, 22))) {
-//                    $atendidas = 1;
-//                } else {
-//                    $pendientes = 1;
+//                $telcel = $cds->telefonos . '; ' . $cds->celulares . '; ' . $cds->email;
+//                $telcel = explode(';', $telcel);
+//
+//                $cadcel = '';
+//                for ($i = 0; $i < count($telcel) - 1; $i++) {
+//                    if ($cadcel === '') {
+//                        $cadcel .= trim($telcel[$i]);
+//                    } else if (trim($telcel[$i]) !== '') {
+//                        $cadcel .= ', ' . trim($telcel[$i]);
+//                    } else {
+//                        $cadcel .= '';
+//                    }
 //                }
 
                 $atendidas = 0;
@@ -619,21 +592,21 @@ class ListDenunciaAmbitoXLSXController extends Controller
 
 
                 $sh
-                    ->setCellValue('A' . $C, $item->id ?? 0)
-                    ->setCellValue('B' . $C, trim($cds->username ?? ''))
-                    ->setCellValue('C' . $C, trim($cds->ap_paterno ?? ''))
-                    ->setCellValue('D' . $C, trim($cds->ap_materno ?? ''))
-                    ->setCellValue('E' . $C, trim($cds->nombre ?? ''))
+                    ->setCellValue('A' . $C, $item->denuncia_id ?? 0)
+                    ->setCellValue('B' . $C, trim($item->curp_ciudadano ?? ''))
+                    ->setCellValue('C' . $C, trim($item->ap_paterno_ciudadano ?? ''))
+                    ->setCellValue('D' . $C, trim($item->ap_materno_ciudadano ?? ''))
+                    ->setCellValue('E' . $C, trim($item->nombre_ciudadano ?? ''))
                     ->setCellValue('F' . $C, strtoupper(trim($item->search_google)) ?? '')
                     ->setCellValue('G' . $C, $Colonia ?? '')
                     ->setCellValue('H' . $C, $Delegacion ?? '')
-                    ->setCellValue('I' . $C, $cadcel ?? '')
+                    ->setCellValue('I' . $C, $item->telefonoscelularesemails ?? '')
                     ->setCellValue('J' . $C, $fechaIngreso ?? '')
                     ->setCellValue('K' . $C, $item->dependencia ?? '')
                     ->setCellValue('L' . $C, $item->servicio ?? '')
-                    ->setCellValue('M' . $C, $item->denuncia ?? '')
-                    ->setCellValue('N' . $C, $item->prioridad->prioridad ?? '')
-                    ->setCellValue('O' . $C, $item->origen->origen ?? '')
+                    ->setCellValue('M' . $C, $item->descripcion ?? '')
+                    ->setCellValue('N' . $C, $item->prioridad ?? '')
+                    ->setCellValue('O' . $C, $item->origen ?? '')
                     ->setCellValue('P' . $C, $item->estatus ?? '')
                     ->setCellValue('Q' . $C, Carbon::parse($item->fecha_movimiento)->format('d-m-Y') ?? '')
                     ->setCellValue('R' . $C, $item->observaciones ?? '')
@@ -686,52 +659,40 @@ class ListDenunciaAmbitoXLSXController extends Controller
     }
 
 
-    public function resumenBasico01($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
-
-        $sh->setCellValue('F1', Carbon::now()->format('d-m-Y h:i:s'));
-        $C = 5;
-        foreach ($Items as $item){
-            $sh
-                ->setCellValue('A' . $C, $item["servicio"] ?? '')
-                ->setCellValue('B' . $C, $item["atendidas"] ?? 0)
-                ->setCellValue('C' . $C, $item["rechazadas"] ?? 0)
-                ->setCellValue('D' . $C, $item["pendientes"] ?? 0)
-                ->setCellValue('E' . $C, $item["observadas"] ?? 0)
-                ->setCellValue('F' . $C, $item["total"] ?? 0);
-            $C++;
-        }
-
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="_'.$arrFE[0].'.'.$arrFE[1].'"');
-        header('Cache-Control: max-age=0');
-        header('Cache-Control: max-age=1');
-        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-        header('Cache-Control: cache, must-revalidate');
-        header('Pragma: public');
-        $writer = IOFactory::createWriter($spreadsheet, $extension);
-        $writer->save('php://output');
-        exit;
-    }
-
 
     function exportDataFilterMap2(Request $request){
         $data = $request->all();
 
         $dids = $data['items'];
 
-        $ids = Str::of($dids)
+
+//        $ids = Str::of($dids)
+//            ->explode(',')
+//            ->map(function ($value) {
+//                return (int) $value;
+//            })
+//            ->toArray();
+//
+//        $items = _viDDSs::query()
+//            ->select(FuncionesController::itemSelectDenunciasV1())
+//            ->whereIn('id', $ids)
+//            ->orderByDesc('id')
+//            ->get();
+
+        $ddse_ids = $data['items_ddse'];
+
+        $ids = Str::of($ddse_ids)
             ->explode(',')
             ->map(function ($value) {
                 return (int) $value;
             })
             ->toArray();
 
-        $items = _viDDSs::query()
-            ->select(FuncionesController::itemSelectDenunciasV1())
+        $items = _viMovSM::query()
             ->whereIn('id', $ids)
             ->orderByDesc('id')
             ->get();
+
 
         $request->session()->put('items', $items);
 
@@ -745,20 +706,36 @@ class ListDenunciaAmbitoXLSXController extends Controller
     function exportDataFilterMap3(Request $request){
         $data = $request->all();
 
-        $dids = $data['items'];
+//        $dids = $data['items'];
+//
+//        $ids = Str::of($dids)
+//            ->explode(',')
+//            ->map(function ($value) {
+//                return (int) $value;
+//            })
+//            ->toArray();
+//
+//        $items = _viDepDenServEstatus::query()
+//            ->select(FuncionesController::itemSelectDenuncias())
+//            ->whereIn('id', $ids)
+//            ->orderByDesc('id')
+//            ->get();
 
-        $ids = Str::of($dids)
+        $ddse_ids = $data['items_ddse'];
+
+        $ids = Str::of($ddse_ids)
             ->explode(',')
             ->map(function ($value) {
                 return (int) $value;
             })
             ->toArray();
 
-        $items = _viDepDenServEstatus::query()
-            ->select(FuncionesController::itemSelectDenuncias())
+        $items = _viMovSM::query()
             ->whereIn('id', $ids)
             ->orderByDesc('id')
             ->get();
+
+
 
         $request->session()->put('items', $items);
 
@@ -766,97 +743,6 @@ class ListDenunciaAmbitoXLSXController extends Controller
 
     }
 
-    function resumenBasico01Export(Request $request){
-        $arrColl = [
-            ["sue_id" => 476, "servicio" => "FUGA DE AGUA POTABLE", "atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0],
-            ["sue_id" => 508, "servicio" => "DESASOLVE DE DRENAJE","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0],
-            ["sue_id" => 479, "servicio" => "REPARACION DE ALCANTARILLA","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0],
-        ];
-
-        $data = $request->validate([
-            'items' => 'required|string',
-        ]);
-
-        $ids = collect(explode(',', $data['items']))
-            ->map(function ($value) {
-                return (int) $value;
-            })
-            ->toArray();
-
-        $arrServ = _viDepDenServEstatus::query()
-            ->select(FuncionesController::itemSelectDenuncias())
-            ->whereIn('id', $ids)
-            ->whereIn('servicio_id', [476,568,508,479])
-            ->orderByDesc('id')
-            ->get();
-
-
-        $sueIdsDiferentes = $arrServ->pluck('servicio_id')->unique()->values();
-        $numeroSueIdDiferentes = $sueIdsDiferentes->count();
-//        echo $numeroSueIdDiferentes;
-
-        // Ahora $sueIdsDiferentes es una Collection que contiene los sue_id diferentes.
-        // Puedes convertirla a un array si lo prefieres:
-        $arraySueIdsDiferentes = $sueIdsDiferentes->toArray();
-
-        // Para imprimirlos:
-//        foreach ($arraySueIdsDiferentes as $sueId) {
-//            echo $sueId . "<br>";
-//        }
-
-//        return false;
-
-
-        $ue_id_mappings = [
-            17 => 'atendidas',
-            21 => 'atendidas',
-            20 => 'rechazadas',
-            22 => 'rechazadas',
-            16 => 'pendientes',
-            19 => 'pendientes',
-            18 => 'observadas',
-        ];
-
-        foreach ($arrServ as $item) {
-            $indice = null;
-            switch ($item->servicio_id) {
-                case 476:
-                case 568:
-                    $indice = 0;
-                    break;
-                case 508:
-                    $indice = 1;
-                    break;
-                case 479:
-                    $indice = 2;
-                    break;
-            }
-
-            if ($indice !== null) {
-                $ue_id = (int) $item->estatu_id; // Castea a entero una sola vez
-
-                if (in_array($ue_id, [17, 21])) {
-                    $arrColl[$indice]["atendidas"]++;
-                }
-                if (in_array($ue_id, [20, 22])) {
-                    $arrColl[$indice]["rechazadas"]++;
-                }
-                if (in_array($ue_id, [16, 19])) {
-                    $arrColl[$indice]["pendientes"]++;
-                }
-                if ($ue_id === 18) {
-                    $arrColl[$indice]["observadas"]++;
-                }
-                $arrColl[$indice]["total"]++;
-            }
-
-        }
-
-        $request->session()->put('items', $arrColl);
-
-        return $this->getListDenunciaAmbitoXLSX($request);
-
-    }
 
 
 

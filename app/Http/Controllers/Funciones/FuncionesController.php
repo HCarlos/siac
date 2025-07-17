@@ -273,6 +273,20 @@ class FuncionesController extends Controller
                     ];
     }
 
+    public static function itemSelectDenunciasV2(): array{
+        return ['id','uuid','ciudadano','curp_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano',
+            'fecha_ingreso','area','subarea','cp',
+            'email','telefonoscelularesemails', 'calle','num_ext','num_int','colonia','ubicacion','ambito_dependencia',
+            'descripcion as denuncia','referencia', 'status_denuncia','prioridad','origen','observaciones','genero_ciudadano',
+            'cerrado','origen_id','ciudadano_id','firmado','latitud','longitud',
+            'clave_identificadora','estatus_general','ambito_sas','fecha_ultimo_estatus',
+            'creadopor_id','modificadopor_id','dias_ejecucion','dias_maximos_ejecucion',
+            'fecha_dias_ejecucion','fecha_dias_maximos_ejecucion',
+            'search_google','gd_ubicacion','prioridad_id','centro_localidad_id',
+            'due_id','sue_id','ue_id'
+        ];
+    }
+
     public static function itemSelectDenuncias(): array{
         return ['id','ciudadano_id','dependencia_id','origen_id','prioridad_id','creadopor_id','ubicacion_id',
             'fecha_ingreso', 'latitud','longitud','gd_ubicacion','search_google','ambito','codigo_postal_manual',

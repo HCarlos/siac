@@ -9,26 +9,39 @@ use App\Classes\Denuncia\ActualizaEstadisticasARO;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Models\Catalogos\CentroLocalidad;
-use App\User;
+use App\Models\Denuncias\Denuncia;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use mysql_xdevapi\Collection;
 
-class DashboardStaticServiciosPrincipalesController extends Controller{
+class DashboardStaticCustomUnityController_original extends Controller{
+
+    private $unity_id = 46;
 
     public function __construct(){
         ini_set('max_execution_time', 300);
         $this->middleware('auth');
     }
 
-    protected function index(Request $request){
+    protected function index($unity_id){
+        $request = new Request();
+        $this->unity_id = $unity_id;
+        $request->replace([]);
+        return $this->indexPost($request);
+    }
+
+    protected function indexPost(Request $request){
 
         $data = $request->all();
 
         $f = new FuncionesController();
+
+//        dd($this->unity_id);
 
         if ($data === []){
             $start_date = Carbon::now();
@@ -36,6 +49,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
             $end_date = $start_date;
             $filter = 'hoy';
         }else{
+            $this->unity_id = $data['unity_id'];
             switch ($data['filter']) {
                 case 'hoy':
                     $start_date = Carbon::now();
@@ -67,28 +81,26 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
         $data['end_date'] = $end_date;
         $data['filter'] = $filter;
 
-        $file_out = "file_servicios_principales_".$start_date.'_'.$end_date.'.json';
+//        dd($data);
+
+        $file_out = "file_custom_unity_".$this->unity_id.'_'.$start_date.'_'.$end_date.'.json';
         $isExistFile = false; //Storage::disk('public')->exists($file_out);
 
         if ( ! $isExistFile) {
 
-
             // INICIA EL MODULO DE ESTATUS
             $arrEstatus = [
-                (object)["ue_id" => 16, "Estatus"=> "RECIBIDA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["ue_id" => 19, "Estatus"=> "EN_PROCESO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["ue_id" => 17, "Estatus"=> "ATENDIDA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["ue_id" => 20, "Estatus"=> "RECHAZADA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["ue_id" => 18, "Estatus"=> "OBSERVADA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["ue_id" => 21, "Estatus"=> "CERRADO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                (object)["ue_id" => 16, "Estatus"=> "RECIBIDA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
+                (object)["ue_id" => 19, "Estatus"=> "EN_PROCESO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
+                (object)["ue_id" => 17, "Estatus"=> "ATENDIDA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
+                (object)["ue_id" => 20, "Estatus"=> "RECHAZADA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
+                (object)["ue_id" => 18, "Estatus"=> "OBSERVADA", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
+                (object)["ue_id" => 21, "Estatus"=> "CERRADO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
                 (object)["ue_id" => 22, "Estatus"=> "CERRADO POR RECHAZO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
             ];
 
-            $ServiciosPrincipales = [483,508,476,503,479,466,567,568];
 
-            $srv2 = static::getUltimoEstatus($start_date,$end_date,$ServiciosPrincipales);
-
-//            dd($srv2);
+            $srv2 = static::getUltimoEstatus($start_date,$end_date,$this->unity_id);
 
             foreach ($arrEstatus as $a) {
                 foreach ($srv2 as $d){
@@ -99,15 +111,11 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                         $tr = 0;
 
                         $vectorUnidades = [
-                            (object)["Unidad" => "ALUMBRADO", "Unidad_Id" => 46,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
-                            (object)["Unidad" => "ESPACIOS PÚBLICOS", "Unidad_Id" => 49,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
-                            (object)["Unidad" => "LIMPIA", "Unidad_Id" => 50,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
-                            (object)["Unidad" => "OBRAS PÚBLICAS", "Unidad_Id" => 48,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
-                            (object)["Unidad" => "SAS", "Unidad_Id" => 47,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
+                            (object)["Unidad" => "UNIDAD", "Unidad_Id" => $this->unity_id,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
                         ];
                         $totalServ = 0;
                         foreach ($vectorUnidades as $key => $value) {
-                            $f = static::getEstatusUE($start_date,$end_date,$value->Unidad_Id,$a->ue_id,$ServiciosPrincipales);
+                            $f = static::getEstatusUE($start_date,$end_date,$value->Unidad_Id,$a->ue_id);
                             if ($f) {
                                 if ($f->total > 0) {
                                     $vectorUnidades[$key]->Total = $f->total;
@@ -121,16 +129,16 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                         }
 
                         foreach ($vectorUnidades as $b) {
-                            $f = static::getEstatusDependencia($start_date,$end_date,$b->Unidad_Id,$d->ue_id,$ServiciosPrincipales);
+                            $f = static::getEstatusDependencia($start_date,$end_date,$b->Unidad_Id,$d->ue_id);
                             if ($f !== null) {
                                 $b->Total = $f->data;
                             }
 //                            if ($a->ue_id === 17) {
-                                $arr = static::getAtiempoVsDestiempo($start_date,$end_date,$b->Unidad_Id,$a->ue_id,$ServiciosPrincipales);
-                                $b->a_tiempo = $arr->atiempo ?? 0;
-                                $b->con_rezago = $arr->conrezago ?? 0;
-                                $ta += $arr->atiempo ?? 0;
-                                $tr += $arr->conrezago ?? 0;
+                            $arr = static::getAtiempoVsDestiempo($start_date,$end_date,$b->Unidad_Id,$a->ue_id);
+                            $b->a_tiempo = $arr->atiempo ?? 0;
+                            $b->con_rezago = $arr->conrezago ?? 0;
+                            $ta += $arr->atiempo ?? 0;
+                            $tr += $arr->conrezago ?? 0;
 //                            }
                             $arrU[] = $b;
                         }
@@ -171,21 +179,15 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 $uni->Total1 = $uni3 + $uni6;
             }
 
-
-
 //            dd($arrEstatus);
 
             // INICIA EL MODULO DE UNIDADES
             $vectorUnidades = [
-                (object)["Unidad" => "ALUMBRADO", "Unidad_Id" => 46,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["Unidad" => "ESPACIOS PÚBLICOS", "Unidad_Id" => 49,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["Unidad" => "LIMPIA", "Unidad_Id" => 50,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["Unidad" => "OBRAS PÚBLICAS", "Unidad_Id" => 48,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["Unidad" => "SAS", "Unidad_Id" => 47,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+                (object)["Unidad" => "UNIDAD", "Unidad_Id" => $this->unity_id,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
             ];
             $totalServ = 0;
             foreach ($vectorUnidades as $key => $value) {
-                $f = static::getEstatus($start_date,$end_date,$value->Unidad_Id,$ServiciosPrincipales);
+                $f = static::getEstatus($start_date,$end_date,$value->Unidad_Id);
                 if ($f) {
                     if ($f->total > 0) {
                         $vectorUnidades[$key]->Total = $f->total;
@@ -193,23 +195,20 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                     }
                 }
             }
-
             foreach ($vectorUnidades as $key => $value) {
                 $total = $vectorUnidades[$key]->Total > 0 ? (($vectorUnidades[$key]->Total / $totalServ) * 100)  : 0;
                 $vectorUnidades[$key]->Porcentaje = (int) number_format($total, 0);
             }
 
             // INICIA EL MODULO DE SERVICIOS
-            $vectorServicios = [
-                (object)["sue_id" => 483, "Servicio"=> "BACHEO DE VIALIDADES", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 508, "Servicio"=> "DESAZOLVE DE DRENAJE", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 476, "Servicio"=> "FUGA DE AGUA POTABLE", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 503, "Servicio"=> "RECOLECCIÓN DE RESIDUOS SÓLIDOS", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 479, "Servicio"=> "REPARACIÓN DE ALCANTARILLA", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 466, "Servicio"=> "REPARACIÓN DE LUMINARIAS", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 567, "Servicio"=> "RESANE CON ASFALTO", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 568, "Servicio"=> "RESANE CON CONCRETO HIDRÁULICO", "Total"=> 0,"Porcentaje" => 0],
-            ];
+            $vectorServicios = [];
+
+//            dd($this->unity_id);
+
+            $vServicios = static::getServiciosFromDependencia($start_date,$end_date,$this->unity_id);
+            foreach ($vServicios as $s) {
+                $vectorServicios[] = (object)["sue_id" => $s->sue_id, "Servicio"=> $s->servicio, "Total"=> 0,"Porcentaje" => 0];
+            }
 
             $totalServ = 0;
             foreach ($vectorServicios as $key => $value) {
@@ -227,28 +226,13 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 $vectorServicios[$key]->Porcentaje = (int) number_format($total, 0);
             }
 
+
             // INICIA EL MODULO DE GEOLOCALIZACIÓN
             $arrGeos = [];
             $arrDep = [];
             $arrDepServ = [];
-            $arrG = static::getGeoDenuncias($start_date,$end_date,$ServiciosPrincipales);
+            $arrG = static::getGeoDenuncias($start_date,$end_date,$this->unity_id,0);
             $initArr = true;
-
-            $ArrSolicitudesInternasLabel = ["SAS", "LIMPIA"];
-            $ArrSolicitudesInternasValue = [508833, 519442];
-
-            $arrCoorDelegados = User::whereHas('roles', function ($query) {
-                $query->whereIn('name', ['DELEGADOS', 'COORDINACION_DE_DELEGADOS']);
-            })
-                ->pluck('id')
-                ->toArray();
-
-
-            //DELEGADOS
-//COORDINACION_DE_DELEGADOS
-
-
-//            dd( $arrG[0] );
 
             foreach ($arrG as $g) {
                 $fme1 = Carbon::parse($g->fecha_dias_ejecucion);
@@ -282,6 +266,8 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 $status = "white";
                 $dias_vencidos = 0;
 
+
+
                 $semaforo = ActualizaEstadisticasARO::semaforo_ultimo_estatus_off($g->ue_id, new DateTime($g->fecha_dias_maximos_ejecucion), new DateTime($g->fecha_ultimo_estatus));
                 $status = $semaforo['status'];
                 $dias_vencidos = $semaforo['dias_vencidos'];
@@ -295,6 +281,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 $CenLoc        = $g->centro_localidad_id;
                 if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0){
                     $Loc            = CentroLocalidad::find($CenLoc);
+//                    dd($Loc);
                     $Colonia_Id     = $Loc->colonia_id;
                     $Colonia        = $Loc->ItemColonia();
                     $Delegacion_Id  = $Loc->delegacion_id;
@@ -302,6 +289,8 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                     $ColDel         = $Loc->ItemColoniaDelegacion();
                     $ColDelId       = $Loc->id;
                 }
+
+
 
                 $arrGeos[] = (object)[
                     "denuncia_id"=> $g->id,
@@ -312,12 +301,12 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                     "dependencia"=> $g->dependencia,
                     "abreviatura"=> $g->abreviatura,
                     "sue_id" => $g->sue_id,
-                    "servicio" => $g->nombre_corto_ss,
+                    "servicio" => $g->servicio_ultimo_estatus,
                     "ciudadano" => $g->ciudadano,
                     "ue_id" => $g->ue_id,
                     "ultimo_estatus" => $g->ultimo_estatus,
                     "fecha_ultimo_estatus" => Carbon::parse($g->fecha_ultimo_estatus)->format('d-m-Y H:i:s'),
-                    "fecha_ingreso" => Carbon::parse($g->fecha_ingreso)->format('d-m-Y H:i:s'),
+                    "fecha_ingreso" => Carbon::parse($g->fecha_ingreso)->format('d-m-Y'),
                     "fecha_ejecucion_minima" => Carbon::parse($g->fecha_dias_ejecucion)->format('d-m-Y H:i:s'),
                     "fecha_ejecucion_maxima" => Carbon::parse($g->fecha_dias_maximos_ejecucion)->format('d-m-Y H:i:s'),
                     "dias_a_tiempo" => Carbon::parse($g->fecha_dias_maximos_ejecucion)->diffInDays(Carbon::parse($g->fecha_ingreso)),
@@ -329,8 +318,8 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                     "colonia" => $Colonia,
                     "delegacion_id" => $Delegacion_Id,
                     "delegacion" => $Delegacion,
+                    "colonia_delegacion_id" => $ColDelId,
                     "colonia_delegacion" => $ColDel,
-                    "colonia_delegacion_id" => $ColDelId
                 ];
 
                 if (!in_array($g->dependencia_id, array_column($arrDep, 'dependencia_id'), true)) {
@@ -338,7 +327,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 }
 
                 if ($initArr){
-                    $arrDepServ[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia,"sue_id" => $g->sue_id,"servicio" => $g->nombre_corto_ss];
+                    $arrDepServ[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia,"sue_id" => $g->sue_id,"servicio" => $g->servicio_ultimo_estatus];
                     $initArr = false;
                 }else{
                     $Encontrado = false;
@@ -348,16 +337,21 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                         }
                     }
                     if (!$Encontrado) {
-                        $arrDepServ[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia,"sue_id" => $g->sue_id,"servicio" => $g->nombre_corto_ss];
+                        $arrDepServ[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia,"sue_id" => $g->sue_id,"servicio" => $g->servicio_ultimo_estatus];
                     }
 
                 }
 
             }
-
-
+//            dd($arrGeos);
 
             // INICIA EL MODULO DE OTROS DATOS
+            $arrGeos = collect($arrGeos);
+//            $total_geodenuncias = count($arrGeos);
+//            $cerradas = count($arrGeos->where('ue_id', 21));
+//            $cerradas_por_rechazo = count($arrGeos->where('ue_id', 22));
+//            $atendidas = count($arrGeos->where('ue_id', 17));
+//            $rechazadas = count($arrGeos->where('ue_id', 20));
             $arrGeos = collect($arrGeos);
             $total_geodenuncias = count($arrGeos);
             $cerradas = count($arrGeos->where('ue_id', 21));
@@ -374,16 +368,19 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
 
             $otrosDatos = [
                 (object)["total_geodenuncias" => $total_geodenuncias,
-                "cerradas" => $cerradas,
-                "cerradas_rechazo" => $cerradas_rechazo,
-                "atendidas" => $atendidas,
-                "rechazadas" => $rechazadas,
-                "observadas" => $observadas,
-                "porcAtendidas" => $porcAtendidas,
-                "porcPendientes" => $porcPendientes,
-                "porcRechazadas" => $porcRechazadas
+                    "cerradas" => $cerradas,
+                    "cerradas_rechazo" => $cerradas_rechazo,
+                    "atendidas" => $atendidas,
+                    "rechazadas" => $rechazadas,
+                    "observadas" => $observadas,
+                    "porcAtendidas" => $porcAtendidas,
+                    "porcPendientes" => $porcPendientes,
+                    "porcRechazadas" => $porcRechazadas
                 ]
             ];
+
+
+            // SE OBTENEN LAS COLONIAS
 
             $localidades_centro = CentroLocalidad::query()
                 ->orderBy('prefijo_colonia', 'asc')
@@ -401,6 +398,7 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                     "colonia_delegacion"=>$item->ItemColoniaDelegacion(),
                 ];
             }
+
 
             // SE OBTENEN LAS DELEGACIONES
 
@@ -420,6 +418,9 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 ];
             }
 
+//            $arrResumenBasico = self::ResumenBasico01($start_date,$end_date,$this->unity_id);
+
+
             // SE CONSTRUYE EL JSON GENERAL
             $arrJson = [
                 (object)["estatus" => $arrEstatus],
@@ -433,21 +434,57 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
                 (object)["filtro_delegaciones" => $arrDel],
             ];
 
+
+//           dd($arrJson);
+
             $jsonData = json_encode($arrJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
             Storage::disk('public')->put($file_out, $jsonData);
         }
 
         $f = new FuncionesController();
 
-        $menu = $f->menuDashBoard(0);
+        $active = 2;
+        $titulo = '';
+        switch ($this->unity_id) {
+            case 46:
+                $active = 2;
+                $titulo = 'Explora las Estadísticas de Alumbrado';
+                break;
+            case 49:
+                $active = 3;
+                $titulo = 'Explora las Estadísticas de Espacios Públicos';
+                break;
+            case 50:
+                $active = 4;
+                $titulo = 'Explora las Estadísticas de Limpia';
+                break;
+            case 48:
+                $active = 5;
+                $titulo = 'Explora las Estadísticas de Obras Públicas';
+                break;
+            case 47:
+                $active = 6;
+                $titulo = 'Explora las Estadísticas de SAS';
+        }
 
-        return view('dashboard.static.dashboard_static_servicios_principales',
+        $menu = $f->menuDashBoard($active);
+
+//        dd( Storage::disk('public')->url($file_out) );
+
+//        'rango_de_consulta' => $f->fechaEspanol($start_date).' - '.$f->fechaEspanol($end_date),
+
+
+
+        return view('dashboard.static.dashboard_static_custom_unity',
             [
-                'filter' => $filter,
-                'start_date' => $start_date,
-                'end_date' => $end_date,
+                'filter'      => $filter,
+                'start_date'  => $start_date,
+                'end_date'    => $end_date,
+                'unity_id'    => $this->unity_id,
+                'unity'       => 'Unidad',
                 'file_output' => $file_out ?? null,
-                'menu' => $menu,
+                'menu'        => $menu,
+                'titulo'      => $titulo,
             ]);
 
     }
@@ -455,63 +492,128 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
 
     // INICIA EL MODULO DE FUNCIONES AUXILIARES
 
-    static function getUltimoEstatus($start_date,$end_date,$ServiciosPrincipales){
-//        ->where("ambito_dependencia",2)
-        return DB::table("_viddss")
-            ->select(["ultimo_estatus as name", "ue_id", DB::raw("count(ue_id) as data")])
+    static function getUltimoEstatus($start_date,$end_date,$dependencia_id){
+
+//        return DB::table("_viddss")
+//            ->select(["ultimo_estatus as name", "ue_id", DB::raw("count(ue_id) as data")])
+//            ->where("ambito_dependencia",2)
+//            ->where('dependencia_id',$dependencia_id)
+//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+//            ->groupBy(["ultimo_estatus","ue_id"])
+//            ->get();
+
+        return DB::table("_videpdenservestatus")
+            ->select(["estatus as name", "estatu_id as ue_id", DB::raw("count(estatu_id) as data")])
+            ->where("ambito_dependencia",2)
+            ->where('dependencia_id',$dependencia_id)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-            ->whereIn('sue_id', [483,508,476,503,479,466,567,568])
-            ->groupBy(["ultimo_estatus","ue_id"])
+            ->groupBy(["estatus","estatu_id"])
             ->get();
+
     }
 
-    static function getEstatusDependencia($start_date,$end_date,$dependencia_id,$ue_id,$ServiciosPrincipales){
-        return DB::table("_viddss")
+    static function getEstatusDependencia($start_date,$end_date,$dependencia_id,$ue_id){
+
+//        return DB::table("_viddss")
+//            ->select('abreviatura as label', DB::raw('count(dependencia_id) as data'))
+//            ->where('ambito_dependencia',2)
+//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+//            ->where('dependencia_id',$dependencia_id)
+//            ->where('ue_id',$ue_id)
+//            ->groupBy('abreviatura')
+//            ->first();
+
+        return DB::table("_videpdenservestatus")
             ->select('abreviatura as label', DB::raw('count(dependencia_id) as data'))
-            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->where('ambito_dependencia',2)
+            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->where('dependencia_id',$dependencia_id)
-            ->whereIn('sue_id', $ServiciosPrincipales)
-            ->where('ue_id',$ue_id)
+            ->where('estatu_id',$ue_id)
             ->groupBy('abreviatura')
             ->first();
+
+
+
     }
-    static function getEstatus($start_date,$end_date,$dependencia_id,$ServiciosPrincipales){
-        return DB::table("_viddss")
+    static function getEstatus($start_date,$end_date,$dependencia_id){
+
+//        return DB::table("_viddss")
+//            ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
+//            ->where('ambito_dependencia',2)
+//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+//            ->where('dependencia_id',$dependencia_id)
+//            ->groupBy('dependencia_id')
+//            ->first();
+
+        return DB::table("_videpdenservestatus")
             ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
             ->where('ambito_dependencia',2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->where('dependencia_id',$dependencia_id)
-            ->whereIn('sue_id', $ServiciosPrincipales)
             ->groupBy('dependencia_id')
             ->first();
+
     }
-    static function getEstatusUE($start_date,$end_date,$dependencia_id,$ue_id,$ServiciosPrincipales){
-        return DB::table("_viddss")
+    static function getEstatusUE($start_date,$end_date,$dependencia_id,$ue_id){
+
+//        return DB::table("_viddss")
+//            ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
+//            ->where('ambito_dependencia',2)
+//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+//            ->where('dependencia_id',$dependencia_id)
+//            ->where('ue_id',$ue_id)
+//            ->groupBy('dependencia_id')
+//            ->first();
+
+        return DB::table("_videpdenservestatus")
             ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
             ->where('ambito_dependencia',2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->where('dependencia_id',$dependencia_id)
-            ->whereIn('sue_id', $ServiciosPrincipales)
-            ->where('ue_id',$ue_id)
+            ->where('estatu_id',$ue_id)
             ->groupBy('dependencia_id')
             ->first();
+
+
     }
 
     static function getServiciosDependencia($start_date,$end_date,$sue_id){
-        return DB::table("_viddss")
-            ->select('abreviatura as label', DB::raw('count(sue_id) as total'))
+
+//        return DB::table("_viddss")
+//            ->select('abreviatura as label', DB::raw('count(sue_id) as total'))
+//            ->where('ambito_dependencia',2)
+//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+//            ->where('sue_id',$sue_id)
+//            ->groupBy('abreviatura')
+//            ->first();
+
+        return DB::table("_videpdenservestatus")
+            ->select('abreviatura as label', DB::raw('count(servicio_id) as total'))
             ->where('ambito_dependencia',2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-            ->where('sue_id',$sue_id)
+            ->where('servicio_id',$sue_id)
             ->groupBy('abreviatura')
             ->first();
+
     }
 
 //DB::raw("SUM(CASE WHEN fecha_dias_ejecucion <= CURRENT_DATE THEN DATE_PART('day', CURRENT_DATE - fecha_dias_ejecucion) ELSE 0 END) AS atiempo"),
 //DB::raw("SUM(CASE WHEN fecha_dias_ejecucion > CURRENT_DATE THEN DATE_PART('day', fecha_dias_ejecucion - CURRENT_DATE ) ELSE 0 END) AS conrezago")
-    static function getAtiempoVsDestiempo($start_date,$end_date,$unidad_id,$ue_id,$ServiciosPrincipales){
-        return DB::table("_viddss")
+    static function getAtiempoVsDestiempo($start_date,$end_date,$unidad_id,$ue_id){
+
+//        return DB::table("_viddss")
+//            ->select(
+//                DB::raw("SUM(CASE WHEN fecha_dias_ejecucion >= CURRENT_DATE THEN 1 ELSE 0 END) AS atiempo"),
+//                DB::raw("SUM(CASE WHEN CURRENT_DATE > fecha_dias_ejecucion THEN 1 ELSE 0 END) AS conrezago")
+//            )
+//            ->where('ambito_dependencia', 2)
+//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+//            ->where('dependencia_id', $unidad_id)
+//            ->where('ue_id', $ue_id)
+//            ->groupBy('ue_id')
+//            ->first();
+
+        return DB::table("_videpdenservestatus")
             ->select(
                 DB::raw("SUM(CASE WHEN fecha_dias_ejecucion >= CURRENT_DATE THEN 1 ELSE 0 END) AS atiempo"),
                 DB::raw("SUM(CASE WHEN CURRENT_DATE > fecha_dias_ejecucion THEN 1 ELSE 0 END) AS conrezago")
@@ -519,34 +621,116 @@ class DashboardStaticServiciosPrincipalesController extends Controller{
             ->where('ambito_dependencia', 2)
             ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
             ->where('dependencia_id', $unidad_id)
-            ->whereIn('sue_id', $ServiciosPrincipales)
-            ->where('ue_id', $ue_id)
-            ->groupBy('ue_id')
+            ->where('estatu_id', $ue_id)
+            ->groupBy('estatu_id')
             ->first();
+
     }
 
-    static function getGeoDenuncias($start_date,$end_date,$ServiciosPrincipales){
+    static function getGeoDenuncias($start_date,$end_date,$unidad_id,$ue_id){
 
-        $cacheKey = '_viddss_' . md5($ServiciosPrincipales[0] . $start_date . $end_date);
-        $data = Cache::remember($cacheKey, 60, function () use ($ServiciosPrincipales, $start_date, $end_date) {
-            return DB::table("_viddss")
+//        return DB::table("_viddss")
+//            ->select(
+//                'id','latitud','longitud','dependencia','abreviatura','servicio_ultimo_estatus',
+//                'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
+//                'fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','ultimo_estatus',
+//                'sue_id','servicio_ultimo_estatus','ue_id','dependencia_id','uuid',
+//                'denuncia','centro_localidad_id'
+//            )
+//            ->where('ambito_dependencia', 2)
+//            ->where('dependencia_id', $unidad_id)
+//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+//            ->get();
+//
+
+
+//        return DB::table("_videpdenservestatus")
+//            ->select(
+//                'id','latitud','longitud','dependencia','abreviatura','servicio as servicio_ultimo_estatus',
+//                'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
+//                'fecha_movimiento as fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','estatus as ultimo_estatus',
+//                'servicio_id as sue_id','servicio as servicio_ultimo_estatus','ue_id','dependencia_id','uuid',
+//                'descripcion as denuncia','centro_localidad_id'
+//            )
+//            ->where('ambito_dependencia', 2)
+//            ->where('dependencia_id', $unidad_id)
+//            ->where('fecha_ingreso', '>=', $start_date." 00:00:00")
+//            ->where('fecha_ingreso', '<=', $end_date." 23:59:59")
+//            ->get();
+
+        $cacheKey = 'videpdenservestatus_' . md5($unidad_id . $start_date . $end_date); // Genera una clave de caché única
+        $data = Cache::remember($cacheKey, 60, function () use ($unidad_id, $start_date, $end_date) {
+            return DB::table("_videpdenservestatus")
                 ->select(
-                    'id','latitud','longitud','dependencia','abreviatura',
+                    'id','latitud','longitud','dependencia','abreviatura','servicio as servicio_ultimo_estatus',
                     'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
-                    'fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','ultimo_estatus',
-                    'sue_id','servicio_ultimo_estatus','ue_id','dependencia_id','uuid',
-                    'denuncia','centro_localidad_id','ciudadano_id'
+                    'fecha_movimiento as fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','estatus as ultimo_estatus',
+                    'servicio_id as sue_id','servicio as servicio_ultimo_estatus','ue_id','dependencia_id','uuid',
+                    'descripcion as denuncia','centro_localidad_id'
                 )
-                ->whereIn('sue_id', $ServiciosPrincipales)
                 ->where('ambito_dependencia', 2)
+                ->where('dependencia_id', $unidad_id)
                 ->where('fecha_ingreso', '>=', $start_date." 00:00:00")
                 ->where('fecha_ingreso', '<=', $end_date." 23:59:59")
                 ->get();
         });
 
-        //            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-
         return $data;
+
+
+
+    }
+
+    static function getServiciosFromDependencia($start_date,$end_date,$due_id){
+
+//        return DB::table("_viddss")
+//            ->select('sue_id','servicio','abreviatura as label', DB::raw('count(sue_id) as total'))
+//            ->where('ambito_dependencia',2)
+//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+//            ->where('due_id',$due_id)
+//            ->groupBy('sue_id','servicio','abreviatura')
+//            ->orderBy('total','desc')
+//            ->get();
+//
+        return DB::table("_videpdenservestatus")
+            ->select('servicio_id as sue_id','servicio','abreviatura as label', DB::raw('count(servicio_id) as total'))
+            ->where('ambito_dependencia',2)
+            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+            ->where('dependencia_id',$due_id)
+            ->groupBy('servicio_id','servicio','abreviatura')
+            ->orderBy('total','desc')
+            ->get();
+
+    }
+
+
+
+
+
+    public function exportFilterData(Request $request){
+        $data = $request->all();
+
+        $dids = $data['denuncias'];
+
+        $ids = Str::of($dids)
+            ->explode(',')
+            ->map(function ($value) {
+                return (int) $value;
+            })
+            ->toArray();
+
+        $item = Denuncia::query()
+            ->whereIn('id', $ids)
+            ->get();
+
+        $items = Denuncia::query()
+            ->select(FuncionesController::itemSelectDenuncias())
+            ->whereIn('id', $ids)
+            ->orderByDesc('id')
+            ->get();
+
+        $request->session()->put('items', $items);
+
     }
 
 

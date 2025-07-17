@@ -174,6 +174,7 @@
     </main>
     <input type="hidden" id="zona" name="zona" value="0">
     <input type="hidden" id="denuncias" name="denuncias" value="">
+    <input type="hidden" id="ddse_id" name="ddse_id" value="">
 </div>
 
 
@@ -262,13 +263,17 @@
             });
 
             const inputDenuncias = document.getElementById('denuncias');
+            const inputDDSE = document.getElementById('ddse_id');
 
             let dataSetLocations = [];
             let denuncias_id     = [];
+            let ddse_id     = [];
+
             Georeferencias.georeferencias.forEach( (geo) => {
-                dataSetLocations.push(setDataLocations(geo,denuncias_id));
+                dataSetLocations.push(setDataLocations(geo,denuncias_id,ddse_id));
             });
             inputDenuncias.value = denuncias_id.join(',');
+            inputDDSE.value = ddse_id.join(',');
             frmFilterDataExport.disabled = false;
             frmResumenBasicoExport ? frmResumenBasicoExport.disabled = false : console.warn("");
 
@@ -322,10 +327,10 @@
             btnFilterDataExport.addEventListener('click', function () {
                 // Deshabilita el botón si es necesario
                 btnFilterDataExport.disabled = true;
-                const inputDenuncias = document.getElementById('denuncias');
                 var PARAMS = {
                     search : "",
                     items : inputDenuncias.value,
+                    items_ddse : inputDDSE.value,
                     fileoutput : "fmt_lista_denuncias_sm.xlsx",
                     indice : 3,
                     _token : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
@@ -352,9 +357,9 @@
             const btnResumenBasicoExport = document.getElementById('frmResumenBasicoExport');
             if (btnResumenBasicoExport) {
                 btnResumenBasicoExport.addEventListener('click', function () {
-                    const inputDenuncias = document.getElementById('denuncias');
                     var PARAMS = {
                         items : inputDenuncias.value,
+                        items_ddse : inputDDSE.value,
                         start_date : "{{ $start_date }}",
                         end_date : "{{ $end_date }}",
                         unity_id: {{ $unity_id }},
@@ -407,6 +412,7 @@
         const selectColonias = document.getElementById('colonias');
         const selectDelegaciones = document.getElementById('delegaciones');
         const inputDenuncias = document.getElementById('denuncias');
+        const inputDDSE = document.getElementById('ddse_id');
         const map = document.getElementById('map');
         const selectedZona = selectZona.value;
         const selectedServicio = selectServicios.value;
@@ -414,6 +420,7 @@
         const selectedDelegacion = selectDelegaciones.value;
         const dataSetLocations = [];
         const denuncias_id = [];
+        const ddse_id = [];
         let lat = 17.9919;
         let lon = -92.9303;
 
@@ -424,27 +431,28 @@
             var del = geo.delegacion_id;
             if (selectedZona == dep && selectedServicio == 0 && selectedColonia == 0 && selectedDelegacion == 0) {
                 console.log("1");
-                dataSetLocations.push(setDataLocations(geo, denuncias_id));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id,ddse_id));
             }else if (selectedZona == dep && selectedServicio == 0 && selectedColonia == 0 && selectedDelegacion == del){
                     console.log("2");
-                    dataSetLocations.push(setDataLocations(geo, denuncias_id));
+                    dataSetLocations.push(setDataLocations(geo, denuncias_id,ddse_id));
             }else if (selectedZona == dep && selectedServicio == 0 && selectedColonia == col && selectedDelegacion == del){
                 console.log("3");
-                dataSetLocations.push(setDataLocations(geo, denuncias_id));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id,ddse_id));
             }else if (selectedZona == dep && selectedServicio == ser && selectedColonia == 0 && selectedDelegacion == 0){
                 console.log("4");
-                dataSetLocations.push(setDataLocations(geo, denuncias_id));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id,ddse_id));
             }else if (selectedZona == dep && selectedServicio == ser && selectedColonia == 0 && selectedDelegacion == del){
                 console.log("6");
-                dataSetLocations.push(setDataLocations(geo, denuncias_id));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id,ddse_id));
             }else if (selectedZona == dep && selectedServicio == ser && selectedColonia == col && selectedDelegacion == del) {
                 console.log("7");
-                dataSetLocations.push(setDataLocations(geo, denuncias_id));
+                dataSetLocations.push(setDataLocations(geo, denuncias_id,ddse_id));
             }
             lat = geo.latitud;
             lon = geo.longitud;
         });
         inputDenuncias.value = denuncias_id.join(',');
+        inputDDSE.value = ddse_id.join(',');
 
         items.value = getCommaSeparatedTwoDecimalsNumber(dataSetLocations.length);
 
@@ -467,8 +475,9 @@
 
     }
 
-    function setDataLocations(geo, denuncias_id) {
+    function setDataLocations(geo, denuncias_id, ddse_id) {
         denuncias_id.push(geo.denuncia_id);
+        ddse_id.push(geo.ddse_id);
         return {
             denuncia_id:geo.denuncia_id,
             fecha_ingreso: geo.fecha_ingreso,
