@@ -503,11 +503,19 @@ class SMUnidadesAdmitivasController extends Controller{
 //            ->groupBy(["ultimo_estatus","ue_id"])
 //            ->get();
 
-        return DB::table("_videpdenservestatus")
+//        return DB::table("_videpdenservestatus")
+//            ->select(["estatus as name", "estatu_id as ue_id", DB::raw("count(estatu_id) as data")])
+//            ->where("ambito_dependencia",2)
+//            ->where('dependencia_id',$dependencia_id)
+//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+//            ->groupBy(["estatus","estatu_id"])
+//            ->get();
+
+        return DB::table("_vimov_filter_sm")
             ->select(["estatus as name", "estatu_id as ue_id", DB::raw("count(estatu_id) as data")])
-            ->where("ambito_dependencia",2)
             ->where('dependencia_id',$dependencia_id)
-            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+            ->where('fecha_ingreso', '>=', $start_date." 00:00:00")
+            ->where('fecha_ingreso', '<=', $end_date." 23:59:59")
             ->groupBy(["estatus","estatu_id"])
             ->get();
 
@@ -524,15 +532,23 @@ class SMUnidadesAdmitivasController extends Controller{
 //            ->groupBy('abreviatura')
 //            ->first();
 
-        return DB::table("_videpdenservestatus")
+//        return DB::table("_videpdenservestatus")
+//            ->select('abreviatura as label', DB::raw('count(dependencia_id) as data'))
+//            ->where('ambito_dependencia',2)
+//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+//            ->where('dependencia_id',$dependencia_id)
+//            ->where('estatu_id',$ue_id)
+//            ->groupBy('abreviatura')
+//            ->first();
+
+        return DB::table("_vimov_filter_sm")
             ->select('abreviatura as label', DB::raw('count(dependencia_id) as data'))
-            ->where('ambito_dependencia',2)
-            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+            ->where('fecha_ingreso', '>=', $start_date." 00:00:00")
+            ->where('fecha_ingreso', '<=', $end_date." 23:59:59")
             ->where('dependencia_id',$dependencia_id)
             ->where('estatu_id',$ue_id)
             ->groupBy('abreviatura')
             ->first();
-
 
 
     }
@@ -546,10 +562,18 @@ class SMUnidadesAdmitivasController extends Controller{
 //            ->groupBy('dependencia_id')
 //            ->first();
 
-        return DB::table("_videpdenservestatus")
+//        return DB::table("_videpdenservestatus")
+//            ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
+//            ->where('ambito_dependencia',2)
+//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+//            ->where('dependencia_id',$dependencia_id)
+//            ->groupBy('dependencia_id')
+//            ->first();
+
+        return DB::table("_vimov_filter_sm")
             ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
-            ->where('ambito_dependencia',2)
-            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+            ->where('fecha_ingreso', '>=', $start_date." 00:00:00")
+            ->where('fecha_ingreso', '<=', $end_date." 23:59:59")
             ->where('dependencia_id',$dependencia_id)
             ->groupBy('dependencia_id')
             ->first();
@@ -566,10 +590,19 @@ class SMUnidadesAdmitivasController extends Controller{
 //            ->groupBy('dependencia_id')
 //            ->first();
 
-        return DB::table("_videpdenservestatus")
+//        return DB::table("_videpdenservestatus")
+//            ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
+//            ->where('ambito_dependencia',2)
+//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+//            ->where('dependencia_id',$dependencia_id)
+//            ->where('estatu_id',$ue_id)
+//            ->groupBy('dependencia_id')
+//            ->first();
+
+        return DB::table("_vimov_filter_sm")
             ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
-            ->where('ambito_dependencia',2)
-            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+            ->where('fecha_ingreso', '>=', $start_date." 00:00:00")
+            ->where('fecha_ingreso', '<=', $end_date." 23:59:59")
             ->where('dependencia_id',$dependencia_id)
             ->where('estatu_id',$ue_id)
             ->groupBy('dependencia_id')
@@ -588,10 +621,18 @@ class SMUnidadesAdmitivasController extends Controller{
 //            ->groupBy('abreviatura')
 //            ->first();
 
-        return DB::table("_videpdenservestatus")
+//        return DB::table("_videpdenservestatus")
+//            ->select('abreviatura as label', DB::raw('count(servicio_id) as total'))
+//            ->where('ambito_dependencia',2)
+//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+//            ->where('servicio_id',$sue_id)
+//            ->groupBy('abreviatura')
+//            ->first();
+
+        return DB::table("_vimov_filter_sm")
             ->select('abreviatura as label', DB::raw('count(servicio_id) as total'))
-            ->where('ambito_dependencia',2)
-            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+            ->where('fecha_ingreso', '>=', $start_date." 00:00:00")
+            ->where('fecha_ingreso', '<=', $end_date." 23:59:59")
             ->where('servicio_id',$sue_id)
             ->groupBy('abreviatura')
             ->first();
@@ -614,17 +655,32 @@ class SMUnidadesAdmitivasController extends Controller{
 //            ->groupBy('ue_id')
 //            ->first();
 
-        return DB::table("_videpdenservestatus")
+//        return DB::table("_videpdenservestatus")
+//            ->select(
+//                DB::raw("SUM(CASE WHEN fecha_dias_ejecucion >= CURRENT_DATE THEN 1 ELSE 0 END) AS atiempo"),
+//                DB::raw("SUM(CASE WHEN CURRENT_DATE > fecha_dias_ejecucion THEN 1 ELSE 0 END) AS conrezago")
+//            )
+//            ->where('ambito_dependencia', 2)
+//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+//            ->where('dependencia_id', $unidad_id)
+//            ->where('estatu_id', $ue_id)
+//            ->groupBy('estatu_id')
+//            ->first();
+
+        return DB::table("_vimov_filter_sm")
             ->select(
                 DB::raw("SUM(CASE WHEN fecha_dias_ejecucion >= CURRENT_DATE THEN 1 ELSE 0 END) AS atiempo"),
                 DB::raw("SUM(CASE WHEN CURRENT_DATE > fecha_dias_ejecucion THEN 1 ELSE 0 END) AS conrezago")
             )
-            ->where('ambito_dependencia', 2)
-            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+            ->where('fecha_ingreso', '>=', $start_date." 00:00:00")
+            ->where('fecha_ingreso', '<=', $end_date." 23:59:59")
             ->where('dependencia_id', $unidad_id)
             ->where('estatu_id', $ue_id)
             ->groupBy('estatu_id')
             ->first();
+
+
+
 
     }
 
@@ -662,7 +718,13 @@ class SMUnidadesAdmitivasController extends Controller{
         $cacheKey = '_vimov_filter_sm' . md5($unidad_id . $start_date . $end_date); // Genera una clave de caché única
         $data = Cache::remember($cacheKey, 60, function () use ($unidad_id, $start_date, $end_date) {
             return DB::table("_vimov_filter_sm")
-                ->where('ambito_dependencia', 2)
+                ->select(
+                    'id','denuncia_id','descripcion','fecha_dias_ejecucion','fecha_dias_maximos_ejecucion',
+                    'fecha_ingreso', 'fecha_ultimo_estatus', 'dependencia_id', 'dependencia', 'abreviatura',
+                    'ue_id', 'sue_id', 'servicio', 'nombre_corto_ss', 'ciudadano', 'centro_localidad_id', 'latitud','longitud',
+                    'estatus','fecha_ultimo_estatus','fecha_ingreso','fecha_dias_ejecucion', 'fecha_dias_maximos_ejecucion',
+                    'uuid'
+                )
                 ->where('dependencia_id', $unidad_id)
                 ->where('fecha_ingreso', '>=', $start_date." 00:00:00")
                 ->where('fecha_ingreso', '<=', $end_date." 23:59:59")
@@ -686,14 +748,25 @@ class SMUnidadesAdmitivasController extends Controller{
 //            ->orderBy('total','desc')
 //            ->get();
 //
-        return DB::table("_videpdenservestatus")
+
+//        return DB::table("_videpdenservestatus")
+//            ->select('servicio_id as sue_id','servicio','abreviatura as label', DB::raw('count(servicio_id) as total'))
+//            ->where('ambito_dependencia',2)
+//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+//            ->where('dependencia_id',$due_id)
+//            ->groupBy('servicio_id','servicio','abreviatura')
+//            ->orderBy('total','desc')
+//            ->get();
+
+        return DB::table("_vimov_filter_sm")
             ->select('servicio_id as sue_id','servicio','abreviatura as label', DB::raw('count(servicio_id) as total'))
-            ->where('ambito_dependencia',2)
-            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
+            ->where('fecha_ingreso', '>=', $start_date." 00:00:00")
+            ->where('fecha_ingreso', '<=', $end_date." 23:59:59")
             ->where('dependencia_id',$due_id)
             ->groupBy('servicio_id','servicio','abreviatura')
             ->orderBy('total','desc')
             ->get();
+
 
     }
 

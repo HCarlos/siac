@@ -49,7 +49,6 @@ class ActualizaEstadisticasARO{
     public static function semaforo_ultimo_estatus_off($ue_id, $fecha_mayor, $fecha_menor){
 
         $ue = Estatu::find($ue_id);
-//        dd($ue->id);
         $ue_id = $ue->id;
 
         $sem = 1;
@@ -76,8 +75,6 @@ class ActualizaEstadisticasARO{
         $ffin = Carbon::parse($ffin);
 
         $dias = $ffin->diffInDays($finicio);
-
-//        dd($ue_id);
 
         switch ($ue_id) {
             case 16:

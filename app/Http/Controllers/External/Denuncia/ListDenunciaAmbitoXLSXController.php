@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 
 class ListDenunciaAmbitoXLSXController extends Controller{
@@ -429,47 +429,54 @@ class ListDenunciaAmbitoXLSXController extends Controller{
 
             $Colonia = "";
             $Delegacion = "";
-            $CenLoc = $item->centro_localidad_id;
-            if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0) {
-                $Loc = CentroLocalidad::find($CenLoc);
-                $Colonia = $Loc->ItemColonia();
-                $Delegacion = $Loc->ItemDelegacion();
-            }
+//            $CenLoc = $item->centro_localidad_id;
+//            if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0) {
+//                $Loc = CentroLocalidad::find($CenLoc);
+                $Colonia = $item->centroLocalidad->ItemColonia();
+                $Delegacion = $item->centroLocalidad->ItemDelegacion();
+//            }
 
-            $cds = $item->ciudadano_simple;
+//            $atendidas = 0;
+//            $rechazadas = 0;
+//            $pendientes = 0;
+//            $observadas = 0;
+//            if (in_array(((int)$item->ue_id), array(17, 21))) {
+//                $atendidas = 1;
+//            }
+//            if (in_array(((int)$item->ue_id), array(20, 22))) {
+//                $rechazadas = 1;
+//            }
+//            if (in_array(((int)$item->ue_id), array(16, 19))) {
+//                $pendientes = 1;
+//            }
+//            if (((int)$item->ue_id) === 18) {
+//                $observadas = 1;
+//            }
+
+            $estados = [
+                'atendidas' => [17, 21],
+                'rechazadas' => [20, 22],
+                'pendientes' => [16, 19],
+                'observadas' => [18]
+            ];
+            $atendidas = in_array($item->ue_id, $estados['atendidas']) ? 1 : 0;
+            $rechazadas = in_array($item->ue_id, $estados['rechazadas']) ? 1 : 0;
+            $pendientes = in_array($item->ue_id, $estados['pendientes']) ? 1 : 0;
+            $observadas = in_array($item->ue_id, $estados['observadas']) ? 1 : 0;
 
 
-            $atendidas = 0;
-            $rechazadas = 0;
-            $pendientes = 0;
-            $observadas = 0;
-            if (in_array(((int)$item->ue_id), array(17, 21))) {
-                $atendidas = 1;
-            }
-            if (in_array(((int)$item->ue_id), array(20, 22))) {
-                $rechazadas = 1;
-            }
-            if (in_array(((int)$item->ue_id), array(16, 19))) {
-                $pendientes = 1;
-            }
-            if (((int)$item->ue_id) === 18) {
-                $observadas = 1;
-            }
-
-            $gdu = explode(',', trim($item->gd_ubicacion));
-            $cadgdu = $gdu[1] ?? '';
-
+            $sem = $this->getColorSemaforo($item);
 
             $sh
                 ->setCellValue('A' . $C, $item->denuncia_id ?? 0)
-                ->setCellValue('B' . $C, trim($item->curp_ciudadano ?? ''))
+                ->setCellValue('B' . $C, trim($item->username_ciudadano ?? ''))
                 ->setCellValue('C' . $C, trim($item->ap_paterno_ciudadano ?? ''))
                 ->setCellValue('D' . $C, trim($item->ap_materno_ciudadano ?? ''))
                 ->setCellValue('E' . $C, trim($item->nombre_ciudadano ?? ''))
                 ->setCellValue('F' . $C, strtoupper(trim($item->search_google)) ?? '')
                 ->setCellValue('G' . $C, $Colonia ?? '')
                 ->setCellValue('H' . $C, $Delegacion ?? '')
-                ->setCellValue('I' . $C, $item->telefonoscelularesemails ?? '')
+                ->setCellValue('I' . $C, $item->telefonos_ciudadano ?? '')
                 ->setCellValue('J' . $C, $fechaIngreso ?? '')
                 ->setCellValue('K' . $C, $item->dependencia ?? '')
                 ->setCellValue('L' . $C, $item->servicio ?? '')
@@ -479,21 +486,20 @@ class ListDenunciaAmbitoXLSXController extends Controller{
                 ->setCellValue('P' . $C, $item->estatus ?? '')
                 ->setCellValue('Q' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y') ?? '')
                 ->setCellValue('R' . $C, $item->observaciones ?? '')
-                ->setCellValue('S' . $C, $this->getColorSemaforo($item)['status'])
+                ->setCellValue('S' . $C, $sem['status'])
                 ->setCellValue('T' . $C, $item->dias_atendida ?? '')
                 ->setCellValue('U' . $C, $item->dias_rechazada ?? '')
                 ->setCellValue('V' . $C, $atendidas)
                 ->setCellValue('W' . $C, $rechazadas)
                 ->setCellValue('X' . $C, $pendientes)
-                ->setCellValue('Y' . $C, $observadas);
+                ->setCellValue('Y' . $C, $observadas)
 
-            $sh
                 ->getStyle('A' . $C . ':Y' . $C)
                 ->getFill()
                 ->applyFromArray([
                     'fillType' => 'solid',
                     'rotation' => 0,
-                    'color' => ['rgb' => $this->getColorSemaforo($item)['status_i']],
+                    'color' => ['rgb' => $sem['status_i']],
                 ]);
 
             $C++;
@@ -524,6 +530,8 @@ class ListDenunciaAmbitoXLSXController extends Controller{
         $writer = IOFactory::createWriter($spreadsheet, $extension);
         $writer->save('php://output');
         exit;
+
+
     }
 
     public function denunciaGeneralMap03($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
@@ -541,66 +549,57 @@ class ListDenunciaAmbitoXLSXController extends Controller{
 
                 $Colonia = "";
                 $Delegacion = "";
-                $CenLoc = $item->centro_localidad_id;
-                if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0) {
-                    $Loc = CentroLocalidad::find($CenLoc);
-                    $Colonia = $Loc->ItemColonia();
-                    $Delegacion = $Loc->ItemDelegacion();
-                }
-
-                $resp = Denuncia_Dependencia_Servicio::query()
-                    ->select(['id', 'observaciones', 'dependencia_id', 'favorable', 'denuncia_id'])
-                    ->where('denuncia_id', $item->id)
-                    ->orderByDesc('id')
-                    ->first();
-
-//                $cds = $item->ciudadano_simple;
-
-//                $telcel = $cds->telefonos . '; ' . $cds->celulares . '; ' . $cds->email;
-//                $telcel = explode(';', $telcel);
-//
-//                $cadcel = '';
-//                for ($i = 0; $i < count($telcel) - 1; $i++) {
-//                    if ($cadcel === '') {
-//                        $cadcel .= trim($telcel[$i]);
-//                    } else if (trim($telcel[$i]) !== '') {
-//                        $cadcel .= ', ' . trim($telcel[$i]);
-//                    } else {
-//                        $cadcel .= '';
-//                    }
+//                $CenLoc = $item->centro_localidad_id;
+//                if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0) {
+//                    $Loc = CentroLocalidad::find($CenLoc);
+//                    $Colonia = $Loc->ItemColonia();
+//                    $Delegacion = $Loc->ItemDelegacion();
 //                }
 
-                $atendidas = 0;
-                $rechazadas = 0;
-                $pendientes = 0;
-                $observadas = 0;
-                if (in_array(((int)$item->ue_id), array(17, 21))) {
-                    $atendidas = 1;
-                }
-                if (in_array(((int)$item->ue_id), array(20, 22))) {
-                    $rechazadas = 1;
-                }
-                if (in_array(((int)$item->ue_id), array(16, 19))) {
-                    $pendientes = 1;
-                }
-                if (((int)$item->ue_id) === 18) {
-                    $observadas = 1;
-                }
+                $Colonia = $item->centroLocalidad->ItemColonia() ?? '';
+                $Delegacion = $item->centroLocalidad->ItemDelegacion() ?? '';
 
-                $gdu = explode(',', trim($item->gd_ubicacion));
-                $cadgdu = $gdu[1] ?? '';
+//                $atendidas = 0;
+//                $rechazadas = 0;
+//                $pendientes = 0;
+//                $observadas = 0;
+//                if (in_array(((int)$item->ue_id), array(17, 21))) {
+//                    $atendidas = 1;
+//                }
+//                if (in_array(((int)$item->ue_id), array(20, 22))) {
+//                    $rechazadas = 1;
+//                }
+//                if (in_array(((int)$item->ue_id), array(16, 19))) {
+//                    $pendientes = 1;
+//                }
+//                if (((int)$item->ue_id) === 18) {
+//                    $observadas = 1;
+//                }
 
+                $estados = [
+                    'atendidas' => [17, 21],
+                    'rechazadas' => [20, 22],
+                    'pendientes' => [16, 19],
+                    'observadas' => [18]
+                ];
+                $atendidas = in_array($item->ue_id, $estados['atendidas']) ? 1 : 0;
+                $rechazadas = in_array($item->ue_id, $estados['rechazadas']) ? 1 : 0;
+                $pendientes = in_array($item->ue_id, $estados['pendientes']) ? 1 : 0;
+                $observadas = in_array($item->ue_id, $estados['observadas']) ? 1 : 0;
+
+
+                $sem = $this->getColorSemaforo($item);
 
                 $sh
                     ->setCellValue('A' . $C, $item->denuncia_id ?? 0)
-                    ->setCellValue('B' . $C, trim($item->curp_ciudadano ?? ''))
+                    ->setCellValue('B' . $C, trim($item->username_ciudadano ?? ''))
                     ->setCellValue('C' . $C, trim($item->ap_paterno_ciudadano ?? ''))
                     ->setCellValue('D' . $C, trim($item->ap_materno_ciudadano ?? ''))
                     ->setCellValue('E' . $C, trim($item->nombre_ciudadano ?? ''))
                     ->setCellValue('F' . $C, strtoupper(trim($item->search_google)) ?? '')
                     ->setCellValue('G' . $C, $Colonia ?? '')
                     ->setCellValue('H' . $C, $Delegacion ?? '')
-                    ->setCellValue('I' . $C, $item->telefonoscelularesemails ?? '')
+                    ->setCellValue('I' . $C, $item->telefonos_ciudadano ?? '')
                     ->setCellValue('J' . $C, $fechaIngreso ?? '')
                     ->setCellValue('K' . $C, $item->dependencia ?? '')
                     ->setCellValue('L' . $C, $item->servicio ?? '')
@@ -610,7 +609,7 @@ class ListDenunciaAmbitoXLSXController extends Controller{
                     ->setCellValue('P' . $C, $item->estatus ?? '')
                     ->setCellValue('Q' . $C, Carbon::parse($item->fecha_movimiento)->format('d-m-Y') ?? '')
                     ->setCellValue('R' . $C, $item->observaciones ?? '')
-                    ->setCellValue('S' . $C, $this->getColorSemaforo($item)['status'])
+                    ->setCellValue('S' . $C, $sem['status'])
                     ->setCellValue('T' . $C, $item->dias_atendida ?? '')
                     ->setCellValue('U' . $C, $item->dias_rechazada ?? '')
                     ->setCellValue('V' . $C, $atendidas)
@@ -624,7 +623,7 @@ class ListDenunciaAmbitoXLSXController extends Controller{
                     ->applyFromArray([
                         'fillType' => 'solid',
                         'rotation' => 0,
-                        'color' => ['rgb' => $this->getColorSemaforo($item)['status_i']],
+                        'color' => ['rgb' => $sem['status_i']],
                     ]);
 
                 $C++;
@@ -663,22 +662,6 @@ class ListDenunciaAmbitoXLSXController extends Controller{
     function exportDataFilterMap2(Request $request){
         $data = $request->all();
 
-        $dids = $data['items'];
-
-
-//        $ids = Str::of($dids)
-//            ->explode(',')
-//            ->map(function ($value) {
-//                return (int) $value;
-//            })
-//            ->toArray();
-//
-//        $items = _viDDSs::query()
-//            ->select(FuncionesController::itemSelectDenunciasV1())
-//            ->whereIn('id', $ids)
-//            ->orderByDesc('id')
-//            ->get();
-
         $ddse_ids = $data['items_ddse'];
 
         $ids = Str::of($ddse_ids)
@@ -688,7 +671,15 @@ class ListDenunciaAmbitoXLSXController extends Controller{
             })
             ->toArray();
 
-        $items = _viMovSM::query()
+        $items = _viMovSM::select(
+                'id','denuncia_id','descripcion','fecha_dias_ejecucion','fecha_dias_maximos_ejecucion',
+                'fecha_ingreso', 'fecha_ultimo_estatus', 'dependencia_id', 'dependencia', 'abreviatura',
+                'ue_id', 'sue_id', 'servicio', 'ciudadano', 'centro_localidad_id', 'latitud','longitud',
+                'estatus','fecha_ultimo_estatus','fecha_ingreso','fecha_dias_ejecucion', 'fecha_dias_maximos_ejecucion',
+                'uuid','fecha_movimiento','estatu_id', 'prioridad', 'origen',
+                'username_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano','telefonos_ciudadano',
+                'observaciones','dias_atendida','dias_rechazada','search_google'
+            )
             ->whereIn('id', $ids)
             ->orderByDesc('id')
             ->get();
@@ -699,28 +690,10 @@ class ListDenunciaAmbitoXLSXController extends Controller{
         return $this->getListDenunciaAmbitoXLSX($request);
 
     }
-
-
-
 
     function exportDataFilterMap3(Request $request){
         $data = $request->all();
 
-//        $dids = $data['items'];
-//
-//        $ids = Str::of($dids)
-//            ->explode(',')
-//            ->map(function ($value) {
-//                return (int) $value;
-//            })
-//            ->toArray();
-//
-//        $items = _viDepDenServEstatus::query()
-//            ->select(FuncionesController::itemSelectDenuncias())
-//            ->whereIn('id', $ids)
-//            ->orderByDesc('id')
-//            ->get();
-
         $ddse_ids = $data['items_ddse'];
 
         $ids = Str::of($ddse_ids)
@@ -730,18 +703,29 @@ class ListDenunciaAmbitoXLSXController extends Controller{
             })
             ->toArray();
 
-        $items = _viMovSM::query()
+        $items = _viMovSM::select(
+                'id','denuncia_id','descripcion','fecha_dias_ejecucion','fecha_dias_maximos_ejecucion',
+                'fecha_ingreso', 'fecha_ultimo_estatus', 'dependencia_id', 'dependencia', 'abreviatura',
+                'ue_id', 'sue_id', 'servicio', 'ciudadano', 'centro_localidad_id', 'latitud','longitud',
+                'estatus','fecha_ultimo_estatus','fecha_ingreso','fecha_dias_ejecucion', 'fecha_dias_maximos_ejecucion',
+                'uuid','fecha_movimiento','estatu_id', 'prioridad', 'origen',
+                'username_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano','telefonos_ciudadano',
+                'observaciones','dias_atendida','dias_rechazada','search_google'
+            )
             ->whereIn('id', $ids)
             ->orderByDesc('id')
             ->get();
-
-
 
         $request->session()->put('items', $items);
 
         return $this->getListDenunciaAmbitoXLSX($request);
 
     }
+
+
+
+
+
 
 
 

@@ -63,7 +63,8 @@ class ResumenSMController extends Controller{
                 ->setCellValue('C' . $C, $item["rechazadas"] ?? 0)
                 ->setCellValue('D' . $C, $item["pendientes"] ?? 0)
                 ->setCellValue('E' . $C, $item["observadas"] ?? 0)
-                ->setCellValue('F' . $C, $item["total"] ?? 0);
+                ->setCellValue('F' . $C, $item["total"] ?? 0)
+                ->setCellValue('G' . $C, $item["obs"] ?? '');
             $C++;
         }
 
@@ -87,7 +88,7 @@ class ResumenSMController extends Controller{
             ["sue_id" => 476, "servicio" => "FUGA DE AGUA POTABLE", "atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
             ["sue_id" => 508, "servicio" => "DESASOLVE DE DRENAJE","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
             ["sue_id" => 479, "servicio" => "REPARACION DE ALCANTARILLA","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
-            ["sue_id" => 468, "servicio" => "RESANE HIDRÁHULICO","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>'Informativo'],
+            ["sue_id" => 568, "servicio" => "RESANE HIDRÁHULICO","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>'Informativo'],
         ];
 
         $data = $request->validate([
@@ -100,9 +101,11 @@ class ResumenSMController extends Controller{
             })
             ->toArray();
 
-        $arrServ = _viMovSM::query()
+        $arrServ = _viMovSM::select(
+                'id','denuncia_id', 'servicio_id', 'estatu_id'
+            )
             ->whereIn('denuncia_id', $ids)
-            ->whereIn('servicio_id', [476,568,508,479,568])
+            ->whereIn('servicio_id', [476,508,479,568])
             ->orderByDesc('id')
             ->get();
 
@@ -170,8 +173,8 @@ class ResumenSMController extends Controller{
             ["sue_id" => 483, "servicio" => "BACHEO", "atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
             ["sue_id" => 503, "servicio" => "RECOLECCIÓN DE RESIDUOS SÓLIDOS","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
             ["sue_id" => 466, "servicio" => "REPARACIÓN DE LUMINARIAS","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
-            ["sue_id" => 467, "servicio" => "RESANE ASFÁLTICO","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>'Informativo'],
-            ["sue_id" => 468, "servicio" => "RESANE HIDRÁHULICO","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>'Informativo'],
+            ["sue_id" => 567, "servicio" => "RESANE ASFÁLTICO","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>'Informativo'],
+            ["sue_id" => 568, "servicio" => "RESANE HIDRÁHULICO","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>'Informativo'],
         ];
 
         $data = $request->validate([
@@ -184,7 +187,9 @@ class ResumenSMController extends Controller{
             })
             ->toArray();
 
-        $arrServ = _viMovSM::query()
+        $arrServ = _viMovSM::select(
+                'id','denuncia_id', 'servicio_id', 'estatu_id'
+            )
             ->whereIn('denuncia_id', $ids)
             ->whereIn('servicio_id', [483,508,476,503,479,466,567,568])
             ->orderByDesc('id')
