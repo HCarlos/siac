@@ -135,6 +135,7 @@ class DenunciaRequest extends FormRequest
                 'ip'                           => FuncionesController::getIp(),
                 'host'                         => config('atemun.public_url'),
                 'ambito'                       => (int) $this->ambito,
+                'centro_localidad_id'          => $this->centro_localidad_id ?? null,
             ];
 
             if (Auth::user()->isRole('Administrator|SysOp')){

@@ -141,7 +141,7 @@ class DenunciaAmbitoRequest extends FormRequest
                 'ip'                           => FuncionesController::getIp(),
                 'host'                         => config('atemun.public_url'),
                 'ambito'                       => $this->ambito ?? 0,
-                'centro_localidad_id'          => $this->centro_localidad_id ?? 0,
+                'centro_localidad_id'          => $this->centro_localidad_id ?? null,
             ];
 
 
