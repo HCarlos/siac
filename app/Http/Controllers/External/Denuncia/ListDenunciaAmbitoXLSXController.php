@@ -432,8 +432,8 @@ class ListDenunciaAmbitoXLSXController extends Controller{
 //            $CenLoc = $item->centro_localidad_id;
 //            if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0) {
 //                $Loc = CentroLocalidad::find($CenLoc);
-                $Colonia = $item->centroLocalidad->ItemColonia();
-                $Delegacion = $item->centroLocalidad->ItemDelegacion();
+                $Colonia = $item->centroLocalidad->ItemColonia() ?? '';
+                $Delegacion = $item->centroLocalidad->ItemDelegacion() ?? '';
 //            }
 
 //            $atendidas = 0;
