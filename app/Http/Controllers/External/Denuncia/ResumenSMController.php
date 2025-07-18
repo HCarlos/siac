@@ -68,6 +68,7 @@ class ResumenSMController extends Controller{
             $C++;
         }
 
+
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="_'.$arrFE[0].'.'.$arrFE[1].'"');
         header('Cache-Control: max-age=0');
