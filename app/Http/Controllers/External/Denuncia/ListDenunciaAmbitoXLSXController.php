@@ -432,8 +432,10 @@ class ListDenunciaAmbitoXLSXController extends Controller{
 //            $CenLoc = $item->centro_localidad_id;
 //            if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0) {
 //                $Loc = CentroLocalidad::find($CenLoc);
+            if ($item->centroLocalidad) {
                 $Colonia = $item->centroLocalidad->ItemColonia() ?? '';
                 $Delegacion = $item->centroLocalidad->ItemDelegacion() ?? '';
+            }
 //            }
 
 //            $atendidas = 0;
@@ -556,8 +558,12 @@ class ListDenunciaAmbitoXLSXController extends Controller{
 //                    $Delegacion = $Loc->ItemDelegacion();
 //                }
 
-                $Colonia = $item->centroLocalidad->ItemColonia() ?? '';
-                $Delegacion = $item->centroLocalidad->ItemDelegacion() ?? '';
+
+                if ($item->centroLocalidad) {
+                    $Colonia = $item->centroLocalidad->ItemColonia() ?? '';
+                    $Delegacion = $item->centroLocalidad->ItemDelegacion() ?? '';
+                }
+
 
 //                $atendidas = 0;
 //                $rechazadas = 0;
