@@ -22,11 +22,10 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-class _viMovSM extends Model{
-
-    use DenunciaTrait;
+class _viMovSASSM extends Model{
 
     protected $guard_name = 'web';
-    protected $table = '_vimov_filter_sm';
+    protected $table = '_vimov_sas_sm';
+
 
 }

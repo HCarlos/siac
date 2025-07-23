@@ -774,31 +774,31 @@ class SMUnidadesAdmitivasController extends Controller{
 
 
 
-    public function exportFilterData(Request $request){
-        $data = $request->all();
-
-        $dids = $data['denuncias'];
-
-        $ids = Str::of($dids)
-            ->explode(',')
-            ->map(function ($value) {
-                return (int) $value;
-            })
-            ->toArray();
-
-        $item = Denuncia::query()
-            ->whereIn('id', $ids)
-            ->get();
-
-        $items = Denuncia::query()
-            ->select(FuncionesController::itemSelectDenuncias())
-            ->whereIn('id', $ids)
-            ->orderByDesc('id')
-            ->get();
-
-        $request->session()->put('items', $items);
-
-    }
+//    public function exportFilterData(Request $request){
+//        $data = $request->all();
+//
+//        $dids = $data['denuncias'];
+//
+//        $ids = Str::of($dids)
+//            ->explode(',')
+//            ->map(function ($value) {
+//                return (int) $value;
+//            })
+//            ->toArray();
+//
+//        $item = Denuncia::query()
+//            ->whereIn('id', $ids)
+//            ->get();
+//
+//        $items = Denuncia::query()
+//            ->select(FuncionesController::itemSelectDenuncias())
+//            ->whereIn('id', $ids)
+//            ->orderByDesc('id')
+//            ->get();
+//
+//        $request->session()->put('items', $items);
+//
+//    }
 
 
 

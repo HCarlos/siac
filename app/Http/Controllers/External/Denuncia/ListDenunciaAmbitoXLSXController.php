@@ -11,6 +11,7 @@ use App\Models\Catalogos\Servicio;
 use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\_viDepDenServEstatus;
 use App\Models\Denuncias\_viMovimientos;
+use App\Models\Denuncias\_viMovSASSM;
 use App\Models\Denuncias\_viMovSM;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
@@ -75,6 +76,9 @@ class ListDenunciaAmbitoXLSXController extends Controller{
                     break;
                 case 3:
                     $this->denunciaGeneralMap03($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension);
+                    break;
+                case 4:
+                    $this->denunciaSASGeneral02($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension);
                     break;
             }
 
@@ -731,6 +735,93 @@ class ListDenunciaAmbitoXLSXController extends Controller{
 
     }
 
+    function exportDenunciaSASGeneral02(Request $request){
+        $data = $request->all();
+
+        $fecha_inicial = $data['start_date'];
+        $fecha_final   = $data['end_date'];
+
+//        dd($fecha_inicial, $fecha_final);
+
+
+        $items = _viMovSASSM::select(
+            'id','denuncia_id','descripcion','fecha_dias_ejecucion','fecha_dias_maximos_ejecucion',
+            'fecha_ingreso', 'fecha_ultimo_estatus', 'dependencia_id', 'dependencia', 'abreviatura',
+            'ue_id', 'sue_id', 'servicio', 'ciudadano', 'centro_localidad_id', 'latitud','longitud',
+            'estatus','fecha_ultimo_estatus','fecha_ingreso','fecha_dias_ejecucion', 'fecha_dias_maximos_ejecucion',
+            'uuid','fecha_movimiento','estatu_id', 'prioridad', 'origen',
+            'username_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano','telefonos_ciudadano',
+            'observaciones','dias_atendida','dias_rechazada','search_google'
+        )
+            ->whereBetween('fecha_ingreso', [$fecha_inicial.' 00:00:00', $fecha_final.' 23:59:59'])
+            ->orderByDesc('id')
+            ->get();
+
+
+//        dd($items);
+
+
+        $request->session()->put('items', $items);
+
+        return $this->getListDenunciaAmbitoXLSX($request);
+
+    }
+
+
+
+
+
+    public function denunciaSASGeneral02($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
+
+        $sh->setCellValue('L1', Carbon::now()->format('d-m-Y H:i:s'));
+        foreach ($Items as $item) {
+            $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y H:i:s');
+            $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
+
+            $Colonia = $item->centro_colonia ?? '';
+            $Delegacion = $item->centro_delegacion ?? '';
+
+            $sh
+                ->setCellValue('A' . $C, $item->denuncia_id ?? 0)
+                ->setCellValue('B' . $C, trim($item->servicio ?? ''))
+                ->setCellValue('C' . $C, $fechaIngreso ?? '')
+                ->setCellValue('D' . $C, trim($item->ciudadano ?? ''))
+                ->setCellValue('E' . $C, $item->telefonos_ciudadano ?? '')
+                ->setCellValue('F' . $C, trim($item->search_google ?? ''))
+                ->setCellValue('G' . $C, trim($Colonia ?? ''))
+                ->setCellValue('H' . $C, trim($Delegacion ?? ''))
+                ->setCellValue('I' . $C, $item->descripcion ?? '')
+                ->setCellValue('J' . $C, $item->ambito_sas ?? '')
+                ->setCellValue('K' . $C, $item->estatus ?? '')
+                ->setCellValue('L' . $C, Carbon::parse($item->fecha_movimiento)->format('d-m-Y H:i:s') ?? '');
+            $C++;
+//            }
+        }
+
+        $Cx = $C  - 1;
+        $oVal = $sh->getCell('I1')->getValue();
+        $sh->setCellValue('B'.$C, 'TOTAL DE REGISTROS')
+            ->setCellValue('C'.$C, '=COUNT(A'.$C0.':A'.$Cx.')')
+            ->setCellValue('L'.$C, $oVal);
+
+        $sh->getStyle('A'.$C0.':L'.$C)->getFont()
+            ->setName('Arial')
+            ->setSize(8);
+
+        $sh->getStyle('A'.$C.':L'.$C)->getFont()->setBold(true);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="_'.$arrFE[0].'.'.$arrFE[1].'"');
+        header('Cache-Control: max-age=0');
+        header('Cache-Control: max-age=1');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        header('Cache-Control: cache, must-revalidate');
+        header('Pragma: public');
+        $writer = IOFactory::createWriter($spreadsheet, $extension);
+        $writer->save('php://output');
+        exit;
+    }
 
 
 

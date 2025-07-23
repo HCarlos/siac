@@ -155,11 +155,14 @@
                                 <input type="text" name="items" id="items" value="0" class="totalItems" disabled>
                             </div>
                             <button type="button" id="frmFilterDataExport" class="btn btn-primary btn-export-excel ms-auto">
-                                <i class="fas fa-file-excel text-white"></i> Exportar
+                                <i class="fas fa-file-excel text-white"></i> Monitoreados
                             </button>
                             @if( (int)$unity_id === 47 )
                             <button type="button" id="frmResumenBasicoExport" class="btn btn-primary btn-resume-basico ms-auto">
-                                <i class="fas fa-file-excel text-white"></i> Resumen
+                                <i class="fas fa-file-excel text-white"></i> Resumen Monitoreados
+                            </button>
+                            <button type="button" id="frmFilterDataExportSAS" class="btn btn-primary btn-listado-general ms-auto">
+                                <i class="fas fa-file-excel text-white"></i> Listado General de SM
                             </button>
                             @endif
                         </form>
@@ -225,6 +228,11 @@
             let frmFilterDataExport = document.getElementById("frmFilterDataExport");
             frmFilterDataExport.disabled = true;
 
+            let frmFilterDataExportSAS = document.getElementById("frmFilterDataExportSAS");
+            frmFilterDataExportSAS.disabled = true;
+
+
+
             let frmResumenBasicoExport = document.getElementById("frmResumenBasicoExport");
             frmResumenBasicoExport ? frmResumenBasicoExport.disabled = true : console.warn("El elemento con ID 'frmResumenBasicoExport' no se encontró en el DOM.");
 
@@ -275,6 +283,7 @@
             inputDenuncias.value = denuncias_id.join(',');
             inputDDSE.value = ddse_id.join(',');
             frmFilterDataExport.disabled = false;
+            frmFilterDataExportSAS.disabled = false;
             frmResumenBasicoExport ? frmResumenBasicoExport.disabled = false : console.warn("");
 
             const selectZona = document.getElementById('zona');
@@ -385,6 +394,40 @@
                     return temp;
                 });
             }
+
+
+            const btnFilterDataExportSAS = document.getElementById('frmFilterDataExportSAS');
+            btnFilterDataExportSAS.addEventListener('click', function () {
+                btnFilterDataExportSAS.disabled = true;
+                var PARAMS = {
+                    search : "",
+                    start_date : "{{ $start_date }}",
+                    end_date : "{{ $end_date }}",
+                    items : null,
+                    items_ddse : null,
+                    fileoutput : "fmt_lista_denuncias_sas_sm.xlsx",
+                    indice : 4,
+                    _token : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                };
+
+                var temp=document.createElement("form");
+                temp.action='/exportDenunciaSASGeneral02';
+                temp.method="POST";
+                temp.target="_blank";
+                temp.style.display="none";
+                for(var x in PARAMS) {
+                    var opt=document.createElement("textarea");
+                    opt.name=x;
+                    opt.value=PARAMS[x];
+                    temp.appendChild(opt);
+                }
+                document.body.appendChild(temp);
+                temp.submit();
+                return temp;
+
+            });
+
+
 
 
             let lat = 17.9919;
