@@ -437,8 +437,8 @@ class ListDenunciaAmbitoXLSXController extends Controller{
 //            if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0) {
 //                $Loc = CentroLocalidad::find($CenLoc);
 //            if ($item->centroLocalidad) {
-                $Colonia = $item->centro_colonia ?? ''; // $item->centroLocalidad->ItemColonia() ?? '';
-                $Delegacion = $item->centro_delegacion ?? '';
+                $Colonia = $item->centro_colonias ?? ''; // $item->centroLocalidad->ItemColonia() ?? '';
+                $Delegacion = $item->centro_delegacions ?? '';
 //            }
 //            }
 
@@ -568,8 +568,8 @@ class ListDenunciaAmbitoXLSXController extends Controller{
 //                    $Delegacion = $item->centroLocalidad->ItemDelegacion() ?? '';
 //                }
 
-                $Colonia = $item->centro_colonia ?? ''; // $item->centroLocalidad->ItemColonia() ?? '';
-                $Delegacion = $item->centro_delegacion ?? '';
+                $Colonia = $item->centro_colonias ?? ''; // $item->centroLocalidad->ItemColonia() ?? '';
+                $Delegacion = $item->centro_delegacions ?? '';
 
 
 //                $atendidas = 0;
@@ -778,8 +778,8 @@ class ListDenunciaAmbitoXLSXController extends Controller{
             $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y H:i:s');
             $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
 
-            $Colonia = $item->centro_colonia ?? '';
-            $Delegacion = $item->centro_delegacion ?? '';
+            $Colonia = $item->centro_colonias ?? '';
+            $Delegacion = $item->centro_delegacions ?? '';
 
             $sh
                 ->setCellValue('A' . $C, $item->denuncia_id ?? 0)
