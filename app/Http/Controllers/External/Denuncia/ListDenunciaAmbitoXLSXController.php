@@ -92,133 +92,126 @@ class ListDenunciaAmbitoXLSXController extends Controller{
     public function denunciaGeneral01($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
 
         $sh->setCellValue('w1', Carbon::now()->format('d-m-Y h:i:s'));
-        foreach ($Items as $item){
-//            dd($item);
-            $fechaIngreso   = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
-            $fechaIngreso   = isset($item->fecha_ingreso) ? $fechaIngreso : '';
+        if ($Items->count() > 0) {
 
-            $Colonia = "";
-            $Delegacion = "";
-            $CenLoc       = $item->centro_localidad_id;
-            if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0){
-                $Loc = CentroLocalidad::find($CenLoc);
-                $Colonia = $Loc->ItemColonia();
-                $Delegacion = $Loc->ItemDelegacion();
-            }
+            foreach ($Items as $item) {
+                $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
+                $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
 
-            $resp = Denuncia_Dependencia_Servicio::query()
-                    ->select(['id','observaciones','dependencia_id','favorable','denuncia_id'])
-                    ->where('denuncia_id',$item->id)
+                $Colonia = "";
+                $Delegacion = "";
+                $CenLoc = $item->centro_localidad_id;
+                if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0) {
+                    $Loc = CentroLocalidad::find($CenLoc);
+                    $Colonia = $Loc->ItemColonia();
+                    $Delegacion = $Loc->ItemDelegacion();
+                }
+
+                $resp = Denuncia_Dependencia_Servicio::query()
+                    ->select(['id', 'observaciones', 'dependencia_id', 'favorable', 'denuncia_id'])
+                    ->where('denuncia_id', $item->id)
                     ->orderByDesc('id')
                     ->first();
 
-            $respuesta = "";
-            try{
-                if ( $resp->observaciones !== null){
-                    $res = trim($resp->observaciones) ?? '';
-                    if ( $res != ""){
-                        $dep = Dependencia::find($resp->dependencia_id);
-                        $respuesta = $dep->abreviatura.' - '.$res.'. ';
+                $respuesta = "";
+                try {
+                    if ($resp->observaciones !== null) {
+                        $res = trim($resp->observaciones) ?? '';
+                        if ($res != "") {
+                            $dep = Dependencia::find($resp->dependencia_id);
+                            $respuesta = $dep->abreviatura . ' - ' . $res . '. ';
+                        }
+                    } else {
+                        $respuesta = '';
                     }
-                }else{
+                } catch (Exception $e) {
                     $respuesta = '';
                 }
-            }catch (Exception $e) {
-                $respuesta = '';
-            }
 
 
-            foreach ($item->ciudadanos as $cds){
+                foreach ($item->ciudadanos as $cds) {
 
 
-                $telcel = $cds->telefonos. '; '. $cds->celulares. '; '. $cds->email;
-                $telcel = explode(';',$telcel);
+                    $telcel = $cds->telefonos . '; ' . $cds->celulares . '; ' . $cds->email;
+                    $telcel = explode(';', $telcel);
 
-                $cadcel = '';
-                for ($i = 0; $i < count($telcel) - 1;  $i++) {
-                    if ($cadcel === ''){
-                        $cadcel .= trim($telcel[$i]);
-                    }else if ( trim($telcel[$i]) !== '' ){
-                        $cadcel .= ', ' . trim($telcel[$i]);
-                    }else{
-                        $cadcel .= '';
+                    $cadcel = '';
+                    for ($i = 0; $i < count($telcel) - 1; $i++) {
+                        if ($cadcel === '') {
+                            $cadcel .= trim($telcel[$i]);
+                        } else if (trim($telcel[$i]) !== '') {
+                            $cadcel .= ', ' . trim($telcel[$i]);
+                        } else {
+                            $cadcel .= '';
+                        }
                     }
-                }
 
-//                $atendidas = 0;
-//                $pendientes = 0;
-//                if ( in_array( ((int) $item->estatu_id),array(17,20,21,22) )){
-//                    $atendidas = 1;
-//                }else{
-//                    $pendientes = 1;
-//                }
+                    $atendidas = 0;
+                    $rechazadas = 0;
+                    $pendientes = 0;
+                    $observadas = 0;
+                    if (in_array(((int)$item->ue_id), array(17, 21))) {
+                        $atendidas = 1;
+                    }
+                    if (in_array(((int)$item->ue_id), array(20, 22))) {
+                        $rechazadas = 1;
+                    }
+                    if (in_array(((int)$item->ue_id), array(16, 19))) {
+                        $pendientes = 1;
+                    }
+                    if (((int)$item->ue_id) === 18) {
+                        $observadas = 1;
+                    }
 
-                $atendidas = 0;
-                $rechazadas = 0;
-                $pendientes = 0;
-                $observadas = 0;
-                if (in_array(((int)$item->ue_id), array(17, 21))) {
-                    $atendidas = 1;
-                }
-                if (in_array(((int)$item->ue_id), array(20, 22))) {
-                    $rechazadas = 1;
-                }
-                if (in_array(((int)$item->ue_id), array(16, 19))) {
-                    $pendientes = 1;
-                }
-                if (((int)$item->ue_id) === 18) {
-                    $observadas = 1;
-                }
-
-                $gdu = explode(',',trim($item->gd_ubicacion));
-                $cadgdu = $gdu[1] ?? '';
+//                $gdu = explode(',',trim($item->gd_ubicacion));
+//                $cadgdu = $gdu[1] ?? '';
 
 
-                $sh
-                    ->setCellValue('A'.$C, $item->id ?? 0)
-                    ->setCellValue('B'.$C, trim($cds->username ?? ''))
-                    ->setCellValue('C'.$C, trim($cds->ap_paterno ?? ''))
-                    ->setCellValue('D'.$C, trim($cds->ap_materno ?? ''))
-                    ->setCellValue('E'.$C, trim($cds->nombre ?? ''))
+                    $sh
+                        ->setCellValue('A' . $C, $item->id ?? 0)
+                        ->setCellValue('B' . $C, trim($cds->username ?? ''))
+                        ->setCellValue('C' . $C, trim($cds->ap_paterno ?? ''))
+                        ->setCellValue('D' . $C, trim($cds->ap_materno ?? ''))
+                        ->setCellValue('E' . $C, trim($cds->nombre ?? ''))
+                        ->setCellValue('F' . $C, strtoupper(trim($item->search_google)) ?? '')
+                        ->setCellValue('G' . $C, $Colonia ?? '')
+                        ->setCellValue('H' . $C, $Delegacion ?? '')
+                        ->setCellValue('I' . $C, $cadcel ?? '')
+                        ->setCellValue('J' . $C, $fechaIngreso ?? '')
+                        ->setCellValue('K' . $C, $item->dependencia ?? '')
+                        ->setCellValue('L' . $C, $item->servicio ?? '')
+                        ->setCellValue('M' . $C, $item->descripcion ?? '')
+                        ->setCellValue('N' . $C, $item->prioridad->prioridad ?? '')
+                        ->setCellValue('O' . $C, $item->origen->origen ?? '')
+                        ->setCellValue('P' . $C, $item->estatus ?? '')
+                        ->setCellValue('Q' . $C, Carbon::parse($item->fecha_movimiento)->format('d-m-Y') ?? '')
+                        ->setCellValue('R' . $C, $item->observaciones)
+                        ->setCellValue('S' . $C, $this->getColorSemaforo($item)['status'])
+                        ->setCellValue('T' . $C, $item->dias_atendida ?? '')
+                        ->setCellValue('U' . $C, $item->dias_rechazada ?? '')
+                        ->setCellValue('V' . $C, $atendidas)
+                        ->setCellValue('W' . $C, $rechazadas)
+                        ->setCellValue('X' . $C, $pendientes)
+                        ->setCellValue('Y' . $C, $observadas);
 
-                    ->setCellValue('F'.$C, strtoupper(trim($item->search_google)) ?? '' )
-                    ->setCellValue('G'.$C, $Colonia ?? '')
-                    ->setCellValue('H'.$C, $Delegacion ?? '')
-
-                    ->setCellValue('I'.$C, $cadcel ?? '')
-                    ->setCellValue('J'.$C, $fechaIngreso ?? '')
-                    ->setCellValue('K'.$C, $item->dependencia ?? '')
-                    ->setCellValue('L'.$C, $item->servicio ?? '')
-
-                    ->setCellValue('M'.$C, $item->descripcion ?? '')
-
-                    ->setCellValue('N'.$C, $item->prioridad->prioridad ?? '')
-                    ->setCellValue('O'.$C, $item->origen->origen ?? '')
-                    ->setCellValue('P'.$C, $item->estatus ?? '')
-                    ->setCellValue('Q'.$C, Carbon::parse($item->fecha_movimiento)->format('d-m-Y') ?? '')
-                    ->setCellValue('R'.$C, $item->observaciones )
-                    ->setCellValue('S'.$C, $this->getColorSemaforo($item)['status'])
-                    ->setCellValue('T'.$C, $item->dias_atendida ?? '' )
-                    ->setCellValue('U'.$C, $item->dias_rechazada ?? '' )
-                    ->setCellValue('V'.$C, $atendidas  )
-                    ->setCellValue('W'.$C, $rechazadas  )
-                    ->setCellValue('X'.$C, $pendientes  )
-                    ->setCellValue('Y'.$C, $observadas  );
-
-                $sh
-                    ->getStyle('A'.$C.':Y'.$C)
-                    ->getFill()
-                    ->applyFromArray([
+                    $sh
+                        ->getStyle('A' . $C . ':Y' . $C)
+                        ->getFill()
+                        ->applyFromArray([
                             'fillType' => 'solid',
                             'rotation' => 0,
                             'color' => ['rgb' => $this->getColorSemaforo($item)['status_i']],
-                            ]);
+                        ]);
 
-                $C++;
+                    $C++;
 
+                }
             }
-        }
 
+        }else{
+            $sh->setCellValue('B'.$C, 'NO HAY REGISTROS');
+            $C++;
+        }
 
         $Cx = $C  - 1;
         $oVal = $sh->getCell('G1')->getValue();
@@ -253,24 +246,27 @@ class ListDenunciaAmbitoXLSXController extends Controller{
     public function denunciaSASGeneral01($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
 
         $sh->setCellValue('L1', Carbon::now()->format('d-m-Y H:i:s'));
-        foreach ($Items as $item) {
-            $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y H:i:s');
-            $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
 
-            $resp = Denuncia_Dependencia_Servicio::query()
-                ->select(['id', 'observaciones', 'dependencia_id', 'favorable', 'denuncia_id'])
-                ->where('denuncia_id', $item->id)
-                ->orderByDesc('id')
-                ->first();
+        if ($Items->count() > 0) {
 
-            $Colonia = "";
-            $Delegacion = "";
-            $CenLoc       = $item->centro_localidad_id;
-            if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0){
-                $Loc = CentroLocalidad::find($CenLoc);
-                $Colonia = $Loc->ItemColonia();
-                $Delegacion = $Loc->ItemDelegacion();
-            }
+            foreach ($Items as $item) {
+                $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y H:i:s');
+                $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
+
+                $resp = Denuncia_Dependencia_Servicio::query()
+                    ->select(['id', 'observaciones', 'dependencia_id', 'favorable', 'denuncia_id'])
+                    ->where('denuncia_id', $item->id)
+                    ->orderByDesc('id')
+                    ->first();
+
+                $Colonia = "";
+                $Delegacion = "";
+                $CenLoc = $item->centro_localidad_id;
+                if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0) {
+                    $Loc = CentroLocalidad::find($CenLoc);
+                    $Colonia = $Loc->ItemColonia();
+                    $Delegacion = $Loc->ItemDelegacion();
+                }
 
                 $cadcel = $item->telefonoscelularesemails;
 
@@ -292,6 +288,11 @@ class ListDenunciaAmbitoXLSXController extends Controller{
                     ->setCellValue('L' . $C, Carbon::parse($item->fecha_movimiento)->format('d-m-Y H:i:s') ?? '');
                 $C++;
 //            }
+            }
+
+        }else{
+            $sh->setCellValue('B'.$C, 'NO HAY REGISTROS');
+            $C++;
         }
 
         $Cx = $C  - 1;
@@ -425,169 +426,15 @@ class ListDenunciaAmbitoXLSXController extends Controller{
 
         $sh->setCellValue('w1', Carbon::now()->format('d-m-Y h:i:s'));
 
+        if ($Items->count() > 0) {
 
-        foreach ($Items as $item){
+            foreach ($Items as $item) {
 
-            $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
-            $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
-
-            $Colonia = "";
-            $Delegacion = "";
-//            $CenLoc = $item->centro_localidad_id;
-//            if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0) {
-//                $Loc = CentroLocalidad::find($CenLoc);
-//            if ($item->centroLocalidad) {
-                $Colonia = $item->centro_colonias ?? ''; // $item->centroLocalidad->ItemColonia() ?? '';
-                $Delegacion = $item->centro_delegacions ?? '';
-//            }
-//            }
-
-//            $atendidas = 0;
-//            $rechazadas = 0;
-//            $pendientes = 0;
-//            $observadas = 0;
-//            if (in_array(((int)$item->ue_id), array(17, 21))) {
-//                $atendidas = 1;
-//            }
-//            if (in_array(((int)$item->ue_id), array(20, 22))) {
-//                $rechazadas = 1;
-//            }
-//            if (in_array(((int)$item->ue_id), array(16, 19))) {
-//                $pendientes = 1;
-//            }
-//            if (((int)$item->ue_id) === 18) {
-//                $observadas = 1;
-//            }
-
-            $estados = [
-                'atendidas' => [17, 21],
-                'rechazadas' => [20, 22],
-                'pendientes' => [16, 19],
-                'observadas' => [18]
-            ];
-            $atendidas = in_array($item->ue_id, $estados['atendidas']) ? 1 : 0;
-            $rechazadas = in_array($item->ue_id, $estados['rechazadas']) ? 1 : 0;
-            $pendientes = in_array($item->ue_id, $estados['pendientes']) ? 1 : 0;
-            $observadas = in_array($item->ue_id, $estados['observadas']) ? 1 : 0;
-
-
-            $sem = $this->getColorSemaforo($item);
-
-            $sh
-                ->setCellValue('A' . $C, $item->denuncia_id ?? 0)
-                ->setCellValue('B' . $C, trim($item->username_ciudadano ?? ''))
-                ->setCellValue('C' . $C, trim($item->ap_paterno_ciudadano ?? ''))
-                ->setCellValue('D' . $C, trim($item->ap_materno_ciudadano ?? ''))
-                ->setCellValue('E' . $C, trim($item->nombre_ciudadano ?? ''))
-                ->setCellValue('F' . $C, strtoupper(trim($item->search_google)) ?? '')
-                ->setCellValue('G' . $C, $Colonia ?? '')
-                ->setCellValue('H' . $C, $Delegacion ?? '')
-                ->setCellValue('I' . $C, $item->telefonos_ciudadano ?? '')
-                ->setCellValue('J' . $C, $fechaIngreso ?? '')
-                ->setCellValue('K' . $C, $item->dependencia ?? '')
-                ->setCellValue('L' . $C, $item->servicio ?? '')
-                ->setCellValue('M' . $C, $item->descripcion ?? '')
-                ->setCellValue('N' . $C, $item->prioridad ?? '')
-                ->setCellValue('O' . $C, $item->origen ?? '')
-                ->setCellValue('P' . $C, $item->estatus ?? '')
-                ->setCellValue('Q' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y') ?? '')
-                ->setCellValue('R' . $C, $item->observaciones ?? '')
-                ->setCellValue('S' . $C, $sem['status'])
-                ->setCellValue('T' . $C, $item->dias_atendida ?? '')
-                ->setCellValue('U' . $C, $item->dias_rechazada ?? '')
-                ->setCellValue('V' . $C, $atendidas)
-                ->setCellValue('W' . $C, $rechazadas)
-                ->setCellValue('X' . $C, $pendientes)
-                ->setCellValue('Y' . $C, $observadas)
-
-                ->getStyle('A' . $C . ':Y' . $C)
-                ->getFill()
-                ->applyFromArray([
-                    'fillType' => 'solid',
-                    'rotation' => 0,
-                    'color' => ['rgb' => $sem['status_i']],
-                ]);
-
-            $C++;
-
-        }
-
-
-        $Cx = $C  - 1;
-        $oVal = $sh->getCell('G1')->getValue();
-        $sh->setCellValue('B'.$C, 'TOTAL DE REGISTROS')
-            ->setCellValue('C'.$C, '=COUNT(A'.$C0.':A'.$Cx.')')
-            ->setCellValue('G'.$C, $oVal);
-
-        $sh->getStyle('A'.$C0.':G'.$C)->getFont()
-            ->setName('Arial')
-            ->setSize(8);
-
-        $sh->getStyle('A'.$C.':G'.$C)->getFont()->setBold(true);
-
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="_'.$arrFE[0].'.'.$arrFE[1].'"');
-        header('Cache-Control: max-age=0');
-        header('Cache-Control: max-age=1');
-        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-        header('Cache-Control: cache, must-revalidate');
-        header('Pragma: public');
-        $writer = IOFactory::createWriter($spreadsheet, $extension);
-        $writer->save('php://output');
-        exit;
-
-
-    }
-
-    public function denunciaGeneralMap03($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
-
-        $sh->setCellValue('w1', Carbon::now()->format('d-m-Y h:i:s'));
-        $valInit = $Items[0];
-        $dependencia_fly_id = $valInit->dependencia_id;
-        foreach ($Items as $item){
-//            dd($item);
-
-            if ($item->dependencia_id === $dependencia_fly_id) {
-//            dd($item);
                 $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
                 $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
 
-                $Colonia = "";
-                $Delegacion = "";
-//                $CenLoc = $item->centro_localidad_id;
-//                if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0) {
-//                    $Loc = CentroLocalidad::find($CenLoc);
-//                    $Colonia = $Loc->ItemColonia();
-//                    $Delegacion = $Loc->ItemDelegacion();
-//                }
-
-
-//                if ($item->centroLocalidad) {
-//                    $Colonia = $item->centroLocalidad->ItemColonia() ?? '';
-//                    $Delegacion = $item->centroLocalidad->ItemDelegacion() ?? '';
-//                }
-
-                $Colonia = $item->centro_colonias ?? ''; // $item->centroLocalidad->ItemColonia() ?? '';
-                $Delegacion = $item->centro_delegacions ?? '';
-
-
-//                $atendidas = 0;
-//                $rechazadas = 0;
-//                $pendientes = 0;
-//                $observadas = 0;
-//                if (in_array(((int)$item->ue_id), array(17, 21))) {
-//                    $atendidas = 1;
-//                }
-//                if (in_array(((int)$item->ue_id), array(20, 22))) {
-//                    $rechazadas = 1;
-//                }
-//                if (in_array(((int)$item->ue_id), array(16, 19))) {
-//                    $pendientes = 1;
-//                }
-//                if (((int)$item->ue_id) === 18) {
-//                    $observadas = 1;
-//                }
+                $Colonia = $item->centro_colonia ?? ''; // $item->centroLocalidad->ItemColonia() ?? '';
+                $Delegacion = $item->centro_delegacion ?? '';
 
                 $estados = [
                     'atendidas' => [17, 21],
@@ -620,7 +467,7 @@ class ListDenunciaAmbitoXLSXController extends Controller{
                     ->setCellValue('N' . $C, $item->prioridad ?? '')
                     ->setCellValue('O' . $C, $item->origen ?? '')
                     ->setCellValue('P' . $C, $item->estatus ?? '')
-                    ->setCellValue('Q' . $C, Carbon::parse($item->fecha_movimiento)->format('d-m-Y') ?? '')
+                    ->setCellValue('Q' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y') ?? '')
                     ->setCellValue('R' . $C, $item->observaciones ?? '')
                     ->setCellValue('S' . $C, $sem['status'])
                     ->setCellValue('T' . $C, $item->dias_atendida ?? '')
@@ -628,9 +475,7 @@ class ListDenunciaAmbitoXLSXController extends Controller{
                     ->setCellValue('V' . $C, $atendidas)
                     ->setCellValue('W' . $C, $rechazadas)
                     ->setCellValue('X' . $C, $pendientes)
-                    ->setCellValue('Y' . $C, $observadas);
-
-                $sh
+                    ->setCellValue('Y' . $C, $observadas)
                     ->getStyle('A' . $C . ':Y' . $C)
                     ->getFill()
                     ->applyFromArray([
@@ -642,8 +487,111 @@ class ListDenunciaAmbitoXLSXController extends Controller{
                 $C++;
 
             }
-        }
 
+        }else{
+            $sh->setCellValue('B'.$C, 'NO HAY REGISTROS');
+            $C++;
+        }
+        $Cx = $C  - 1;
+        $oVal = $sh->getCell('G1')->getValue();
+        $sh->setCellValue('B'.$C, 'TOTAL DE REGISTROS')
+            ->setCellValue('C'.$C, '=COUNT(A'.$C0.':A'.$Cx.')')
+            ->setCellValue('G'.$C, $oVal);
+
+        $sh->getStyle('A'.$C0.':G'.$C)->getFont()
+            ->setName('Arial')
+            ->setSize(8);
+
+        $sh->getStyle('A'.$C.':G'.$C)->getFont()->setBold(true);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="_'.$arrFE[0].'.'.$arrFE[1].'"');
+        header('Cache-Control: max-age=0');
+        header('Cache-Control: max-age=1');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        header('Cache-Control: cache, must-revalidate');
+        header('Pragma: public');
+        $writer = IOFactory::createWriter($spreadsheet, $extension);
+        $writer->save('php://output');
+        exit;
+
+
+    }
+
+    public function denunciaGeneralMap03($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
+
+        $sh->setCellValue('w1', Carbon::now()->format('d-m-Y h:i:s'));
+        if ($Items->count() > 0) {
+            $valInit = $Items[0];
+            $dependencia_fly_id = $valInit->dependencia_id;
+            foreach ($Items as $item) {
+
+                if ($item->dependencia_id === $dependencia_fly_id) {
+                    $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
+                    $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
+
+                    $Colonia = $item->centro_colonia ?? ''; // $item->centroLocalidad->ItemColonia() ?? '';
+                    $Delegacion = $item->centro_delegacion ?? '';
+
+                    $estados = [
+                        'atendidas' => [17, 21],
+                        'rechazadas' => [20, 22],
+                        'pendientes' => [16, 19],
+                        'observadas' => [18]
+                    ];
+                    $atendidas = in_array($item->ue_id, $estados['atendidas']) ? 1 : 0;
+                    $rechazadas = in_array($item->ue_id, $estados['rechazadas']) ? 1 : 0;
+                    $pendientes = in_array($item->ue_id, $estados['pendientes']) ? 1 : 0;
+                    $observadas = in_array($item->ue_id, $estados['observadas']) ? 1 : 0;
+
+
+                    $sem = $this->getColorSemaforo($item);
+
+                    $sh
+                        ->setCellValue('A' . $C, $item->denuncia_id ?? 0)
+                        ->setCellValue('B' . $C, trim($item->username_ciudadano ?? ''))
+                        ->setCellValue('C' . $C, trim($item->ap_paterno_ciudadano ?? ''))
+                        ->setCellValue('D' . $C, trim($item->ap_materno_ciudadano ?? ''))
+                        ->setCellValue('E' . $C, trim($item->nombre_ciudadano ?? ''))
+                        ->setCellValue('F' . $C, strtoupper(trim($item->search_google)) ?? '')
+                        ->setCellValue('G' . $C, $Colonia ?? '')
+                        ->setCellValue('H' . $C, $Delegacion ?? '')
+                        ->setCellValue('I' . $C, $item->telefonos_ciudadano ?? '')
+                        ->setCellValue('J' . $C, $fechaIngreso ?? '')
+                        ->setCellValue('K' . $C, $item->dependencia ?? '')
+                        ->setCellValue('L' . $C, $item->servicio ?? '')
+                        ->setCellValue('M' . $C, $item->descripcion ?? '')
+                        ->setCellValue('N' . $C, $item->prioridad ?? '')
+                        ->setCellValue('O' . $C, $item->origen ?? '')
+                        ->setCellValue('P' . $C, $item->estatus ?? '')
+                        ->setCellValue('Q' . $C, Carbon::parse($item->fecha_movimiento)->format('d-m-Y') ?? '')
+                        ->setCellValue('R' . $C, $item->observaciones ?? '')
+                        ->setCellValue('S' . $C, $sem['status'])
+                        ->setCellValue('T' . $C, $item->dias_atendida ?? '')
+                        ->setCellValue('U' . $C, $item->dias_rechazada ?? '')
+                        ->setCellValue('V' . $C, $atendidas)
+                        ->setCellValue('W' . $C, $rechazadas)
+                        ->setCellValue('X' . $C, $pendientes)
+                        ->setCellValue('Y' . $C, $observadas);
+
+                    $sh
+                        ->getStyle('A' . $C . ':Y' . $C)
+                        ->getFill()
+                        ->applyFromArray([
+                            'fillType' => 'solid',
+                            'rotation' => 0,
+                            'color' => ['rgb' => $sem['status_i']],
+                        ]);
+
+                    $C++;
+
+                }
+            }
+        }else{
+            $sh->setCellValue('B'.$C, 'NO HAY REGISTROS');
+            $C++;
+        }
 
         $Cx = $C  - 1;
         $oVal = $sh->getCell('G1')->getValue();
@@ -774,30 +722,34 @@ class ListDenunciaAmbitoXLSXController extends Controller{
     public function denunciaSASGeneral02($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
 
         $sh->setCellValue('L1', Carbon::now()->format('d-m-Y H:i:s'));
-        foreach ($Items as $item) {
-            $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y H:i:s');
-            $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
+        if ($Items->count() > 0) {
+            foreach ($Items as $item) {
+                $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y H:i:s');
+                $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
 
-            $Colonia = $item->centro_colonias ?? '';
-            $Delegacion = $item->centro_delegacions ?? '';
+                $Colonia = $item->centro_colonia ?? '';
+                $Delegacion = $item->centro_delegacion ?? '';
 
-            $sh
-                ->setCellValue('A' . $C, $item->denuncia_id ?? 0)
-                ->setCellValue('B' . $C, trim($item->servicio ?? ''))
-                ->setCellValue('C' . $C, $fechaIngreso ?? '')
-                ->setCellValue('D' . $C, trim($item->ciudadano ?? ''))
-                ->setCellValue('E' . $C, $item->telefonos_ciudadano ?? '')
-                ->setCellValue('F' . $C, trim($item->search_google ?? ''))
-                ->setCellValue('G' . $C, trim($Colonia ?? ''))
-                ->setCellValue('H' . $C, trim($Delegacion ?? ''))
-                ->setCellValue('I' . $C, $item->descripcion ?? '')
-                ->setCellValue('J' . $C, $item->ambito_sas ?? '')
-                ->setCellValue('K' . $C, $item->estatus ?? '')
-                ->setCellValue('L' . $C, Carbon::parse($item->fecha_movimiento)->format('d-m-Y H:i:s') ?? '');
-            $C++;
+                $sh
+                    ->setCellValue('A' . $C, $item->denuncia_id ?? 0)
+                    ->setCellValue('B' . $C, trim($item->servicio ?? ''))
+                    ->setCellValue('C' . $C, $fechaIngreso ?? '')
+                    ->setCellValue('D' . $C, trim($item->ciudadano ?? ''))
+                    ->setCellValue('E' . $C, $item->telefonos_ciudadano ?? '')
+                    ->setCellValue('F' . $C, trim($item->search_google ?? ''))
+                    ->setCellValue('G' . $C, trim($Colonia ?? ''))
+                    ->setCellValue('H' . $C, trim($Delegacion ?? ''))
+                    ->setCellValue('I' . $C, $item->descripcion ?? '')
+                    ->setCellValue('J' . $C, $item->ambito_sas ?? '')
+                    ->setCellValue('K' . $C, $item->estatus ?? '')
+                    ->setCellValue('L' . $C, Carbon::parse($item->fecha_movimiento)->format('d-m-Y H:i:s') ?? '');
+                $C++;
 //            }
+            }
+        }{
+            $sh->setCellValue('B'.$C, 'NO HAY REGISTROS');
+            $C++;
         }
-
         $Cx = $C  - 1;
         $oVal = $sh->getCell('I1')->getValue();
         $sh->setCellValue('B'.$C, 'TOTAL DE REGISTROS')
