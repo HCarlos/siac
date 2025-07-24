@@ -687,9 +687,9 @@ class ListDenunciaAmbitoXLSXController extends Controller{
         $items = _viMovSM::select(
                 'id','denuncia_id','descripcion','fecha_dias_ejecucion','fecha_dias_maximos_ejecucion',
                 'fecha_ingreso', 'fecha_ultimo_estatus', 'dependencia_id', 'dependencia', 'abreviatura',
-                'ue_id', 'sue_id', 'servicio', 'ciudadano', 'centro_localidad_id', 'latitud','longitud',
+                'ue_id', 'sue_id', 'servicio', 'ciudadano','centro_colonia','centro_delegacion', 'latitud','longitud',
                 'estatus','fecha_ultimo_estatus','fecha_ingreso','fecha_dias_ejecucion', 'fecha_dias_maximos_ejecucion',
-                'uuid','fecha_movimiento','estatu_id', 'prioridad', 'origen',
+                'uuid','fecha_movimiento','estatu_id', 'prioridad', 'origen','ambito_sas',
                 'username_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano','telefonos_ciudadano',
                 'observaciones','dias_atendida','dias_rechazada','search_google'
             )
@@ -719,9 +719,9 @@ class ListDenunciaAmbitoXLSXController extends Controller{
         $items = _viMovSM::select(
                 'id','denuncia_id','descripcion','fecha_dias_ejecucion','fecha_dias_maximos_ejecucion',
                 'fecha_ingreso', 'fecha_ultimo_estatus', 'dependencia_id', 'dependencia', 'abreviatura',
-                'ue_id', 'sue_id', 'servicio', 'ciudadano', 'centro_localidad_id', 'latitud','longitud',
+                'ue_id', 'sue_id', 'servicio', 'ciudadano', 'centro_colonia','centro_delegacion', 'latitud','longitud',
                 'estatus','fecha_ultimo_estatus','fecha_ingreso','fecha_dias_ejecucion', 'fecha_dias_maximos_ejecucion',
-                'uuid','fecha_movimiento','estatu_id', 'prioridad', 'origen',
+                'uuid','fecha_movimiento','estatu_id', 'prioridad', 'origen','ambito_sas',
                 'username_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano','telefonos_ciudadano',
                 'observaciones','dias_atendida','dias_rechazada','search_google'
             )
@@ -747,9 +747,9 @@ class ListDenunciaAmbitoXLSXController extends Controller{
         $items = _viMovSASSM::select(
             'id','denuncia_id','descripcion','fecha_dias_ejecucion','fecha_dias_maximos_ejecucion',
             'fecha_ingreso', 'fecha_ultimo_estatus', 'dependencia_id', 'dependencia', 'abreviatura',
-            'ue_id', 'sue_id', 'servicio', 'ciudadano', 'centro_localidad_id', 'latitud','longitud',
+            'ue_id', 'sue_id', 'servicio', 'ciudadano','centro_colonia','centro_delegacion', 'latitud','longitud',
             'estatus','fecha_ultimo_estatus','fecha_ingreso','fecha_dias_ejecucion', 'fecha_dias_maximos_ejecucion',
-            'uuid','fecha_movimiento','estatu_id', 'prioridad', 'origen',
+            'uuid','fecha_movimiento','estatu_id', 'prioridad', 'origen','ambito_sas',
             'username_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano','telefonos_ciudadano',
             'observaciones','dias_atendida','dias_rechazada','search_google'
         )
