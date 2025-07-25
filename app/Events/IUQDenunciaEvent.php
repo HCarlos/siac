@@ -111,7 +111,7 @@ class IUQDenunciaEvent implements ShouldBroadcast{
             $porc = ((($DenunciasHoy / $DenunciasAyer) * 100) - 100);
         }
 
-        return [
+        $return =  [
             'denuncia_id'    => $this->denuncia_id,
             'user_id'        => $this->user_id,
             'trigger_type'   => $this->trigger_type,
@@ -123,6 +123,9 @@ class IUQDenunciaEvent implements ShouldBroadcast{
             'porcentaje_hoy' => number_format($porc, 2, '.', ','),
             'categoria_sol'  => $ad,
         ];
+
+        return $return;
+
     }
 
 

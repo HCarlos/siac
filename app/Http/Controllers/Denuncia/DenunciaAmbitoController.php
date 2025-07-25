@@ -10,7 +10,6 @@ use App\Http\Controllers\Funciones\FuncionesController;
 use App\Http\Requests\Denuncia\DenunciaAmbitoRequest;
 use App\Http\Requests\Denuncia\DenunciaRequest;
 use App\Http\Requests\Denuncia\SearchIdenticalAmbitoRequest;
-use App\Http\Requests\Denuncia\SearchIdenticalRequest;
 use App\Models\Catalogos\CentroLocalidad;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Domicilios\Ubicacion;
@@ -19,7 +18,6 @@ use App\Models\Catalogos\Origen;
 use App\Models\Catalogos\Prioridad;
 use App\Models\Catalogos\Servicio;
 use App\Models\Catalogos\ServicioCategoria;
-use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\_viDepDenServEstatus;
 use App\Models\Denuncias\_viServicios;
 use App\Models\Denuncias\Denuncia;
@@ -568,6 +566,8 @@ class DenunciaAmbitoController extends Controller{
             $cl = CentroLocalidad::find($item->centro_localidad_id);
             $centro_localidad = $cl->colonia.' '.$cl->delegacion;
         }
+
+//            $centro_localidad = $item->centro_colonia.' '.$item->centro_delegacion;
 
 
         if (count($ServicioIdArray) > 0){

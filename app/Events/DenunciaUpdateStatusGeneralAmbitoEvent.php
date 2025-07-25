@@ -47,7 +47,7 @@ class DenunciaUpdateStatusGeneralAmbitoEvent  implements ShouldBroadcast{
     }
 
     public function broadcastAs(): string{
-        return 'DenunciaUpdateStatusGeneralEvent';
+        return 'DenunciaUpdateStatusGeneralAmbitoEvent';
     }
 
     private function sendMailToEnlace($type){
@@ -65,26 +65,28 @@ class DenunciaUpdateStatusGeneralAmbitoEvent  implements ShouldBroadcast{
 //        dd($usuariosEnlace);
 
         foreach ($usuariosEnlace as $usuario) {
-            try {
-                if (
-                    strpos($usuario->email, "@mail.com") === false &&
-                    strpos($usuario->email, "@mail.com") === false &&
-                    strpos($usuario->email, "@example.com") === false &&
-                    $usuario->email !== "" &&
-                    $usuario->email !== null
-                ) {
-//                    Mail::to($usuario->email)
-//                        ->send(new SendMailToEnlace(
-//                                'Notification',
-//                                $usuario,
-//                                $den,
-//                                $type
-//                            )
-//                        );
-                }
-            } catch (\Exception $e) {
-                Log::error('Error sending email in sendMailToEnlace: ' . $e->getMessage());
-            }
+//            try {
+//                if (
+//                    strpos($usuario->email, "@mail.com") === false &&
+//                    strpos($usuario->email, "@mail.com") === false &&
+//                    strpos($usuario->email, "@example.com") === false &&
+//                    $usuario->email !== "" &&
+//                    $usuario->email !== null
+//                ) {
+//
+////                    Mail::to($usuario->email)
+////                        ->send(new SendMailToEnlace(
+////                                'Notification',
+////                                $usuario,
+////                                $den,
+////                                $type
+////                            )
+////                        );
+//
+//                }
+//            } catch (\Exception $e) {
+//                Log::error('Error sending email in sendMailToEnlace: ' . $e->getMessage());
+//            }
         }
         return true;
     }
@@ -152,7 +154,7 @@ class DenunciaUpdateStatusGeneralAmbitoEvent  implements ShouldBroadcast{
             'user_id'        => $this->user_id,
         ]);
 
-        return [
+        $return = [
             'denuncia_id'    => $this->denuncia_id,
             'user_id'        => $this->user_id,
             'trigger_type'   => $this->trigger_type,
@@ -160,6 +162,10 @@ class DenunciaUpdateStatusGeneralAmbitoEvent  implements ShouldBroadcast{
             'icon'           => $this->icon,
             'status'         => $this->status,
         ];
+
+//        dd($return);
+
+        return $return;
 
 
     }

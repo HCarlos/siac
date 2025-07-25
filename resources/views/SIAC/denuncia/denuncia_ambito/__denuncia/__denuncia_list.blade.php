@@ -17,12 +17,12 @@
             <tbody>
                 @foreach($items as $item)
                     @php
-                        $Del = CentroLocalidad::find($item->centro_localidad_id);
-                        if (!$Del) {
-                            $Localidad = "Error en la localidad";
-                        }else{
-                            $Localidad = $Del->ItemColoniaDelegacion();
-                        }
+//                        $Del = CentroLocalidad::find($item->centro_localidad_id);
+//                        if (!$Del) {
+//                            $Localidad = "Error en la localidad";
+//                        }else{
+//                            $Localidad = $Del->ItemColoniaDelegacion();
+//                        }
                         $fm = \Carbon\Carbon::parse($item->fecha_ingreso)->format('d-m-Y H:i');
                         if ( $item->medida_id == 16  ){
                             $fm = \Carbon\Carbon::parse($item->fecha_movimiento)->format('d-m-Y H:i');
@@ -70,7 +70,7 @@
                             @if($item->ciudadanos->count() > 1)<span class="text-danger">( <i class="fas fa-users"></i> <strong>  {{$item->ciudadanos->count()}} </strong> )</span> @endif
                         </td>
 {{--                        <td class="w-25">@if($item->dependencia->ambito_dependencia === 2) {{ strtoupper($item->search_google).' '.$Localidad }} @else {{ $item->ubicacion->ubicacion}} @endif--}}
-                        <td class="w-25">@if($item->ambito_dependencia === 2) {{ strtoupper($item->search_google).' '.$Localidad }} @else {{ $item->ubicacion->ubicacion}} @endif
+                        <td class="w-25">@if($item->ambito_dependencia === 2) {{ strtoupper($item->search_google).' '.$item->centro_colonia }} @else {{ $item->ubicacion->ubicacion}} @endif
                         </td>
                         <td class="table-action w-15">
                             <div class="button-list">

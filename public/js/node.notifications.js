@@ -21,8 +21,9 @@ jQuery(function($) {
                 $('#power').html(parseInt(data.power) * i);
                 console.log(data.power)
             })
-            .listen('.IUQDenunciaEvent', (data) => {
-                if (parseInt(localStorage.isToast) === 1) {
+            .listen('IUQDenunciaEvent', (data) => {
+                // alert("entro");
+                // if (parseInt(localStorage.isToast) === 1) {
                     // alert(Boolean(localStorage.isToast));
                     $.toast({
                         heading: 'SIAC',
@@ -33,7 +34,7 @@ jQuery(function($) {
                         loaderBg: '#9EC600',
                         position: 'top-right',
                     })
-                }
+                // }
                 i++;
                 $("#power").html(parseInt(data.power) * i);
                 console.log(data.denuncia_id + " :: " + data.user_id);
