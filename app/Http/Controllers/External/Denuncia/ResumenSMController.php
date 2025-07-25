@@ -87,7 +87,7 @@ class ResumenSMController extends Controller{
     function resumenBasico01Export(Request $request){
         $arrColl = [
             ["sue_id" => 476, "servicio" => "FUGA DE AGUA POTABLE", "atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
-            ["sue_id" => 508, "servicio" => "DESASOLVE DE DRENAJE","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
+            ["sue_id" => 508, "servicio" => "DESAZOLVE DE DRENAJE","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
             ["sue_id" => 479, "servicio" => "REPARACION DE ALCANTARILLA","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
             ["sue_id" => 568, "servicio" => "RESANE HIDRÁHULICO","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>'Informativo'],
         ];
@@ -169,7 +169,7 @@ class ResumenSMController extends Controller{
     function resumenBasico02Export(Request $request){
         $arrColl = [
             ["sue_id" => 476, "servicio" => "FUGA DE AGUA POTABLE", "atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
-            ["sue_id" => 508, "servicio" => "DESASOLVE DE DRENAJE","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
+            ["sue_id" => 508, "servicio" => "DESAZOLVE DE DRENAJE","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
             ["sue_id" => 479, "servicio" => "REPARACION DE ALCANTARILLA","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
             ["sue_id" => 483, "servicio" => "BACHEO", "atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
             ["sue_id" => 503, "servicio" => "RECOLECCIÓN DE RESIDUOS SÓLIDOS","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
