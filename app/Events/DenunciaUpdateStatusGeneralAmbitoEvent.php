@@ -42,7 +42,7 @@ class DenunciaUpdateStatusGeneralAmbitoEvent  implements ShouldBroadcast{
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-update-denuncia_estatus-general');
+        return new PrivateChannel('channel-update-denuncia_estatus-ambito-general');
 //        return ['channel-update-denuncia_estatus-general'];
     }
 

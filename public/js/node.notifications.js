@@ -7,7 +7,9 @@ jQuery(function($) {
             }
         });
 
-        i = 0;
+        import Echo from 'laravel-echo';
+
+        var i = 0;
         window.Echo.channel('test-channel')
             .listen('.InserUpdateDeleteEvent', (data) => {
                 if ( $("#pantallaMobileMaster") != null  ) {
@@ -21,9 +23,9 @@ jQuery(function($) {
                 $('#power').html(parseInt(data.power) * i);
                 console.log(data.power)
             })
-            .listen('IUQDenunciaEvent', (data) => {
+            .listen('.IUQDenunciaEvent', (data) => {
                 // alert("entro");
-                // if (parseInt(localStorage.isToast) === 1) {
+                if (parseInt(localStorage.isToast) === 1) {
                     // alert(Boolean(localStorage.isToast));
                     $.toast({
                         heading: 'SIAC',
@@ -34,7 +36,7 @@ jQuery(function($) {
                         loaderBg: '#9EC600',
                         position: 'top-right',
                     })
-                // }
+                }
                 i++;
                 $("#power").html(parseInt(data.power) * i);
                 console.log(data.denuncia_id + " :: " + data.user_id);
