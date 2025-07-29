@@ -7,7 +7,7 @@ jQuery(function($) {
             }
         });
 
-        import Echo from 'laravel-echo';
+        // import Echo from 'laravel-echo';
 
         var i = 0;
         window.Echo.channel('test-channel')
