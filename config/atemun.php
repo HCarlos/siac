@@ -37,6 +37,7 @@ return [
         'icono_video'                 => 'icon-video.png',
         'fmt_graficos_diarios'        => 'fmt_graficos_diarios.xlsx',
         'fmt_resumen_basico_01'       => 'fmt_resumen_basico_01.xlsx',
+        'fmt_graficos_semanal_sm'     => 'fmt_graficos_semanal_sm.xlsx',
     ],
 
     'menu_archivos'=>[

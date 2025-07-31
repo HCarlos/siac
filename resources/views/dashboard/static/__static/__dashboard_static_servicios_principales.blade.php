@@ -230,6 +230,9 @@
                             <button type="button" id="frmReporteDiario" class="btn btn-info btn-reporte-diario ms-auto">
                                 <i class="fas fa-file-fragment text-white"></i> Reporte Diario
                             </button>
+                            <button type="button" id="frmReporteSemanal" class="btn btn-info btn-reporte-diario ms-auto">
+                                <i class="fas fa-file-fragment text-white"></i> Reporte Semanal
+                            </button>
                             <button type="button" id="frmResumenBasicoExport" class="btn btn-primary btn-resume-basico ms-auto">
                                 <i class="fas fa-file-excel text-white"></i> Resumen
                             </button>
@@ -298,6 +301,9 @@
 
             let frmReporteDiario = document.getElementById("frmReporteDiario");
             frmReporteDiario.disabled = true;
+
+            let frmReporteSemanal = document.getElementById("frmReporteSemanal");
+            frmReporteSemanal.disabled = true;
 
             let frmResumenBasicoExport = document.getElementById("frmResumenBasicoExport");
             frmResumenBasicoExport.disabled = true;
@@ -439,6 +445,7 @@
             inputDDSE.value = ddse_id.join(',');
             frmFilterDataExport.disabled = false;
             frmReporteDiario.disabled = false;
+            frmReporteSemanal.disabled = false;
             frmResumenBasicoExport.disabled = false;
 
             const selectZona = document.getElementById('zona');
@@ -550,9 +557,40 @@
                 document.body.appendChild(temp);
                 temp.submit();
                 btnReporteDiario.disabled = false;
+                btnReporteSemanal.disabled = false;
                 return temp;
 
             });
+
+            const btnReporteSemanal = document.getElementById('frmReporteSemanal');
+            btnReporteSemanal.addEventListener('click', function () {
+                btnReporteSemanal.disabled = true;
+                var PARAMS = {
+                    search : "",
+                    start_date : "{{ $start_date }}",
+                    end_date : "{{ $end_date }}",
+                    _token : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                };
+
+                var temp=document.createElement("form");
+                temp.action='reporteSemanalExcel';
+                temp.method="POST";
+                temp.target="_blank";
+                temp.style.display="none";
+                for(var x in PARAMS) {
+                    var opt=document.createElement("textarea");
+                    opt.name=x;
+                    opt.value=PARAMS[x];
+                    temp.appendChild(opt);
+                }
+                document.body.appendChild(temp);
+                temp.submit();
+                btnReporteSemanal.disabled = false;
+                return temp;
+
+            });
+
+
 
             const btnResumenBasicoExport = document.getElementById('frmResumenBasicoExport');
             if (btnResumenBasicoExport) {
@@ -681,11 +719,13 @@
         if (dataSetLocations.length == 0) {
             frmFilterDataExport.disabled = true;
             frmReporteDiario.disabled = true;
+            frmReporteSemanal.disabled = true;
             frmResumenBasicoExport.disabled = true;
             alert("No hay datos para mostrar");
         }else{
             frmFilterDataExport.disabled = false;
             frmReporteDiario.disabled = false;
+            frmReporteSemanal.disabled = false;
             frmResumenBasicoExport.disabled = false;
         }
 

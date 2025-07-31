@@ -516,6 +516,7 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|test_admin|USER_OPE
     Route::post('resumenBasico02Export/', 'External\Denuncia\ResumenSMController@resumenBasico02Export')->name('resumenBasico02Export');
 
     Route::post('reporteDiarioExcel', 'ExcelAutollenable\ReporteDiario\ReporteDiarioController@reporteDiarioExcel')->name('reporteDiarioExcel');
+    Route::post('reporteSemanalExcel', 'ExcelAutollenable\ReporteSemanal\ReporteSemanalController@reporteSemanalExcel')->name('reporteSemanalExcel');
 
     Route::get('cerrarDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@closeItem')->name('cerrarDenunciaAmbito');
     Route::get('firmarDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@signItem')->name('firmarDenunciaAmbito');

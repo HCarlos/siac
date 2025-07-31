@@ -563,7 +563,7 @@ main {
 
 .btn-reporte-diario {
     padding: 12px 24px;
-    background-color: #043eea;
+    background-color: #048aea;
     border: none;
     border-radius: 4px;
     color: #fff;
@@ -575,7 +575,7 @@ main {
     font-weight: bold;
 }
 .btn-reporte-diario:hover {
-    background-color: #043eea;
+    background-color: #048aea;
     color: white;
 }
 .btn-reporte-diario:disabled {
