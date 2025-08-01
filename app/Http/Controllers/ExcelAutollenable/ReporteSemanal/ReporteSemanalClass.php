@@ -5,6 +5,8 @@
 
 namespace App\Http\Controllers\ExcelAutollenable\ReporteSemanal;
 
+use App\Http\Controllers\Funciones\FuncionesController;
+use App\Models\Denuncias\_viMovSM;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -21,16 +23,18 @@ class ReporteSemanalClass{
     protected $vectorFuentesTotales;
     protected $vectorFuentesUnicos;
 
+    protected $arrMesesDelAno;
+
 
     public function __construct(){
         // Inicializar como colección
         $this->vectorServicios = collect([
-            ['sue_id' => 476, 'Servicio' => 'FUGA DE AGUA', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => []],
-            ['sue_id' => 508, 'Servicio' => 'DESAZOLVE DE DRENAJE', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => []],
-            ['sue_id' => 483, 'Servicio' => 'BACHEO', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => []],
-            ['sue_id' => 466, 'Servicio' => 'REPARACIÓN DE LUMINARIAS', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => []],
-            ['sue_id' => 503, 'Servicio' => 'RECOLECCIÓN DE RESIDUOS SÓLIDOS','CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => []],
-            ['sue_id' => 479, 'Servicio' => 'REPARACIÓN DE ALCANTARILLAS', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => []],
+            ['sue_id' => 476, 'Servicio' => 'FUGA DE AGUA', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0],
+            ['sue_id' => 508, 'Servicio' => 'DESAZOLVE DE DRENAJE', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0],
+            ['sue_id' => 483, 'Servicio' => 'BACHEO', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0],
+            ['sue_id' => 466, 'Servicio' => 'REPARACIÓN DE LUMINARIAS', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0],
+            ['sue_id' => 503, 'Servicio' => 'RECOLECCIÓN DE RESIDUOS SÓLIDOS','CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0],
+            ['sue_id' => 479, 'Servicio' => 'REPARACIÓN DE ALCANTARILLAS', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0],
         ]);
 
         $this->ServiciosPrincipales = [476, 508, 483, 466, 503, 479];
@@ -59,6 +63,9 @@ class ReporteSemanalClass{
             ['origen_id' => 8, 'Origen' => 'TELÉFONO', 'Total' => 0],
             ['origen_id' => -1, 'Origen' => 'OTROS MEDIOS', 'Total' => 0],
         ]);
+
+        $this->arrMesesDelAno = FuncionesController::obtenerDiasInicioFinMeses();
+
 
 
     }
@@ -219,43 +226,7 @@ class ReporteSemanalClass{
 
     }
 
-//    public function getRecibidasAtendidas($start_date,$end_date): Collection{
-//
-//        $this->arrCoorDR = User::whereHas('roles', function ($query) {
-//            $query->whereIn('name', ['DELEGADOS', 'COORDINACION_DE_DELEGADOS']);
-//        })
-//            ->pluck('id');
-//
-//        $geo =  DB::table("_viddss")
-//            ->select('sue_id','ue_id','ciudadano_id','fecha_ultimo_estatus','creadopor_id','fecha_ingreso')
-//            ->whereIn('sue_id', $this->ServiciosPrincipales)
-//            ->where('ambito_dependencia', 2)
-//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-//            ->get();
-//
-//        foreach($geo as $g){
-//            $this->setAsigndata($g->sue_id,$g->ciudadano_id,$g->ue_id,$end_date,$g->fecha_ultimo_estatus, $g->creadopor_id, $g->fecha_ingreso);
-//        }
-//
-//        $this->getDiasAtrasPorServicio($start_date,$end_date);
-//
-//        return $this->vectorServicios;
-//    }
-
-
     public function getDiasAtrasPorServicio($start_date,$end_date): Collection{
-
-//        for ($i=0;  $i<6; $i++){
-//            $servicio = $this->vectorServicios[$i];
-//            $geo =  DB::table("_vimov_filter_sm")
-//                ->select('servicio_id','estatu_id','ciudadano_id','fecha_ultimo_estatus','creadopor_id','fecha_ingreso')
-//                ->whereIn('servicio_id', $this->ServiciosPrincipales)
-//                ->where('ambito_dependencia', 2)
-//                ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-//                ->get();
-//            $servicio["DIAS_ATRAS"][] = $this->setAsignEstatus($geo, $start_date);
-//            $this->vectorServicios[$i] = $servicio;
-//        }
 
         for ($i=0;  $i<6; $i++){
             $servicio = $this->vectorServicios[$i];
@@ -306,6 +277,47 @@ class ReporteSemanalClass{
         return ["fecha" => Carbon::parse($start_date)->format('Y-m-d'), "atendidas" => $atendidas, "rechazadas" => $rechazadas, "pendientes" => $pendientes, "observadas" => $observadas];
     }
 
+    function getTotalServiciosPorMes($start_date,$end_date){
+
+        $meses = $this->arrMesesDelAno;
+        $mesActual = Carbon::now()->month;
+
+        foreach ($meses as &$mes) {
+            $mes['totales'] = [];
+            $mes['total_general'] = 0; // Acumulador global
+        }
+        $i = 1;
+        foreach ($meses as &$mes) {
+            if ($i <= ($mesActual - 1)){
+
+                $totalMes = 0; // acumulador para ese mes
+                foreach ($this->vectorServicios as $servicio) {
+                    $data = _viMovSM::query()
+                        ->select(
+                            'servicio_id',
+                            DB::raw('COUNT(id) as total')
+                        )
+                        ->where('servicio_id', $servicio['sue_id'])
+                        ->where('ambito_dependencia', 2)
+                        ->whereBetween('fecha_ingreso', [$mes['inicio']." 00:00:00", $mes['fin']." 23:59:59"])
+                        ->groupBy('servicio_id')
+                        ->first(); // Solo necesitamos un resultado por servicio
+
+                    $cantidad = $data ? (int)$data->total : 0;
+
+                    $mes['totales'][$servicio['Servicio']] = $cantidad;
+
+                    $totalMes += $cantidad;
+                }
+                $mes['total_general'] = $totalMes;
+                $i++;
+            }
+
+        }
+
+        return $meses;
+
+    }
 
 
 

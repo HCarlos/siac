@@ -520,7 +520,19 @@ class FuncionesController extends Controller
 
     }
 
-
+    public static function obtenerDiasInicioFinMeses() {
+        $meses = [];
+        for ($m=1; $m<=12; $m++) {
+            $fechaInicio = Carbon::create(null, $m, 1);
+            $fechaFin = $fechaInicio->copy()->endOfMonth();
+            $meses[$m] = [
+                'nombre_mes' => $fechaInicio->locale('es')->monthName,
+                'inicio' => $fechaInicio->format('Y-m-d'),
+                'fin' => $fechaFin->format('Y-m-d'),
+            ];
+        }
+        return $meses;
+    }
 
 
 

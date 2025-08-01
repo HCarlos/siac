@@ -187,7 +187,7 @@ class ReporteSemanalController extends Controller{
 
         // Procesamiento de datos para el Grfico 3
 
-        $Items = $DC->getDiasAtrasPorServicio($start_date, $end_date);
+        $DC->getDiasAtrasPorServicio($start_date, $end_date);
 
         $di = 25;
         for ($i=0;  $i<6; $i++) {
@@ -204,6 +204,26 @@ class ReporteSemanalController extends Controller{
             $dom1->saveXML()
         );
 
+        // Procesamiento de datos para el Grfico 4
+
+        $meses = $DC->getTotalServiciosPorMes($start_date, $end_date);
+
+        $di = 34;
+        $letras =["B","C","D","E","F","G"];
+        foreach ($meses as $mes) {
+            $servicio = $mes["totales"];
+            $i = 0;
+            foreach ($servicio as $key => $value) {
+                $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', $letras[$i].$di, $value);
+                $i++;
+            }
+            $di++;
+        }
+
+        $zip->addFromString(
+            'xl/worksheets/sheet1.xml',
+            $dom1->saveXML()
+        );
 
 
         /* *************** */
@@ -233,7 +253,7 @@ class ReporteSemanalController extends Controller{
         $zip->close();
 
         return response()
-            ->download($output, 'reporte_diario_'. Carbon::parse($end_date)->format('dmY') .'_'. date('dmY_His') . '.xlsx')
+            ->download($output, 'reporte_semanal_'. Carbon::parse($end_date)->format('dmY') .'_'. date('dmY_His') . '.xlsx')
             ->deleteFileAfterSend(true);
 
 
