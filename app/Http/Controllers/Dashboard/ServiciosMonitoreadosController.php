@@ -353,8 +353,8 @@ class ServiciosMonitoreadosController extends Controller{
                         "dependencia_id" => $g->dependencia_id,
                         "dependencia" => $g->dependencia,
                         "abreviatura" => $g->abreviatura,
-                        "sue_id" => $g->sue_id,
-                        "servicio" => $g->nombre_corto_ss,
+                        "sue_id" => $g->servicio_id,
+                        "servicio" => $g->servicio,
                         "ciudadano" => $g->ciudadano,
                         "ue_id" => $g->ue_id,
                         "ultimo_estatus" => $g->estatus,
@@ -380,17 +380,17 @@ class ServiciosMonitoreadosController extends Controller{
                     }
 
                     if ($initArr) {
-                        $arrDepServ[] = ["dependencia_id" => $g->dependencia_id, "dependencia" => $g->dependencia, "sue_id" => $g->sue_id, "servicio" => $g->nombre_corto_ss];
+                        $arrDepServ[] = ["dependencia_id" => $g->dependencia_id, "dependencia" => $g->dependencia, "sue_id" => $g->servicio_id, "servicio" => $g->servicio];
                         $initArr = false;
                     } else {
                         $Encontrado = false;
                         foreach ($arrDepServ as $key => $value) {
-                            if ($value['dependencia_id'] === $g->dependencia_id && $value['sue_id'] === $g->sue_id) {
+                            if ($value['dependencia_id'] === $g->dependencia_id && $value['sue_id'] === $g->servicio_id) {
                                 $Encontrado = true;
                             }
                         }
                         if (!$Encontrado) {
-                            $arrDepServ[] = ["dependencia_id" => $g->dependencia_id, "dependencia" => $g->dependencia, "sue_id" => $g->sue_id, "servicio" => $g->nombre_corto_ss];
+                            $arrDepServ[] = ["dependencia_id" => $g->dependencia_id, "dependencia" => $g->dependencia, "sue_id" => $g->servicio_id, "servicio" => $g->servicio];
                         }
 
                     }
@@ -677,7 +677,7 @@ class ServiciosMonitoreadosController extends Controller{
                     'fecha_ingreso', 'fecha_ultimo_estatus', 'dependencia_id', 'dependencia', 'abreviatura',
                     'ue_id', 'sue_id', 'nombre_corto_ss', 'ciudadano', 'centro_localidad_id', 'latitud','longitud',
                     'estatus','fecha_ultimo_estatus','fecha_ingreso','fecha_dias_ejecucion', 'fecha_dias_maximos_ejecucion',
-                    'uuid'
+                    'uuid', 'servicio_id', 'servicio'
                 )
                 ->whereIn('servicio_id', $ServiciosPrincipales)
                 ->where('fecha_ingreso', '>=', $start_date." 00:00:00")

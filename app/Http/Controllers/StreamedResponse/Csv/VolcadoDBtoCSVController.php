@@ -196,6 +196,35 @@ class VolcadoDBtoCSVController extends Controller{
 
     }
 
+
+    public function descargarCsv06(Request $request){
+        FuncionesController::setConfigOne();
+        $filename = "Base_de_datos_completa.csv";
+        $headers = $this->arrSelDatbaseComplete;
+
+        $data = DB::table('_viddss_completa')
+            ->select($headers)
+            ->orderBy('id','desc')
+            ->get($headers);
+
+        $callback = function() use ($data, $headers) {
+            $file = fopen('php://output', 'wb');
+            fputcsv($file, $headers);
+            foreach ($data as $row) {
+                $csvRow = [];
+                foreach ($headers as $header) {
+                    $csvRow[] = $row->$header;
+                }
+                fputcsv($file, $csvRow);
+            }
+            fclose($file);
+        };
+        return streamCsvResponse($callback, $filename);
+
+    }
+
+
+
     public function descargarServicios(Request $request){
         FuncionesController::setConfigOne();
 

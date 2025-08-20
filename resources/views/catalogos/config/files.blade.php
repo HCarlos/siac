@@ -49,6 +49,9 @@
                 <li class="list list-group-item">
                     <a href="{{ route('viddss.descargar_csv_05') }}" target="_blank">Datos desde el 20-ene-2025 a la fecha de Servicios Municipales</a>
                 </li>
+                <li class="list list-group-item">
+                    <a href="{{ route('viddss.descargar_csv_06') }}" target="_blank">Base de datos completa</a>
+                </li>
             </ul>
 
             <hr/>

@@ -559,7 +559,7 @@ class DashboardStaticGeneralController extends Controller{
         return DB::table("_videpdenservestatus")
             ->select(
                 'id','latitud','longitud','dependencia','abreviatura',
-                'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
+                'servicio as nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
                 'fecha_movimiento as fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','estatus as ultimo_estatus',
                 'servicio_id as sue_id','servicio as servicio_ultimo_estatus','estatu_id as ue_id','dependencia_id','uuid',
                 'descripcion as denuncia','centro_localidad_id'

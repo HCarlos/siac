@@ -301,7 +301,7 @@ class SMUnidadesAdmitivasController extends Controller{
                     "dependencia_id" => $g->dependencia_id,
                     "dependencia"=> $g->dependencia,
                     "abreviatura"=> $g->abreviatura,
-                    "sue_id" => $g->sue_id,
+                    "sue_id" => $g->servicio_id,
                     "servicio" => $g->servicio,
                     "ciudadano" => $g->ciudadano,
                     "ue_id" => $g->ue_id,
@@ -328,17 +328,17 @@ class SMUnidadesAdmitivasController extends Controller{
                 }
 
                 if ($initArr){
-                    $arrDepServ[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia,"sue_id" => $g->sue_id,"servicio" => $g->servicio];
+                    $arrDepServ[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia,"sue_id" => $g->servicio_id,"servicio" => $g->servicio];
                     $initArr = false;
                 }else{
                     $Encontrado = false;
                     foreach ($arrDepServ as $key => $value) {
-                        if ($value['dependencia_id'] === $g->dependencia_id && $value['sue_id'] === $g->sue_id) {
+                        if ($value['dependencia_id'] === $g->dependencia_id && $value['sue_id'] === $g->servicio_id) {
                             $Encontrado = true;
                         }
                     }
                     if (!$Encontrado) {
-                        $arrDepServ[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia,"sue_id" => $g->sue_id,"servicio" => $g->servicio];
+                        $arrDepServ[] = ["dependencia_id" => $g->dependencia_id,"dependencia" => $g->dependencia,"sue_id" => $g->servicio_id,"servicio" => $g->servicio];
                     }
 
                 }
@@ -348,11 +348,6 @@ class SMUnidadesAdmitivasController extends Controller{
 
             // INICIA EL MODULO DE OTROS DATOS
             $arrGeos = collect($arrGeos);
-//            $total_geodenuncias = count($arrGeos);
-//            $cerradas = count($arrGeos->where('ue_id', 21));
-//            $cerradas_por_rechazo = count($arrGeos->where('ue_id', 22));
-//            $atendidas = count($arrGeos->where('ue_id', 17));
-//            $rechazadas = count($arrGeos->where('ue_id', 20));
             $arrGeos = collect($arrGeos);
             $total_geodenuncias = count($arrGeos);
             $cerradas = count($arrGeos->where('ue_id', 21));
@@ -721,9 +716,9 @@ class SMUnidadesAdmitivasController extends Controller{
                 ->select(
                     'id','denuncia_id','descripcion','fecha_dias_ejecucion','fecha_dias_maximos_ejecucion',
                     'fecha_ingreso', 'fecha_ultimo_estatus', 'dependencia_id', 'dependencia', 'abreviatura',
-                    'ue_id', 'sue_id', 'servicio', 'nombre_corto_ss', 'ciudadano', 'centro_localidad_id', 'latitud','longitud',
+                    'ue_id', 'sue_id', 'nombre_corto_ss', 'ciudadano', 'centro_localidad_id', 'latitud','longitud',
                     'estatus','fecha_ultimo_estatus','fecha_ingreso','fecha_dias_ejecucion', 'fecha_dias_maximos_ejecucion',
-                    'uuid'
+                    'uuid', 'servicio_id', 'servicio'
                 )
                 ->where('dependencia_id', $unidad_id)
                 ->where('fecha_ingreso', '>=', $start_date." 00:00:00")

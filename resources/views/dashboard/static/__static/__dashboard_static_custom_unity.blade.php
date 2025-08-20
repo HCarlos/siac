@@ -229,7 +229,8 @@
             frmFilterDataExport.disabled = true;
 
             let frmFilterDataExportSAS = document.getElementById("frmFilterDataExportSAS");
-            frmFilterDataExportSAS.disabled = true;
+            if (frmFilterDataExportSAS)
+                frmFilterDataExportSAS.disabled = true;
 
 
 
@@ -283,7 +284,8 @@
             inputDenuncias.value = denuncias_id.join(',');
             inputDDSE.value = ddse_id.join(',');
             frmFilterDataExport.disabled = false;
-            frmFilterDataExportSAS.disabled = false;
+            if (frmFilterDataExportSAS)
+                frmFilterDataExportSAS.disabled = false;
             frmResumenBasicoExport ? frmResumenBasicoExport.disabled = false : console.warn("");
 
             const selectZona = document.getElementById('zona');
@@ -397,35 +399,38 @@
 
 
             const btnFilterDataExportSAS = document.getElementById('frmFilterDataExportSAS');
-            btnFilterDataExportSAS.addEventListener('click', function () {
-                btnFilterDataExportSAS.disabled = true;
-                var PARAMS = {
-                    search : "",
-                    start_date : "{{ $start_date }}",
-                    end_date : "{{ $end_date }}",
-                    items : null,
-                    items_ddse : null,
-                    fileoutput : "fmt_lista_denuncias_sas_sm.xlsx",
-                    indice : 4,
-                    _token : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                };
+            if (btnFilterDataExportSAS) {
+                btnFilterDataExportSAS.addEventListener('click', function () {
+                    btnFilterDataExportSAS.disabled = true;
+                    var PARAMS = {
+                        search : "",
+                        start_date : "{{ $start_date }}",
+                        end_date : "{{ $end_date }}",
+                        items : null,
+                        items_ddse : null,
+                        fileoutput : "fmt_lista_denuncias_sas_sm.xlsx",
+                        indice : 4,
+                        _token : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    };
 
-                var temp=document.createElement("form");
-                temp.action='/exportDenunciaSASGeneral02';
-                temp.method="POST";
-                temp.target="_blank";
-                temp.style.display="none";
-                for(var x in PARAMS) {
-                    var opt=document.createElement("textarea");
-                    opt.name=x;
-                    opt.value=PARAMS[x];
-                    temp.appendChild(opt);
-                }
-                document.body.appendChild(temp);
-                temp.submit();
-                return temp;
+                    var temp=document.createElement("form");
+                    temp.action='/exportDenunciaSASGeneral02';
+                    temp.method="POST";
+                    temp.target="_blank";
+                    temp.style.display="none";
+                    for(var x in PARAMS) {
+                        var opt=document.createElement("textarea");
+                        opt.name=x;
+                        opt.value=PARAMS[x];
+                        temp.appendChild(opt);
+                    }
+                    document.body.appendChild(temp);
+                    temp.submit();
+                    return temp;
 
-            });
+                });
+
+            }
 
 
 
