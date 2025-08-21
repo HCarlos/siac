@@ -205,7 +205,6 @@ class ReporteSemanalController extends Controller{
         );
 
         // Procesamiento de datos para el Grfico 4
-
         $meses = $DC->getTotalServiciosPorMes($start_date, $end_date);
 
         $di = 34;
@@ -225,6 +224,37 @@ class ReporteSemanalController extends Controller{
             $dom1->saveXML()
         );
 
+        // Procesamiento de datos para el Grfico 5
+        $delegaciones = $DC->getTotalServiciosPorDelegaciones($start_date, $end_date);
+
+        $di = 43;
+        foreach ($delegaciones as $del) {
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'A'.$di, $del->centro_delegacion);
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B'.$di, $del->total);
+            $di++;
+        }
+
+        $zip->addFromString(
+            'xl/worksheets/sheet1.xml',
+            $dom1->saveXML()
+        );
+
+        // Procesamiento de datos para el Grfico 6
+        $colonias = $DC->getTotalServiciosPorColonias($start_date, $end_date);
+
+//        dd($colonias);
+
+        $di = 65;
+        foreach ($colonias as $col) {
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'A'.$di, $col->centro_colonia);
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B'.$di, $col->total);
+            $di++;
+        }
+
+        $zip->addFromString(
+            'xl/worksheets/sheet1.xml',
+            $dom1->saveXML()
+        );
 
         /* *************** */
         /*        HOJA 2   */

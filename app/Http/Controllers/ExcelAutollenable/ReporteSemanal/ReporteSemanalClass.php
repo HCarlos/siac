@@ -6,10 +6,12 @@
 namespace App\Http\Controllers\ExcelAutollenable\ReporteSemanal;
 
 use App\Http\Controllers\Funciones\FuncionesController;
+use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\_viMovSM;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class ReporteSemanalClass{
@@ -318,6 +320,56 @@ class ReporteSemanalClass{
         return $meses;
 
     }
+
+
+    function getTotalServiciosPorDelegaciones($start_date,$end_date){
+
+        $cacheKey = '_viddss_completa_delegaciones' . md5( $start_date . $end_date); // Genera una clave de caché única
+        $delegaciones = Cache::remember($cacheKey, 60, function () use ($start_date, $end_date) {
+
+            $start_date = Carbon::parse($start_date)->format('Y-m-d');
+            $end_date = Carbon::parse($end_date)->format('Y-m-d');
+
+            return DB::table("_viddss_completa")
+                ->select('centro_delegacion', DB::raw('count(centro_delegacion) as total'))
+                ->where('ambito_dependencia', 2)
+                ->whereBetween('fecha_ingreso', [
+                    $start_date . " 00:00:00",
+                    $end_date . " 23:59:59"
+                ])
+                ->groupBy('centro_delegacion')
+                ->orderByDesc('total')
+                ->take(20)
+                ->get();
+        });
+        return $delegaciones;
+    }
+
+    function getTotalServiciosPorColonias($start_date,$end_date){
+
+        $cacheKey = '_viddss_completa_colonias' . md5( $start_date . $end_date); // Genera una clave de caché única
+        $colonias = Cache::remember($cacheKey, 60, function () use ($start_date, $end_date) {
+
+            $start_date = Carbon::parse($start_date)->format('Y-m-d');
+            $end_date = Carbon::parse($end_date)->format('Y-m-d');
+
+            return DB::table("_viddss_completa")
+                ->select('centro_colonia', DB::raw('count(centro_colonia) as total'))
+                ->where('ambito_dependencia', 2)
+                ->whereBetween('fecha_ingreso', [
+                    $start_date . " 00:00:00",
+                    $end_date . " 23:59:59"
+                ])
+                ->groupBy('centro_colonia')
+                ->orderByDesc('total')
+                ->take(15)
+                ->get();
+        });
+        return $colonias;
+    }
+
+
+
 
 
 
