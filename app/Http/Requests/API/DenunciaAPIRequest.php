@@ -164,6 +164,7 @@ class DenunciaAPIRequest extends FormRequest{
                 'due_id'                       => $Ser->dependencia_id,
                 'sue_id'                       => $Ser->servicio_id,
                 'ue_id'                        => 16,
+                'centro_localidad_id'          => $this->centro_localidad_id ?? null,
             ];
 
 //            dd($Item);
