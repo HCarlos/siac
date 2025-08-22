@@ -187,7 +187,7 @@ class ReporteSemanalController extends Controller{
 
         // Procesamiento de datos para el Grfico 3
 
-        $DC->getDiasAtrasPorServicio($start_date, $end_date);
+        $ar = $DC->getDiasAtrasPorServicio($start_date, $end_date);
 
         $di = 25;
         for ($i=0;  $i<6; $i++) {
@@ -256,6 +256,29 @@ class ReporteSemanalController extends Controller{
             $dom1->saveXML()
         );
 
+        // Procesamiento de datos para el Grfico 7
+
+        $di = 82;
+        foreach ($ar as $col) {
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B'.$di, (int) $col["PA"]['pendientes']);
+            $di++;
+        }
+
+        $zip->addFromString(
+            'xl/worksheets/sheet1.xml',
+            $dom1->saveXML()
+        );
+
+        $di = 90;
+        foreach ($ar as $col) {
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B'.$di, (int) $col["PA"]['atendidas']);
+            $di++;
+        }
+
+        $zip->addFromString(
+            'xl/worksheets/sheet1.xml',
+            $dom1->saveXML()
+        );
         /* *************** */
         /*        HOJA 2   */
         /* *************** */
@@ -267,6 +290,31 @@ class ReporteSemanalController extends Controller{
         $xp2->registerNamespace('d','http://schemas.openxmlformats.org/spreadsheetml/2006/main');
 
         $nodesF = $xp2->query("//d:c[@r='C4']/d:v | //d:c[@r='C5']/d:v | //d:c[@r='F5']/d:v | //d:c[@r='I5']/d:v");
+        foreach ($nodesF as $v) {
+            $v->parentNode->removeChild($v);
+        }
+
+        $zip->addFromString(
+            'xl/worksheets/sheet2.xml',
+            $dom2->saveXML()
+        );
+
+        $nodesF = $xp2->query(
+            "
+//d:c[@r='B82']/d:v |
+//d:c[@r='B83']/d:v |
+//d:c[@r='B84']/d:v |
+//d:c[@r='B85']/d:v |
+//d:c[@r='B86']/d:v |
+//d:c[@r='B87']/d:v |
+//d:c[@r='B90']/d:v |
+//d:c[@r='B91']/d:v |
+//d:c[@r='B92']/d:v |
+//d:c[@r='B93']/d:v |
+//d:c[@r='B94']/d:v |
+//d:c[@r='B95']/d:v
+"
+        );
         foreach ($nodesF as $v) {
             $v->parentNode->removeChild($v);
         }

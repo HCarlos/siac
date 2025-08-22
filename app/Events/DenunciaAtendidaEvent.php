@@ -70,7 +70,7 @@ class DenunciaAtendidaEvent  implements ShouldBroadcast{
 
                 $den = Denuncia::find($this->denuncia_id);
                 if ($this->onFly){
-                    $semaforo = $den->semaforo_ultimo_estatus();
+//                    $semaforo = $den->semaforo_ultimo_estatus();
                     $semaforo = ActualizaEstadisticasARO::semaforo_ultimo_estatus_off($den->ultimo_estatus,$den->fecha_ultimo_estatus,$den->fecha_ingreso);
                 }else{
                     $semaforo = ActualizaEstadisticasARO::semaforo_ultimo_estatus_off($this->viDen->estatu_id,$this->viDen->fecha_movimiento,$den->fecha_ingreso);

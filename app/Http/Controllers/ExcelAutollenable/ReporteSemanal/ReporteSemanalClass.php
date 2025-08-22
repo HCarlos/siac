@@ -6,6 +6,7 @@
 namespace App\Http\Controllers\ExcelAutollenable\ReporteSemanal;
 
 use App\Http\Controllers\Funciones\FuncionesController;
+use App\Models\Catalogos\Servicio;
 use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\_viMovSM;
 use App\User;
@@ -31,12 +32,12 @@ class ReporteSemanalClass{
     public function __construct(){
         // Inicializar como colección
         $this->vectorServicios = collect([
-            ['sue_id' => 476, 'Servicio' => 'FUGA DE AGUA', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0],
-            ['sue_id' => 508, 'Servicio' => 'DESAZOLVE DE DRENAJE', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0],
-            ['sue_id' => 483, 'Servicio' => 'BACHEO', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0],
-            ['sue_id' => 466, 'Servicio' => 'REPARACIÓN DE LUMINARIAS', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0],
-            ['sue_id' => 503, 'Servicio' => 'RECOLECCIÓN DE RESIDUOS SÓLIDOS','CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0],
-            ['sue_id' => 479, 'Servicio' => 'REPARACIÓN DE ALCANTARILLAS', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0],
+            ['sue_id' => 476, 'Servicio' => 'FUGA DE AGUA', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0 ,'PA' => []],
+            ['sue_id' => 508, 'Servicio' => 'DESAZOLVE DE DRENAJE', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0 ,'PA' => []],
+            ['sue_id' => 483, 'Servicio' => 'BACHEO', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0 ,'PA' => []],
+            ['sue_id' => 466, 'Servicio' => 'REPARACIÓN DE LUMINARIAS', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0 ,'PA' => []],
+            ['sue_id' => 503, 'Servicio' => 'RECOLECCIÓN DE RESIDUOS SÓLIDOS','CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0 ,'PA' => []],
+            ['sue_id' => 479, 'Servicio' => 'REPARACIÓN DE ALCANTARILLAS', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0 ,'PA' => []],
         ]);
 
         $this->ServiciosPrincipales = [476, 508, 483, 466, 503, 479];
@@ -242,7 +243,12 @@ class ReporteSemanalClass{
                     ->get();
                 $servicio["DIAS_ATRAS"][] = $this->setAsignEstatus($geo, $start_date);
             }
+            $srv = Servicio::find($this->vectorServicios[$i]['sue_id']);
+            $ate = round(($srv->promedio_dias_atendida + $srv->promedio_dias_rechazada + $srv->promedio_dias_observada),0);
+            $servicio["PA"] = ["atendidas"=>number_format($ate,0),"pendientes"=>number_format((100 - $ate),0)];
             $this->vectorServicios[$i] = $servicio;
+
+
         }
 
 //        dd($this->vectorServicios);
