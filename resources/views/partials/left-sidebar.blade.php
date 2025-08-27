@@ -517,7 +517,7 @@
                                 </a>
                             </li>
                         @endif
-                        @if (Auth::user()->hasRole('Administrator|SysOp|test_admin'))
+                        @if (Auth::user()->hasRole('Administrator|test_admin'))
                             <li>
                                 <a href="{{route('archivosConfig')}}">
                                     <i class="fas fa-file-excel"></i>

@@ -260,7 +260,7 @@ class ReporteSemanalController extends Controller{
 
         $di = 82;
         foreach ($ar as $col) {
-            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B'.$di, (int) $col["PA"]['pendientes']);
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B'.$di, $col["PA"]['pendientes']);
             $di++;
         }
 
@@ -271,7 +271,7 @@ class ReporteSemanalController extends Controller{
 
         $di = 90;
         foreach ($ar as $col) {
-            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B'.$di, (int) $col["PA"]['atendidas']);
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B'.$di, $col["PA"]['atendidas']);
             $di++;
         }
 
@@ -299,30 +299,30 @@ class ReporteSemanalController extends Controller{
             $dom2->saveXML()
         );
 
-        $nodesF = $xp2->query(
-            "
-//d:c[@r='B82']/d:v |
-//d:c[@r='B83']/d:v |
-//d:c[@r='B84']/d:v |
-//d:c[@r='B85']/d:v |
-//d:c[@r='B86']/d:v |
-//d:c[@r='B87']/d:v |
-//d:c[@r='B90']/d:v |
-//d:c[@r='B91']/d:v |
-//d:c[@r='B92']/d:v |
-//d:c[@r='B93']/d:v |
-//d:c[@r='B94']/d:v |
-//d:c[@r='B95']/d:v
-"
-        );
-        foreach ($nodesF as $v) {
-            $v->parentNode->removeChild($v);
-        }
+//        $nodesF = $xp2->query(
+//            "
+////d:c[@r='B82']/d:v |
+////d:c[@r='B83']/d:v |
+////d:c[@r='B84']/d:v |
+////d:c[@r='B85']/d:v |
+////d:c[@r='B86']/d:v |
+////d:c[@r='B87']/d:v |
+////d:c[@r='B90']/d:v |
+////d:c[@r='B91']/d:v |
+////d:c[@r='B92']/d:v |
+////d:c[@r='B93']/d:v |
+////d:c[@r='B94']/d:v |
+////d:c[@r='B95']/d:v
+//"
+//        );
+//        foreach ($nodesF as $v) {
+//            $v->parentNode->removeChild($v);
+//        }
 
-        $zip->addFromString(
-            'xl/worksheets/sheet2.xml',
-            $dom2->saveXML()
-        );
+//        $zip->addFromString(
+//            'xl/worksheets/sheet2.xml',
+//            $dom2->saveXML()
+//        );
 
         $fechaCarbon = Carbon::now(); // Obtiene la fecha y hora actual
         $fechaFormateada = $fechaCarbon->locale('es_MX')->isoFormat('dddd DD [de] MMMM [de] YYYY [corte a las] HH:mm[hrs.]');
