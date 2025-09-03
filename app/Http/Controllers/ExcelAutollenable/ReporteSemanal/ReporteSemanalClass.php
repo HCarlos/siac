@@ -296,7 +296,8 @@ class ReporteSemanalClass{
         }
         $i = 1;
         foreach ($meses as &$mes) {
-            if ($i <= ($mesActual - 1)){
+//            if ($i <= ($mesActual - 1)){
+            if ($i <= ($mesActual)){
 
                 $totalMes = 0; // acumulador para ese mes
                 foreach ($this->vectorServicios as $servicio) {
@@ -337,18 +338,31 @@ class ReporteSemanalClass{
             $end_date = Carbon::parse($end_date)->format('Y-m-d');
 
             return DB::table("_viddss_completa")
-                ->select('centro_delegacion', DB::raw('count(centro_delegacion) as total'))
+                ->select('cl_delegacion_id', 'centro_delegacion', DB::raw('count(cl_delegacion_id) as total'))
                 ->where('ambito_dependencia', 2)
                 ->whereBetween('fecha_ingreso', [
                     $start_date . " 00:00:00",
                     $end_date . " 23:59:59"
                 ])
-                ->groupBy('centro_delegacion')
+                ->groupBy('cl_delegacion_id', 'centro_delegacion')
                 ->orderByDesc('total')
                 ->take(20)
                 ->get();
         });
         return $delegaciones;
+
+        //Script de comprobación
+
+        //SELECT cl_delegacion_id, centro_delegacion, COUNT(cl_delegacion_id) AS total
+        //FROM _viddss_completa
+        //WHERE ambito_dependencia = 2
+        //        AND fecha_ingreso BETWEEN '2025-01-01 00:00:00' AND '2025-09-30 23:59:59'
+        //GROUP BY cl_delegacion_id, centro_delegacion
+        //ORDER BY total DESC
+        //LIMIT 20;
+
+
+
     }
 
     function getTotalServiciosPorColonias($start_date,$end_date){
@@ -360,18 +374,31 @@ class ReporteSemanalClass{
             $end_date = Carbon::parse($end_date)->format('Y-m-d');
 
             return DB::table("_viddss_completa")
-                ->select('centro_colonia', DB::raw('count(centro_colonia) as total'))
+                ->select('cl_colonia_id', 'centro_colonia', DB::raw('count(cl_colonia_id) as total'))
                 ->where('ambito_dependencia', 2)
                 ->whereBetween('fecha_ingreso', [
                     $start_date . " 00:00:00",
                     $end_date . " 23:59:59"
                 ])
-                ->groupBy('centro_colonia')
+                ->groupBy('cl_colonia_id', 'centro_colonia')
                 ->orderByDesc('total')
                 ->take(15)
                 ->get();
         });
         return $colonias;
+
+        //Script de Comprobacion
+        //
+        //SELECT cl_colonia_id, centro_colonia, COUNT(cl_colonia_id) AS total
+        //FROM _viddss_completa
+        //WHERE ambito_dependencia = 2
+        //        AND fecha_ingreso BETWEEN '2025-01-01 00:00:00' AND '2025-09-30 23:59:59'
+        //GROUP BY cl_colonia_id, centro_colonia
+        //ORDER BY total DESC
+        //LIMIT 20;
+
+
+
     }
 
 

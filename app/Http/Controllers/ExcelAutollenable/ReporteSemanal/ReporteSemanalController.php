@@ -172,7 +172,7 @@ class ReporteSemanalController extends Controller{
 
         $itemFte = $DC->getVectorFuentes($start_date, $end_date);
         $di = 15;
-        for ($j=0; $j<6; $j++) {
+        for ($j=5; $j>=0; $j--) {
             $total = $itemFte[$j]["Total"];
             $origen = $itemFte[$j]["Origen"];
             $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', "A".$di, ($origen));
@@ -227,7 +227,7 @@ class ReporteSemanalController extends Controller{
         // Procesamiento de datos para el Grfico 5
         $delegaciones = $DC->getTotalServiciosPorDelegaciones($start_date, $end_date);
 
-        $di = 43;
+        $di = 49;
         foreach ($delegaciones as $del) {
             $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'A'.$di, $del->centro_delegacion);
             $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B'.$di, $del->total);
@@ -244,7 +244,7 @@ class ReporteSemanalController extends Controller{
 
 //        dd($colonias);
 
-        $di = 65;
+        $di = 71;
         foreach ($colonias as $col) {
             $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'A'.$di, $col->centro_colonia);
             $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B'.$di, $col->total);
@@ -258,7 +258,7 @@ class ReporteSemanalController extends Controller{
 
         // Procesamiento de datos para el Grfico 7
 
-        $di = 82;
+        $di = 88;
         foreach ($ar as $col) {
             $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B'.$di, $col["PA"]['pendientes']);
             $di++;
@@ -269,7 +269,7 @@ class ReporteSemanalController extends Controller{
             $dom1->saveXML()
         );
 
-        $di = 90;
+        $di = 96;
         foreach ($ar as $col) {
             $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B'.$di, $col["PA"]['atendidas']);
             $di++;
