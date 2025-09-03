@@ -172,7 +172,7 @@ class ReporteSemanalController extends Controller{
 
         $itemFte = $DC->getVectorFuentes($start_date, $end_date);
         $di = 15;
-        for ($j=5; $j>=0; $j--) {
+        for ($j=0; $j<6; $j++) {
             $total = $itemFte[$j]["Total"];
             $origen = $itemFte[$j]["Origen"];
             $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', "A".$di, ($origen));
