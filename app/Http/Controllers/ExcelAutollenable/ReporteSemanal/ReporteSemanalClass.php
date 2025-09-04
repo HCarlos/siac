@@ -231,6 +231,36 @@ class ReporteSemanalClass{
 
     public function getDiasAtrasPorServicio($start_date,$end_date): Collection{
 
+        // Obtenemos el total de todas las atendidas
+        $ar_ta = DB::table('_vimov_filter_sm')
+            ->select('servicio_id', DB::raw('COUNT(estatu_id) AS total_atendidas'))
+            ->where('ambito_dependencia', 2)
+            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00", $end_date." 23:59:59"])
+            ->whereIN('servicio_id', $this->ServiciosPrincipales)
+            ->where('estatu_id', 17)
+            ->groupBy('servicio_id')
+            ->get();
+
+        $total_atendidas = 0;
+        foreach ($ar_ta as $t) {
+            $total_atendidas += $t->total_atendidas;
+        }
+
+        // Obtenemos el total de todas las pendietes
+        $ar_tp = DB::table('_vimov_filter_sm')
+            ->select('servicio_id', DB::raw('COUNT(estatu_id) AS total_pendientes'))
+            ->where('ambito_dependencia', 2)
+            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00", $end_date." 23:59:59"])
+            ->whereIN('servicio_id', $this->ServiciosPrincipales)
+            ->whereIn('estatu_id', [16,19])
+            ->groupBy('servicio_id')
+            ->get();
+
+        $total_pendientes = 0;
+        foreach ($ar_tp as $t) {
+            $total_pendientes += $t->total_pendientes;
+        }
+
         for ($i=0;  $i<6; $i++){
             $servicio = $this->vectorServicios[$i];
             for ($j=0;  $j<6; $j++){
@@ -243,9 +273,13 @@ class ReporteSemanalClass{
                     ->get();
                 $servicio["DIAS_ATRAS"][] = $this->setAsignEstatus($geo, $start_date);
             }
-            $srv = Servicio::find($this->vectorServicios[$i]['sue_id']);
-            $ate = round(($srv->promedio_dias_atendida + $srv->promedio_dias_rechazada + $srv->promedio_dias_observada),0);
-            $servicio["PA"] = ["atendidas"=>number_format($ate,0),"pendientes"=>number_format((100 - $ate),0)];
+            $_ta = $ar_ta->where('servicio_id',$servicio['sue_id'])->first();
+            $ta = round((($_ta->total_atendidas / $total_atendidas) * 100),0);
+
+            $_tp = $ar_tp->where('servicio_id',$servicio['sue_id'])->first();
+            $tp = round((($_tp->total_pendientes / $total_pendientes) * 100),0);
+
+            $servicio["PA"] = ["atendidas"=>number_format($ta,0),"pendientes"=>number_format($tp,0)];
             $this->vectorServicios[$i] = $servicio;
 
 
@@ -344,6 +378,7 @@ class ReporteSemanalClass{
                     $start_date . " 00:00:00",
                     $end_date . " 23:59:59"
                 ])
+                ->whereIn('servicio_id', $this->ServiciosPrincipales)
                 ->groupBy('cl_delegacion_id', 'centro_delegacion')
                 ->orderByDesc('total')
                 ->take(20)
@@ -380,6 +415,7 @@ class ReporteSemanalClass{
                     $start_date . " 00:00:00",
                     $end_date . " 23:59:59"
                 ])
+                ->whereIn('servicio_id', $this->ServiciosPrincipales)
                 ->groupBy('cl_colonia_id', 'centro_colonia')
                 ->orderByDesc('total')
                 ->take(15)
