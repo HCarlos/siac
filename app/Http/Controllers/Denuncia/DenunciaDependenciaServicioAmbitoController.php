@@ -28,6 +28,7 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
     protected $Id = 0;
     protected $msg = "";
     protected $ambito_dependencia = 1;
+    protected $estatus_ids = "";
 
 // ***************** MUESTRA EL LISTADO DE USUARIOS ++++++++++++++++++++ //
 
@@ -57,8 +58,6 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
 
             $user = Auth::User();
             $this->Id = $Id;
-
-//            dd($Denuncia);
 
             Denuncia_Dependencia_Servicio::where('denuncia_id', $Id)->update(['fue_leida' => true]);
 
@@ -140,6 +139,17 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
 
             }
 
+            // Obtenemos el array de Estatus utilizados
+            $arStsId = Denuncia_Dependencia_Servicio::query()
+                ->select('estatu_id')
+                ->where('denuncia_id', $Denuncia->id)
+                ->where('dependencia_id', $Denuncia->Dependencia->id)
+                ->where('servicio_id', $Denuncia->Servicio->id)
+                ->get();
+            foreach ($arStsId as $stsId) {
+                $this->estatus_ids .=  $this->estatus_ids === "" ? $stsId->estatu_id : ",".$stsId->estatu_id;
+            }
+
             return view('SIAC.denuncia.denuncia_dependencia_servicio_ambito.denuncia_dependencia_servicio_ambito_edit',
                 [
                     'user' => Auth::user(),
@@ -155,6 +165,7 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
                     'ambito_dependencia' => $this->ambito_dependencia,
                     'denuncia' => $Denuncia,
                     'removeItem' => 'removeImagene',
+                    'lista_estatus_utilizados' => $this->estatus_ids,
                 ]
             );
         }else{
@@ -231,6 +242,17 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
                     ->get();
             }
 
+            // Obtenemos el array de Estatus utilizados
+            $arStsId = Denuncia_Dependencia_Servicio::query()
+                ->select('estatu_id')
+                ->where('denuncia_id', $Id)
+                ->where('dependencia_id', $denuncia->Dependencia->id)
+                ->where('servicio_id', $denuncia->Servicio->id)
+                ->get();
+            foreach ($arStsId as $stsId) {
+                $this->estatus_ids .=  $this->estatus_ids === "" ? $stsId->estatu_id : ",".$stsId->estatu_id;
+            }
+
             return view('SIAC.denuncia.denuncia_dependencia_servicio_ambito.denuncia_dependencia_servicio_ambito_new',
                 [
                     'user' => Auth::user(),
@@ -249,6 +271,7 @@ class DenunciaDependenciaServicioAmbitoController extends Controller
                     'ambito_dependencia' => $this->ambito_dependencia,
                     'denuncia' => $denuncia,
                     'removeItem' => 'removeImagene',
+                    'lista_estatus_utilizados' => $this->estatus_ids,
                 ]
             );
         }

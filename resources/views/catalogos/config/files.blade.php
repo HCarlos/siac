@@ -52,11 +52,14 @@
                 <li class="list list-group-item">
                     <a href="{{ route('viddss.descargar_csv_06') }}" target="_blank">Base de datos completa</a>
                 </li>
+                <li class="list list-group-item">
+                    <a href="{{ route('viddss.descargar_csv_07') }}" target="_blank">Solicitudes con celulares irregulares</a>
+                </li>
             </ul>
 
             <hr/>
 
-            <p class="text-success">Otros (formato *.CSV):</p>
+            <p class="text-success">Otros datos (*.CSV):</p>
             <ul class="list-group">
                 <li class="list list-group-item">
                     <a href="{{ route('servicios.descargar_csv') }}" target="_blank">Catálogo de servicios</a>

@@ -82,7 +82,7 @@ class VolcadoDBtoCSVController extends Controller{
     public function descargarCsv02(Request $request){
         FuncionesController::setConfigOne();
 
-        $filename = "Datos_AS_19-01-2025_hacia_atras' . '.csv";
+        $filename = "Datos_AS_19-01-2025_hacia_atras.csv";
         $headers = $this->arrSelDatbaseComplete;
 
         $data = DB::table('_viddss_completa')
@@ -113,7 +113,7 @@ class VolcadoDBtoCSVController extends Controller{
     public function descargarCsv03(Request $request){
         FuncionesController::setConfigOne();
 
-        $filename = "Datos_AS_20-01-2025_a_la_fecha' . '.csv";
+        $filename = "Datos_AS_20-01-2025_a_la_fecha.csv";
         $headers = $this->arrSelDatbaseComplete;
 
         $data = DB::table('_viddss_completa')
@@ -141,7 +141,7 @@ class VolcadoDBtoCSVController extends Controller{
 
     public function descargarCsv04(Request $request){
         FuncionesController::setConfigOne();
-        $filename = "Datos_SM_19-01-2025_hacia_atras' . '.csv";
+        $filename = "Datos_SM_19-01-2025_hacia_atras.csv";
         $headers = $this->arrSelDatbaseComplete;
 
         $data = DB::table('_viddss_completa')
@@ -170,7 +170,7 @@ class VolcadoDBtoCSVController extends Controller{
 
     public function descargarCsv05(Request $request){
         FuncionesController::setConfigOne();
-        $filename = "Datos_SM_20-01-2025_a_la_fecha' . '.csv";
+        $filename = "Datos_SM_20-01-2025_a_la_fecha.csv";
         $headers = $this->arrSelDatbaseComplete;
 
         $data = DB::table('_viddss_completa')
@@ -223,6 +223,54 @@ class VolcadoDBtoCSVController extends Controller{
 
     }
 
+    public function descargarCsv07(Request $request){
+        FuncionesController::setConfigOne();
+
+        $filename = "Solicitudes con celulares irregulares.csv";
+        $headers = $this->arrSelDatbaseComplete;
+
+//        $data = DB::table('_viddss_completa')
+//            ->select($headers)
+//            ->where('ambito_dependencia',2)
+//            ->where('fecha_ingreso','>=','2025-01-20 00:00:00')
+//            ->orWhereRaw("telefonoscelularesemails like ('NO%')
+//	OR telefonoscelularesemails = ';'
+//	OR REPLACE(telefonoscelularesemails, ' ', '') like ('%31032%')")
+//            ->orderBy('id','desc')
+//            ->get($headers);
+
+        $data = DB::table('_viddss_completa')
+            ->select($headers)
+            ->where(function ($query) {
+                $query->where('ambito_dependencia', 2)
+                    ->where('fecha_ingreso', '>=', '2025-01-20 00:00:00');
+            })
+            ->where(function ($query) {
+                $query->where('telefonoscelularesemails','like', 'NO%')
+                    ->orWhere('telefonoscelularesemails',';')
+                    ->orWhereRaw("REPLACE(telefonoscelularesemails, ' ', '') like ('%31032%')");
+            })
+            ->orderBy('id','desc')
+            ->get($headers);
+
+
+        $callback = function() use ($data, $headers) {
+            $file = fopen('php://output', 'wb');
+            fputcsv($file, $headers);
+
+            foreach ($data as $row) {
+                $csvRow = [];
+                foreach ($headers as $header) {
+                    $csvRow[] = $row->$header;
+                }
+                fputcsv($file, $csvRow);
+            }
+            fclose($file);
+        };
+
+        return streamCsvResponse($callback, $filename);
+
+    }
 
 
     public function descargarServicios(Request $request){

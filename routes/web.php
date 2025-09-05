@@ -449,6 +449,7 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|test_admin|USER_OPE
     Route::get('/descargar-viddss-04-csv','StreamedResponse\Csv\VolcadoDBtoCSVController@descargarCsv04')->name('viddss.descargar_csv_04');
     Route::get('/descargar-viddss-05-csv','StreamedResponse\Csv\VolcadoDBtoCSVController@descargarCsv05')->name('viddss.descargar_csv_05');
     Route::get('/descargar-viddss-06-csv','StreamedResponse\Csv\VolcadoDBtoCSVController@descargarCsv06')->name('viddss.descargar_csv_06');
+    Route::get('/descargar-viddss-07-csv','StreamedResponse\Csv\VolcadoDBtoCSVController@descargarCsv07')->name('viddss.descargar_csv_07');
 
     Route::get('/descargar-servicios-csv','StreamedResponse\Csv\VolcadoDBtoCSVController@descargarServicios')->name('servicios.descargar_csv');
     Route::get('/descargar-estatus-csv','StreamedResponse\Csv\VolcadoDBtoCSVController@descargarEstatus')->name('estatus.descargar_csv');

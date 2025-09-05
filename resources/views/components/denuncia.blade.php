@@ -55,6 +55,18 @@
 
                 $(".btnGuardarDenuncia").on("click",function (event) {
 
+                    var lista_estatus_utilizados = $("#lista_estatus_utilizados").val();
+                    var array = lista_estatus_utilizados.split(',');
+                    var buscarElemento = $("#estatus_id").val();
+                    var indice = array.indexOf(buscarElemento);
+
+                    if (indice !== -1) {
+                        var estatus_text = $( "#estatus_id option:selected" ).text();
+                        if (confirm("Este Estatus ("+estatus_text+") ya ha sido ha utilizado en esta Solicitud. \n\n ¿Desea continuar?") === false) {
+                            return false;
+                        }
+                    }
+
                     event.preventDefault();
                     var $form = $("#formData");
                     var url = $form.attr('action');

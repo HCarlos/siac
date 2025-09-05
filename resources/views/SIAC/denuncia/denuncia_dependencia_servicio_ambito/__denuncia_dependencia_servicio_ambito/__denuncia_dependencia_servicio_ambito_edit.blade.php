@@ -93,6 +93,7 @@
 <input type="hidden" name="id" value="{{$Id}}" >
 <input type="hidden" name="denuncia_id" id="denuncia_id" value="{{ $items->denuncia_id }}" >
 <input type="hidden" name="creadopor_id" id="creadopor_id" value="{{$user->id}}" >
+<input type="hidden" name="lista_estatus_utilizados" id="lista_estatus_utilizados" value="{{ $lista_estatus_utilizados }}" >
 <hr>
 
 @section('script_interno')
@@ -133,6 +134,7 @@
                     '<div class="form-group row w-100-percent mb-1"><label for = "file3" class="col-md-3 col-form-label">Agregue una imagen</label><div class="col-md-5"><input type="file" id="file3" name="file3" class="form-control-file" ></div></div>'
                     ;
             }
+
 
         })
     </script>
