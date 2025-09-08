@@ -56,4 +56,5 @@
 <input type="hidden" name="id" value="0" >
 <input type="hidden" name="denuncia_id" id="denuncia_id" value="{{ $items->id }}" >
 <input type="hidden" name="creadopor_id" id="creadopor_id" value="{{$user->id}}" >
+<input type="hidden" name="lista_estatus_utilizados" id="lista_estatus_utilizados" value="{{ $lista_estatus_utilizados }}" >
 <hr>

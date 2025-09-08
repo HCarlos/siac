@@ -23,6 +23,7 @@ class DenunciaDependenciaServicioController extends Controller
     protected $tableName = "denuncia_dependencia_servicio";
     protected $Id = 0;
     protected $msg = "";
+    protected $estatus_ids = "";
 
 // ***************** MUESTRA EL LISTADO DE USUARIOS ++++++++++++++++++++ //
 
@@ -95,6 +96,19 @@ class DenunciaDependenciaServicioController extends Controller
             $Estatus      = Estatu::all()->where('estatus_cve',1)->sortBy('estatus');
         }
 
+        // Obtenemos el array de Estatus utilizados
+        $arStsId = Denuncia_Dependencia_Servicio::query()
+            ->select('estatu_id')
+            ->where('denuncia_id', $Denuncia->id)
+            ->where('dependencia_id', $Denuncia->Dependencia->id)
+            ->where('servicio_id', $Denuncia->Servicio->id)
+            ->get();
+        foreach ($arStsId as $stsId) {
+            $this->estatus_ids .=  $this->estatus_ids === "" ? $stsId->estatu_id : ",".$stsId->estatu_id;
+        }
+
+
+
         return view('SIAC.denuncia.denuncia_dependencia_servicio.denuncia_dependencia_servicio_edit',
             [
                 'user'            => Auth::user(),
@@ -107,6 +121,7 @@ class DenunciaDependenciaServicioController extends Controller
                 'postNew'         => 'putAddDenunciaDependenciaServicio',
                 'titulo_catalogo' => "Editando el Id: " . $Id,
                 'titulo_header'   => 'de la Solicitud '.$Denuncia->id,
+                'lista_estatus_utilizados' => $this->estatus_ids,
             ]
         );
     }
@@ -157,6 +172,18 @@ class DenunciaDependenciaServicioController extends Controller
             $Estatus      = Estatu::all()->where('estatus_cve',1)->sortBy('estatus');
         }
 
+        // Obtenemos el array de Estatus utilizados
+        $arStsId = Denuncia_Dependencia_Servicio::query()
+            ->select('estatu_id')
+            ->where('denuncia_id', $Id)
+            ->where('dependencia_id', $items->Dependencia->id)
+            ->where('servicio_id', $items->Servicio->id)
+            ->get();
+        foreach ($arStsId as $stsId) {
+            $this->estatus_ids .=  $this->estatus_ids === "" ? $stsId->estatu_id : ",".$stsId->estatu_id;
+        }
+
+
         return view('SIAC.denuncia.denuncia_dependencia_servicio.denuncia_dependencia_servicio_new',
             [
                 'user'              => Auth::user(),
@@ -172,6 +199,7 @@ class DenunciaDependenciaServicioController extends Controller
                 'titulo_catalogo'   => "Nuevo cambio de estatus de la orden: " . $Id,
                 'titulo_header'     => 'Agregar dependencia',
                 'exportModel'       => 23,
+                'lista_estatus_utilizados' => $this->estatus_ids,
             ]
         );
     }
