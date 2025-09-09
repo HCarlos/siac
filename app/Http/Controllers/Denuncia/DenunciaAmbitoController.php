@@ -868,6 +868,8 @@ class DenunciaAmbitoController extends Controller{
 
         $items->appends($queryFilters)->fragment('table');
 
+//        dd("Total : ".$items->count()." registros");
+
         $user = Auth::User();
 
         $request->session()->put('items', $items);

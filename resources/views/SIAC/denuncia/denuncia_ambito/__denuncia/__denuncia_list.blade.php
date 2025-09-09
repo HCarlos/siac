@@ -1,4 +1,3 @@
-@php use App\Models\Catalogos\CentroLocalidad; @endphp
 <div class="row w-100-percent" >
     <div class="col-lg-12">
 
@@ -17,12 +16,6 @@
             <tbody>
                 @foreach($items as $item)
                     @php
-//                        $Del = CentroLocalidad::find($item->centro_localidad_id);
-//                        if (!$Del) {
-//                            $Localidad = "Error en la localidad";
-//                        }else{
-//                            $Localidad = $Del->ItemColoniaDelegacion();
-//                        }
                         $fm = \Carbon\Carbon::parse($item->fecha_ingreso)->format('d-m-Y H:i');
                         if ( $item->medida_id == 16  ){
                             $fm = \Carbon\Carbon::parse($item->fecha_movimiento)->format('d-m-Y H:i');
@@ -36,46 +29,34 @@
                             @endif
                         </td>
                         <td class="w-25">
-{{--                            {{$item->ciudadano->full_name}} <br>--}}
-{{--                            <small>{{$item->ciudadano->username}}</small>--}}
                             {{$item->ciudadano}} <br>
                             <small>{{$item->curp_ciudadano}}</small>
                         </td>
                         <td  class="w-15">
-                            {{ $fm }}
+                            {{ $fm ?? '' }}
                         </td>
                         <td>
-{{--                            <small title="{{($item->dependencia_ultimo_estatus->dependencia)}}">--}}
-{{--                                {{($item->dependencia_ultimo_estatus->dependencia)}}--}}
-{{--                            </small>--}}
                                 <small title="{{($item->dependencia)}}">
                                     {{($item->dependencia)}}
                                 </small>
                             <small class="fas fa-circle chikirimbita {{ $item->semaforo_ultimo_estatus()['class_color'] }}"> {{ $item->semaforo_ultimo_estatus()['dias'] }}</small>
                         </td>
                         <td class="w-25">
-{{--                            {{($item->servicio_ultimo_estatus->servicio)}}<br>--}}
                             {{($item->servicio)}}<br>
-{{--                            <small class="text-gray-lighter">{{( $item->ultimo_estatus )}}</small>--}}
                             <small class="text-gray-lighter">{{( $item->estatus )}}</small>
-                            @if( $item->TotalRespuestas > 0 )
-
-                                >
-                                <small class="text-danger"><strong> {{( $item->TotalRespuestas )}}</strong></small>
-{{--                                <small class="chikirimbita"> {{ $item->semaforo_ultimo_estatus()['fecha_fin'] }}</small>--}}
+                            @if( $item->totalrespuestas_solicitud > 0 )
+                                <small class="text-danger"><strong> {{( $item->totalrespuestas_solicitud )}}</strong></small>
                                     <small class="chikirimbita"> {{ \Carbon\Carbon::parse($item->fecha_movimiento)->format('d-m-Y') }}</small>
                             @endif
 
                             <br>
                             @if($item->ciudadanos->count() > 1)<span class="text-danger">( <i class="fas fa-users"></i> <strong>  {{$item->ciudadanos->count()}} </strong> )</span> @endif
                         </td>
-{{--                        <td class="w-25">@if($item->dependencia->ambito_dependencia === 2) {{ strtoupper($item->search_google).' '.$Localidad }} @else {{ $item->ubicacion->ubicacion}} @endif--}}
-                        <td class="w-25">@if($item->ambito_dependencia === 2) {{ strtoupper($item->search_google).' '.$item->centro_colonia }} @else {{ $item->ubicacion->ubicacion}} @endif
+                        <td class="w-25">@if($item->ambito_dependencia === 2) {{ strtoupper($item->search_google).' '.$item->centro_colonia }} @else {{ $item->ubicacion_solicitud }} @endif
                         </td>
                         <td class="table-action w-15">
                             <div class="button-list">
                                 @if($item->cerrado == false && $item->firmado == false)
-{{--                                    @if($item->dependencia->ambito_dependencia === 2)--}}
                                     @if($item->ambito_dependencia === 2)
                                         @include('shared.ui_kit.__remove_item_servicios_municipales')
                                         @include('shared.ui_kit.__edit_den_dep_ser_ambito_sm')
@@ -85,7 +66,6 @@
                                     @endif
                                 @endif
                                 @if( ($item->cerrado == false && $item->firmado == false) && auth()->user()->can('elimina_denuncia_general') )
-{{--                                    @if($item->dependencia->ambito_dependencia === 2)--}}
                                     @if($item->ambito_dependencia === 2)
                                         @include('shared.ui_kit.__remove_item_servicios_municipales')
                                     @else
@@ -95,7 +75,6 @@
                                 @include('shared.ui_kit.__imagenes_list_item_ambito')
                                 @include('shared.ui_kit.__add_user_ambito_item')
                                 @include('shared.ui_kit.__edit_ambito_item')
-{{--                                @if($item->dependencia->ambito_dependencia === 2)--}}
                                 @if($item->ambito_dependencia === 2)
                                     @include('shared.ui_kit.__print_denuncia_ambito_item')
                                 @else

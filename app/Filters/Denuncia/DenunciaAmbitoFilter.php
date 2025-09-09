@@ -72,16 +72,7 @@ class DenunciaAmbitoFilter extends QueryFilter
 
     public function ambito_estatus($query, $search){
         if (is_null($search) || empty($search) || trim($search) === "") {return $query;}
-//            if ((int)$search <> 0){
-//                return $query->where('ue_id', (int)$search );
-//            }
-//        DD($search);
         return $query->where('ue_id',$search );
-
-//        return $query->whereHas('ultimo_estatus', function ($q) use ($search) {
-//            return $q->where('id',$search);
-//        });
-
 
     }
 

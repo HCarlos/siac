@@ -293,7 +293,7 @@ class FuncionesController extends Controller
             'descripcion','search_google_select','centro_colonia','centro_delegacion',
             'uuid','cerrado','firmado',
             'ue_id','due_id','sue_id','fecha_ultimo_estatus',
-            'centro_localidad_id',
+            'centro_localidad_id','ubicacion_solicitud','totalrespuestas_solicitud',
             'dias_atendida','dias_rechazada','dias_observada',
             'servicio_id','estatu_id','fecha_movimiento','telefonoscelularesemails',
             'servicio','estatus','ubicacion_id','ciudadano','curp_ciudadano','dependencia',
