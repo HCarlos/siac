@@ -12,6 +12,7 @@ use App\Filters\Common\QueryFilter;
 use App\Http\Controllers\Funciones\FuncionesController;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class DenunciaAmbitoFilter extends QueryFilter
@@ -83,8 +84,10 @@ class DenunciaAmbitoFilter extends QueryFilter
         $search = trim($search); // Eliminar espacios en blanco innecesarios
         $search = addslashes($search); // Escapar caracteres especiales
 
-        return $query->whereRaw("gd_searchtext @@ plainto_tsquery('spanish', ?)", [$search]
-                    )->orderByRaw("descripcion, referencia, search_google, gd_ubicacion ");
+//        return $query->whereRaw("gd_searchtext @@ plainto_tsquery('spanish', ?)", [$search]
+//                    )->orderByRaw("descripcion, referencia, search_google, gd_ubicacion ");
+
+        return $query->whereRaw("gd_searchtext @@ plainto_tsquery('spanish', ?)", [$search]);
 
     }
 
@@ -128,18 +131,29 @@ class DenunciaAmbitoFilter extends QueryFilter
         return $query->where('id', $search);
     }
 
+//    public function desde($query, $search){
+//        if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
+//        $date = Carbon::createFromFormat('Y-m-d', $search)->toDateString();
+//        $date = $date.' 00:00:00';
+//        return $query->whereDate('fecha_ingreso', '>=', $date);
+//    }
+
     public function desde($query, $search){
-        if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
-        $date = Carbon::createFromFormat('Y-m-d', $search)->toDateString();
-        $date = $date.' 00:00:00';
-        return $query->whereDate('fecha_ingreso', '>=', $date);
+        if (!$search) return $query;
+        $date = Carbon::createFromFormat('Y-m-d', $search)->startOfDay()->toDateTimeString(); // 'YYYY-MM-DD 00:00:00'
+        return $query->where('fecha_ingreso', '>=', $date);
     }
+//    public function hasta($query, $search){
+//        if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
+//        $date = Carbon::createFromFormat('Y-m-d', $search)->toDateString();
+//        $date = $date.' 23:59:59';
+//        return $query->whereDate('fecha_ingreso', '<=', $date);
+//    }
 
     public function hasta($query, $search){
-        if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
-        $date = Carbon::createFromFormat('Y-m-d', $search)->toDateString();
-        $date = $date.' 23:59:59';
-        return $query->whereDate('fecha_ingreso', '<=', $date);
+        if (!$search) return $query;
+        $date = Carbon::createFromFormat('Y-m-d', $search)->endOfDay()->toDateTimeString(); // 'YYYY-MM-DD 23:59:59'
+        return $query->where('fecha_ingreso', '<=', $date);
     }
 
     public function dependencia_id($query, $search){
@@ -214,24 +228,32 @@ class DenunciaAmbitoFilter extends QueryFilter
 //            dd($arrAbrev);
             if (auth()->user()->hasAnyPermission(['buscar_solo_en_su_ámbito'])) {
                 if ($estatu > 0){
-                    if ( is_array($arr) ) return $q->whereIn('dependencia_id',$arr)->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
+//                    if ( is_array($arr) ) return $q->whereIn('dependencia_id',$arr)->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
+                    if ( is_array($arr) ) return $q->whereIn('dependencia_id',$arr)->where('estatu_id', $estatu)->whereBetween('fecha_movimiento', [$date1, $date2]);
                     else {
-                        if ($arr > 0) return $q->where('dependencia_id', $arr)->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
-                        else return $q->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
+//                        if ($arr > 0) return $q->where('dependencia_id', $arr)->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
+//                        else return $q->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
+                        if ($arr > 0) return $q->where('dependencia_id', $arr)->where('estatu_id', $estatu)->whereBetween('fecha_movimiento', [$date1, $date2]);
+                        else return $q->where('estatu_id', $estatu)->whereBetween('fecha_movimiento', [$date1, $date2]);
                     }
                 }
             }else{
                 if ($estatu > 0){
                     if ($depend > 0)
+//                            ->whereDate('fecha_movimiento', '>=', $date1)
+//                        ->whereDate('fecha_movimiento', '<=', $date2);
+
                         return $q
                             ->where('dependencia_id', $depend)
                             ->where('estatu_id', $estatu)
-                            ->whereDate('fecha_movimiento', '>=', $date1)
-                            ->whereDate('fecha_movimiento', '<=', $date2);
-                    else return $q->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
+                            ->whereBetween('fecha_movimiento', [$date1, $date2]);
+//                    else return $q->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
+                    else return $q->where('estatu_id', $estatu)->whereBetween('fecha_movimiento', [$date1, $date2]);
                 }else{
-                    if ($depend > 0) return $q->where('dependencia_id', $depend)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
-                    else return $q->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
+//                    if ($depend > 0) return $q->where('dependencia_id', $depend)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
+//                    else return $q->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
+                    if ($depend > 0) return $q->where('dependencia_id', $depend)->whereBetween('fecha_movimiento', [$date1, $date2]);
+                        else return $q->whereBetween('fecha_movimiento', [$date1, $date2]);
                 }
             }
         });
@@ -284,12 +306,15 @@ class DenunciaAmbitoFilter extends QueryFilter
         if (is_null($search) || empty ($search) || trim($search) == "0") {return $query;}
         $search = explode('|',$search);
         if ($search==true)
-            return $query->has('denuncia_estatus','>',1)->withCount('denuncia_estatus');
+//            return $query->has('denuncia_estatus','>',1)->withCount('denuncia_estatus');
+            return $query->where('totalrespuestas_solicitud','>',1);
+
     }
 
     public function cerrado($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "0") {return $query;}
-        return $query->orWhere('cerrado',settype($search, 'boolean'));
+//        return $query->orWhere('cerrado',settype($search, 'boolean'));
+        return $query->where('cerrado',settype($search, 'boolean'));
     }
 
     public function clave_identificadora($query, $search){
@@ -300,7 +325,8 @@ class DenunciaAmbitoFilter extends QueryFilter
     public function uuid($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "0") {return $query;}
         $search = strtolower(trim($search));
-        return $query->orWhere('uuid',trim($search));
+//        return $query->orWhere('uuid',trim($search));
+        return $query->where('uuid',trim($search));
     }
 
     function IsEnlace(){

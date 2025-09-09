@@ -860,15 +860,34 @@ class DenunciaAmbitoController extends Controller{
             $this->max_item_for_query = session::get('items_for_query');
         }
 
-        $items = _viDepDenServEstatus::query()
+//        $items = _viDepDenServEstatus::query()
+//            ->select(FuncionesController::itemSelectDenuncias())
+//            ->ambitoFilterBy($queryFilters)
+//            ->orderByDesc('id')
+//            ->simplePaginate($this->max_item_for_query);
+//        $items->appends($queryFilters)->fragment('table');
+
+        $select = [
+            'id','ciudadano_id','due_id','sue_id','prioridad_id',
+            'fecha_ingreso','latitud','longitud','codigo_postal_manual',
+            'descripcion','search_google_select','uuid','cerrado',
+            'ue_id','fecha_ultimo_estatus','servicio_id','estatu_id',
+            'ambito_dependencia',
+        ];
+
+        $query = _viDepDenServEstatus::query()
             ->select(FuncionesController::itemSelectDenuncias())
+//            ->with([
+//                'ciudadano_simple:id,nombre,curp',    // solo columnas necesarias de relaciones
+//                'dependencia:id,nombre,ambito_dependencia'
+//            ])
             ->ambitoFilterBy($queryFilters)
-            ->orderByDesc('id')
-            ->paginate($this->max_item_for_query);
+            ->orderByDesc('id');
 
+//        dd( $query->toSql() );
+
+        $items = $query->paginate($this->max_item_for_query); // evita COUNT(*) extra
         $items->appends($queryFilters)->fragment('table');
-
-//        dd("Total : ".$items->count()." registros");
 
         $user = Auth::User();
 
