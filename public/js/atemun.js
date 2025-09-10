@@ -604,6 +604,30 @@ jQuery(function($) {
             })
         });
 
+        function isValidDataImportant(){
+            if ($("#ciu_celulares").val() <= ""){
+                alert("Solicite al menos un número de celular de contacto.");
+                return false;
+            }
+
+            if ($("#servicio_id").val() <= 0){
+                alert("Proporcione un servicio");
+                return false;
+            }
+
+            if ($("#search_google").val() <= 0){
+                alert("Proporcione la calle y el número");
+                return false;
+            }
+
+            if ($("#centro_localidad_id").val() <= 0 && parseInt($("#ambito_dependencia").val()) === 2){
+                alert("Seleccione una Localidad");
+                return false;
+            }
+
+            return true;
+        }
+
 
         $(".searchIdenticalAmbito").on('click',function (event){
             event.preventDefault();
@@ -626,34 +650,30 @@ jQuery(function($) {
 
             var ciudadano_id = $("#usuario_id").val();
 
-            if ($("#ciu_celulares").val() <= ""){
-                alert("Solicite al menos un número de celular de contacto.");
-                return false;
-            }
-
-            if ($("#servicio_id").val() <= 0){
-                alert("Proporcione un servicio");
-                return false;
-            }
-
-            if ($("#search_google").val() <= 0){
-                alert("Proporcione la calle y el número");
-                return false;
-            }
-
-            // if ( $("#search_google").val() ){
-            //     if ($("#search_google").val() === '' && $("#searchGoogleResult").html() === ''){
-            //         alert("Búsque la ubicación del problema");
-            //         return false;
-            //     }
-            // }else{
-            //     alert("Búsque la ubicación del problema");
+            // if ($("#ciu_celulares").val() <= ""){
+            //     alert("Solicite al menos un número de celular de contacto.");
+            //     return false;
             // }
+            //
+            // if ($("#servicio_id").val() <= 0){
+            //     alert("Proporcione un servicio");
+            //     return false;
+            // }
+            //
+            // if ($("#search_google").val() <= 0){
+            //     alert("Proporcione la calle y el número");
+            //     return false;
+            // }
+            //
+            // if ($("#centro_localidad_id").val() <= 0 && parseInt($("#ambito_dependencia").val()) === 2){
+            //     alert("Seleccione una Localidad");
+            //     return false;
+            // }
+            //
 
-            if ($("#centro_localidad_id").val() <= 0 && parseInt($("#ambito_dependencia").val()) === 2){
-                alert("Seleccione una Localidad");
-                return false;
-            }
+
+            if (!isValidDataImportant()) return false;
+
 
             $.ajax({
                 method: "POST",
@@ -739,6 +759,8 @@ jQuery(function($) {
 
             // Si todo es válido, enviar el formulario
             let id = parseInt( $("#id").val() );
+
+            if (!isValidDataImportant()) return false;
 
             if (id > 0){
                 lunchFormData(this)
