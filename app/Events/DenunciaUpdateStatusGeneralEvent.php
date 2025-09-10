@@ -30,6 +30,7 @@ class DenunciaUpdateStatusGeneralEvent  implements ShouldBroadcast{
         $this->denuncia_id = $denuncia_id;
         $this->user_id = $user_id;
         $this->trigger_type = $trigger_type;
+//        dd($denuncia_id.' - '.$user_id.' - '.$trigger_type);
     }
 
     /**
@@ -53,8 +54,10 @@ class DenunciaUpdateStatusGeneralEvent  implements ShouldBroadcast{
      */
     public function broadcastWith(): array{
 
-        $vid = new VistaDenunciaClass();
-        $vid->vistaDenuncia($this->denuncia_id);
+//        dd($this->denuncia_id);
+
+//        $vid = new VistaDenunciaClass();
+//        $vid->vistaDenuncia($this->denuncia_id);
 
         $this->status = 200;
         $fecha = Carbon::now()->format('d-m-Y H:i:s');

@@ -162,17 +162,26 @@ class DenunciaAmbitoFilter extends QueryFilter
                 return $query;
             }
         }
+//        dd("aqui 0");
         if ( !is_array($search) ){
             if ((int)$search === 0){
                 $search = Auth::user()->DependenciaIdArray;
             }
         }
+//        dd("aqui 1");
 
         if ( is_array($search) ){
-            return $query->whereIn('due_id', $search);
+//        dd("aqui ",$search);
+            $rtn =  $query->whereIn('due_id', $search);
+//            dd($rtn);
         }else{
+//        dd("aqui 2n");
             return $query->where('due_id', (int)$search);
         }
+
+//        dd("aqui 2");
+
+
     }
 
     public function prioridad_id($query, $search){

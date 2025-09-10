@@ -99,8 +99,8 @@ class DenunciaUpdateStatusGeneralAmbitoEvent  implements ShouldBroadcast{
         $den = Denuncia::find($this->denuncia_id);
         $this->status_old = $den->estatus_id;
 
-        $vid = new VistaDenunciaClass();
-        $vid->vistaDenuncia($this->denuncia_id);
+//        $vid = new VistaDenunciaClass();
+//        $vid->vistaDenuncia($this->denuncia_id);
 
         $this->status = 200;
         $fecha = Carbon::now()->format('d-m-Y H:i:s');

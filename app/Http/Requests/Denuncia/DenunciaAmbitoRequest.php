@@ -5,6 +5,7 @@
 
 namespace App\Http\Requests\Denuncia;
 
+use App\Classes\Denuncia\VistaDenunciaClass;
 use App\Classes\MessageAlertClass;
 use App\Events\DenunciaUpdateStatusGeneralAmbitoEvent;
 use App\Events\DenunciaUpdateStatusGeneralEvent;
@@ -178,6 +179,9 @@ class DenunciaAmbitoRequest extends FormRequest
         if ((int)$this->id === 0) {
             $item = Denuncia::create($Item);
             $this->attaches($item, null, null);
+
+            $vid = new VistaDenunciaClass();
+            $vid->vistaDenuncia($item->id);
             event(new DenunciaUpdateStatusGeneralEvent($item->id,$user_id,$trigger_type));
         } else {
             $item = Denuncia::find($this->id);
@@ -188,6 +192,9 @@ class DenunciaAmbitoRequest extends FormRequest
 //                dd("Item ".$Item);
                 $this->attaches($item, $item_viejito, $Item);
                 $trigger_type = 1;
+
+                $vid = new VistaDenunciaClass();
+                $vid->vistaDenuncia($item->id);
                 event(new DenunciaUpdateStatusGeneralEvent($item->id,$user_id,$trigger_type));
             }
         }

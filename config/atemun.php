@@ -82,6 +82,7 @@ return [
     'public_url'                 => env('PUBLIC_URL','http://localhost'),
     'pagina_web_id'              => 4,
     'estatus_default_servicios_municipales' => env('ESTATUS_DEFAULT_SERVICIOS_MUNICIPALES'),
+    'laravel_echo_port'          => env('LARAVEL_ECHO_PORT'),
 
     // -----------------------------------------------------------
     // La mayor parte de los Tablas estan configuradas aquí,

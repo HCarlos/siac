@@ -5,6 +5,7 @@
 
 namespace App\Http\Requests\Denuncia;
 
+use App\Classes\Denuncia\VistaDenunciaClass;
 use App\Classes\MessageAlertClass;
 use App\Classes\NotificationsMobile\SendNotificationFCM;
 use App\Events\ChangeStatusEvent;
@@ -139,6 +140,9 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
     function sendInfo($item){
 
         $this->saveImage($item);
+
+        $vid = new VistaDenunciaClass();
+        $vid->vistaDenuncia($this->denuncia_id);
 
         event(new DenunciaUpdateStatusGeneralAmbitoEvent($this->denuncia_id,Auth::user()->id,3));
 

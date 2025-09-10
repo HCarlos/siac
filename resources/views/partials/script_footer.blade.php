@@ -19,7 +19,8 @@
 <script src="{{asset('js/jquery.toast.min.js')}}"></script>
 
 <script>
-    window.laravel_echo_port='{{env("LARAVEL_ECHO_PORT")}}';
+
+    window.laravel_echo_port='{{ config("atemun.laravel_echo_port") }}';
 
     @auth()
     @if(\Illuminate\Support\Facades\Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_ADMIN'))

@@ -82,8 +82,10 @@ class DenunciaAmbitoController extends Controller{
                 ->GetDenunciasAmbitoItemCustomFilter($filters)
                 ->orderByDesc('id')
                 ->paginate($this->max_item_for_query);
+//            dd( $items->toSql() );
             $items->appends($search)->fragment('table');
         }
+
 
 
         $request->session()->put('items', $items);
