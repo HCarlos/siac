@@ -111,7 +111,7 @@ class DenunciaAPIRequest extends FormRequest{
                 'serviciomobile_id' => $Ser->id,
                 'dependencia_id'    => $Ser->dependencia_id,
                 'servicio_id'       => $Ser->servicio_id,
-                'estatus_id'        => env('ESTATUS_DEFAULT_SERVICIOS_MUNICIPALES') ,
+                'estatus_id'        => config('atemun.estatus_default_servicios_municipales'),
                 'ubicacion_id'      => $Ubi->id,
                 'ubicacion'         => strtoupper(trim($Ubi->Ubicacion ?? $this->ubicacion_google)),
                 'ubicacion_google'  => strtoupper(trim($this->ubicacion_google)),

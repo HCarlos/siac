@@ -97,7 +97,7 @@ class DenunciaAmbitoRequest extends FormRequest
 
             $IsObs = isset($this->observaciones) ? strtoupper(trim($this->observaciones)) : "SE RECIBE LA SOLICITUD";
             $this->observaciones = $IsObs;
-            $isEstatus = isset($this->estatus_id) ? (int) $this->estatus_id : env('ESTATUS_DEFAULT_SERVICIOS_MUNICIPALES');
+            $isEstatus = isset($this->estatus_id) ? (int) $this->estatus_id : config('atemun.estatus_default_servicios_municipales');
             $this->estatus_id = $isEstatus;
             $isHashTag = isset($this->clave_identificadora) ? strtoupper($this->clave_identificadora) : '';
             $this->clave_identificadora = $isHashTag;
@@ -144,6 +144,8 @@ class DenunciaAmbitoRequest extends FormRequest
                 'ambito'                       => $this->ambito ?? 0,
                 'centro_localidad_id'          => $this->centro_localidad_id ?? null,
             ];
+
+//            dd($Item);
 
 
             if (Auth::user()->isRole('Administrator|SysOp')){
