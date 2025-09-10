@@ -17,29 +17,12 @@ class VistaDenunciaClass{
 
         $den = Denuncia::findOrFail($denuncia_id);
 
-//        dd($den);
-
         if ($den) {
 
-//                ->select('id','denuncia_id','dependencia_id','servicio_id','estatu_id')
             $dens = Denuncia_Dependencia_Servicio::query()
                 ->where('denuncia_id', $denuncia_id)
                 ->orderBy('id')
                 ->get();
-
-//            dd(count($dens));
-
-//            $arr = [];
-//            foreach ($dens as $d1) {
-//                $val = $d1->denuncia_id.'|'.$d1->dependencia_id.'|'.$d1->servicio_id.'|'.$d1->estatu_id;
-//                if (!in_array($val, $arr, true)){
-//                    $arr[] = $val;
-//                }
-//            }
-
-//            if (count($arr) > 0) {
-
-//            dd( $dens );
 
             if (count($dens) > 0) {
                 $estatus_general = [];
@@ -51,15 +34,6 @@ class VistaDenunciaClass{
                 $ue_id = 0;
 
                 foreach ($dens as $dds) {
-//                    $d1 = explode('|', $valor);
-//                    $dds = Denuncia_Dependencia_Servicio::query()
-//                        ->where('denuncia_id', (int)$d1[0])
-//                        ->where('dependencia_id', (int)$d1[1])
-//                        ->where('servicio_id', (int)$d1[2])
-//                        ->where('estatu_id', (int)$d1[3])
-//                        ->orderByDesc('id')
-//                        ->first();
-//                    $dds = Denuncia_Dependencia_Servicio::find($valor->id);
 
                     if ($dds) {
                         $abrev = $dds->dependencia->abreviatura;

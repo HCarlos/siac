@@ -5,6 +5,7 @@
 
 namespace App\Http\Requests\Denuncia;
 
+use App\Classes\Denuncia\VistaDenunciaClass;
 use App\Classes\MessageAlertClass;
 use App\Events\DenunciaUpdateStatusGeneralEvent;
 use App\Events\IUQDenunciaEvent;
@@ -216,6 +217,8 @@ class DenunciaRequest extends FormRequest
                 ->get();
             if ($Obj->count() <= 0 ) {
                 $Objx = $Item->dependencias()->attach($this->dependencia_id, ['servicio_id' => $this->servicio_id, 'estatu_id' => $this->estatus_id, 'favorable' => false, 'fecha_movimiento' => now(), 'creadopor_id' => $user_id]);
+                $vid = new VistaDenunciaClass();
+                $vid->vistaDenuncia($Item->id);
                 event(new DenunciaUpdateStatusGeneralEvent($Item->id,$user_id,$trigger_type));
             }
 
@@ -311,6 +314,8 @@ class DenunciaRequest extends FormRequest
         $Item->creadospor()->detach($this->creadopor_id);
 //        $Item->modificadospor()->detach($this->modificadopor_id);
 
+        $vid = new VistaDenunciaClass();
+        $vid->vistaDenuncia($Item->id);
         event(new DenunciaUpdateStatusGeneralEvent($Item->id,$user_id,$trigger_type));
 
         return $Item;
