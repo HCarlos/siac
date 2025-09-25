@@ -91,20 +91,23 @@ class ListDenunciaAmbitoXLSXController extends Controller{
     // Denuncia General Formato 01
     public function denunciaGeneral01($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
 
-        $sh->setCellValue('w1', Carbon::now()->format('d-m-Y h:i:s'));
+        $sh->setCellValue('z1', Carbon::now()->format('d-m-Y h:i:s'));
         if ($Items->count() > 0) {
 
             foreach ($Items as $item) {
                 $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
                 $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
 
-                $Colonia = "";
+                $Colonia    = "";
                 $Delegacion = "";
+                $Delegado   = "";
                 $CenLoc = $item->centro_localidad_id;
                 if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0) {
                     $Loc = CentroLocalidad::find($CenLoc);
                     $Colonia = $Loc->ItemColonia();
                     $Delegacion = $Loc->ItemDelegacion();
+                    $Delegado = $Loc->delegado->full_name;
+//                    dd($Delegado);
                 }
 
                 $resp = Denuncia_Dependencia_Servicio::query()
@@ -176,26 +179,27 @@ class ListDenunciaAmbitoXLSXController extends Controller{
                         ->setCellValue('F' . $C, strtoupper(trim($item->search_google)) ?? '')
                         ->setCellValue('G' . $C, $Colonia ?? '')
                         ->setCellValue('H' . $C, $Delegacion ?? '')
-                        ->setCellValue('I' . $C, $cadcel ?? '')
-                        ->setCellValue('J' . $C, $fechaIngreso ?? '')
-                        ->setCellValue('K' . $C, $item->dependencia ?? '')
-                        ->setCellValue('L' . $C, $item->servicio ?? '')
-                        ->setCellValue('M' . $C, $item->descripcion ?? '')
-                        ->setCellValue('N' . $C, $item->prioridad->prioridad ?? '')
-                        ->setCellValue('O' . $C, $item->origen->origen ?? '')
-                        ->setCellValue('P' . $C, $item->estatus ?? '')
-                        ->setCellValue('Q' . $C, Carbon::parse($item->fecha_movimiento)->format('d-m-Y') ?? '')
-                        ->setCellValue('R' . $C, $item->observaciones)
-                        ->setCellValue('S' . $C, $this->getColorSemaforo($item)['status'])
-                        ->setCellValue('T' . $C, $item->dias_atendida ?? '')
-                        ->setCellValue('U' . $C, $item->dias_rechazada ?? '')
-                        ->setCellValue('V' . $C, $atendidas)
-                        ->setCellValue('W' . $C, $rechazadas)
-                        ->setCellValue('X' . $C, $pendientes)
-                        ->setCellValue('Y' . $C, $observadas);
+                        ->setCellValue('I' . $C, $Delegado ?? '')
+                        ->setCellValue('J' . $C, $cadcel ?? '')
+                        ->setCellValue('K' . $C, $fechaIngreso ?? '')
+                        ->setCellValue('L' . $C, $item->dependencia ?? '')
+                        ->setCellValue('M' . $C, $item->servicio ?? '')
+                        ->setCellValue('N' . $C, $item->descripcion ?? '')
+                        ->setCellValue('O' . $C, $item->prioridad->prioridad ?? '')
+                        ->setCellValue('P' . $C, $item->origen->origen ?? '')
+                        ->setCellValue('Q' . $C, $item->estatus ?? '')
+                        ->setCellValue('R' . $C, Carbon::parse($item->fecha_movimiento)->format('d-m-Y') ?? '')
+                        ->setCellValue('S' . $C, $item->observaciones)
+                        ->setCellValue('T' . $C, $this->getColorSemaforo($item)['status'])
+                        ->setCellValue('U' . $C, $item->dias_atendida ?? '')
+                        ->setCellValue('V' . $C, $item->dias_rechazada ?? '')
+                        ->setCellValue('W' . $C, $atendidas)
+                        ->setCellValue('X' . $C, $rechazadas)
+                        ->setCellValue('Y' . $C, $pendientes)
+                        ->setCellValue('Z' . $C, $observadas);
 
                     $sh
-                        ->getStyle('A' . $C . ':Y' . $C)
+                        ->getStyle('A' . $C . ':Z' . $C)
                         ->getFill()
                         ->applyFromArray([
                             'fillType' => 'solid',
