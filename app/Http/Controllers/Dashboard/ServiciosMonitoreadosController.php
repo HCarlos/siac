@@ -339,6 +339,7 @@ class ServiciosMonitoreadosController extends Controller{
                         $Colonia_Id = $Loc->colonia_id;
                         $Colonia = $Loc->ItemColonia();
                         $Delegacion_Id = $Loc->delegacion_id;
+                        $Delegado = $Loc->delegado->full_name;
                         $Delegacion = $Loc->ItemDelegacion();
                         $ColDel = $Loc->ItemColoniaDelegacion();
                         $ColDelId = $Loc->id;
@@ -371,6 +372,7 @@ class ServiciosMonitoreadosController extends Controller{
                         "colonia" => $Colonia,
                         "delegacion_id" => $Delegacion_Id,
                         "delegacion" => $Delegacion,
+                        "delegado" => $Delegado,
                         "colonia_delegacion" => $ColDel,
                         "colonia_delegacion_id" => $ColDelId
                     ];

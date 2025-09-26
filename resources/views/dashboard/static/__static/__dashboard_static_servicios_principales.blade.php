@@ -751,6 +751,7 @@
             },
             uuid: geo.uuid,
             colonia_delegacion: geo.colonia_delegacion,
+            delegado: geo.delegado,
             colonia_delegacion_id: geo.colonia_delegacion_id
         };
     }

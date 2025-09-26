@@ -428,17 +428,20 @@ class ListDenunciaAmbitoXLSXController extends Controller{
 
     public function denunciaGeneralMap02($C, $C0, $sh, $Items, $arrFE, $spreadsheet, $archivo, $extension){
 
-        $sh->setCellValue('w1', Carbon::now()->format('d-m-Y h:i:s'));
+        $sh->setCellValue('z1', Carbon::now()->format('d-m-Y h:i:s'));
 
         if ($Items->count() > 0) {
 
             foreach ($Items as $item) {
+
+//                dd($item);
 
                 $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
                 $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
 
                 $Colonia = $item->centro_colonia ?? ''; // $item->centroLocalidad->ItemColonia() ?? '';
                 $Delegacion = $item->centro_delegacion ?? '';
+                $Delegado = $item->delegado ?? '';
 
                 $estados = [
                     'atendidas' => [17, 21],
@@ -463,24 +466,26 @@ class ListDenunciaAmbitoXLSXController extends Controller{
                     ->setCellValue('F' . $C, strtoupper(trim($item->search_google)) ?? '')
                     ->setCellValue('G' . $C, $Colonia ?? '')
                     ->setCellValue('H' . $C, $Delegacion ?? '')
-                    ->setCellValue('I' . $C, $item->telefonos_ciudadano ?? '')
-                    ->setCellValue('J' . $C, $fechaIngreso ?? '')
-                    ->setCellValue('K' . $C, $item->dependencia ?? '')
-                    ->setCellValue('L' . $C, $item->servicio ?? '')
-                    ->setCellValue('M' . $C, $item->descripcion ?? '')
-                    ->setCellValue('N' . $C, $item->prioridad ?? '')
-                    ->setCellValue('O' . $C, $item->origen ?? '')
-                    ->setCellValue('P' . $C, $item->estatus ?? '')
-                    ->setCellValue('Q' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y') ?? '')
-                    ->setCellValue('R' . $C, $item->observaciones ?? '')
-                    ->setCellValue('S' . $C, $sem['status'])
-                    ->setCellValue('T' . $C, $item->dias_atendida ?? '')
-                    ->setCellValue('U' . $C, $item->dias_rechazada ?? '')
-                    ->setCellValue('V' . $C, $atendidas)
-                    ->setCellValue('W' . $C, $rechazadas)
-                    ->setCellValue('X' . $C, $pendientes)
-                    ->setCellValue('Y' . $C, $observadas)
-                    ->getStyle('A' . $C . ':Y' . $C)
+                    ->setCellValue('I' . $C, $Delegado?? '')
+
+                    ->setCellValue('J' . $C, $item->telefonos_ciudadano ?? '')
+                    ->setCellValue('K' . $C, $fechaIngreso ?? '')
+                    ->setCellValue('L' . $C, $item->dependencia ?? '')
+                    ->setCellValue('M' . $C, $item->servicio ?? '')
+                    ->setCellValue('N' . $C, $item->descripcion ?? '')
+                    ->setCellValue('O' . $C, $item->prioridad ?? '')
+                    ->setCellValue('P' . $C, $item->origen ?? '')
+                    ->setCellValue('Q' . $C, $item->estatus ?? '')
+                    ->setCellValue('R' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y') ?? '')
+                    ->setCellValue('S' . $C, $item->observaciones ?? '')
+                    ->setCellValue('T' . $C, $sem['status'])
+                    ->setCellValue('U' . $C, $item->dias_atendida ?? '')
+                    ->setCellValue('V' . $C, $item->dias_rechazada ?? '')
+                    ->setCellValue('W' . $C, $atendidas)
+                    ->setCellValue('X' . $C, $rechazadas)
+                    ->setCellValue('Y' . $C, $pendientes)
+                    ->setCellValue('Z' . $C, $observadas)
+                    ->getStyle('A' . $C . ':Z' . $C)
                     ->getFill()
                     ->applyFromArray([
                         'fillType' => 'solid',
@@ -639,7 +644,7 @@ class ListDenunciaAmbitoXLSXController extends Controller{
         $items = _viMovSM::select(
                 'id','denuncia_id','descripcion','fecha_dias_ejecucion','fecha_dias_maximos_ejecucion',
                 'fecha_ingreso', 'fecha_ultimo_estatus', 'dependencia_id', 'dependencia', 'abreviatura',
-                'ue_id', 'sue_id', 'servicio', 'ciudadano','centro_colonia','centro_delegacion', 'latitud','longitud',
+                'ue_id', 'sue_id', 'servicio', 'ciudadano','centro_colonia','centro_delegacion','delegado', 'latitud','longitud',
                 'estatus','fecha_ultimo_estatus','fecha_ingreso','fecha_dias_ejecucion', 'fecha_dias_maximos_ejecucion',
                 'uuid','fecha_movimiento','estatu_id', 'prioridad', 'origen','ambito_sas',
                 'username_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano','telefonos_ciudadano',
