@@ -95,19 +95,28 @@ class ListDenunciaAmbitoXLSXController extends Controller{
         if ($Items->count() > 0) {
 
             foreach ($Items as $item) {
+
+//                dd($item);
+
                 $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
                 $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
 
                 $Colonia    = "";
                 $Delegacion = "";
                 $Delegado   = "";
+                $Ciudadano   = "";
                 $CenLoc = $item->centro_localidad_id;
                 if ($CenLoc != null || $CenLoc != "" || $CenLoc != 0) {
-                    $Loc = CentroLocalidad::find($CenLoc);
-                    $Colonia = $Loc->ItemColonia();
-                    $Delegacion = $Loc->ItemDelegacion();
-                    $Delegado = $Loc->delegado->full_name;
-//                    dd($Delegado);
+//                    $Loc = CentroLocalidad::find($CenLoc);
+//                    $Colonia = $Loc->ItemColonia();
+//                    $Delegacion = $Loc->ItemDelegacion();
+
+                    $Colonia = $item->centro_colonia;
+                    $Delegacion = $item->centro_delegacion;
+
+                    $Delegado = $item->delegado ?? '';
+                    $Ciudadano = $item->ciudadano ?? '';
+
                 }
 
                 $resp = Denuncia_Dependencia_Servicio::query()
@@ -179,7 +188,7 @@ class ListDenunciaAmbitoXLSXController extends Controller{
                         ->setCellValue('F' . $C, strtoupper(trim($item->search_google)) ?? '')
                         ->setCellValue('G' . $C, $Colonia ?? '')
                         ->setCellValue('H' . $C, $Delegacion ?? '')
-                        ->setCellValue('I' . $C, $Delegado ?? '')
+                        ->setCellValue('I' . $C, $Ciudadano == $Delegado ? 'Es el delegado' : '')
                         ->setCellValue('J' . $C, $cadcel ?? '')
                         ->setCellValue('K' . $C, $fechaIngreso ?? '')
                         ->setCellValue('L' . $C, $item->dependencia ?? '')
@@ -442,6 +451,7 @@ class ListDenunciaAmbitoXLSXController extends Controller{
                 $Colonia = $item->centro_colonia ?? ''; // $item->centroLocalidad->ItemColonia() ?? '';
                 $Delegacion = $item->centro_delegacion ?? '';
                 $Delegado = $item->delegado ?? '';
+                $Ciudadano = $item->ciudadano ?? '';
 
                 $estados = [
                     'atendidas' => [17, 21],
@@ -456,6 +466,7 @@ class ListDenunciaAmbitoXLSXController extends Controller{
 
 
                 $sem = $this->getColorSemaforo($item);
+//                $ciudadano = $item->ap_paterno_ciudadano." ".$item->ap_materno_ciudadano." ".$item->ap_nombre_ciudadano;
 
                 $sh
                     ->setCellValue('A' . $C, $item->denuncia_id ?? 0)
@@ -466,7 +477,7 @@ class ListDenunciaAmbitoXLSXController extends Controller{
                     ->setCellValue('F' . $C, strtoupper(trim($item->search_google)) ?? '')
                     ->setCellValue('G' . $C, $Colonia ?? '')
                     ->setCellValue('H' . $C, $Delegacion ?? '')
-                    ->setCellValue('I' . $C, $Delegado?? '')
+                    ->setCellValue('I' . $C, $Ciudadano == $Delegado ? "Es el delegado" : '')
 
                     ->setCellValue('J' . $C, $item->telefonos_ciudadano ?? '')
                     ->setCellValue('K' . $C, $fechaIngreso ?? '')
@@ -676,7 +687,7 @@ class ListDenunciaAmbitoXLSXController extends Controller{
         $items = _viMovSM::select(
                 'id','denuncia_id','descripcion','fecha_dias_ejecucion','fecha_dias_maximos_ejecucion',
                 'fecha_ingreso', 'fecha_ultimo_estatus', 'dependencia_id', 'dependencia', 'abreviatura',
-                'ue_id', 'sue_id', 'servicio', 'ciudadano', 'centro_colonia','centro_delegacion', 'latitud','longitud',
+                'ue_id', 'sue_id', 'servicio', 'ciudadano', 'centro_colonia','centro_delegacion','delegado', 'latitud','longitud',
                 'estatus','fecha_ultimo_estatus','fecha_ingreso','fecha_dias_ejecucion', 'fecha_dias_maximos_ejecucion',
                 'uuid','fecha_movimiento','estatu_id', 'prioridad', 'origen','ambito_sas',
                 'username_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano','telefonos_ciudadano',
@@ -704,7 +715,7 @@ class ListDenunciaAmbitoXLSXController extends Controller{
         $items = _viMovSASSM::select(
             'id','denuncia_id','descripcion','fecha_dias_ejecucion','fecha_dias_maximos_ejecucion',
             'fecha_ingreso', 'fecha_ultimo_estatus', 'dependencia_id', 'dependencia', 'abreviatura',
-            'ue_id', 'sue_id', 'servicio', 'ciudadano','centro_colonia','centro_delegacion', 'latitud','longitud',
+            'ue_id', 'sue_id', 'servicio', 'ciudadano','centro_colonia','centro_delegacion','delegado', 'latitud','longitud',
             'estatus','fecha_ultimo_estatus','fecha_ingreso','fecha_dias_ejecucion', 'fecha_dias_maximos_ejecucion',
             'uuid','fecha_movimiento','estatu_id', 'prioridad', 'origen','ambito_sas',
             'username_ciudadano','ap_paterno_ciudadano','ap_materno_ciudadano','nombre_ciudadano','telefonos_ciudadano',
