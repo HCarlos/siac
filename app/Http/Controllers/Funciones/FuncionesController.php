@@ -291,7 +291,7 @@ class FuncionesController extends Controller
         return ['id','ciudadano_id','dependencia_id','origen_id','prioridad_id','creadopor_id','ubicacion_id',
             'fecha_ingreso', 'latitud','longitud','gd_ubicacion','search_google','ambito','codigo_postal_manual',
             'descripcion','search_google_select','centro_colonia','centro_delegacion','delegado',
-            'uuid','cerrado','firmado',
+            'uuid','cerrado','firmado','usuario_ultimo_estatus','creadopor_id_ue',
             'ue_id','due_id','sue_id','fecha_ultimo_estatus',
             'centro_localidad_id','ubicacion_solicitud','totalrespuestas_solicitud',
             'dias_atendida','dias_rechazada','dias_observada',

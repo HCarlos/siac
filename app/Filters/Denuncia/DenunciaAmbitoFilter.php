@@ -48,6 +48,7 @@ class DenunciaAmbitoFilter extends QueryFilter
             'latitud'                => '',
             'longitud'               => '',
             'solicitudesLocales'     => '',
+            'creadopor_id_ue'        => '',
         ];
     }
 
@@ -56,18 +57,9 @@ class DenunciaAmbitoFilter extends QueryFilter
         return $query->where('status_denuncia', (int)$search);
     }
 
-//    public function ambito_dependencia($query, $search){
-//        if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
-//        return $query->whereHas('dependencia', function ($q) use ($search) {
-//            return $q->where('ambito_dependencia',(int)$search);
-//        });
-//    }
-//
     public function ambito_dependencia($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
-//        return $query->whereHas('dependencia', function ($q) use ($search) {
             return $query->where('ambito_dependencia',(int)$search);
-//        });
     }
 
 
@@ -81,11 +73,8 @@ class DenunciaAmbitoFilter extends QueryFilter
     public function search($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
 
-        $search = trim($search); // Eliminar espacios en blanco innecesarios
-        $search = addslashes($search); // Escapar caracteres especiales
-
-//        return $query->whereRaw("gd_searchtext @@ plainto_tsquery('spanish', ?)", [$search]
-//                    )->orderByRaw("descripcion, referencia, search_google, gd_ubicacion ");
+        $search = trim($search);
+        $search = addslashes($search);
 
         return $query->whereRaw("gd_searchtext @@ plainto_tsquery('spanish', ?)", [$search]);
 
@@ -94,8 +83,8 @@ class DenunciaAmbitoFilter extends QueryFilter
     public function search_google($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
 
-        $search = trim($search); // Eliminar espacios en blanco innecesarios
-        $search = addslashes($search); // Escapar caracteres especiales
+        $search = trim($search);
+        $search = addslashes($search);
 
         return $query->whereRaw("calle_y_numero_searchtext @@ plainto_tsquery('spanish', ?)", [$search]
         )->orderByRaw("search_google");
@@ -107,12 +96,6 @@ class DenunciaAmbitoFilter extends QueryFilter
         $search = strtoupper($search);
 
         return $query->where("curp_ciudadano",strtoupper(trim($search)));
-
-//        return $query->whereHas('ciudadano_simple', function ($q) use ($search) {
-//           return $q->where("curp",strtoupper(trim($search)));
-//        });
-
-
 
      }
 
@@ -131,24 +114,11 @@ class DenunciaAmbitoFilter extends QueryFilter
         return $query->where('id', $search);
     }
 
-//    public function desde($query, $search){
-//        if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
-//        $date = Carbon::createFromFormat('Y-m-d', $search)->toDateString();
-//        $date = $date.' 00:00:00';
-//        return $query->whereDate('fecha_ingreso', '>=', $date);
-//    }
-
     public function desde($query, $search){
         if (!$search) return $query;
         $date = Carbon::createFromFormat('Y-m-d', $search)->startOfDay()->toDateTimeString(); // 'YYYY-MM-DD 00:00:00'
         return $query->where('fecha_ingreso', '>=', $date);
     }
-//    public function hasta($query, $search){
-//        if (is_null($search) || empty ($search) || trim($search) == "") {return $query;}
-//        $date = Carbon::createFromFormat('Y-m-d', $search)->toDateString();
-//        $date = $date.' 23:59:59';
-//        return $query->whereDate('fecha_ingreso', '<=', $date);
-//    }
 
     public function hasta($query, $search){
         if (!$search) return $query;
@@ -162,24 +132,17 @@ class DenunciaAmbitoFilter extends QueryFilter
                 return $query;
             }
         }
-//        dd("aqui 0");
         if ( !is_array($search) ){
             if ((int)$search === 0){
                 $search = Auth::user()->DependenciaIdArray;
             }
         }
-//        dd("aqui 1");
 
         if ( is_array($search) ){
-//        dd("aqui ",$search);
             $rtn =  $query->whereIn('due_id', $search);
-//            dd($rtn);
         }else{
-//        dd("aqui 2n");
             return $query->where('due_id', (int)$search);
         }
-
-//        dd("aqui 2");
 
 
     }
@@ -218,8 +181,6 @@ class DenunciaAmbitoFilter extends QueryFilter
     public function fecha_movimiento($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "0") {return $query;}
 
-//        dd($search);
-
             $cad = explode('|',$search);
 
             $fdesde = $cad[0];
@@ -234,14 +195,10 @@ class DenunciaAmbitoFilter extends QueryFilter
         return $query->whereHas('ultimo_estatu_denuncia_dependencia_servicio', function ($q) use ($search, $date1, $date2, $estatu, $depend) {
             $arr      = Auth::user()->DependenciaIdArray;
             $arrAbrev = Auth::user()->DependenciaAbreviaturaArray;
-//            dd($arrAbrev);
             if (auth()->user()->hasAnyPermission(['buscar_solo_en_su_ámbito'])) {
                 if ($estatu > 0){
-//                    if ( is_array($arr) ) return $q->whereIn('dependencia_id',$arr)->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
                     if ( is_array($arr) ) return $q->whereIn('dependencia_id',$arr)->where('estatu_id', $estatu)->whereBetween('fecha_movimiento', [$date1, $date2]);
                     else {
-//                        if ($arr > 0) return $q->where('dependencia_id', $arr)->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
-//                        else return $q->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
                         if ($arr > 0) return $q->where('dependencia_id', $arr)->where('estatu_id', $estatu)->whereBetween('fecha_movimiento', [$date1, $date2]);
                         else return $q->where('estatu_id', $estatu)->whereBetween('fecha_movimiento', [$date1, $date2]);
                     }
@@ -249,18 +206,13 @@ class DenunciaAmbitoFilter extends QueryFilter
             }else{
                 if ($estatu > 0){
                     if ($depend > 0)
-//                            ->whereDate('fecha_movimiento', '>=', $date1)
-//                        ->whereDate('fecha_movimiento', '<=', $date2);
 
                         return $q
                             ->where('dependencia_id', $depend)
                             ->where('estatu_id', $estatu)
                             ->whereBetween('fecha_movimiento', [$date1, $date2]);
-//                    else return $q->where('estatu_id', $estatu)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
                     else return $q->where('estatu_id', $estatu)->whereBetween('fecha_movimiento', [$date1, $date2]);
                 }else{
-//                    if ($depend > 0) return $q->where('dependencia_id', $depend)->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
-//                    else return $q->whereDate('fecha_movimiento', '>=', $date1)->whereDate('fecha_movimiento', '<=', $date2);
                     if ($depend > 0) return $q->where('dependencia_id', $depend)->whereBetween('fecha_movimiento', [$date1, $date2]);
                         else return $q->whereBetween('fecha_movimiento', [$date1, $date2]);
                 }
@@ -279,9 +231,12 @@ class DenunciaAmbitoFilter extends QueryFilter
         return $query->where('ciudadano_id', $search);
     }
 
-    public function creadopor_id($query, $search){
-//        if (is_null($search) || empty ($search) || trim($search) === "0") {return $query;}
+    public function creadopor_id_ue($query, $search){
+        if (is_null($search) || empty ($search) || trim($search) == "0") {return $query;}
+        return $query->where('creadopor_id_ue', $search);
+    }
 
+    public function creadopor_id($query, $search){
         if (is_null($search) || empty($search) || (isset($search) == false)) {
             return $query;
         }
@@ -305,9 +260,7 @@ class DenunciaAmbitoFilter extends QueryFilter
     public function dependencia($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "0") {return $query;}
         $search = explode('|',$search);
-//        return $query->orWhereHas('dependencia', function ($q) use ($search) {
             return $query->whereIn('dependencia',$search);
-//        });
 
     }
 
@@ -315,14 +268,12 @@ class DenunciaAmbitoFilter extends QueryFilter
         if (is_null($search) || empty ($search) || trim($search) == "0") {return $query;}
         $search = explode('|',$search);
         if ($search==true)
-//            return $query->has('denuncia_estatus','>',1)->withCount('denuncia_estatus');
             return $query->where('totalrespuestas_solicitud','>',1);
 
     }
 
     public function cerrado($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "0") {return $query;}
-//        return $query->orWhere('cerrado',settype($search, 'boolean'));
         return $query->where('cerrado',settype($search, 'boolean'));
     }
 
@@ -334,7 +285,6 @@ class DenunciaAmbitoFilter extends QueryFilter
     public function uuid($query, $search){
         if (is_null($search) || empty ($search) || trim($search) == "0") {return $query;}
         $search = strtolower(trim($search));
-//        return $query->orWhere('uuid',trim($search));
         return $query->where('uuid',trim($search));
     }
 

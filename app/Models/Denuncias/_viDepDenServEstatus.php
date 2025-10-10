@@ -42,7 +42,7 @@ class _viDepDenServEstatus extends Model{
         'denuncia','referencia', 'status_denuncia','prioridad_id','prioridad','origen','observaciones','genero','genero_ciudadano',
         'cerrado','origen_id','ciudadano_id','ultimo_estatus','firmado','latitud','longitud','search_google',
         'clave_identificadora','estatus_general','ambito','ambito_sas','due_id','sue_id','ue_id','centro_localidad_id',
-        'calle_y_numero_searchtext',
+        'calle_y_numero_searchtext','creadopor_id_ue',
         'ubicacion_id',
     ];
 

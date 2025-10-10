@@ -28,6 +28,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -35,12 +36,12 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;
     use SoftDeletes, Notifiable;
-    use HasRoles;
+    use HasRoles, HasPermissions;
     use UserImport, UserAttributes;
 
     protected $guard_name = 'web';
     protected $table = 'users';
-    
+
 //    protected $appends = [
 //        'full_name','full_name_with_username','path_image_profile','path_image_thumb_profile',
 //        'path_image_p_n_g_profile'

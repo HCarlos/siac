@@ -22,7 +22,7 @@ class FiltersRules
             ['ambito_estatus','ambito_dependencia','curp','ciudadano','id','desde','hasta','prioridad_id','dependencia_id',
                 'servicio_id','estatus_id','creadopor_id','incluirFecha','conRespuesta','clave_identificadora','uuid',
                 'incluirFechaMovto','origen_id','ciudadano_id','centro_localidad_id',
-                'solicitudesLocales','latitud','longitud'
+                'solicitudesLocales','latitud','longitud','creadopor_id_ue'
             ]);
         $data['status_denuncia']      = 1;
         $data['ambito_dependencia']   = $data['ambito_dependencia']   == null ? "" : $data['ambito_dependencia'];
@@ -38,6 +38,7 @@ class FiltersRules
         $data['clave_identificadora'] = $data['clave_identificadora'] == null ? "" : $data['clave_identificadora'];
         $data['uuid']                 = $data['uuid']                 == null ? "" : $data['uuid'];
         $data['ciudadano_id']         = $data['ciudadano_id']         == null ? "" : $data['ciudadano_id'];
+        $data['creadopor_id_ue']      = $data['creadopor_id_ue']      == null ? "" : $data['creadopor_id_ue'];
         $data['centro_localidad_id']  = $data['centro_localidad_id']  == null ? "" : $data['centro_localidad_id'];
 
         $data['dependencia_id']       = $data['dependencia_id']       == "0" ? "" : $data['dependencia_id'];
@@ -87,6 +88,7 @@ class FiltersRules
 
         $filters = array_merge($filters, [
             'ciudadano_id'         => $data['ciudadano_id'],
+            'creadopor_id_ue'      => $data['creadopor_id_ue'],
             'centro_localidad_id'  => $data['centro_localidad_id'],
             'origen_id'            => $data['origen_id'],
             'servicio_id'          => $data['servicio_id'],

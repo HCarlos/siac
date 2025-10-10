@@ -71,7 +71,7 @@
 
 <div class="form-row mb-1">
     <label for = "centro_localidad_id" class="col-md-2 col-form-label">Localidad</label>
-    <div class="col-md-10">
+    <div class="col-md-6">
         <select id="centro_localidad_id" name="centro_localidad_id" class="form-control" size="1">
             <option value="" selected >Seleccione una Localidad</option>
             @foreach($localidades_centro as $t)
@@ -79,6 +79,16 @@
             @endforeach
         </select>
     </div>
+    <label for = "prioridad_id" class="col-md-1 col-form-label">Prioridad</label>
+    <div class="col-md-3">
+        <select id="prioridad_id" name="prioridad_id" class="form-control" size="1">
+            <option value="0" selected >Seleccione una Prioridad</option>
+            @foreach($prioridades as $id => $valor)
+                <option value="{{ $id }}">{{ $valor }}</option>
+            @endforeach
+        </select>
+    </div>
+
 </div>
 
 <div class="form-row mb-1">
@@ -112,11 +122,11 @@
             @endforeach
         </select>
     </div>
-    <label for = "prioridad_id" class="col-md-1 col-form-label">Prioridad</label>
+    <label for = "creadopor_id_ue" class="col-md-1 col-form-label">Usuario</label>
     <div class="col-md-5">
-        <select id="prioridad_id" name="prioridad_id" class="form-control" size="1">
-            <option value="0" selected >Seleccione una Prioridad</option>
-            @foreach($prioridades as $id => $valor)
+        <select id="creadopor_id_ue" name="creadopor_id_ue" class="form-control" size="1">
+            <option value="0" selected >Seleccione una Usuario Estatus</option>
+            @foreach($cerradospor as $valor => $id)
                 <option value="{{ $id }}">{{ $valor }}</option>
             @endforeach
         </select>

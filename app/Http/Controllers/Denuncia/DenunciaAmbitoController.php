@@ -812,6 +812,16 @@ class DenunciaAmbitoController extends Controller{
 
         $Capturistas  = FuncionesController::GetCapturistasAmbito2P();
 
+        $cerradospor = _viDepDenServEstatus::select('usuario_ultimo_estatus','creadopor_id_ue')
+            ->where('status_denuncia', 1)
+            ->where('creadopor_id_ue', '>', 1)
+            ->orderBy('usuario_ultimo_estatus')
+            ->orderBy('creadopor_id_ue')
+            ->distinct('usuario_ultimo_estatus')
+            ->pluck('creadopor_id_ue','usuario_ultimo_estatus');
+
+//        dd($cerradospor);
+
         $hashtag = Denuncia::select('clave_identificadora')
                     ->distinct('clave_identificadora')
                     ->where("status_denuncia", 1)
@@ -841,6 +851,7 @@ class DenunciaAmbitoController extends Controller{
                 'ambito_dependencia' => $this->ambito_dependencia,
                 'ambito_estatus'     => $this->ambito_estatus,
                 'localidades_centro' => $localidades_centro,
+                'cerradospor'        => $cerradospor,
             ]
         );
     }
@@ -861,13 +872,6 @@ class DenunciaAmbitoController extends Controller{
         }else{
             $this->max_item_for_query = session::get('items_for_query');
         }
-
-//        $items = _viDepDenServEstatus::query()
-//            ->select(FuncionesController::itemSelectDenuncias())
-//            ->ambitoFilterBy($queryFilters)
-//            ->orderByDesc('id')
-//            ->simplePaginate($this->max_item_for_query);
-//        $items->appends($queryFilters)->fragment('table');
 
         $select = [
             'id','ciudadano_id','due_id','sue_id','prioridad_id',

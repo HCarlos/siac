@@ -16,6 +16,7 @@ use App\Http\Controllers\Storage\StorageRespuestaDenunciaController;
 use App\Models\Catalogos\Estatu;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
+use App\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -72,17 +73,22 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
                 $item = Denuncia::find($this->denuncia_id);
                 $this->attaches($item);
             }else{
+                $item = Denuncia_Dependencia_Servicio::findOrFail($this->id);
+                $user = User::find(Auth::user()->id);
+                $fm = $user->checkPermissionTo('test_admin') ? $item->fecha_movimiento : now();
+
+//                dd($fm);
+
                 $Item = [
                     'dependencia_id'   => $this->dependencia_id,
                     'servicio_id'      => $this->servicio_id,
                     'estatu_id'        => $this->estatus_id,
-                    'fecha_movimiento' => now(),
+                    'fecha_movimiento' => $fm,
                     'observaciones'    => $this->observaciones,
                     'favorable'        => $Fav,
                     'fue_leida'        => false,
                     'creadopor_id'     => Auth::user()->id,
                 ];
-                $item = Denuncia_Dependencia_Servicio::findOrFail($this->id);
                 $item->update($Item);
                 event(new ChangeStatusEvent($item->denuncia_id,$this->estatus_id,$item->id,1));
                 return $this->sendInfo($item);
