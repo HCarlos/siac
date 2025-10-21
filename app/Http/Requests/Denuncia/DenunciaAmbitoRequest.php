@@ -50,11 +50,6 @@ class DenunciaAmbitoRequest extends FormRequest
     public function rules()
     {
 
-//        'ubicacion_id'        => ['required','numeric','min:1'],
-//            'latitud'             => ['required','numeric'],
-//            'longitud'            => ['required','numeric'],
-//            'gd_ubicacion'        => ['required','string','min:4'],
-
         return [
             'descripcion'         => ['required','string','min:4'],
             'servicio_id'         => ['required','numeric','min:1'],
@@ -71,10 +66,6 @@ class DenunciaAmbitoRequest extends FormRequest
     }
 
     public function attributes(){
-//        'ubicacion_id'        => 'Ubicación',
-//            'latitud'             => 'Latitud',
-//            'longitud'            => 'Longitud',
-//            'gd_ubicacion'        => 'Ubicación google',
 
         return [
             'descripcion'         => 'Solicitud',
@@ -145,9 +136,6 @@ class DenunciaAmbitoRequest extends FormRequest
                 'ambito'                       => $this->ambito ?? 0,
                 'centro_localidad_id'          => $this->centro_localidad_id ?? null,
             ];
-
-//            dd($Item);
-
 
             if (Auth::user()->isRole('Administrator|SysOp')){
                 $item = $this->guardar($Item);

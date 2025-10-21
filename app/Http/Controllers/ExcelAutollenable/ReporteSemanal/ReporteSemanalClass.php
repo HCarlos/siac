@@ -274,10 +274,12 @@ class ReporteSemanalClass{
                 $servicio["DIAS_ATRAS"][] = $this->setAsignEstatus($geo, $start_date);
             }
             $_ta = $ar_ta->where('servicio_id',$servicio['sue_id'])->first();
-            $ta = round((($_ta->total_atendidas / $total_atendidas) * 100),0);
+            $__ta = $_ta->total_atendidas ?? 0;
+            $ta = round((($__ta / $total_atendidas) * 100),0);
 
             $_tp = $ar_tp->where('servicio_id',$servicio['sue_id'])->first();
-            $tp = round((($_tp->total_pendientes / $total_pendientes) * 100),0);
+            $__tp = $_tp->total_pendientes ?? 0;
+            $tp = round((($__tp / $total_pendientes) * 100),0);
 
             $servicio["PA"] = ["atendidas"=>number_format($ta,0),"pendientes"=>number_format($tp,0)];
             $this->vectorServicios[$i] = $servicio;
