@@ -18,4 +18,13 @@ return [
         'address' => env('MAIL_FROM_ADDRESS', 'logydes@gmail.com'),
         'name' => env('MAIL_FROM_NAME', 'SIAC Team!'),
     ],
+
+    'stream' => [
+        'ssl' => [
+            'allow_self_signed' => true,
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+        ],
+    ],
+
 ];
