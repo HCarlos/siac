@@ -62,6 +62,7 @@ Route::group(['middleware' => 'auth'], static function () {
 
     // Dashboard Servicios Principales
     Route::match(['get','put','post'],'dashboard-statistics-servicios-principales', 'Dashboard\ServiciosMonitoreadosController@index')->name('dashboard-statistics-servicios-principales');
+    Route::match(['get','put','post'],'dssp-reportes', 'Dashboard\SMReportesController@index')->name('dashboard-statistics-servicios-principales');
 
     // Dashboard Servicios por Unidad
     Route::match(['get'],'dashboard-statistics-custom-unity/{unity_id}', 'Dashboard\SMUnidadesAdmitivasController@index')->name('dashboard-statistics-custom-unity');
@@ -519,6 +520,8 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|test_admin|USER_OPE
 
     Route::post('reporteDiarioExcel', 'ExcelAutollenable\ReporteDiario\ReporteDiarioController@reporteDiarioExcel')->name('reporteDiarioExcel');
     Route::post('reporteSemanalExcel', 'ExcelAutollenable\ReporteSemanal\ReporteSemanalController@reporteSemanalExcel')->name('reporteSemanalExcel');
+
+    Route::post('reporteDiarioExcelNov1', 'ExcelAutollenable\ReporteDiario\ReporteDiarioNov1Controller@reporteDiarioExcelNov1')->name('reporteDiarioExcelNov1');
 
     Route::get('cerrarDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@closeItem')->name('cerrarDenunciaAmbito');
     Route::get('firmarDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@signItem')->name('firmarDenunciaAmbito');

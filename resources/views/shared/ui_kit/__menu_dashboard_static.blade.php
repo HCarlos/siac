@@ -20,6 +20,9 @@
     @if ($m->index === 6 && Auth::user()->isPermission('all|dashboard_sas') )
         <button class="{{ $m->clase }}" onclick="window.location.href='{{ $m->url }}'">{{ $m->title_menu }}</button>
     @endif
+    @if ($m->index === 7 && Auth::user()->isPermission('all|dashboard_servicios_monitoreados') )
+        <button class="{{ $m->clase }}" onclick="window.location.href='{{ $m->url }}'">{{ $m->title_menu }}</button>
+    @endif
 @endforeach
 
 

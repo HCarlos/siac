@@ -38,6 +38,7 @@ return [
         'fmt_graficos_diarios'        => 'fmt_graficos_diarios.xlsx',
         'fmt_resumen_basico_01'       => 'fmt_resumen_basico_01.xlsx',
         'fmt_graficos_semanal_sm'     => 'fmt_graficos_semanal_sm.xlsx',
+        'fmt_graficos_diarios_19nov25_1' => 'fmt_graficos_diarios_19nov25_1.xlsx',
     ],
 
     'menu_archivos'=>[
