@@ -250,7 +250,9 @@ class ReporteDiarioNov1Controller extends Controller{
         $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'A6', $end_date);
         $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'F6', $end_date);
         $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'A39', $end_date);
+        $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'A55', $end_date);
         $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'C3', ucfirst($fechaFormateada));
+        $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'C51', ucfirst($fechaFormateada));
 
         $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'C22', $ItemsOrigenes[0]['T'] ?? '');
         $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'C23', $ItemsOrigenes[1]['T'] ?? '');
