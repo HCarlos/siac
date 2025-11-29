@@ -25,12 +25,12 @@ class ReporteDiarioNov1Class{
     public function __construct(){
         // Inicializar como colección
         $this->vectorServicios = collect([
-            ['sue_id' => 483, 'Servicio' => 'BACHEO', 'R' => 0, 'A' => 0],
-            ['sue_id' => 508, 'Servicio' => 'DESAZOLVE DE DRENAJE', 'R' => 0, 'A' => 0],
-            ['sue_id' => 476, 'Servicio' => 'FUGA DE AGUA', 'R' => 0, 'A' => 0],
-            ['sue_id' => 503, 'Servicio' => 'RECOLECCIÓN DE RESIDUOS SÓLIDOS', 'R' => 0, 'A' => 0],
-            ['sue_id' => 479, 'Servicio' => 'ALCANTARILLA', 'R' => 0, 'A' => 0],
-            ['sue_id' => 466, 'Servicio' => 'LUMINARIAS', 'R' => 0, 'A' => 0],
+            ['sue_id' => 483, 'Servicio' => 'BACHEO', 'R' => 0, 'A' => 0, "PROM_PEN" => 0, "DIAS_PEN" => 0, "PROM_ATE" => 0, "DIAS_ATE" => 0, "LLAMADAS" => 0],
+            ['sue_id' => 508, 'Servicio' => 'DESAZOLVE DE DRENAJE', 'R' => 0, 'A' => 0, "PROM_PEN" => 0, "DIAS_PEN" => 0, "PROM_ATE" => 0, "DIAS_ATE" => 0, "LLAMADAS" => 0],
+            ['sue_id' => 476, 'Servicio' => 'FUGA DE AGUA', 'R' => 0, 'A' => 0, "PROM_PEN" => 0, "DIAS_PEN" => 0, "PROM_ATE" => 0, "DIAS_ATE" => 0, "LLAMADAS" => 0],
+            ['sue_id' => 503, 'Servicio' => 'RECOLECCIÓN DE RESIDUOS SÓLIDOS', 'R' => 0, 'A' => 0, "PROM_PEN" => 0, "DIAS_PEN" => 0, "PROM_ATE" => 0, "DIAS_ATE" => 0, "LLAMADAS" => 0],
+            ['sue_id' => 479, 'Servicio' => 'ALCANTARILLA', 'R' => 0, 'A' => 0, "PROM_PEN" => 0, "DIAS_PEN" => 0, "PROM_ATE" => 0, "DIAS_ATE" => 0, "LLAMADAS" => 0],
+            ['sue_id' => 466, 'Servicio' => 'LUMINARIAS', 'R' => 0, 'A' => 0, "PROM_PEN" => 0, "DIAS_PEN" => 0, "PROM_ATE" => 0, "DIAS_ATE" => 0, "LLAMADAS" => 0],
         ]);
 
         $this->ServiciosPrincipales = [483, 508, 476, 503, 479, 466];
@@ -73,6 +73,7 @@ class ReporteDiarioNov1Class{
         }
 
         return $this->vectorServicios;
+//        $this->getAtendidas($start_date, $end_date);
 
     }
 
@@ -95,6 +96,7 @@ class ReporteDiarioNov1Class{
         }
 
         return $this->vectorServicios;
+//        $this->getPendientesProm($start_date, $end_date);
 
     }
 
@@ -141,125 +143,94 @@ class ReporteDiarioNov1Class{
     }
 
 
-    public function getRecibidasAtendidas($start_date,$end_date): Collection{
+    public function getPendientesProm($start_date,$end_date){
 
-        $this->arrCoorDR = User::whereHas('roles', function ($query) {
-            $query->whereIn('name', ['DELEGADOS', 'COORDINACION_DE_DELEGADOS']);
-        })
-        ->pluck('id');
+        $end_date_e = $end_date." 23:59:59";
 
-        $geo =  DB::table("_viddss")
-            ->select('sue_id','ue_id','ciudadano_id','fecha_ultimo_estatus','creadopor_id','fecha_ingreso')
-            ->whereIn('sue_id', $this->ServiciosPrincipales)
-            ->where('ambito_dependencia', 2)
-            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-            ->get();
+        foreach ($this->ServiciosPrincipales as $key => $value) {
+            $arr =  DB::table("_vimov_sm_nov")
+                ->select('denuncia_id', 'sue_id', 'ue_id','fecha_ultimo_estatus',
+                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_ingreso) AS dias")
+                )
+                ->where('fecha_ingreso','<=', $end_date_e)
+                ->where('sue_id', $value)
+                ->whereIn('ue_id', [19,16])
+                ->get();
 
-        foreach($geo as $g){
-            $this->setAsigndata($g->sue_id,$g->ciudadano_id,$g->ue_id,$end_date,$g->fecha_ultimo_estatus, $g->creadopor_id, $g->fecha_ingreso);
-        }
-
-        $this->getDiasAtrasPorServicio($end_date);
-
-        return $this->vectorServicios;
-    }
-
-    private function setAsigndata($sue_id, $ciudadano_id, $ue_id, $end_date,$fecha_ultimo_estatus, $creadopor_id,$fecha_ingreso){
-
-        $fecha_ultimo_estatus = Carbon::parse($fecha_ultimo_estatus)->format('Y-m-d');
-        $fecha_ingreso = Carbon::parse($fecha_ingreso)->format('Y-m-d');
-        $index = $this->vectorServicios->search(function ($item) use ($sue_id) {
-            return $item['sue_id'] == $sue_id;
-        });
-
-        if ($index === false) return false;
-
-        $servicio = $this->vectorServicios[$index];
-
-
-        if ($ue_id === 17 && $fecha_ingreso === $fecha_ultimo_estatus) {
-//            dd($fecha_ingreso,$fecha_ultimo_estatus,"IA");
-            if ($this->ArrSolicitudesIRValue->contains($ciudadano_id)) {
-                $servicio['IA']++;
-                $servicio['IR']++;
-            } elseif ($this->arrCoorDR->contains($creadopor_id)) {
-                $servicio['DA']++;
-                $servicio['DR']++;
-            } else {
-                $servicio['CA']++;
-                $servicio['CR']++;
+//            dd($arr);
+//
+            if (!$arr->isEmpty()) {
+                $servicio = $this->vectorServicios[$key];
+                $servicio['PROM_PEN'] =(int) number_format($arr->avg('dias'),0,'.',',');
+                $servicio['DIAS_PEN'] = $arr->count('denuncia_id');
+                $this->vectorServicios[$key] = $servicio;
             }
-            $servicio['TA']++;
-            $servicio['TR']++;
-        }else{
-            if ($this->ArrSolicitudesIRValue->contains($ciudadano_id)) {
-                $servicio['IR']++;
-            } elseif ($this->arrCoorDR->contains($creadopor_id)) {
-                $servicio['DR']++;
-            } else {
-                $servicio['CR']++;
-            }
-            $servicio['TR']++;
-        }
 
-        $this->vectorServicios[$index] = $servicio;
-
-        return true;
-    }
-
-    public function getDiasAtrasPorServicio($start_date): Collection{
-        $start_date0 = $start_date;
-        for ($i=0;  $i<6; $i++){
-            $servicio = $this->vectorServicios[$i];
-            $start_date = Carbon::parse($start_date0)->subDay()->format('Y-m-d');
-                for ($j=0;  $j<6; $j++){
-
-                    $geo = DB::table("_viddss")
-                        ->select('ue_id','sue_id','fecha_ultimo_estatus','fecha_ingreso')
-                        ->where('sue_id', $this->vectorServicios[$i]['sue_id'])
-                        ->where('ambito_dependencia', 2)
-                        ->whereBetween('fecha_ingreso',[$start_date." 00:00:00", $start_date." 23:59:59"])
-                        ->get();
-                        $servicio["DIAS_ATRAS"][] = $this->setAsignEstatus($geo, $start_date);
-                        $start_date = Carbon::parse($start_date)->subDay()->format('Y-m-d');
-                }
-            $this->vectorServicios[$i] = $servicio;
         }
         return $this->vectorServicios;
+//        $this->getAtendidasProm($start_date, $end_date);
+
     }
 
-    private function setAsignEstatus($geo,$start_date){
 
-        $atendidas = 0;
-        $rechazadas = 0;
-        $pendientes = 0;
-//        $sue_id = 0;
-        foreach ($geo as $g) {
-            $fecha_ultimo_estatus = Carbon::parse($g->fecha_ultimo_estatus)->format('Y-m-d');
-            $fecha_ingreso = Carbon::parse($g->fecha_ingreso)->format('Y-m-d');
-//            if ($g->fecha_ingreso === $g->fecha_ultimo_estatus) {
-                switch ($g->ue_id) {
-                    case 6:
-                    case 17:
-                    case 21:
-                        $atendidas++;
-                        break;
-                    case 18:
-                    case 20:
-                    case 22:
-                        $rechazadas++;
-                        break;
-                    case 16:
-                    case 19:
-                        $pendientes++;
-                        break;
-//                }
+    public function getAtendidasProm($start_date,$end_date){
+
+        $end_date_e = $end_date." 23:59:59";
+
+        foreach ($this->ServiciosPrincipales as $key => $value) {
+            $arr =  DB::table("_vimov_sm_nov")
+                ->select('denuncia_id', 'sue_id', 'ue_id','fecha_ultimo_estatus',
+                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_ingreso) AS dias")
+                )
+                ->where('fecha_ingreso','<=', $end_date_e)
+                ->where('sue_id', $value)
+                ->whereIn('ue_id', [17,20,21,22])
+                ->get();
+
+//            dd($arr);
+//
+            if (!$arr->isEmpty()) {
+                $servicio = $this->vectorServicios[$key];
+                $servicio['PROM_ATE'] =(int) number_format($arr->avg('dias'),0,'.',',');
+                $servicio['DIAS_ATE'] = $arr->count('denuncia_id');
+                $this->vectorServicios[$key] = $servicio;
             }
-//            $sue_id = $g->sue_id;
+
         }
-        return ["fecha" => Carbon::parse($start_date)->format('Y-m-d'), "atendidas" => $atendidas, "rechazadas" => $rechazadas, "pendientes" => $pendientes];
+
+        return $this->vectorServicios;
+
+//       $this->getLlamadas($start_date, $end_date);
+
     }
 
+    public function getLlamadas($start_date,$end_date){
+
+        $end_date_e = $end_date." 23:59:59";
+
+        foreach ($this->ServiciosPrincipales as $key => $value) {
+            $arr =  DB::table("_vimov_sm_nov")
+                ->select('denuncia_id', 'sue_id', 'ue_id','fecha_ultimo_estatus',
+                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_ingreso) AS dias")
+                )
+                ->where('fecha_ingreso','<=', $end_date_e)
+                ->where('sue_id', $value)
+                ->whereIn('ue_id', [18,21,22])
+                ->get();
+
+//            dd($arr);
+//
+            if (!$arr->isEmpty()) {
+                $servicio = $this->vectorServicios[$key];
+                $servicio['LLAMADAS'] = $arr->count('denuncia_id');
+                $this->vectorServicios[$key] = $servicio;
+            }
+
+        }
+
+        return $this->vectorServicios;
+
+    }
 
 
 }

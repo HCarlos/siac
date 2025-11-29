@@ -162,7 +162,7 @@ class ReporteDiarioNov1Controller extends Controller{
         }
 
         $Items = $DC->getAtendidas($start_date, $end_date) ?? [];
-//        dd($Items);
+
         $i = 14;
         foreach ($Items as $Item) {
             $setCell(
@@ -175,9 +175,9 @@ class ReporteDiarioNov1Controller extends Controller{
             $i++;
         }
 
-        $Items = $DC->getOrigenes($start_date, $end_date) ?? [];
+        $ItemsOrigenes = $DC->getOrigenes($start_date, $end_date) ?? [];
         $i = 23;
-        foreach ($Items as $Item) {
+        foreach ($ItemsOrigenes as $Item) {
             $setCell(
                 $xp1,
                 $dom1,
@@ -188,11 +188,47 @@ class ReporteDiarioNov1Controller extends Controller{
             $i++;
         }
 
+        $Items = $DC->getPendientesProm($start_date, $end_date) ?? [];
+
+
+        $i = 33;
+        foreach ($Items as $Item) {
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B' . $i, $Item['PROM_PEN'] ?? '');
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'C' . $i, $Item['DIAS_PEN'] ?? '');
+            $i++;
+        }
+
+        $Items = $DC->getAtendidasProm($start_date, $end_date) ?? [];
+
+
+        $i = 43;
+        foreach ($Items as $Item) {
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B' . $i, $Item['PROM_ATE'] ?? '');
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'C' . $i, $Item['DIAS_ATE'] ?? '');
+            $i++;
+        }
+
+        $Items = $DC->getLlamadas($start_date, $end_date) ?? [];
+
+        $i = 53;
+        foreach ($Items as $Item) {
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B' . $i, $Item['LLAMADAS'] ?? '');
+            $i++;
+        }
+
+        $i = 63;
+        foreach ($Items as $Item) {
+            $tr = $Item['DIAS_PEN'] + $Item['DIAS_ATE'];
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B' . $i, $tr ?? '');
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'C' . $i, $Item['DIAS_ATE'] ?? '');
+            $i++;
+        }
+
 
         // Finaliza procesamiento de datos
 
 
-        $nodesF = $xp1->query("//d:c[@r='B10']/d:v | //d:c[@r='B20']/d:v | //d:c[@r='B29']/d:v");
+        $nodesF = $xp1->query("//d:c[@r='B10']/d:v | //d:c[@r='B20']/d:v | //d:c[@r='B29']/d:v | //d:c[@r='B59']/d:v | //d:c[@r='B69']/d:v | //d:c[@r='C69']/d:v");
         foreach ($nodesF as $v) {
             $v->parentNode->removeChild($v);
         }
@@ -208,15 +244,53 @@ class ReporteDiarioNov1Controller extends Controller{
         $xp2  = new \DOMXPath($dom2);
         $xp2->registerNamespace('d','http://schemas.openxmlformats.org/spreadsheetml/2006/main');
 
-//        $tr = array_sum(array_column($Items->toArray(), 'TR'));
-//        $ta = array_sum(array_column($Items->toArray(), 'TA'));
-
         $fechaCarbon = Carbon::now(); // Obtiene la fecha y hora actual
         $fechaFormateada = $fechaCarbon->locale('es_MX')->isoFormat('dddd DD [de] MMMM [de] YYYY [corte a las] HH:mm[hrs.]');
 
         $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'A6', $end_date);
-        $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'F4', $end_date);
+        $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'F6', $end_date);
+        $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'A39', $end_date);
         $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'C3', ucfirst($fechaFormateada));
+
+        $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'C22', $ItemsOrigenes[0]['T'] ?? '');
+        $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'C23', $ItemsOrigenes[1]['T'] ?? '');
+        $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'C24', $ItemsOrigenes[2]['T'] ?? '');
+        $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'C25', $ItemsOrigenes[3]['T'] ?? '');
+        $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'C26', $ItemsOrigenes[4]['T'] ?? '');
+        $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'H22', $ItemsOrigenes[5]['T'] ?? '');
+
+        $i = 31;
+        foreach ($Items as $Item) {
+            $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'C' . $i, $Item['PROM_PEN'] ?? '');
+            $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'D' . $i, $Item['DIAS_PEN'] ?? '');
+            $i++;
+        }
+
+        $i = 31;
+        foreach ($Items as $Item) {
+            $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'H' . $i, $Item['PROM_ATE'] ?? '');
+            $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'I' . $i, $Item['DIAS_ATE'] ?? '');
+            $i++;
+        }
+
+        $i = 58;
+        foreach ($Items as $Item) {
+            $tr = $Item['DIAS_PEN'] + $Item['DIAS_ATE'];
+            $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'E' . $i, $tr ?? '');
+            $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'G' . $i, $Item['DIAS_ATE'] ?? '');
+            $i++;
+        }
+
+
+        $nodesF = $xp2->query("//d:c[@r='B7']/d:v | //d:c[@r='G7']/d:v | //d:c[@r='B40']/d:v | //d:c[@r='E64']/d:v | //d:c[@r='G64']/d:v");
+        foreach ($nodesF as $v) {
+            $v->parentNode->removeChild($v);
+        }
+
+        $zip->addFromString(
+            'xl/worksheets/sheet2.xml',
+            $dom2->saveXML()
+        );
 
 
         $zip->close();
