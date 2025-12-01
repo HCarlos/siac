@@ -166,7 +166,7 @@ class ReporteDiarioNov1Class{
 
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr =  DB::table("_vimov_sm_nov")
-                ->select('denuncia_id', 'sue_id', 'ue_id','fecha_ultimo_estatus',
+                ->select('denuncia_id', 'sue_id', 'ue_id','fecha_ingreso',
                     DB::raw("DATE_PART('day', '$end_date_e' - fecha_ingreso) AS dias")
                 )
                 ->where('fecha_ingreso','<=', $end_date_e)
@@ -193,7 +193,7 @@ class ReporteDiarioNov1Class{
         // promedio
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr = DB::table("_vimov_sm_nov")
-                ->select('denuncia_id', 'sue_id', 'ue_id', 'fecha_ultimo_estatus',
+                ->select('denuncia_id', 'sue_id', 'ue_id', 'fecha_ingreso',
                     DB::raw("DATE_PART('day', '$end_date_e' - fecha_ingreso) AS dias")
                 )
                 ->where('fecha_ingreso', '<=', $end_date_e)
@@ -210,7 +210,7 @@ class ReporteDiarioNov1Class{
             // dias
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr = DB::table("_vimov_sm_nov")
-                ->select('denuncia_id', 'sue_id', 'ue_id', 'fecha_ultimo_estatus',
+                ->select('denuncia_id', 'sue_id', 'ue_id', 'fecha_ingreso',
                     DB::raw("DATE_PART('day', '$end_date_e' - fecha_ingreso) AS dias")
                 )
                 ->where('fecha_ingreso', '<=', $end_date_e)
@@ -236,7 +236,7 @@ class ReporteDiarioNov1Class{
 
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr =  DB::table("_vimov_sm_nov")
-                ->select('denuncia_id', 'sue_id', 'ue_id','fecha_ultimo_estatus',
+                ->select('denuncia_id', 'sue_id', 'ue_id','fecha_ingreso',
                     DB::raw("DATE_PART('day', '$end_date_e' - fecha_ingreso) AS dias")
                 )
                 ->where('fecha_ingreso','<=', $end_date_e)
