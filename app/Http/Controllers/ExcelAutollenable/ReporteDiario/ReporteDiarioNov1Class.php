@@ -165,11 +165,11 @@ class ReporteDiarioNov1Class{
         $end_date_e = $end_date." 23:59:59";
 
         foreach ($this->ServiciosPrincipales as $key => $value) {
-            $arr =  DB::table("_vimov_sm_nov")
-                ->select('denuncia_id', 'sue_id', 'ue_id','fecha_ingreso',
-                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_ingreso) AS dias")
+            $arr =  DB::table("_viddsestatus_nov")
+                ->select('denuncia_id', 'sue_id', 'ue_id','fecha_ultimo_estatus',
+                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_ultimo_estatus) AS dias")
                 )
-                ->where('fecha_ingreso','<=', $end_date_e)
+                ->where('fecha_ultimo_estatus','<=', $end_date_e)
                 ->where('sue_id', $value)
                 ->whereIn('ue_id', [16,19])
                 ->get();
@@ -192,11 +192,11 @@ class ReporteDiarioNov1Class{
 
         // promedio
         foreach ($this->ServiciosPrincipales as $key => $value) {
-            $arr = DB::table("_vimov_sm_nov")
-                ->select('denuncia_id', 'sue_id', 'ue_id', 'fecha_ingreso',
-                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_ingreso) AS dias")
+            $arr = DB::table("_viddsestatus_nov")
+                ->select('denuncia_id', 'sue_id', 'ue_id', 'fecha_ultimo_estatus',
+                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_ultimo_estatus) AS dias")
                 )
-                ->where('fecha_ingreso', '<=', $end_date_e)
+                ->where('fecha_ultimo_estatus', '<=', $end_date_e)
                 ->where('sue_id', $value)
                 ->whereIn('ue_id', [17, 20])
                 ->get();
@@ -209,11 +209,11 @@ class ReporteDiarioNov1Class{
         }
             // dias
         foreach ($this->ServiciosPrincipales as $key => $value) {
-            $arr = DB::table("_vimov_sm_nov")
-                ->select('denuncia_id', 'sue_id', 'ue_id', 'fecha_ingreso',
-                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_ingreso) AS dias")
+            $arr = DB::table("_viddsestatus_nov")
+                ->select('denuncia_id', 'sue_id', 'ue_id', 'fecha_ultimo_estatus',
+                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_ultimo_estatus) AS dias")
                 )
-                ->where('fecha_ingreso', '<=', $end_date_e)
+                ->where('fecha_ultimo_estatus', '<=', $end_date_e)
                 ->where('sue_id', $value)
                 ->whereIn('ue_id', [17, 20, 21, 22])
                 ->get();
