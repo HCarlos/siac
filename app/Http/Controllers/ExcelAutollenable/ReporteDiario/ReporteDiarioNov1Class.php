@@ -38,7 +38,7 @@ class ReporteDiarioNov1Class{
         $this->vectorOrigenes = collect([
             ['origen_id' => 29, 'Origen' => 'ATENCION DIRECTA SAS', 'T' => 0],
             ['origen_id' => 27, 'Origen' => 'TELEFONO SAS', 'T' => 0],
-            ['origen_id' => 25, 'Origen' => 'VENTANILLA cmsm', 'T' => 0],
+            ['origen_id' => 25, 'Origen' => 'VENTANILLA CMSM', 'T' => 0],
             ['origen_id' => 28, 'Origen' => 'TELEFONO 072', 'T' => 0],
             ['origen_id' => 3,  'Origen' => 'TELEREPORTAJE', 'T' => 0],
             ['origen_id' => 0,  'Origen' => 'OTROS', 'T' => 0],
@@ -122,7 +122,7 @@ class ReporteDiarioNov1Class{
         // 1. Consulta única agrupada por origen_id
         $resultado = DB::table('_vimov_sm_nov')
             ->select('origen_id', DB::raw('COUNT(id) AS suma_id'))
-            ->whereBetween('fecha_ultimo_estatus', [
+            ->whereBetween('fecha_ingreso', [
                 $start_date . ' 00:00:00',
                 $end_date . ' 23:59:59'
             ])
@@ -144,7 +144,7 @@ class ReporteDiarioNov1Class{
         }
 
         $total = DB::table('_vimov_sm_nov')
-            ->whereBetween('fecha_ultimo_estatus', [
+            ->whereBetween('fecha_ingreso', [
                 $start_date . ' 00:00:00',
                 $end_date . ' 23:59:59'
             ])
@@ -174,18 +174,14 @@ class ReporteDiarioNov1Class{
                 ->whereIn('ue_id', [16,19])
                 ->get();
 
-//            dd($arr);
-//
             if (!$arr->isEmpty()) {
                 $servicio = $this->vectorServicios[$key];
                 $servicio['PROM_PEN'] =(int) number_format($arr->avg('dias'),0,'.',',');
                 $servicio['DIAS_PEN'] = $arr->count('denuncia_id');
                 $this->vectorServicios[$key] = $servicio;
             }
-
         }
         return $this->vectorServicios;
-//        $this->getAtendidasProm($start_date, $end_date);
 
     }
 
@@ -231,8 +227,6 @@ class ReporteDiarioNov1Class{
         }
 
         return $this->vectorServicios;
-
-//       $this->getLlamadas($start_date, $end_date);
 
     }
 
