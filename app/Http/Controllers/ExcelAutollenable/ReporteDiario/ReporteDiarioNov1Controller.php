@@ -218,7 +218,7 @@ class ReporteDiarioNov1Controller extends Controller{
 
         $i = 63;
         foreach ($Items as $Item) {
-            $tr = $Item['DIAS_PEN'] + $Item['DIAS_ATE'];
+            $tr = $Item['TOTAL'];
             $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B' . $i, $tr ?? '');
             $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'C' . $i, $Item['DIAS_ATE'] ?? '');
             $i++;
@@ -277,7 +277,9 @@ class ReporteDiarioNov1Controller extends Controller{
 
         $i = 58;
         foreach ($Items as $Item) {
-            $tr = $Item['DIAS_PEN'] + $Item['DIAS_ATE'];
+//            $tr = $Item['DIAS_PEN'] + $Item['DIAS_ATE'];
+            $tr = $Item['TOTAL'];
+
             $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'E' . $i, $tr ?? '');
             $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'G' . $i, $Item['DIAS_ATE'] ?? '');
             $i++;
