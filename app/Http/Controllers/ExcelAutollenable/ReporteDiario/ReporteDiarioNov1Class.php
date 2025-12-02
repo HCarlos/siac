@@ -198,15 +198,15 @@ class ReporteDiarioNov1Class{
 
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr =  DB::table("_vimov_filter_sm")
-                ->select('id', 'sue_id', 'ue_id','fecha_ingreso',
-                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_ingreso) AS dias")
+                ->select('id', 'servicio_id', 'estatu_id','fecha_movimiento',
+                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
                 )
                 ->where('fecha_ingreso','>=', '2025-11-19 00:00:01')
                 ->where('fecha_ingreso','<=', $end_date_e)
                 ->where('servicio_id', $value)
                 ->whereNotIn('ciudadano_id', [508833, 519442, 513061])
                 ->whereNotIn('origen_id', [20])
-                ->whereIn('ue_id', [16,19])
+                ->whereIn('estatu_id', [16,19])
                 ->get();
 
             if (!$arr->isEmpty()) {
@@ -220,50 +220,6 @@ class ReporteDiarioNov1Class{
 
     }
 
-//    public function getAtendidasProm_old($start_date,$end_date){
-//
-//        $end_date_e = $end_date." 23:59:59";
-//
-//        // promedio
-//        foreach ($this->ServiciosPrincipales as $key => $value) {
-//            $arr = DB::table("_viddsestatus_nov")
-//                ->select('id', 'sue_id', 'ue_id', 'fecha_ultimo_estatus',
-//                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_ultimo_estatus) AS dias")
-//                )
-//                ->where('fecha_ultimo_estatus', '<=', $end_date_e)
-//                ->where('sue_id', $value)
-//                ->whereIn('ue_id', [17, 20])
-//                ->get();
-//
-//            if (!$arr->isEmpty()) {
-//                $servicio = $this->vectorServicios[$key];
-//                $servicio['PROM_ATE'] = (int)number_format($arr->avg('dias'), 0, '.', ',');
-//                $this->vectorServicios[$key] = $servicio;
-//            }
-//        }
-//            // dias
-//        foreach ($this->ServiciosPrincipales as $key => $value) {
-//            $arr = DB::table("_viddsestatus_nov")
-//                ->select('id', 'sue_id', 'ue_id', 'fecha_ultimo_estatus',
-//                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_ultimo_estatus) AS dias")
-//                )
-//                ->where('fecha_ultimo_estatus', '<=', $end_date_e)
-//                ->where('sue_id', $value)
-//                ->whereIn('ue_id', [17, 20, 21, 22])
-//                ->get();
-//
-//            if (!$arr->isEmpty()) {
-//                $servicio = $this->vectorServicios[$key];
-//                $servicio['DIAS_ATE'] = $arr->count('denuncia_id');
-//                $this->vectorServicios[$key] = $servicio;
-//            }
-//
-//        }
-//
-//        return $this->vectorServicios;
-//
-//    }
-
     public function getAtendidasProm($start_date,$end_date){
 
         $end_date_e = $end_date." 23:59:59";
@@ -271,15 +227,15 @@ class ReporteDiarioNov1Class{
         // promedio
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr = DB::table("_vimov_filter_sm")
-                ->select('id', 'sue_id', 'ue_id', 'fecha_ingreso',
-                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_ingreso) AS dias")
+                ->select('denuncia_id', 'servicio_id', 'estatu_id', 'fecha_movimiento',
+                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
                 )
                 ->where('fecha_ingreso','>=', '2025-11-19 00:00:01')
                 ->where('fecha_ingreso','<=', $end_date_e)
                 ->where('servicio_id', $value)
                 ->whereNotIn('ciudadano_id', [508833, 519442, 513061])
                 ->whereNotIn('origen_id', [20])
-                ->whereIn('ue_id', [17, 20])
+                ->whereIn('estatu_id', [17, 20])
                 ->get();
 
             if (!$arr->isEmpty()) {
@@ -288,18 +244,19 @@ class ReporteDiarioNov1Class{
                 $this->vectorServicios[$key] = $servicio;
             }
         }
-        // dias
+            // dias
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr = DB::table("_vimov_filter_sm")
-                ->select('id', 'sue_id', 'ue_id', 'fecha_ingreso',
-                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_ingreso) AS dias")
+                ->select('id', 'servicio_id', 'estatu_id', 'fecha_movimiento',
+                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
                 )
                 ->where('fecha_ingreso','>=', '2025-11-19 00:00:01')
                 ->where('fecha_ingreso','<=', $end_date_e)
                 ->where('servicio_id', $value)
                 ->whereNotIn('ciudadano_id', [508833, 519442, 513061])
                 ->whereNotIn('origen_id', [20])
-                ->whereIn('ue_id', [17, 20, 21, 22])
+                ->where('servicio_id', $value)
+                ->whereIn('estatu_id', [17, 20, 21, 22])
                 ->get();
 
             if (!$arr->isEmpty()) {
@@ -313,6 +270,56 @@ class ReporteDiarioNov1Class{
         return $this->vectorServicios;
 
     }
+
+//    public function getAtendidasProm($start_date,$end_date){
+//
+//        $end_date_e = $end_date." 23:59:59";
+//
+//        // promedio
+//        foreach ($this->ServiciosPrincipales as $key => $value) {
+//            $arr = DB::table("_vimov_filter_sm")
+//                ->select('id', 'servicio_id', 'ue_id', 'fecha_ingreso',
+//                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_ingreso) AS dias")
+//                )
+//                ->where('fecha_ingreso','>=', '2025-11-19 00:00:01')
+//                ->where('fecha_ingreso','<=', $end_date_e)
+//                ->where('servicio_id', $value)
+//                ->whereNotIn('ciudadano_id', [508833, 519442, 513061])
+//                ->whereNotIn('origen_id', [20])
+//                ->whereIn('ue_id', [17, 20])
+//                ->get();
+//
+//            if (!$arr->isEmpty()) {
+//                $servicio = $this->vectorServicios[$key];
+//                $servicio['PROM_ATE'] = (int)number_format($arr->avg('dias'), 0, '.', ',');
+//                $this->vectorServicios[$key] = $servicio;
+//            }
+//        }
+//        // dias
+//        foreach ($this->ServiciosPrincipales as $key => $value) {
+//            $arr = DB::table("_vimov_filter_sm")
+//                ->select('id', 'sue_id', 'ue_id', 'fecha_ingreso',
+//                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_ingreso) AS dias")
+//                )
+//                ->where('fecha_ingreso','>=', '2025-11-19 00:00:01')
+//                ->where('fecha_ingreso','<=', $end_date_e)
+//                ->where('servicio_id', $value)
+//                ->whereNotIn('ciudadano_id', [508833, 519442, 513061])
+//                ->whereNotIn('origen_id', [20])
+//                ->whereIn('ue_id', [17, 20, 21, 22])
+//                ->get();
+//
+//            if (!$arr->isEmpty()) {
+//                $servicio = $this->vectorServicios[$key];
+//                $servicio['DIAS_ATE'] = $arr->count('id');
+//                $this->vectorServicios[$key] = $servicio;
+//            }
+//
+//        }
+//
+//        return $this->vectorServicios;
+//
+//    }
 
     public function getLlamadas($start_date,$end_date){
 

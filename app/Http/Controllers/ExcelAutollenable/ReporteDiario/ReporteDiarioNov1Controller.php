@@ -200,6 +200,7 @@ class ReporteDiarioNov1Controller extends Controller{
 
         $Items = $DC->getAtendidasProm($start_date, $end_date) ?? [];
 
+//        dd($Items);
 
         $i = 43;
         foreach ($Items as $Item) {
