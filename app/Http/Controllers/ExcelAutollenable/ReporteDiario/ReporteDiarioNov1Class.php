@@ -327,11 +327,12 @@ class ReporteDiarioNov1Class{
         $end_date_e = $end_date." 23:59:59";
 
         foreach ($this->ServiciosPrincipales as $key => $value) {
-            $arr =  DB::table("_vimov_sm_nov")
+            $arr =  DB::table("_vimov_filter_sm")
                 ->select('denuncia_id', 'sue_id', 'ue_id','fecha_ultimo_estatus',
                     DB::raw("DATE_PART('day', '$end_date_e' - fecha_ultimo_estatus) AS dias")
                 )
-                ->whereBetween('fecha_ultimo_estatus', [$start_date_e, $end_date_e])
+                ->where('fecha_ingreso','>=', '2025-11-19 00:00:01')
+                ->whereBetween('fecha_ultimo_estatus',[$start_date_e, $end_date_e])
                 ->where('sue_id', $value)
                 ->whereIn('ue_id', [18,21,22])
                 ->get();
