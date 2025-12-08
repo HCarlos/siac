@@ -522,6 +522,7 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|test_admin|USER_OPE
     Route::post('reporteSemanalExcel', 'ExcelAutollenable\ReporteSemanal\ReporteSemanalController@reporteSemanalExcel')->name('reporteSemanalExcel');
 
     Route::post('reporteDiarioExcelNov1', 'ExcelAutollenable\ReporteDiario\ReporteDiarioNov1Controller@reporteDiarioExcelNov1')->name('reporteDiarioExcelNov1');
+    Route::post('reporteDiarioExcelNov2', 'ExcelAutollenable\ReporteDiario\ReporteDiarioNov2Controller@reporteDiarioExcelNov2')->name('reporteDiarioExcelNov2');
 
     Route::get('cerrarDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@closeItem')->name('cerrarDenunciaAmbito');
     Route::get('firmarDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@signItem')->name('firmarDenunciaAmbito');
