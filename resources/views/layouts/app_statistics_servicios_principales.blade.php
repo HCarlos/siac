@@ -33,6 +33,7 @@
     {{--    <script src="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.js"></script>--}}
 
 
+    @yield("styles")
 
 
 </head>
@@ -40,6 +41,8 @@
 <body>
 
 @yield('content')
+
+@yield("scripts")
 
 </body>
 </html>

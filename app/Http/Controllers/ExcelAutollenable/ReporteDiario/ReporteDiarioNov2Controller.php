@@ -148,6 +148,7 @@ class ReporteDiarioNov2Controller extends Controller{
         // Inicia procesamiento de datos
 
         $DC = new ReporteDiarioNov2Class();
+
         $Items = $DC->getRecibidas($start_date, $end_date) ?? [];
         $i = 4;
         foreach ($Items as $Item) {
@@ -160,20 +161,6 @@ class ReporteDiarioNov2Controller extends Controller{
             );
             $i++;
         }
-
-//        $Items = $DC->getAtendidas($start_date, $end_date) ?? [];
-//
-//        $i = 14;
-//        foreach ($Items as $Item) {
-//            $setCell(
-//                $xp1,
-//                $dom1,
-//                'xl/worksheets/sheet1.xml',
-//                'B' . $i,
-//                $Item['A'] ?? ''
-//            );
-//            $i++;
-//        }
 
         $ItemsOrigenes = $DC->getOrigenes($start_date, $end_date) ?? [];
         $i = 14;
@@ -188,22 +175,62 @@ class ReporteDiarioNov2Controller extends Controller{
             $i++;
         }
 
-        $Items = $DC->getPendientesProm($start_date, $end_date) ?? [];
 
 
+        $PendientesPromCiudadano = $DC->getPendientesPromCiudadano($start_date, $end_date) ?? [];
+        $AtendidasPromCiudadanos = $DC->getAtendidasPromCiudadano($start_date, $end_date) ?? [];
+        $i = 25;
+        $letrasA = ['B','D','F','H','J','L'];
+        $letrasP = ['C','E','G','I','K','M'];
+        $ii = [0, 1, 2, 3, 4, 5];
+
+        // Ciudadanos
+        foreach ($ii as $key => $value) {
+            $Item = $AtendidasPromCiudadanos[$value];
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', $letrasA[$value] . $i, $Item['DIAS_ATE'] ?? '');
+            $Item = $PendientesPromCiudadano[$value];
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', $letrasP[$value] . $i, $Item['DIAS_PEN'] ?? '');
+        }
+
+        // Delegados
+        $PendientesPromDelegados = $DC->getPendientesPromDelegados($start_date, $end_date) ?? [];
+        $AtendidasPromDelegados = $DC->getAtendidasPromDelegados($start_date, $end_date) ?? [];
+        $i = 26;
+        foreach ($ii as $key => $value) {
+            $Item = $AtendidasPromDelegados[$value];
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', $letrasA[$value] . $i, $Item['DIAS_ATE_DEL'] ?? '');
+            $Item = $PendientesPromDelegados[$value];
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', $letrasP[$value] . $i, $Item['DIAS_PEN_DEL'] ?? '');
+        }
+
+        // Instituciones
+        $PendientesPromInstitucion = $DC->getPendientesPromInstitucion($start_date, $end_date) ?? [];
+        $AtendidasPromInstitucion = $DC->getAtendidasPromInstitucion($start_date, $end_date) ?? [];
+        $i = 27;
+        foreach ($ii as $key => $value) {
+            $Item = $AtendidasPromInstitucion[$value];
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', $letrasA[$value] . $i, $Item['DIAS_ATE_INS'] ?? '');
+            $Item = $PendientesPromInstitucion[$value];
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', $letrasP[$value] . $i, $Item['DIAS_PEN_INS'] ?? '');
+        }
+
+
+
+        $PendientesProm = $DC->getPendientesProm($start_date, $end_date) ?? [];
+        $AtendidasProm = $DC->getAtendidasProm($start_date, $end_date) ?? [];
+
+        $ii = [3, 1, 0, 5, 2, 4];
         $i = 31;
-        foreach ($Items as $Item) {
+        foreach ($ii as $key => $value) {
+            $Item = $PendientesProm[$value];
             $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B' . $i, $Item['PROM_PEN'] ?? '');
             $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'C' . $i, $Item['DIAS_PEN'] ?? '');
             $i++;
         }
 
-        $Items = $DC->getAtendidasProm($start_date, $end_date) ?? [];
-
-//        dd($Items);
-
         $i = 41;
-        foreach ($Items as $Item) {
+        foreach ($ii as $key => $value) {
+            $Item = $AtendidasProm[$value];
             $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B' . $i, $Item['PROM_ATE'] ?? '');
             $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'C' . $i, $Item['DIAS_ATE'] ?? '');
             $i++;
@@ -216,15 +243,6 @@ class ReporteDiarioNov2Controller extends Controller{
             $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B' . $i, $Item['LLAMADAS'] ?? '');
             $i++;
         }
-
-//        $i = 50;
-//        foreach ($Items as $Item) {
-//            $tr = $Item['TOTAL'];
-//            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B' . $i, $tr ?? '');
-//            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'C' . $i, $Item['DIAS_ATE'] ?? '');
-//            $i++;
-//        }
-
 
         // Finaliza procesamiento de datos
 

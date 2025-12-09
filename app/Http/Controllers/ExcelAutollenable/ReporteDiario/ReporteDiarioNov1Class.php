@@ -255,7 +255,6 @@ class ReporteDiarioNov1Class{
                 ->where('servicio_id', $value)
                 ->whereNotIn('ciudadano_id', [508833, 519442, 513061])
                 ->whereNotIn('origen_id', [20])
-                ->where('servicio_id', $value)
                 ->whereIn('estatu_id', [17, 20, 21, 22])
                 ->get();
 
