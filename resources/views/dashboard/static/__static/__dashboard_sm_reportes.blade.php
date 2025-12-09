@@ -86,24 +86,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- Indicador de rango seleccionado -->
-{{--                                    <div class="date-range-display">--}}
-{{--                                        <span class="range-text">Período seleccionado:</span>--}}
-{{--                                        <span class="range-dates" id="rangeDates">--}}
-{{--                                        {{ date('d M, Y', strtotime($start_date ?? date('Y-m-01'))) }}--}}
-{{--                                        ---}}
-{{--                                        {{ date('d M, Y', strtotime($end_date ?? date('Y-m-t'))) }}--}}
-{{--                                    </span>--}}
-{{--                                        <button type="button" class="btn-reset-range" id="resetDates">--}}
-{{--                                            <svg viewBox="0 0 24 24" fill="none"--}}
-{{--                                                 stroke="currentColor" stroke-width="2">--}}
-{{--                                                <path--}}
-{{--                                                    d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>--}}
-{{--                                                <path d="M3 3v5h5"></path>--}}
-{{--                                            </svg>--}}
-{{--                                            Reiniciar--}}
-{{--                                        </button>--}}
-{{--                                    </div>--}}
                                 </div>
                             </div>
 
@@ -476,7 +458,7 @@
     .date-section-title {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #111827;
+    color: var(--text-primary);
     margin-bottom: 0.5rem;
     }
 
@@ -511,7 +493,7 @@
     gap: 0.75rem;
     font-size: 0.95rem;
     font-weight: 500;
-    color: #111827;
+    color: var(--text-primary);
     margin-bottom: 0.75rem;
     }
 
@@ -718,7 +700,7 @@
 
     .radio-description {
     font-size: 0.9rem;
-    color: #6b7280;
+    color: var(--text-secondary);
     margin-bottom: 0.75rem;
     }
 

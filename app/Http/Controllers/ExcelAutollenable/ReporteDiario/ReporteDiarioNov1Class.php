@@ -166,32 +166,6 @@ class ReporteDiarioNov1Class{
     }
 
 
-//    public function getPendientesProm_old($start_date,$end_date){
-//
-//        $end_date_e = $end_date." 23:59:59";
-//
-//        foreach ($this->ServiciosPrincipales as $key => $value) {
-//            $arr =  DB::table("_viddsestatus_nov")
-//                ->select('id', 'sue_id', 'ue_id','fecha_ultimo_estatus',
-//                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_ultimo_estatus) AS dias")
-//                )
-//                ->where('fecha_ultimo_estatus','<=', $end_date_e)
-//                ->where('sue_id', $value)
-//                ->whereIn('ue_id', [16,19])
-//                ->get();
-//
-//            if (!$arr->isEmpty()) {
-//                $servicio = $this->vectorServicios[$key];
-//                $servicio['PROM_PEN'] =(int) number_format($arr->avg('dias'),0,'.',',');
-//                $servicio['DIAS_PEN'] = $arr->count('denuncia_id');
-//                $this->vectorServicios[$key] = $servicio;
-//            }
-//        }
-//        return $this->vectorServicios;
-//
-//    }
-
-
     public function getPendientesProm($start_date,$end_date){
 
         $end_date_e = $end_date." 23:59:59";
@@ -250,18 +224,6 @@ class ReporteDiarioNov1Class{
 
             // dias
         foreach ($this->ServiciosPrincipales as $key => $value) {
-
-//            $arr = DB::table("_vimov_filter_sm")
-//                ->select('id', 'servicio_id', 'estatu_id', 'fecha_movimiento',
-//                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
-//                )
-//                ->where('fecha_ingreso','>=', '2025-11-19 00:00:01')
-//                ->where('fecha_ingreso','<=', $end_date_e)
-//                ->where('servicio_id', $value)
-//                ->whereNotIn('ciudadano_id', [508833, 519442, 513061])
-//                ->whereNotIn('origen_id', [20])
-//                ->whereIn('estatu_id', [17, 20, 21, 22])
-//                ->get();
 
             $arr = DB::table("_viddsestatus_nov")
                 ->select('id', 'servicio_id', 'estatu_id', 'fecha_movimiento',
