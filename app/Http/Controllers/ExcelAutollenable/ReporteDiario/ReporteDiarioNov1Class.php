@@ -222,6 +222,7 @@ class ReporteDiarioNov1Class{
 
     public function getAtendidasProm($start_date,$end_date){
 
+        $start_date_e = $end_date." 00:00:00";
         $end_date_e = $end_date." 23:59:59";
 
         // promedio
@@ -244,23 +245,41 @@ class ReporteDiarioNov1Class{
                 $this->vectorServicios[$key] = $servicio;
             }
         }
+
+
+
             // dias
         foreach ($this->ServiciosPrincipales as $key => $value) {
-            $arr = DB::table("_vimov_filter_sm")
+
+//            $arr = DB::table("_vimov_filter_sm")
+//                ->select('id', 'servicio_id', 'estatu_id', 'fecha_movimiento',
+//                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
+//                )
+//                ->where('fecha_ingreso','>=', '2025-11-19 00:00:01')
+//                ->where('fecha_ingreso','<=', $end_date_e)
+//                ->where('servicio_id', $value)
+//                ->whereNotIn('ciudadano_id', [508833, 519442, 513061])
+//                ->whereNotIn('origen_id', [20])
+//                ->whereIn('estatu_id', [17, 20, 21, 22])
+//                ->get();
+
+            $arr = DB::table("_viddsestatus_nov")
                 ->select('id', 'servicio_id', 'estatu_id', 'fecha_movimiento',
                     DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
                 )
-                ->where('fecha_ingreso','>=', '2025-11-19 00:00:01')
-                ->where('fecha_ingreso','<=', $end_date_e)
+                ->where('fecha_ingreso','>=', '2025-11-19 00:00:00')
+                ->whereBetween('fecha_movimiento',[$start_date_e, $end_date_e])
                 ->where('servicio_id', $value)
                 ->whereNotIn('ciudadano_id', [508833, 519442, 513061])
                 ->whereNotIn('origen_id', [20])
                 ->whereIn('estatu_id', [17, 20, 21, 22])
                 ->get();
 
+
             if (!$arr->isEmpty()) {
                 $servicio = $this->vectorServicios[$key];
-                $servicio['DIAS_ATE'] = $arr->count('denuncia_id');
+//                $servicio['DIAS_ATE'] = $arr->count('denuncia_id');
+                $servicio['DIAS_ATE'] = $arr->count('id');
                 $this->vectorServicios[$key] = $servicio;
             }
 
