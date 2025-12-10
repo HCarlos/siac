@@ -157,7 +157,7 @@ class ReporteDiarioNov2Controller extends Controller{
                 $dom1,
                 'xl/worksheets/sheet1.xml',
                 'B' . $i,
-                $Item['R'] ?? ''
+                $Item['TOTAL'] ?? ''
             );
             $i++;
         }
