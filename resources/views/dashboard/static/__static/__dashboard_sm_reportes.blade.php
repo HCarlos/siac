@@ -321,8 +321,10 @@
         // }
 
         // Event Listeners
-        startDateInput.addEventListener('change', validateDateRange);
-        endDateInput.addEventListener('change', validateDateRange);
+
+        // startDateInput.addEventListener('change', validateDateRange);
+        // endDateInput.addEventListener('change', validateDateRange);
+
         // resetDatesBtn.addEventListener('click', resetDates);
         // previewBtn.addEventListener('click', previewReport);
         // generateBtn.addEventListener('click', generateReport);
@@ -362,9 +364,9 @@
         btnReporteDiario.addEventListener('click', function () {
 
 
-            if ( !validateDateRange() ) {
-                return false;
-            }
+            // if ( !validateDateRange() ) {
+            //     return false;
+            // }
 
             const _start_date = document.getElementById('start_date').value;
             const _end_date = document.getElementById('end_date').value;

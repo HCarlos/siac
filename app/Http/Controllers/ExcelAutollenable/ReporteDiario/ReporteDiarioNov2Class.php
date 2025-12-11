@@ -52,7 +52,7 @@ class ReporteDiarioNov2Class{
         $this->arrCoorDR             = collect([]); // Inicializar con tus valores reales
 
         $this->start_date = $start_date. " 00:00:01";
-        $this->end_date = $start_date. " 23:59:59";
+        $this->end_date = $end_date. " 23:59:59";
         $this->fecha_desde = "2025-11-19 00:00:00";
 
     }
@@ -60,25 +60,6 @@ class ReporteDiarioNov2Class{
     public function getRecibidas(){
 
 
-//        foreach ($this->ServiciosPrincipales as $key => $value) {
-//            $arr =  DB::table("_vimov_sm_nov")
-//                ->select(DB::raw('COUNT(ue_id) AS suma_ue_id'),'sue_id','ue_id')
-//                ->where('sue_id', $value)
-//                ->whereBetween('fecha_ingreso', [
-//                    $start_date . ' 00:00:00',
-//                    $end_date . ' 23:59:59'
-//                ])
-//                ->whereIn('ue_id', [16,19])
-//                ->groupBy('sue_id','ue_id')
-//                ->get();
-//
-//            if (!$arr->isEmpty()) {
-//                $servicio = $this->vectorServicios[$key];
-//                $servicio['R'] = $arr->sum('suma_ue_id');
-//                $this->vectorServicios[$key] = $servicio;
-//            }
-//
-//        }
 
         $start_date_e = $this->start_date;
         $end_date_e = $this->end_date;
@@ -187,10 +168,10 @@ class ReporteDiarioNov2Class{
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr =  DB::table("_viddsestatus_nov")
                 ->select('id', 'servicio_id', 'estatu_id','fecha_movimiento',
-                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
+                    DB::raw("DATE_PART('day', fecha_movimiento - fecha_ingreso) AS dias")
                 )
-                ->where('fecha_ingreso','>=', $start_date_e)
-                ->where('fecha_ingreso','<=', $end_date_e)
+                ->where('fecha_ingreso','>=', $this->fecha_desde)
+                ->whereBetween('fecha_movimiento',[$start_date_e, $end_date_e])
                 ->where('servicio_id', $value)
                 ->whereNotIn('ciudadano_id', [508833, 519442, 513061])
                 ->whereNotIn('origen_id', [20])
@@ -199,7 +180,7 @@ class ReporteDiarioNov2Class{
 
             if (!$arr->isEmpty()) {
                 $servicio = $this->vectorServicios[$key];
-                $servicio['PROM_PEN'] =(int) number_format($arr->avg('dias'),0,'.',',');
+                $servicio['PROM_PEN'] = (int) number_format($arr->avg('dias'),0,'.',',');
                 $servicio['DIAS_PEN'] = $arr->count('id');
                 $this->vectorServicios[$key] = $servicio;
             }
@@ -217,10 +198,10 @@ class ReporteDiarioNov2Class{
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr = DB::table("_viddsestatus_nov")
                 ->select('id', 'servicio_id', 'estatu_id', 'fecha_movimiento',
-                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
+                    DB::raw("DATE_PART('day', fecha_movimiento - fecha_ingreso) AS dias")
                 )
-                ->where('fecha_ingreso','>=', $start_date_e)
-                ->where('fecha_ingreso','<=', $end_date_e)
+                ->where('fecha_ingreso','>=', $this->fecha_desde)
+                ->whereBetween('fecha_movimiento',[$start_date_e, $end_date_e])
                 ->where('servicio_id', $value)
                 ->whereNotIn('ciudadano_id', [508833, 519442, 513061])
                 ->whereNotIn('origen_id', [20])
@@ -237,10 +218,8 @@ class ReporteDiarioNov2Class{
         // dias
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr = DB::table("_viddsestatus_nov")
-                ->select('id', 'servicio_id', 'estatu_id', 'fecha_movimiento',
-                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
-                )
-                ->where('fecha_ingreso','>=', '2025-11-19 00:00:00')
+                ->select('id')
+                ->where('fecha_ingreso','>=', $this->fecha_desde)
                 ->whereBetween('fecha_movimiento',[$start_date_e, $end_date_e])
                 ->where('servicio_id', $value)
                 ->whereNotIn('ciudadano_id', [508833, 519442, 513061])
@@ -269,10 +248,10 @@ class ReporteDiarioNov2Class{
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr =  DB::table("_viddsestatus_nov")
                 ->select('id', 'servicio_id', 'estatu_id','fecha_movimiento',
-                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
+                    DB::raw("DATE_PART('day', fecha_movimiento - fecha_ingreso) AS dias")
                 )
-                ->where('fecha_ingreso','>=', $start_date_e)
-                ->where('fecha_ingreso','<=', $end_date_e)
+                ->where('fecha_ingreso','>=', $this->fecha_desde)
+                ->whereBetween('fecha_movimiento',[$start_date_e, $end_date_e])
                 ->where('servicio_id', $value)
                 ->whereNotIn('ciudadano_id', [508833, 519442, 513061])
                 ->whereNotIn('origen_id', [20])
@@ -298,7 +277,7 @@ class ReporteDiarioNov2Class{
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr = DB::table("_viddsestatus_nov")
                 ->select('id', 'servicio_id', 'estatu_id', 'fecha_movimiento',
-                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
+                    DB::raw("DATE_PART('day', fecha_movimiento - fecha_ingreso ) AS dias")
                 )
                 ->where('fecha_ingreso','>=', $this->fecha_desde)
                 ->whereBetween('fecha_movimiento',[$start_date_e, $end_date_e])
@@ -329,10 +308,10 @@ class ReporteDiarioNov2Class{
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr =  DB::table("_videpdenservestatus")
                 ->select('id', 'servicio_id', 'estatu_id','fecha_movimiento',
-                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
+                    DB::raw("DATE_PART('day', fecha_movimiento - fecha_ingreso) AS dias")
                 )
-                ->where('fecha_ingreso','>=', $start_date_e)
-                ->where('fecha_ingreso','<=', $end_date_e)
+                ->where('fecha_ingreso','>=', $this->fecha_desde)
+                ->whereBetween('fecha_movimiento',[$start_date_e, $end_date_e])
                 ->where('servicio_id', $value)
                 ->where('origen_id',20)
                 ->whereIn('ue_id', [16, 18, 19])
@@ -356,7 +335,7 @@ class ReporteDiarioNov2Class{
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr = DB::table("_videpdenservestatus")
                 ->select('id', 'servicio_id', 'estatu_id', 'fecha_movimiento',
-                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
+                    DB::raw("DATE_PART('day', fecha_movimiento - fecha_ingreso) AS dias")
                 )
                 ->where('fecha_ingreso','>=', $this->fecha_desde)
                 ->whereBetween('fecha_movimiento',[$start_date_e, $end_date_e])
@@ -387,10 +366,10 @@ class ReporteDiarioNov2Class{
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr =  DB::table("_videpdenservestatus")
                 ->select('id', 'servicio_id', 'estatu_id','fecha_movimiento',
-                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
+                    DB::raw("DATE_PART('day', fecha_movimiento - fecha_ingreso) AS dias")
                 )
-                ->where('fecha_ingreso','>=', $start_date_e)
-                ->where('fecha_ingreso','<=', $end_date_e)
+                ->where('fecha_ingreso','>=', $this->fecha_desde)
+                ->whereBetween('fecha_movimiento',[$start_date_e, $end_date_e])
                 ->where('servicio_id', $value)
                 ->whereIn('ciudadano_id', [508833, 519442, 513061])
                 ->whereIn('ue_id', [16, 18, 19])
@@ -414,7 +393,7 @@ class ReporteDiarioNov2Class{
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr = DB::table("_videpdenservestatus")
                 ->select('id', 'servicio_id', 'estatu_id', 'fecha_movimiento',
-                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
+                    DB::raw("DATE_PART('day', fecha_movimiento - fecha_ingreso) AS dias")
                 )
                 ->where('fecha_ingreso','>=', $this->fecha_desde)
                 ->whereBetween('fecha_movimiento',[$start_date_e, $end_date_e])
@@ -443,9 +422,10 @@ class ReporteDiarioNov2Class{
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr =  DB::table("_vimov_filter_sm")
                 ->select('denuncia_id', 'sue_id', 'ue_id','fecha_ultimo_estatus',
-                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_ultimo_estatus) AS dias")
+                    DB::raw("DATE_PART('day', fecha_ultimo_estatus - fecha_ingreso) AS dias")
                 )
                 ->where('fecha_ingreso','>=', $this->fecha_desde)
+                ->whereBetween('fecha_movimiento',[$start_date_e, $end_date_e])
                 ->whereBetween('fecha_ultimo_estatus',[$start_date_e, $end_date_e])
                 ->where('sue_id', $value)
                 ->whereIn('ue_id', [18,21,22])
