@@ -147,9 +147,9 @@ class ReporteDiarioNov2Controller extends Controller{
 
         // Inicia procesamiento de datos
 
-        $DC = new ReporteDiarioNov2Class();
+        $DC = new ReporteDiarioNov2Class($start_date, $end_date);
 
-        $Items = $DC->getRecibidas($start_date, $end_date) ?? [];
+        $Items = $DC->getRecibidas();
         $i = 4;
         foreach ($Items as $Item) {
             $setCell(
@@ -162,7 +162,7 @@ class ReporteDiarioNov2Controller extends Controller{
             $i++;
         }
 
-        $ItemsOrigenes = $DC->getOrigenes($start_date, $end_date) ?? [];
+        $ItemsOrigenes = $DC->getOrigenes();
         $i = 14;
         foreach ($ItemsOrigenes as $Item) {
             $setCell(
@@ -177,8 +177,8 @@ class ReporteDiarioNov2Controller extends Controller{
 
 
 
-        $PendientesPromCiudadano = $DC->getPendientesPromCiudadano($start_date, $end_date) ?? [];
-        $AtendidasPromCiudadanos = $DC->getAtendidasPromCiudadano($start_date, $end_date) ?? [];
+        $PendientesPromCiudadano = $DC->getPendientesPromCiudadano();
+        $AtendidasPromCiudadanos = $DC->getAtendidasPromCiudadano();
         $i = 25;
         $letrasA = ['B','D','F','H','J','L'];
         $letrasP = ['C','E','G','I','K','M'];
@@ -193,8 +193,8 @@ class ReporteDiarioNov2Controller extends Controller{
         }
 
         // Delegados
-        $PendientesPromDelegados = $DC->getPendientesPromDelegados($start_date, $end_date) ?? [];
-        $AtendidasPromDelegados = $DC->getAtendidasPromDelegados($start_date, $end_date) ?? [];
+        $PendientesPromDelegados = $DC->getPendientesPromDelegados();
+        $AtendidasPromDelegados = $DC->getAtendidasPromDelegados();
         $i = 26;
         foreach ($ii as $key => $value) {
             $Item = $AtendidasPromDelegados[$value];
@@ -204,8 +204,8 @@ class ReporteDiarioNov2Controller extends Controller{
         }
 
         // Instituciones
-        $PendientesPromInstitucion = $DC->getPendientesPromInstitucion($start_date, $end_date) ?? [];
-        $AtendidasPromInstitucion = $DC->getAtendidasPromInstitucion($start_date, $end_date) ?? [];
+        $PendientesPromInstitucion = $DC->getPendientesPromInstitucion();
+        $AtendidasPromInstitucion = $DC->getAtendidasPromInstitucion();
         $i = 27;
         foreach ($ii as $key => $value) {
             $Item = $AtendidasPromInstitucion[$value];
@@ -216,8 +216,8 @@ class ReporteDiarioNov2Controller extends Controller{
 
 
 
-        $PendientesProm = $DC->getPendientesProm($start_date, $end_date) ?? [];
-        $AtendidasProm = $DC->getAtendidasProm($start_date, $end_date) ?? [];
+        $PendientesProm = $DC->getPendientesProm();
+        $AtendidasProm = $DC->getAtendidasProm();
 
         $ii = [3, 1, 0, 5, 2, 4];
         $i = 31;
@@ -236,7 +236,7 @@ class ReporteDiarioNov2Controller extends Controller{
             $i++;
         }
 
-        $Items = $DC->getLlamadas($start_date, $end_date) ?? [];
+        $Items = $DC->getLlamadas();
 
         $i = 50;
         foreach ($Items as $Item) {

@@ -21,8 +21,12 @@ class ReporteDiarioNov2Class{
 
     protected $arrayOrigenes;
 
+    protected $start_date;
+    protected $end_date;
+    protected $fecha_desde;
 
-    public function __construct(){
+
+    public function __construct($start_date,$end_date){
         // Inicializar como colección
         $this->vectorServicios = collect([
             ['sue_id' => 476, 'Servicio' => 'FUGA DE AGUA', 'R' => 0, 'A' => 0, "PROM_PEN" => 0, "DIAS_PEN" => 0, "PROM_ATE" => 0, "DIAS_ATE" => 0, "LLAMADAS" => 0, "TOTAL" => 0, "DIAS_PEN_DEL" => 0, "DIAS_ATE_DEL" => 0, "DIAS_PEN_INS" => 0, "DIAS_ATE_INS" => 0],
@@ -47,9 +51,13 @@ class ReporteDiarioNov2Class{
         // Asegurar que estas propiedades sean colecciones
         $this->arrCoorDR             = collect([]); // Inicializar con tus valores reales
 
+        $this->start_date = $start_date. " 00:00:01";
+        $this->end_date = $start_date. " 23:59:59";
+        $this->fecha_desde = "2025-11-19 00:00:00";
+
     }
 
-    public function getRecibidas($start_date,$end_date){
+    public function getRecibidas(){
 
 
 //        foreach ($this->ServiciosPrincipales as $key => $value) {
@@ -72,8 +80,8 @@ class ReporteDiarioNov2Class{
 //
 //        }
 
-        $start_date_e = $start_date;
-        $end_date_e = $end_date;
+        $start_date_e = $this->start_date;
+        $end_date_e = $this->end_date;
 
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr =  DB::table("_viddsestatus_nov")
@@ -101,15 +109,18 @@ class ReporteDiarioNov2Class{
 
     }
 
-    public function getAtendidas($start_date,$end_date){
+    public function getAtendidas(){
+
+        $start_date_e = $this->start_date;
+        $end_date_e = $this->end_date;
 
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr =  DB::table("_viddsestatus_nov")
                 ->select(DB::raw('COUNT(estatu_id) AS suma_ue_id'),'servicio_id','estatu_id')
                 ->where('servicio_id', $value)
                 ->whereIn('estatu_id', [17])
-                ->where('fecha_movimiento', '>=', $start_date." 00:00:00")
-                ->where('fecha_movimiento', '<=', $end_date." 23:59:59")
+                ->where('fecha_movimiento', '>=', $start_date_e)
+                ->where('fecha_movimiento', '<=', $end_date_e)
                 ->groupBy('servicio_id','estatu_id')
                 ->get();
             if (!$arr->isEmpty()) {
@@ -124,10 +135,10 @@ class ReporteDiarioNov2Class{
 
     }
 
-    public function getOrigenes($start_date,$end_date){
+    public function getOrigenes(){
 
-        $start_date_e = $start_date;
-        $end_date_e = $end_date;
+        $start_date_e = $this->start_date;
+        $end_date_e = $this->end_date;
 
         // 1. Consulta única agrupada por origen_id
         $resultado = DB::table('_viddsestatus_nov')
@@ -168,10 +179,10 @@ class ReporteDiarioNov2Class{
     }
 
 
-    public function getPendientesProm($start_date,$end_date){
+    public function getPendientesProm(){
 
-        $start_date_e = $start_date;
-        $end_date_e = $end_date;
+        $start_date_e = $this->start_date;
+        $end_date_e = $this->end_date;
 
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr =  DB::table("_viddsestatus_nov")
@@ -197,10 +208,10 @@ class ReporteDiarioNov2Class{
 
     }
 
-    public function getAtendidasProm($start_date,$end_date){
+    public function getAtendidasProm(){
 
-        $start_date_e = $start_date;
-        $end_date_e = $end_date;
+        $start_date_e = $this->start_date;
+        $end_date_e = $this->end_date;
 
         // promedio
         foreach ($this->ServiciosPrincipales as $key => $value) {
@@ -249,10 +260,11 @@ class ReporteDiarioNov2Class{
 
     }
 
-    public function getPendientesPromCiudadano($start_date,$end_date){
+    public function getPendientesPromCiudadano(){
 
-        $start_date_e = $start_date;
-        $end_date_e = $end_date;
+        $start_date_e = $this->start_date;
+        $end_date_e = $this->end_date;
+
 //        _vimov_filter_sm
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr =  DB::table("_viddsestatus_nov")
@@ -277,10 +289,10 @@ class ReporteDiarioNov2Class{
         return $this->vectorServicios;
 
     }
-    public function getAtendidasPromCiudadano($start_date,$end_date){
+    public function getAtendidasPromCiudadano(){
 
-        $start_date_e = $start_date;
-        $end_date_e = $end_date;
+        $start_date_e = $this->start_date;
+        $end_date_e = $this->end_date;
 
         // dias
         foreach ($this->ServiciosPrincipales as $key => $value) {
@@ -288,7 +300,7 @@ class ReporteDiarioNov2Class{
                 ->select('id', 'servicio_id', 'estatu_id', 'fecha_movimiento',
                     DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
                 )
-                ->where('fecha_ingreso','>=', '2025-11-19 00:00:00')
+                ->where('fecha_ingreso','>=', $this->fecha_desde)
                 ->whereBetween('fecha_movimiento',[$start_date_e, $end_date_e])
                 ->where('servicio_id', $value)
                 ->whereNotIn('ciudadano_id', [508833, 519442, 513061])
@@ -308,10 +320,11 @@ class ReporteDiarioNov2Class{
 
     }
 
-    public function getPendientesPromDelegados($start_date,$end_date){
+    public function getPendientesPromDelegados(){
 
-        $start_date_e = $start_date;
-        $end_date_e = $end_date;
+        $start_date_e = $this->start_date;
+        $end_date_e = $this->end_date;
+
 //        _vimov_filter_sm
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr =  DB::table("_videpdenservestatus")
@@ -334,10 +347,10 @@ class ReporteDiarioNov2Class{
         return $this->vectorServicios;
 
     }
-    public function getAtendidasPromDelegados($start_date,$end_date){
+    public function getAtendidasPromDelegados(){
 
-        $start_date_e = $start_date;
-        $end_date_e = $end_date;
+        $start_date_e = $this->start_date;
+        $end_date_e = $this->end_date;
 
         // dias
         foreach ($this->ServiciosPrincipales as $key => $value) {
@@ -345,7 +358,7 @@ class ReporteDiarioNov2Class{
                 ->select('id', 'servicio_id', 'estatu_id', 'fecha_movimiento',
                     DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
                 )
-                ->where('fecha_ingreso','>=', '2025-11-19 00:00:00')
+                ->where('fecha_ingreso','>=', $this->fecha_desde)
                 ->whereBetween('fecha_movimiento',[$start_date_e, $end_date_e])
                 ->where('servicio_id', $value)
                 ->where('origen_id',20)
@@ -364,10 +377,10 @@ class ReporteDiarioNov2Class{
 
     }
 
-    public function getPendientesPromInstitucion($start_date,$end_date){
+    public function getPendientesPromInstitucion(){
 
-        $start_date_e = $start_date;
-        $end_date_e = $end_date;
+        $start_date_e = $this->start_date;
+        $end_date_e = $this->end_date;
 
 //        _vimov_filter_sm
 
@@ -392,10 +405,10 @@ class ReporteDiarioNov2Class{
         return $this->vectorServicios;
 
     }
-    public function getAtendidasPromInstitucion($start_date,$end_date){
+    public function getAtendidasPromInstitucion(){
 
-        $start_date_e = $start_date;
-        $end_date_e = $end_date;
+        $start_date_e = $this->start_date;
+        $end_date_e = $this->end_date;
 
         // dias
         foreach ($this->ServiciosPrincipales as $key => $value) {
@@ -403,7 +416,7 @@ class ReporteDiarioNov2Class{
                 ->select('id', 'servicio_id', 'estatu_id', 'fecha_movimiento',
                     DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
                 )
-                ->where('fecha_ingreso','>=', '2025-11-19')
+                ->where('fecha_ingreso','>=', $this->fecha_desde)
                 ->whereBetween('fecha_movimiento',[$start_date_e, $end_date_e])
                 ->where('servicio_id', $value)
                 ->whereIn('ciudadano_id', [508833, 519442, 513061])
@@ -422,17 +435,17 @@ class ReporteDiarioNov2Class{
 
     }
 
-    public function getLlamadas($start_date,$end_date){
+    public function getLlamadas(){
 
-        $start_date_e = $start_date." 00:00:01";
-        $end_date_e = $end_date." 23:59:59";
+        $start_date_e = $this->start_date;
+        $end_date_e = $this->end_date;
 
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr =  DB::table("_vimov_filter_sm")
                 ->select('denuncia_id', 'sue_id', 'ue_id','fecha_ultimo_estatus',
                     DB::raw("DATE_PART('day', '$end_date_e' - fecha_ultimo_estatus) AS dias")
                 )
-                ->where('fecha_ingreso','>=', '2025-11-19 00:00:01')
+                ->where('fecha_ingreso','>=', $this->fecha_desde)
                 ->whereBetween('fecha_ultimo_estatus',[$start_date_e, $end_date_e])
                 ->where('sue_id', $value)
                 ->whereIn('ue_id', [18,21,22])
