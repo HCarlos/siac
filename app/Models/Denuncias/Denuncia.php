@@ -174,21 +174,24 @@ class Denuncia extends Model
     }
 
     public function servicios(){
-        return $this->belongsToMany(Servicio::class,'denuncia_servicio','denuncia_id','servicio_id');
+        return $this->belongsToMany(Servicio::class,'denuncia_servicio','denuncia_id','servicio_id')
+            ->withPivot( 'created_at','updated_at');
     }
 
     public function ciudadano(){
         return $this->hasOne(User::class,'id','ciudadano_id');
     }
     public function ciudadanos(){
-        return $this->belongsToMany(User::class,'ciudadano_denuncia','denuncia_id','ciudadano_id');
+        return $this->belongsToMany(User::class,'ciudadano_denuncia','denuncia_id','ciudadano_id')
+            ->withPivot( 'created_at','updated_at');
     }
 
     public function creadopor(){
         return $this->hasOne(User::class,'id','creadopor_id');
     }
     public function creadospor(){
-        return $this->belongsToMany(User::class,'creadopor_denuncia','denuncia_id','creadopor_id');
+        return $this->belongsToMany(User::class,'creadopor_denuncia','denuncia_id','creadopor_id')
+            ->withPivot( 'created_at','updated_at');
     }
 
     public function modificadopor(){
@@ -196,7 +199,7 @@ class Denuncia extends Model
     }
     public function modificadospor(){
         return $this->belongsToMany(User::class,'denuncia_modificadopor','denuncia_id','modificadopor_id')
-            ->withPivot( 'campos_modificados','antes','despues');
+            ->withPivot( 'campos_modificados','antes','despues','created_at','updated_at');
     }
 
     public function denuncia_modificado(){

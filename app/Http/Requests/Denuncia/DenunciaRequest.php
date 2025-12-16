@@ -242,7 +242,10 @@ class DenunciaRequest extends FormRequest
                 ->where('servicio_id','=',$this->servicio_id)
                 ->get();
             if ($Obj->count() <= 0 )
-                $Obj = $Item->servicios()->attach($this->servicio_id);
+                $Obj = $Item->servicios()->attach($this->servicio_id, [
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
 
             // Buscamos en denuncia_dependencia_servicio_estatus
             $Obj = DB::table('denuncia_dependencia_servicio_estatus')
@@ -260,7 +263,10 @@ class DenunciaRequest extends FormRequest
                 ->where('ciudadano_id','=',$this->usuario_id)
                 ->get();
             if ($Obj->count() <= 0 )
-                $Obj = $Item->ciudadanos()->attach($this->usuario_id);
+                $Obj = $Item->ciudadanos()->attach($this->usuario_id, [
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
 
             // Buscamos en creadopor_denuncia
             $Obj = DB::table('creadopor_denuncia')
@@ -272,20 +278,15 @@ class DenunciaRequest extends FormRequest
 
             // Buscamos en denuncia_modificadopor
 
-//            $Obj = DB::table('denuncia_modificadopor')
-//                ->where('denuncia_id','=',$Item->id)
-//                ->where('modificadopor_id','=',$this->modificadopor_id)
-//                ->get();
-//            if ($Obj->count() <= 0 )
-//                $Obj = $Item->modificadospor()->attach($this->modificadopor_id);
-
             if ($item_nuevo != null) {
                 $arrMod = FuncionesController::loQueSeModifico($Item, $item_viejito, $item_nuevo);
                 if ($arrMod['campos_modificados'] !== '' && $arrMod['antes'] !== '' && $arrMod['despues'] !== '') {
                     $Obj = $Item->modificadospor()->attach($Item->modificadopor_id, [
                         'campos_modificados' => $arrMod['campos_modificados'],
                         'antes' => $arrMod['antes'],
-                        'despues' => $arrMod['despues']
+                        'despues' => $arrMod['despues'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]);
                 }
             }

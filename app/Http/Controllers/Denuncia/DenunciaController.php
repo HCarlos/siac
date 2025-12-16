@@ -286,10 +286,8 @@ class DenunciaController extends Controller{
     protected function updateItem(DenunciaRequest $request){
 
         $item = $request->manage();
-//        dd($item);
         if (!isset($item->id)) {
             abort(422);
-//            dd($item);
         }
         $this->msg = "Registro Guardado con éxito!";
         session(['msg' => $this->msg]);
