@@ -55,6 +55,8 @@ class ReporteDiarioNov2Class{
         $this->end_date = $end_date. " 23:59:59";
         $this->fecha_desde = "2025-11-19 00:00:00";
 
+//        dd($start_date.' '.$end_date.' '.$this->fecha_desde);
+
     }
 
     public function getRecibidas(){

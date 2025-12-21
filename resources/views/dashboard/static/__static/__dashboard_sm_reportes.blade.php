@@ -26,38 +26,38 @@
                                 <div class="date-range-container">
                                     <div class="date-picker-wrapper">
                                         <!-- Fecha inicial -->
-{{--                                        <div class="date-picker">--}}
-{{--                                            <label for="start_date" class="date-label">--}}
-{{--                                                <svg class="date-icon" viewBox="0 0 24 24" fill="none"--}}
-{{--                                                     stroke="currentColor" stroke-width="2">--}}
-{{--                                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>--}}
-{{--                                                    <line x1="16" y1="2" x2="16" y2="6"></line>--}}
-{{--                                                    <line x1="8" y1="2" x2="8" y2="6"></line>--}}
-{{--                                                    <line x1="3" y1="10" x2="21" y2="10"></line>--}}
-{{--                                                </svg>--}}
-{{--                                                <span>Fecha Inicial</span>--}}
-{{--                                            </label>--}}
-{{--                                            <div class="date-input-wrapper">--}}
-{{--                                                <input--}}
-{{--                                                    type="date"--}}
-{{--                                                    id="start_date"--}}
-{{--                                                    name="start_date"--}}
-{{--                                                    value="{{ $start_date ?? date('Y-m-01') }}"--}}
-{{--                                                    class="date-input"--}}
-{{--                                                    required--}}
-{{--                                                >--}}
-{{--                                                <div class="date-input-focus"></div>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
+                                        <div class="date-picker">
+                                            <label for="start_date" class="date-label">
+                                                <svg class="date-icon" viewBox="0 0 24 24" fill="none"
+                                                     stroke="currentColor" stroke-width="2">
+                                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                                </svg>
+                                                <span>Fecha Inicial</span>
+                                            </label>
+                                            <div class="date-input-wrapper">
+                                                <input
+                                                    type="date"
+                                                    id="start_date"
+                                                    name="start_date"
+                                                    value="{{ $start_date ?? date('Y-m-01') }}"
+                                                    class="date-input"
+                                                    required
+                                                >
+                                                <div class="date-input-focus"></div>
+                                            </div>
+                                        </div>
 
                                         <!-- Separador -->
-{{--                                        <div class="date-separator">--}}
-{{--                                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none"--}}
-{{--                                                 stroke="currentColor" stroke-width="2">--}}
-{{--                                                <path d="M5 12h14"></path>--}}
-{{--                                                <path d="m12 5 7 7-7 7"></path>--}}
-{{--                                            </svg>--}}
-{{--                                        </div>--}}
+                                        <div class="date-separator">
+                                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none"
+                                                 stroke="currentColor" stroke-width="2">
+                                                <path d="M5 12h14"></path>
+                                                <path d="m12 5 7 7-7 7"></path>
+                                            </svg>
+                                        </div>
 
                                         <!-- Fecha final -->
                                         <div class="date-picker">
@@ -368,7 +368,7 @@
             //     return false;
             // }
 
-            const _start_date = document.getElementById('end_date').value;
+            const _start_date = document.getElementById('start_date').value;
             const _end_date = document.getElementById('end_date').value;
 
             const radioButtons = document.getElementsByName('tipo_reporte');
