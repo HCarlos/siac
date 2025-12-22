@@ -170,7 +170,7 @@ class ReporteDiarioNov2Class{
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr =  DB::table("_viddsestatus_nov")
                 ->select('id', 'servicio_id', 'estatu_id','fecha_movimiento',
-                    DB::raw("DATE_PART('day', fecha_movimiento - fecha_ingreso) AS dias")
+                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_ingreso) AS dias")
                 )
                 ->where('fecha_ingreso','>=', $this->fecha_desde)
                 ->whereBetween('fecha_movimiento',[$this->fecha_desde, $end_date_e])
@@ -247,10 +247,11 @@ class ReporteDiarioNov2Class{
         $end_date_e = $this->end_date;
 
 //        _vimov_filter_sm
+//        DB::raw("DATE_PART('day', fecha_movimiento - fecha_ingreso) AS dias")
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr =  DB::table("_viddsestatus_nov")
                 ->select('id', 'servicio_id', 'estatu_id','fecha_movimiento',
-                    DB::raw("DATE_PART('day', fecha_movimiento - fecha_ingreso) AS dias")
+                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
                 )
                 ->where('fecha_ingreso','>=', $this->fecha_desde)
                 ->whereBetween('fecha_movimiento',[$this->fecha_desde, $end_date_e])
@@ -310,7 +311,7 @@ class ReporteDiarioNov2Class{
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr =  DB::table("_videpdenservestatus")
                 ->select('id', 'servicio_id', 'estatu_id','fecha_movimiento',
-                    DB::raw("DATE_PART('day', fecha_movimiento - fecha_ingreso) AS dias")
+                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
                 )
                 ->where('fecha_ingreso','>=', $this->fecha_desde)
                 ->whereBetween('fecha_movimiento',[$this->fecha_desde, $end_date_e])
@@ -368,7 +369,7 @@ class ReporteDiarioNov2Class{
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr =  DB::table("_videpdenservestatus")
                 ->select('id', 'servicio_id', 'estatu_id','fecha_movimiento',
-                    DB::raw("DATE_PART('day', fecha_movimiento - fecha_ingreso) AS dias")
+                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
                 )
                 ->where('fecha_ingreso','>=', $this->fecha_desde)
                 ->whereBetween('fecha_movimiento',[$this->fecha_desde, $end_date_e])
