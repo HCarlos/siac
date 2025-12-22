@@ -138,6 +138,9 @@
                                                 <li>📋 Consulta por rango de fechas</li>
                                                 <li>⚡ Rápida generación</li>
                                                 <li>📄 Formato simplificado</li>
+                                                <li>📅 Gráfico 1, 2 y 6: Aplica el rango de fecha</li>
+                                                <li>📆 Gráfico 3, 4 y 5: Aplica desde 19-Nov-2025 a la Fecha Final</li>
+
                                             </ul>
                                         </div>
                                         <div class="radio-selector">
