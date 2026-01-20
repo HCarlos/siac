@@ -11,7 +11,7 @@ use App\Http\Controllers\Funciones\LoadTemplateExcel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class ReporteDiarioNov2Controller extends Controller{
+class ReporteDiarioNov2Controller_old_1 extends Controller{
 
     public function __construct(){
         $this->middleware('auth');
@@ -177,8 +177,8 @@ class ReporteDiarioNov2Controller extends Controller{
 
 
 
-        $PendientesPromCiudadano = $DC->getPendientesCiudadanos();
-        $AtendidasPromCiudadanos = $DC->getAtendidasCiudadanos();
+        $PendientesPromCiudadano = $DC->getPendientesPromCiudadano();
+        $AtendidasPromCiudadanos = $DC->getAtendidasPromCiudadano();
         $i = 25;
         $letrasA = ['B','D','F','H','J','L'];
         $letrasP = ['C','E','G','I','K','M'];
@@ -193,8 +193,8 @@ class ReporteDiarioNov2Controller extends Controller{
         }
 
         // Delegados
-        $PendientesPromDelegados = $DC->getPendientesDelegados();
-        $AtendidasPromDelegados = $DC->getAtendidasDelegados();
+        $PendientesPromDelegados = $DC->getPendientesPromDelegados();
+        $AtendidasPromDelegados = $DC->getAtendidasPromDelegados();
         $i = 26;
         foreach ($ii as $key => $value) {
             $Item = $AtendidasPromDelegados[$value];
@@ -204,8 +204,8 @@ class ReporteDiarioNov2Controller extends Controller{
         }
 
         // Instituciones
-        $PendientesPromInstitucion = $DC->getPendientesInternas();
-        $AtendidasPromInstitucion = $DC->getAtendidasInternas();
+        $PendientesPromInstitucion = $DC->getPendientesPromInstitucion();
+        $AtendidasPromInstitucion = $DC->getAtendidasPromInstitucion();
         $i = 27;
         foreach ($ii as $key => $value) {
             $Item = $AtendidasPromInstitucion[$value];
