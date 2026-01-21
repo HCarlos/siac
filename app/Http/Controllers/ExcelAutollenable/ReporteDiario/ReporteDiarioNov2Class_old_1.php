@@ -420,10 +420,8 @@ class ReporteDiarioNov2Class_old_1{
     }
 
     public function getLlamadas(){
-
         $start_date_e = $this->start_date;
         $end_date_e = $this->end_date;
-
         foreach ($this->ServiciosPrincipales as $key => $value) {
             $arr =  DB::table("_vimov_filter_sm")
                 ->select('denuncia_id', 'sue_id', 'ue_id','fecha_ultimo_estatus',
@@ -435,9 +433,6 @@ class ReporteDiarioNov2Class_old_1{
                 ->where('sue_id', $value)
                 ->whereIn('ue_id', [18,21,22])
                 ->get();
-
-//            dd($arr);
-//
             if (!$arr->isEmpty()) {
                 $servicio = $this->vectorServicios[$key];
                 $servicio['LLAMADAS'] = $arr->count('denuncia_id');
@@ -445,9 +440,7 @@ class ReporteDiarioNov2Class_old_1{
             }
 
         }
-
         return $this->vectorServicios;
-
     }
 
 

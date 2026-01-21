@@ -519,6 +519,9 @@ class ReporteDiarioNov2Class{
         return $this->vectorServicios;
     }
 
+//->where('delegado_id','>=', 2)
+
+
     /**
      * Obtiene conteo y promedio de días para PENDIENTES INTERNAS
      * (ciudadano_id IN [508833, 519442, 513061])
@@ -579,28 +582,49 @@ class ReporteDiarioNov2Class{
                 $this->vectorServicios[$key] = $servicio;
             }
         }
-
         return $this->vectorServicios;
     }
 
+//->where('delegado_id','<', 2)
+
+
+//    public function getLlamadas(){
+//        $start_date_e = $this->start_date;
+//        $end_date_e = $this->end_date;
+//        foreach ($this->ServiciosPrincipales as $key => $value) {
+//            $arr = _viMovSM::select(
+//                    'id', 'denuncia_id', 'servicio_id', 'estatu_id', 'origen_id', 'ciudadano_id',
+//                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
+//                )
+//                ->whereIn('denuncia_id', $this->denuncias_ids)
+//                ->where('servicio_id', $value)
+//                ->whereIn('estatu_id', [18,21,22])
+//                ->get();
+//            if (!$arr->isEmpty()) {
+//                $servicio = $this->vectorServicios[$key];
+//                $servicio['LLAMADAS'] = $arr->count('denuncia_id');
+//                $this->vectorServicios[$key] = $servicio;
+//            }
+//
+//        }
+//        return $this->vectorServicios;
+//    }
+
 
     public function getLlamadas(){
-
         $start_date_e = $this->start_date;
         $end_date_e = $this->end_date;
-
         foreach ($this->ServiciosPrincipales as $key => $value) {
-            $arr = _viMovSM::select(
-                    'id', 'denuncia_id', 'servicio_id', 'estatu_id', 'origen_id', 'ciudadano_id',
-                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
+            $arr =  DB::table("_vimov_filter_sm")
+                ->select('denuncia_id', 'sue_id', 'ue_id','fecha_ultimo_estatus',
+                    DB::raw("DATE_PART('day', fecha_ultimo_estatus - fecha_ingreso) AS dias")
                 )
-                ->whereIn('denuncia_id', $this->denuncias_ids)
-                ->where('servicio_id', $value)
-                ->whereIn('estatu_id', [18,21,22])
+                ->where('fecha_ingreso','>=', $this->fecha_desde)
+                ->whereBetween('fecha_movimiento',[$start_date_e, $end_date_e])
+                ->whereBetween('fecha_ultimo_estatus',[$start_date_e, $end_date_e])
+                ->where('sue_id', $value)
+                ->whereIn('ue_id', [18,21,22])
                 ->get();
-
-//            dd($arr);
-//
             if (!$arr->isEmpty()) {
                 $servicio = $this->vectorServicios[$key];
                 $servicio['LLAMADAS'] = $arr->count('denuncia_id');
@@ -608,10 +632,9 @@ class ReporteDiarioNov2Class{
             }
 
         }
-
         return $this->vectorServicios;
-
     }
+
 
 
 }
