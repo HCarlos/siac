@@ -47,6 +47,10 @@ trait UserAttributes
         return $this->roles()->allRelatedIds('id')->implode('|','id');
     }
 
+    public function getRoleIdArrayAttribute(){
+        return $this->roles()->pluck('role_id')->toArray();
+    }
+
     public function getRoleNameStrArrayAttribute(){
         return $this->roles()->pluck('name')->implode('|','name');
     }

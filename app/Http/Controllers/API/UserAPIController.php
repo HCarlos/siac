@@ -24,7 +24,7 @@ class UserAPIController extends Controller{
     'GAOA790113MTCMCZ05','VELK800112MTCRPR11','Admin','SysOp','TUBI910216MNEFRS07','REAC790214HTCYBR04',
     'LAGB851220HTCMRR06','LOGE770331HTCPRS03','MAJR721218MTCYMS02','FUGA930204HCSNNL00','BERG830418HTCLMR04',
     'VIJD970811MTCLML01','VASN730629MTCZLR05','CASJ761225HTCRRS03','AEBJ860806HDFBRM09','OAPS951108HTCLRR04',
-    'PEMA881014MCSRRN03','PEHE680228HDFRRN02','NIPG720308HTCCRD06','HIRC711126HTCDZR01',
+    'PEMA881014MCSRRN03','PEHE680228HDFRRN02','NIPG720308HTCCRD06','HIRC711126HTCDZR01','OICJ980824HTCRSN00',
     ];
 
     public function users():JsonResponse {
@@ -55,7 +55,13 @@ class UserAPIController extends Controller{
             return response()->json($response);
         }
 
-        $user = User::where("username",trim($data->username))->first();
+        $user = User::select([
+            'id', 'username','password', 'email', 'nombre','ap_paterno','ap_materno',
+            'curp','celulares', 'fecha_nacimiento','filename_thumb',
+        ])
+            ->where("username",trim($data->username))
+            ->first();
+        $user->makeHidden('role_id_str_array');
         if ($user){
             $pwd = $data->password;
             $pwd2 = strtoupper(trim($pwd));
@@ -67,7 +73,7 @@ class UserAPIController extends Controller{
                 $response["status"] = 1;
                 $response["access_token"] = $token->plainTextToken;
                 $response["token_type"] = 'Bearer';
-                $response["msg"] = $token->plainTextToken;
+                $response["msg"] = "OK";
                 $response["user"] = $user;
                 $response["api_version"] = "1.2.2";
                 $response["app_version"] = "1.5.4";

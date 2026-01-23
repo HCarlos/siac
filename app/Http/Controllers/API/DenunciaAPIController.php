@@ -7,6 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\DenunciaAddImageAPIRequest;
 use App\Http\Requests\API\DenunciaAddRespuestaAPIRequest;
 use App\Http\Requests\API\DenunciaAPIRequest;
+use App\Models\Catalogos\Estatu;
+use App\Models\Catalogos\Servicio;
+use App\Models\Denuncias\_viMovSM;
+use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
+use App\Models\Denuncias\Imagene;
+use App\Models\Denuncias\Respuesta;
 use App\Models\Mobiles\Denunciamobile;
 use App\Models\Mobiles\Imagemobile;
 use App\Models\Mobiles\Respuestamobile;
@@ -133,6 +139,24 @@ class DenunciaAPIController extends Controller{
     }
 
 
+    protected function getImagenesFromRoles(int $denuncia_id, int $dependencia_id, int $servicio_id) {
+        $imagenes = Imagene::select(['id', 'fecha','image_thumb','momento','denuncia__id','user__id','parent__id']
+        )->where("denuncia__id",$denuncia_id)
+            ->OrderByDesc("id")
+            ->get();
+        $imgs = [];
+        foreach ($imagenes as $imagen){
+            $fecha               = (new Carbon($imagen->fecha))->format('d-m-Y H:i:s');
+            $path = "/storage/denuncia/";
+            $imgs[] = [
+                "fecha"          => $fecha,
+                "url_thumb"      => config("atemun.public_url").$path.$imagen->image_thumb,
+            ];
+        }
+        return $imgs;
+    }
+
+
     // Obtenemos sus respuestas
     protected function getRespuestas(int $denunciamobile_id) {
         $respuestas = Respuestamobile::select(['id','fecha','respuesta','observaciones', 'user_id'])
@@ -152,6 +176,84 @@ class DenunciaAPIController extends Controller{
         return $respuestas;
     }
 
+    protected function getRespuestasFromRoles(int $denuncia_id, int $dependencia_id, int $servicio_id) {
+        $respuestas = Denuncia_Dependencia_Servicio::select(['id',
+            'denuncia_id','dependencia_id','servicio_id','estatu_id','fecha_movimiento',
+            'observaciones','favorable','fue_leida','creadopor_id',])
+            ->where("denuncia_id",$denuncia_id)
+            ->OrderByDesc("id")
+            ->get();
+        foreach ($respuestas as $r){
+            $fecha_movimiento = (new Carbon($r->fecha_movimiento))->format('d-m-Y H:i:s');
+            $resp['denuncia_id']      = $r->denuncia_id;
+            $resp['dependencia_id']   = $r->dependencia_id;
+            $resp['servicio_id']      = $r->servicio_id;
+            $resp['estatu_id']        = $r->estatu_id;
+            $resp['fecha_movimiento'] = $fecha_movimiento;
+            $resp['observaciones']    = trim($r->observaciones);
+            $resp['favorable']        = $r->favorable;
+            $resp['fue_leida']        = $r->fue_leida;
+            $resp['creadopor_id']     = $r->creadopor_id;
+        }
+        return $respuestas;
+    }
+
+
+
+
+
+    public function getDenunciasForRole(Request $request): JsonResponse{
+        $response = ["status"=>0, "msg"=>""];
+        $data = (object) $request->all();
+        $user_id = $data->user_id;
+
+        $user = User::find($user_id);
+        $deps = $user->dependencia_id_array;
+
+        $dens = _viMovSM::query()
+            ->where("fecha_ingreso",'>','2025-11-18')
+            ->whereIn("dependencia_id",$deps)
+            ->where("estatu_id",19)
+            ->OrderByDesc("denuncia_id")
+            ->get();
+        if ($dens){
+            $response["status"] = 1;
+            $response["msg"] = "OK";
+            $denucias = array();
+            foreach ($dens as $den){
+
+                $fecha_ingreso = (new Carbon($den->fecha_ingreso))->format('d-m-Y H:i:s');
+                $fecha_ultimo_estatus = (new Carbon($den->fecha_ultimo_estatus))->format('d-m-Y H:i:s');
+                $sue      = Servicio::find($den->sue_id);
+                $ue      = Estatu::find($den->ue_id);
+                $d = [
+                    'solicitud_id'               => $den->denuncia_id,
+                    'fecha_ingreso'              => $fecha_ingreso,
+                    'fecha_ultimo_estatus'       => $fecha_ultimo_estatus,
+                    'denuncia'                   => $den->descripcion,
+                    'dependencia_id'             => $den->dependencia_id,
+                    'dependencia'                => $den->dependencia,
+                    'servicio_id'                => $den->servicio_id,
+                    'servicio'                   => $den->servicio,
+                    'servicio_ultimo_estatus_id' => $den->sue_id,
+                    'servicio_ultimo_estatus'    => $sue->servicio,
+                    'ultimo_estatus_id'          => $den->ue_id,
+                    'ultimo_estatus'             => $ue->estatus,
+                    'origen_id'                  => $den->origen_id,
+                    'origen'                     => $den->origen,
+                    'latitud'                    => $den->latitud,
+                    'longitud'                   => $den->longitud,
+                    'observaciones'              => $den->observaciones,
+                    'imagenes'                   => $this->getImagenesFromRoles($den->denuncia_id,$den->dependencia_id,$den->servicio_id),
+                    'respuestas'                 => $this->getRespuestasFromRoles($den->denuncia_id,$den->dependencia_id,$den->servicio_id),
+                ];
+                $denucias[] = $d;
+            }
+            $response["solicitudes"] = $denucias;
+        }
+        return response()->json($response);
+
+    }
 
 
 

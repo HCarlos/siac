@@ -67,6 +67,16 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $dates = ['fecha_nacimiento' => 'datetime:d-m-Y'];
 //    protected $dateFormat = [''];
 
+
+    protected $appends = [
+        'role_id_str_array',
+        'role_id_array',
+        'dependencia_id_array',
+        'str_genero',
+        'full_name',
+    ];
+
+
     public function scopeSearch($query, $search){
         if (!$search || $search == "" || $search == null) return $query;
         return $query->whereRaw("searchtext @@ to_tsquery('spanish', ?)", [$search])
