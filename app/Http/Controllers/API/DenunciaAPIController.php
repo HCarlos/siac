@@ -140,7 +140,7 @@ class DenunciaAPIController extends Controller{
 
 
     protected function getImagenesFromRoles(int $denuncia_id, int $dependencia_id, int $servicio_id) {
-        $imagenes = Imagene::select(['id', 'fecha','image_thumb','momento','denuncia__id','user__id','parent__id']
+        $imagenes = Imagene::select(['id', 'fecha','image','image_thumb','momento','denuncia__id','user__id','parent__id']
         )->where("denuncia__id",$denuncia_id)
             ->OrderByDesc("id")
             ->get();
@@ -150,6 +150,7 @@ class DenunciaAPIController extends Controller{
             $path = "/storage/denuncia/";
             $imgs[] = [
                 "fecha"          => $fecha,
+                "url_imagen"      => config("atemun.public_url").$path.$imagen->image,
                 "url_thumb"      => config("atemun.public_url").$path.$imagen->image_thumb,
             ];
         }
