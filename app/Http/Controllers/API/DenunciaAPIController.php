@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\DenunciaAddImageAPIRequest;
 use App\Http\Requests\API\DenunciaAddRespuestaAPIRequest;
 use App\Http\Requests\API\DenunciaAPIRequest;
+use App\Http\Requests\Denuncia\Imagene\ImagenAPIRequest;
 use App\Models\Catalogos\Estatu;
 use App\Models\Catalogos\Servicio;
 use App\Models\Denuncias\_viMovSM;
@@ -254,6 +255,19 @@ class DenunciaAPIController extends Controller{
         }
         return response()->json($response);
 
+    }
+
+
+
+
+    public function agregarImageDenuncia(ImagenAPIRequest $request):JsonResponse {
+        $response = ["status"=>0, "msg"=>"Ha ocurrido un error al subir la imagen"];
+        $den = (object)  $request->manage();
+        if ($den){
+            $response["status"] = 1;
+            $response["msg"] = "Su imagen fue agregada correctamente!";
+        }
+        return response()->json($response);
     }
 
 

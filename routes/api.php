@@ -75,6 +75,10 @@ Route::group(['prefix' => 'v1'], function () {
 //        });
 
 
+        Route::post('/denuncia/agregar/imagen', [DenunciaAPIController::class, 'agregarImageDenuncia']);
+
+
+
     });
 
 
