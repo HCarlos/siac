@@ -6,16 +6,21 @@
 namespace App\Http\Requests\Denuncia\Imagene;
 
 use App\Classes\MessageAlertClass;
+use App\Events\APIDenunciaEvent;
 use App\Http\Controllers\Funciones\FuncionesController;
 use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Imagene;
+use App\Models\Mobiles\Denunciamobile;
+use App\Models\Mobiles\Imagemobile;
 use Carbon\Carbon;
+use http\Exception;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ImagenAPIRequest extends FormRequest
@@ -48,7 +53,7 @@ class ImagenAPIRequest extends FormRequest
                 $item = Imagene::create($Item);
             }
             $this->attaches($item);
-            $this->saveFile($item);
+            $this->manageImage();
 
         }catch (QueryException $e){
             $Msg = new MessageAlertClass();
@@ -67,76 +72,53 @@ class ImagenAPIRequest extends FormRequest
         return $Item;
     }
 
-    public function detaches($Item){
-        $Item->users()->detach($this->user_id);
-        $den = Denuncia::find($this->denuncia_id);
-        $den->imagenes()->detach($this->id);
 
-        return $Item;
-    }
+    public function manageImage(){
 
-    public function saveFile($Item){
-        $file = $this->file('file');
-        $ext = $file->extension();
-        $name = sha1(date('YmdHis') . time()).'-'.$this->denuncia_id.'-'.$Item->id;
-        $fileName = $name.'.' . $ext;
-        $thumbnail = '_thumb_'.$name.'.' . $ext;
-//        dd($fileName);
-        $Item->update([
-            'root'          => config('atemun.public_url'),
-            'image'         => $fileName,
-            'image_thumb'   => $thumbnail,
-        ]);
-        Storage::disk($this->disk)->put($fileName, File::get($file));
+        $this->F = new FuncionesController();
 
-        if ( in_array($ext, array('JPG', 'PNG', 'GIF', 'BMP', 'jpg', 'png', 'gif', 'bmp'), true )  ) {
-            $IsFile = $this->F->fitImage($file, $thumbnail, 128, 128, true, $this->disk, "DENUNCIA_ROOT");
-//            dd($IsFile);
+        try {
+
+
+            $image = $this->imagen;
+            $imageContent = $this->imageBase64Content($image);
+
+            $file = $imageContent;
+            $randomImageNameSingular = $this->randomImageNameSingular();
+            $fileName = $randomImageNameSingular.'_'.$this->denuncia_id.'.png';
+            $fileName2 = '_'.$randomImageNameSingular.'_'.$this->denuncia_id.'.png';
+            $thumbnail = '_thumb_'.$randomImageNameSingular.'_'.$this->denuncia_id.'.png';
+//            Storage::disk($this->disk)->put($fileName, File::get($file) );
+            Storage::disk($this->disk)->put($fileName, $file );
+            $this->F->fitImage( $file, $fileName2, 300, 300, true, $this->disk,"DENUNCIA_ROOT" );
+            $this->F->fitImage( $file, $thumbnail, 128, 128, true, $this->disk,"DENUNCIA_ROOT", "png" );
+
+            event(new APIDenunciaEvent($this->denuncia_id, $this->user_id));
+
+            return ["status"=>1, "msg"=>"Imagen guardada con éxito..."];
+
+        }catch (Exception $e){
+            return ["status"=>0, "msg"=>$e->getMessage()];
         }
-        return true;
-    }
+        return $user;
 
-    public function messages()
-    {
-//        return [
-//            'file.required' => 'La IMAGEN es obligatoria.',
-//        ];
-
-        return [];
 
     }
 
-    protected function getRedirectUrl()
-    {
-        $url = $this->redirector->getUrlGenerator();
-        if ($this->id > 0){
-            return $url->route($this->redirectRoute,['denuncia_id'=>$this->denuncia_id,'Id'=>$this->id]);
-        }else{
-            return $url->route('/showModalImageneNew',['denuncia_id'=>$this->denuncia_id]);
-        }
+
+    private function imageBase64Content($image) {
+        $image = str_replace('data:image/png;base64,', '', $image);
+        $image = str_replace(' ', '+', $image);
+        return base64_decode($image);
+
     }
 
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException($this->response(
-            $this->formatErrors($validator)
-        ));
-    }
-    protected function formatErrors(Validator $validator)
-    {
-        return $validator->errors()->getMessages();
+    private function randomImageName() {
+        return Str::random(10) . '.' . 'png';
     }
 
-    public function response(array $errors)
-    {
-        if ($this->ajax() || $this->wantsJson()) {
-            return new JsonResponse($errors, 422);
-        }
-
-        return $this->redirector->to($this->getRedirectUrl())
-            ->withInput($this->except($this->dontFlash))
-            ->withErrors($errors, $this->errorBag);
-
+    private function randomImageNameSingular() {
+        return Str::random(25) ;
     }
 
 
