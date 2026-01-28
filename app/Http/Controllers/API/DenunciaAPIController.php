@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\DenunciaAddImageAPIRequest;
 use App\Http\Requests\API\DenunciaAddRespuestaAPIRequest;
 use App\Http\Requests\API\DenunciaAPIRequest;
-use App\Http\Requests\Denuncia\Imagene\ImagenAPIRequest;
+use App\Http\Requests\API\ImagenAPIRequest;
 use App\Models\Catalogos\Estatu;
 use App\Models\Catalogos\Servicio;
 use App\Models\Denuncias\_viMovSM;
