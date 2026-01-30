@@ -259,6 +259,56 @@ class DenunciaAPIController extends Controller{
 
 
 
+    public function getDenunciaForId(Request $request): JsonResponse{
+        $response = ["status"=>0, "msg"=>""];
+        $data = (object) $request->all();
+//        dd($data->denuncia_id);
+        $denuncia_id = (int) $data->denuncia_id;
+
+        $dens = _viMovSM::query()
+            ->where("denuncia_id",$denuncia_id)
+            ->get();
+
+        if ($dens){
+            $response["status"] = 1;
+            $response["msg"] = "OK";
+            $denucias = array();
+            foreach ($dens as $den){
+
+                $fecha_ingreso = (new Carbon($den->fecha_ingreso))->format('d-m-Y H:i:s');
+                $fecha_ultimo_estatus = (new Carbon($den->fecha_ultimo_estatus))->format('d-m-Y H:i:s');
+                $sue      = Servicio::find($den->sue_id);
+                $ue      = Estatu::find($den->ue_id);
+                $d = [
+                    'solicitud_id'               => $den->denuncia_id,
+                    'fecha_ingreso'              => $fecha_ingreso,
+                    'fecha_ultimo_estatus'       => $fecha_ultimo_estatus,
+                    'denuncia'                   => $den->descripcion,
+                    'dependencia_id'             => $den->dependencia_id,
+                    'dependencia'                => $den->dependencia,
+                    'servicio_id'                => $den->servicio_id,
+                    'servicio'                   => $den->servicio,
+                    'servicio_ultimo_estatus_id' => $den->sue_id,
+                    'servicio_ultimo_estatus'    => $sue->servicio,
+                    'ultimo_estatus_id'          => $den->ue_id,
+                    'ultimo_estatus'             => $ue->estatus,
+                    'origen_id'                  => $den->origen_id,
+                    'origen'                     => $den->origen,
+                    'latitud'                    => $den->latitud,
+                    'longitud'                   => $den->longitud,
+                    'observaciones'              => $den->observaciones,
+                    'imagenes'                   => $this->getImagenesFromRoles($den->denuncia_id,$den->dependencia_id,$den->servicio_id),
+                    'respuestas'                 => $this->getRespuestasFromRoles($den->denuncia_id,$den->dependencia_id,$den->servicio_id),
+                ];
+                $denucias[] = $d;
+            }
+            $response["solicitudes"] = $denucias;
+        }
+        return response()->json($response);
+
+    }
+
+
 
     public function agregarImageDenuncia(ImagenAPIRequest $request):JsonResponse {
         $response = ["status"=>0, "msg"=>"Ha ocurrido un error al subir la imagen"];

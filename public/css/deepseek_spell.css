@@ -1,0 +1,46 @@
+/* Estilos para corrector ortográfico */
+.spell-error {
+    background-color: #f8d7da !important;
+    border-bottom: 2px dashed #dc3545 !important;
+    cursor: pointer;
+    position: relative;
+}
+
+.spell-error:hover {
+    background-color: #f1b0b7 !important;
+}
+
+.spell-suggestions-container {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 10000;
+}
+
+.spell-suggestion-item:hover {
+    background-color: #f8f9fa;
+}
+
+.spell-status {
+    font-size: 12px;
+    margin-left: 5px;
+    cursor: help;
+    vertical-align: middle;
+}
+
+.spell-highlight-container {
+    position: relative;
+    width: 100%;
+}
+
+.spell-highlight-content:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+/* Para textareas */
+textarea.spell-check-enabled {
+    font-family: monospace;
+    line-height: 1.5;
+}

@@ -18,7 +18,8 @@ class Imagene extends Model{
     protected $disk = "denuncia";
 
     protected $fillable = [
-        'id', 'fecha','root','image','image_thumb','titulo','descripcion','momento','denuncia__id','user__id','parent__id'
+        'id', 'fecha','root','image','image_thumb','titulo','descripcion','momento','denuncia__id','user__id','parent__id',
+        'latitud','longitud','altitud',
     ];
     protected $hidden = ['deleted_at','created_at','updated_at'];
 

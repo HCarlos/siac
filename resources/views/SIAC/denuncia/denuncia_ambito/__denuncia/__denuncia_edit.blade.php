@@ -166,7 +166,7 @@
                     >
                         <i class="fa fa-question-circle pl-1 pr-1 pt-1"></i>
                     </small>
-                    <textarea name="descripcion" id="descripcion" class="form-control" rows="6" required>{{ old('descripcion',$items->descripcion) }}</textarea>
+                    <textarea name="descripcion" id="descripcion" class="form-control" rows="6" required spellcheck="true" lang="es" >{{ old('descripcion',$items->descripcion) }}</textarea>
                     <span class="has-descripcion">
                         <strong class="text-danger"></strong>
                     </span>

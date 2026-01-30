@@ -50,7 +50,6 @@ Route::group(['prefix' => 'v1'], function () {
         // Denuncias should
         Route::post('/denuncia/insert', [DenunciaAPIController::class, 'insertDenunciaMobile']);
         Route::post('/denuncia/getlist', [DenunciaAPIController::class, 'getDenuncias']);
-        Route::post('/denuncias/with/roles', [DenunciaAPIController::class, 'getDenunciasForRole']);
 
         // Ads Images Denuncias should
         Route::post('/denuncia/add/image', [DenunciaAPIController::class, 'addImageDenunciaMobile']);
@@ -75,6 +74,8 @@ Route::group(['prefix' => 'v1'], function () {
 //        });
 
 
+        Route::post('/denuncias/with/roles', [DenunciaAPIController::class, 'getDenunciasForRole']);
+        Route::post('/denuncia/denuncia_id', [DenunciaAPIController::class, 'getDenunciaForId']);
         Route::post('/denuncia/agregar/imagen', [DenunciaAPIController::class, 'agregarImageDenuncia']);
 
 
