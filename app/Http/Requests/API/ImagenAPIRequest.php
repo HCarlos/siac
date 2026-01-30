@@ -116,7 +116,7 @@ class ImagenAPIRequest extends FormRequest
 
             $Item = Denuncia::find($this->denuncia_id);
 
-            if ((int)$this->solo_imagen === 1){
+            if ((int)$this->solo_imagen === 0){
 
                 $trigger_type = 0;
                 $user = User::find($this->user_id);
