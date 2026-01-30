@@ -116,7 +116,7 @@ class ImagenAPIRequest extends FormRequest
 
             $Item = Denuncia::find($this->denuncia_id);
 
-            if ($this->solo_imagen === 1){
+            if ((int)$this->solo_imagen === 1){
 
                 $trigger_type = 0;
                 $user = User::find($this->user_id);
@@ -138,8 +138,8 @@ class ImagenAPIRequest extends FormRequest
                         ]
                     );
                     $vid = new VistaDenunciaClass();
-                    $vid->vistaDenuncia($Item->id);
-                    event(new DenunciaUpdateStatusGeneralEvent($Item->id,$this->user_id,$trigger_type));
+                    $vid->vistaDenuncia($this->denuncia_id);
+                    event(new DenunciaUpdateStatusGeneralEvent($this->denuncia_id,$this->user_id,$trigger_type));
                 }
 
             }
