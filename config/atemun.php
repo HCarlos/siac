@@ -40,6 +40,7 @@ return [
         'fmt_graficos_semanal_sm'        => 'fmt_graficos_semanal_sm.xlsx',
         'fmt_graficos_diarios_19nov25_1' => 'fmt_graficos_diarios_19nov25_1.xlsx',
         'fmt_graficos_rangos_1'          => 'fmt_graficos_rangos_1.xlsx',
+        'fmt_datos_abiertos_sm_01'       => 'fmt_datos_abiertos_sm_01.xlsx',
     ],
 
     'menu_archivos'=>[

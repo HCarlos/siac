@@ -148,6 +148,34 @@
                                         </div>
                                     </div>
                                 </label>
+
+                                <!-- Opción 3 -->
+                                <label class="radio-card" for="tipo_reporte3">
+                                    <input
+                                        type="radio"
+                                        name="tipo_reporte"
+                                        id="tipo_reporte3"
+                                        value="2"
+                                        class="radio-input"
+                                    >
+                                    <div class="radio-content">
+                                        <div class="radio-info">
+                                            <h4 class="radio-title">Reporte General de Datos Abiertos</h4>
+                                            <p class="radio-description">
+                                                Se presenta un resumen por áreas y la sabana de datos.
+                                            </p>
+                                            <ul class="radio-features ">
+                                                <li>📋 Consulta por rango de fechas</li>
+                                                <li>⚡ Sabana de datos</li>
+                                                <li>📄 Datos por áreas</li>
+                                            </ul>
+                                        </div>
+                                        <div class="radio-selector">
+                                            <div class="radio-dot"></div>
+                                        </div>
+                                    </div>
+                                </label>
+
                             </div>
 
                             <!-- Botones de acción -->
@@ -175,214 +203,16 @@
 
     document.addEventListener('DOMContentLoaded', () => {
 
-
-        // Elementos del DOM
-        // const startDateInput = document.getElementById('end_date');
-        // const endDateInput = document.getElementById('end_date');
-        // const rangeDatesDisplay = document.getElementById('rangeDates');
-        // const resetDatesBtn = document.getElementById('resetDates');
-        const form = document.getElementById('formFilter');
-        // const previewBtn = document.getElementById('previewReport');
-        const generateBtn = document.getElementById('generateReport');
-
-        // Formatear fecha a texto legible
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('es-ES', {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric'
-            }).replace(/ de /g, ' ');
-        }
-
-        // Actualizar display del rango
-        // function updateRangeDisplay() {
-        //     const startDate = startDateInput.value;
-        //     const endDate = endDateInput.value;
-        //
-        //     if (startDate && endDate) {
-        //         rangeDatesDisplay.textContent = `${formatDate(startDate)} - ${formatDate(endDate)}`;
-        //     }
-        // }
-
-        // Validar rango de fechas
-        function validateDateRange() {
-            const startDate = new Date(startDateInput.value);
-            const endDate = new Date(endDateInput.value);
-
-            if (startDate > endDate) {
-                alert('La fecha inicial no puede ser mayor a la fecha final');
-                startDateInput.value = '';
-                endDateInput.value = '';
-                // updateRangeDisplay();
-                return false;
-            }
-
-            // Limitar a máximo 1 año
-            const oneYearAgo = new Date(startDate);
-            oneYearAgo.setFullYear(oneYearAgo.getFullYear() + 1);
-
-            if (endDate > oneYearAgo) {
-                alert('El rango máximo permitido es de 1 año');
-                endDateInput.value = oneYearAgo.toISOString().split('T')[0];
-            }
-
-            // updateRangeDisplay();
-            return true;
-        }
-
-        // Reiniciar fechas al mes actual
-        // function resetDates() {
-        //     const today = new Date();
-        //     const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-        //     const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-        //
-        //     startDateInput.value = firstDay.toISOString().split('T')[0];
-        //     endDateInput.value = lastDay.toISOString().split('T')[0];
-        //
-        //     updateRangeDisplay();
-        //
-        //     // Efecto visual
-        //     resetDatesBtn.style.transform = 'scale(0.95)';
-        //     setTimeout(() => {
-        //         resetDatesBtn.style.transform = '';
-        //     }, 150);
-        // }
-
-        // Generar reporte
-        // function generateReport() {
-        //     if (!validateDateRange()) return;
-        //
-        //     const selectedReport = document.querySelector('input[name="tipo_reporte"]:checked');
-        //
-        //     if (!selectedReport) {
-        //         alert('Por favor, selecciona un tipo de reporte');
-        //         return;
-        //     }
-        //
-        //     // Efecto de carga
-        //     const originalText = generateBtn.querySelector('.btn-text').textContent;
-        //     generateBtn.querySelector('.btn-text').textContent = 'Generando...';
-        //     generateBtn.disabled = true;
-        //
-        //     // Enviar formulario después de breve delay para efecto visual
-        //     setTimeout(() => {
-        //         // Aquí el formulario se envía automáticamente
-        //         // Pero simulamos éxito primero
-        //         generateBtn.querySelector('.btn-text').textContent = '¡Éxito!';
-        //
-        //         showNotification('Reporte generado exitosamente', 'success');
-        //
-        //         // Restaurar después de 1 segundo
-        //         setTimeout(() => {
-        //             generateBtn.querySelector('.btn-text').textContent = originalText;
-        //             generateBtn.disabled = false;
-        //
-        //             // Enviar formulario real
-        //             form.submit();
-        //         }, 1000);
-        //     }, 2000);
-        // }
-
-        // Notificación
-        // function showNotification(message, type = 'success') {
-        //     const notification = document.createElement('div');
-        //     const bgColor = type === 'success' ? '#10b981' : type === 'info' ? '#3b82f6' : '#f59e0b';
-        //
-        //     notification.className = 'notification';
-        //     notification.innerHTML = `
-        //     <div style="
-        //         position: fixed;
-        //         top: 20px;
-        //         right: 20px;
-        //         background: ${bgColor};
-        //         color: white;
-        //         padding: 1rem 1.5rem;
-        //         border-radius: 8px;
-        //         box-shadow: var(--shadow-lg);
-        //         animation: slideIn 0.3s ease-out;
-        //         z-index: 1000;
-        //         display: flex;
-        //         align-items: center;
-        //         gap: 0.75rem;
-        //         max-width: 400px;
-        //     ">
-        //         <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        //             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-        //                 d="${type === 'success' ? 'M5 13l4 4L19 7' : 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'}"></path>
-        //         </svg>
-        //         <span>${message}</span>
-        //     </div>
-        // `;
-        //
-        //     document.body.appendChild(notification);
-        //
-        //     setTimeout(() => {
-        //         notification.style.animation = 'slideOut 0.3s ease-out';
-        //         setTimeout(() => notification.remove(), 300);
-        //     }, 3000);
-        // }
-
-        // Event Listeners
-
-        // startDateInput.addEventListener('change', validateDateRange);
-        // endDateInput.addEventListener('change', validateDateRange);
-
-        // resetDatesBtn.addEventListener('click', resetDates);
-        // previewBtn.addEventListener('click', previewReport);
-        // generateBtn.addEventListener('click', generateReport);
-
-        // Inicializar display
-        // updateRangeDisplay();
-
-        // Añadir estilos para animaciones de notificación
-        const style = document.createElement('style');
-        style.textContent = `
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideOut {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-        }
-    `;
-    document.head.appendChild(style);
-
-
         const btnReporteDiario = document.getElementById('frmReporteDiarioNov');
         btnReporteDiario.addEventListener('click', function () {
-
-
-            // if ( !validateDateRange() ) {
-            //     return false;
-            // }
 
             const _start_date = document.getElementById('start_date').value;
             const _end_date = document.getElementById('end_date').value;
 
-            const radioButtons = document.getElementsByName('tipo_reporte');
             const _tipo_reporte = document.querySelector('input[name="tipo_reporte"]:checked');
 
-            var arrReports = ['reporteDiarioExcelNov1','reporteDiarioExcelNov2']
+            var arrReports = ['reporteDiarioExcelNov1','reporteDiarioExcelNov2','sabanaDeDatosExcel1']
 
-            // alert(_tipo_reporte.value);
-            // return false;
-
-            // btnReporteDiario.disabled = true;
             var PARAMS = {
                 search : "",
                 start_date : _start_date,
@@ -417,7 +247,7 @@
 
 @section("styles")
 
-    <style>
+<style>
 
     /* Contenedor general de la tarjeta */
     .dashboard-container {
@@ -540,12 +370,6 @@
     z-index: 2;
     box-sizing: border-box;
     }
-
-    /* Ocultamos el icono nativo en Chromium, Firefox lo ignora sin romper nada */
-    /*.date-input::-webkit-calendar-picker-indicator {*/
-    /*opacity: 0;*/
-    /*cursor: pointer;*/
-    /*}*/
 
     /* Focus */
     .date-input:focus {
@@ -713,6 +537,7 @@
     list-style: none;
     padding-left: 0;
     margin: 0.5rem 0 0;
+        text-align: left;
     }
 
     .radio-features li {
@@ -883,6 +708,30 @@
     color: #f9fafb;
     }
     }
+
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+
 </style>
+
 @endsection
 

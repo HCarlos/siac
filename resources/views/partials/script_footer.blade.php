@@ -25,14 +25,15 @@
     window.laravel_echo_port='{{ config("atemun.laravel_echo_port") }}';
 
     @auth()
-    @if(\Illuminate\Support\Facades\Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_ADMIN'))
-    localStorage.isToast = 1
-    @else
-    localStorage.isToast = 0;
-    @endif
-@elseauth
-    localStorage.isToast = 0;
-@endauth
+
+        @if(\Illuminate\Support\Facades\Auth::user()->hasRole('Administrator|SysOp|USER_OPERATOR_ADMIN|test_admin'))
+            localStorage.isToast = 1
+        @else
+            localStorage.isToast = 0;
+        @endif
+    @elseauth
+        localStorage.isToast = 0;
+    @endauth
 
 @guest()
     localStorage.isToast = 0;

@@ -7,7 +7,7 @@ use App\Http\Controllers\API\OperadoresAPIController;
 use App\Http\Controllers\API\UserAPIController;
 use App\Http\Controllers\Denuncia\DenunciaKioskoController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +38,7 @@ Route::group(['prefix' => 'v1'], function () {
 //    });
     Route::group(['middleware' => 'auth:sanctum'], function () {
 
-        // Useers should
+        // Users should
         Route::get('/users', [UserAPIController::class, 'users'])->name('users');
         Route::get('/user/{user}', [UserAPIController::class, 'userId']);
         Route::get('/user/curp/{curp}', [UserAPIController::class, 'userCURP']);
@@ -97,7 +97,7 @@ Route::group(['prefix' => 'v1b'], function () {
     Route::post('/logincurp', [KioskoAPIController::class, 'userCURPLogin']);
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('/localidades', [KioskoAPIController::class, 'getLocalidades']);
-        Route::get('/servicios', [KioskoAPIController::class, 'getSergicios']);
+        Route::get('/servicios', [KioskoAPIController::class, 'getServicios']);
         Route::post('solicitud-kiosko-insert', [DenunciaKioskoController::class, 'createItemKiosko']);
         Route::get('/ciudadano/{user_id}', [KioskoAPIController::class, 'getSolicitudesCiudadano']);
     });
