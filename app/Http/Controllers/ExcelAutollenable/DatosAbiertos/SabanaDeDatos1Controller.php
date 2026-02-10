@@ -21,6 +21,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 
 class SabanaDeDatos1Controller extends Controller{
 
@@ -92,26 +93,6 @@ class SabanaDeDatos1Controller extends Controller{
 
             $this->obtenerSabanaDeDatosSoloIDs(0);
 
-//            $Items = _viDepDenServEstatus::whereIn('id', $this->denuncias_ids)
-//                ->orderByDesc('ddse_id')
-//                ->get();
-//            if ($Items->count() > 0) {
-//                $last_value = 0;
-//                $arrIDs = [];
-//                foreach ($Items as $item) {
-//                    if ($item->id !== $last_value) {
-//                        $arrIDs[] = $item->ddse_id;
-//                        $last_value = $item->id;
-//                    }
-//                }
-//            }else{
-//                return false;
-//            }
-//
-//            $Items = _viDepDenServEstatus::whereIn('ddse_id', $arrIDs)
-//                ->orderByDesc('ddse_id')
-//                ->get();
-
             $Items = _viDDSs::whereIn('id', $this->denuncias_ids)
                 ->orderByDesc('id')
                 ->get();
@@ -131,9 +112,6 @@ class SabanaDeDatos1Controller extends Controller{
             $Items = _viDDSs::whereIn('id', $arrIDs)
                 ->orderByDesc('id')
                 ->get();
-
-
-
 
             $file_external = "fmt_datos_abiertos_sm_01.xlsx";
             $arrFE = explode('.',$file_external);
@@ -172,13 +150,67 @@ class SabanaDeDatos1Controller extends Controller{
                         ->setCellValue('G' . $C, $item["ultimo_estatus"][5]['Total'] ?? 0)
                         ->setCellValue('H' . $C, $item["ultimo_estatus"][6]['Total'] ?? 0)
                         ->setCellValue('I' . $C, $item["ultimo_estatus"][7]['Total'] ?? 0);
-                        $Total += $item["ultimo_estatus"][7]['Total'];
+
+                    if ($item["is_visible_nombre_corto_ss"]){
+                        $sh
+                            ->getStyle('A'.$C.':I'.$C)
+                            ->getFill()
+                            ->setFillType(Fill::FILL_SOLID)
+                            ->getStartColor()
+                            ->setRGB('FFFF9E'); // 255,255,158
+
+                    }
+
+
+                    $Total += $item["ultimo_estatus"][7]['Total'];
                     $C++;
 
                 }
                 $sh
                     ->setCellValue('H' . $C, "Total")
                     ->setCellValue('I' . $C, $Total ?? 0);
+
+                $ws++;
+
+            }
+
+            for($i=0, $iMax = count($this->unidades); $i< $iMax; $i++){
+                $C = 7;
+                $sh = $spreadsheet->setActiveSheetIndex($ws);
+                $sh->setCellValue('I2', Carbon::now()->format('d-m-Y h:m:s'));
+                $sh->setCellValue('C1', "RANGO DE CONSULTA:");
+                $sh->setCellValue('D1', "DEL ".$this->start_date." AL ".$this->end_date);
+
+                $filters = array_values(array_filter($this->arrItems, function ($item) use ($i) {
+                    return isset($item['due_id']) && (int)$item['due_id'] === $this->unidades[$i];
+                }));
+                $Total = 0;
+                foreach ($filters as $item){
+                    $sh
+                        ->setCellValue('A' . $C, $item["servicio"] ?? 0)
+                        ->setCellValue('B' . $C, $item["ultimo_estatus_compacto"][0]['Total'] ?? 0)
+                        ->setCellValue('C' . $C, $item["ultimo_estatus_compacto"][1]['Total'] ?? 0)
+                        ->setCellValue('D' . $C, $item["ultimo_estatus_compacto"][2]['Total'] ?? 0)
+                        ->setCellValue('E' . $C, $item["ultimo_estatus_compacto"][3]['Total'] ?? 0)
+                        ->setCellValue('F' . $C, $item["ultimo_estatus_compacto"][4]['Total'] ?? 0);
+
+                    if ($item["is_visible_nombre_corto_ss"]){
+                        $sh
+                            ->getStyle('A'.$C.':F'.$C)->applyFromArray([
+                            'fill' => [
+                                'fillType' => Fill::FILL_SOLID,
+                                'startColor' => ['rgb' => 'FFFF9E'],
+                            ],
+                        ]);
+                    }
+
+                    $Total += $item["ultimo_estatus_compacto"][4]['Total'];
+                    $C++;
+
+                }
+                $sh
+                    ->setCellValue('E' . $C, "Total")
+                    ->setCellValue('F' . $C, $Total ?? 0);
 
                 $ws++;
 
@@ -218,15 +250,26 @@ class SabanaDeDatos1Controller extends Controller{
 
         $arrItemsBySue = [];
         $estatusTemplate = [
-            16 => ["ue_id" => 16, "Estatus"=> "RECIBIDA",           "Total"=> 0],
-            17 => ["ue_id" => 17, "Estatus"=> "ATENDIDA",           "Total"=> 0],
-            18 => ["ue_id" => 18, "Estatus"=> "OBSERVADA",          "Total"=> 0],
-            19 => ["ue_id" => 19, "Estatus"=> "EN PROCESO",         "Total"=> 0],
-            20 => ["ue_id" => 20, "Estatus"=> "RECHAZADA",          "Total"=> 0],
-            21 => ["ue_id" => 21, "Estatus"=> "CERRADA",            "Total"=> 0],
-            22 => ["ue_id" => 22, "Estatus"=> "CERRADO POR RECHAZO","Total"=> 0],
-            99 => ["ue_id" => 99, "Estatus"=> "TOTAL","Total"=> 0],
+            16 => ["ue_id" => 16, "Estatus"=> "RECIBIDA",            "Total"=> 0],
+            17 => ["ue_id" => 17, "Estatus"=> "ATENDIDA",            "Total"=> 0],
+            18 => ["ue_id" => 18, "Estatus"=> "OBSERVADA",           "Total"=> 0],
+            19 => ["ue_id" => 19, "Estatus"=> "EN PROCESO",          "Total"=> 0],
+            20 => ["ue_id" => 20, "Estatus"=> "RECHAZADA",           "Total"=> 0],
+            21 => ["ue_id" => 21, "Estatus"=> "CERRADA",             "Total"=> 0],
+            22 => ["ue_id" => 22, "Estatus"=> "CERRADO POR RECHAZO", "Total"=> 0],
+            99 => ["ue_id" => 99, "Estatus"=> "TOTAL",               "Total"=> 0],
         ];
+
+        $estatusCompactTemplate = [
+            0  => ["Estatus"=> "ATENDIDA",   "Total"=> 0],
+            1  => ["Estatus"=> "OBSERVADA",  "Total"=> 0],
+            2  => ["Estatus"=> "PENDIENTES", "Total"=> 0],
+            3  => ["Estatus"=> "RECHAZADO",  "Total"=> 0],
+            99 => ["Estatus"=> "TOTAL",      "Total"=> 0],
+        ];
+
+// Resumen compacto GLOBAL
+        $arrCompactGlobal = $estatusCompactTemplate;
 
 
         foreach ($Items as $item) {
@@ -268,6 +311,17 @@ class SabanaDeDatos1Controller extends Controller{
                 ->setCellValue('R' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y') ?? '')
                 ->setCellValue('S' . $C, $dds->observaciones ?? '');
 
+//            if ($item->is_visible_nombre_corto_ss){
+//                $sh
+//                    ->getStyle('A' . $C . ':S' . $C)
+//                    ->getFill()
+//                    ->applyFromArray([
+//                        'fillType' => 'solid',
+//                        'rotation' => 0,
+//                        'color' => ['rgb' => 'yellow'],
+//                    ]);
+//            }
+
             $C++;
 
             $dueId = (int) $item->due_id;
@@ -282,33 +336,70 @@ class SabanaDeDatos1Controller extends Controller{
                     "sue_id" => $sueId,
                     "servicio" => (string) ($item->servicio_ultimo_estatus ?? ''), // ajusta al nombre real
                     "ultimo_estatus" => $estatusTemplate, // OJO: queda indexado por ue_id
+                    "ultimo_estatus_compacto" => $estatusCompactTemplate,
+                    "is_visible_nombre_corto_ss" => $item->is_visible_nombre_corto_ss ?? false,
                 ];
             }
 
             // Incrementa el Total del ue_id que corresponda
+            // 1) Incremento normal (por ue_id)
             if (isset($arrItemsBySue[$sueId]["ultimo_estatus"][$ueId])) {
                 $arrItemsBySue[$sueId]["ultimo_estatus"][$ueId]["Total"] += 1;
-
             } else {
-                // Si llega un ue_id no contemplado, lo agregas (opcional)
                 $arrItemsBySue[$sueId]["ultimo_estatus"][$ueId] = [
                     "ue_id" => $ueId,
                     "Estatus" => "DESCONOCIDO",
                     "Total" => 1,
                 ];
             }
-
             $arrItemsBySue[$sueId]["ultimo_estatus"][99]["Total"] += 1;
 
-            $arrItems = array_values(array_map(function ($item) {
-                $item["ultimo_estatus"] = array_values($item["ultimo_estatus"]);
-                return $item;
-            }, $arrItemsBySue));
+            $ueToCompact = [
+                17 => 0, 21 => 0, // ATENDIDA
+                18 => 1,          // OBSERVADA
+                16 => 2, 19 => 2, // PENDIENTES
+                20 => 3, 22 => 3, // RECHAZADO
+            ];
+
+            $compactKey = $ueToCompact[$ueId] ?? null;
+
+            if ($compactKey !== null) {
+                // Por servicio (sue_id)
+                $arrItemsBySue[$sueId]["ultimo_estatus_compacto"][$compactKey]["Total"] += 1;
+                $arrItemsBySue[$sueId]["ultimo_estatus_compacto"][99]["Total"] += 1;
+
+                // Global
+                $arrCompactGlobal[$compactKey]["Total"] += 1;
+                $arrCompactGlobal[99]["Total"] += 1;
+            }
+
 
         }
 
-//        dd($arrItems);
+        $arrItems = array_values(array_map(function ($it) {
+            $it["ultimo_estatus"] = array_values($it["ultimo_estatus"]);
+            $it["ultimo_estatus_compacto"] = array_values($it["ultimo_estatus_compacto"]);
+            return $it;
+        }, $arrItemsBySue));
 
+        usort($arrItems, function ($a, $b) {
+            $sa = trim($a['servicio'] ?? '');
+            $sb = trim($b['servicio'] ?? '');
+
+            $cmp = strcasecmp($sa, $sb); // ignora mayúsculas/minúsculas
+            if ($cmp !== 0) return $cmp;
+
+            // desempate (opcional) por sue_id
+            return ($a['sue_id'] ?? 0) <=> ($b['sue_id'] ?? 0);
+        });
+
+        $arrItems[] = [
+            "tipo" => "RESUMEN_COMPACTO_GLOBAL",
+            "ultimo_estatus_compacto" => array_values($arrCompactGlobal),
+        ];
+
+//        dd($arrItems);
+//
         $this->arrItems = $arrItems;
 
         $Cx = $C  - 1;

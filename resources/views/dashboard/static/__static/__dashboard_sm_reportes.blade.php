@@ -199,6 +199,7 @@
 </div>
 
 @section("scripts")
+
 <script>
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -243,13 +244,13 @@
     });
 
 </script>
+
 @endsection
 
 @section("styles")
 
 <style>
 
-    /* Contenedor general de la tarjeta */
     .dashboard-container {
     padding: 2rem;
     max-width: 1200px;
