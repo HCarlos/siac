@@ -10,6 +10,7 @@ use App\Http\Controllers\ExcelAutollenable\ReporteDiario;
 use App\Http\Controllers\ExcelAutollenable\ReporteDiario\ReporteDiarioNov2Class;
 use App\Http\Controllers\Funciones\LoadTemplateExcel;
 use App\Models\Catalogos\Dependencia;
+use App\Models\Catalogos\Servicio;
 use App\Models\Denuncias\_viDDSs;
 use App\Models\Denuncias\_viDDSS_Viejitas;
 use App\Models\Denuncias\_viDepDenServEstatus;
@@ -271,16 +272,28 @@ class SabanaDeDatos1Controller extends Controller{
 // Resumen compacto GLOBAL
         $arrCompactGlobal = $estatusCompactTemplate;
 
+        $ser = Servicio::where('is_visible_mobile', true)
+            ->where('is_visible_nombre_corto_ss', true)
+            ->pluck('id')
+            ->toArray();
 
         foreach ($Items as $item) {
 
-            $fechaIngreso = Carbon::parse($item->fecha_ingreso)->format('d-m-Y');
-            $fechaIngreso = isset($item->fecha_ingreso) ? $fechaIngreso : '';
+            // Corrección: verificar null ANTES de parsear con Carbon
+            $fechaIngreso = $item->fecha_ingreso ? Carbon::parse($item->fecha_ingreso)->format('d-m-Y') : '';
+            $fiMes        = $item->fecha_ingreso ? Carbon::parse($item->fecha_ingreso)->format('m')     : '';
+            $fiAno        = $item->fecha_ingreso ? Carbon::parse($item->fecha_ingreso)->format('Y')     : '';
 
-            $Colonia = $item->centro_colonia ?? ''; // $item->centroLocalidad->ItemColonia() ?? '';
+            $Colonia    = $item->centro_colonia    ?? ''; // $item->centroLocalidad->ItemColonia() ?? '';
             $Delegacion = $item->centro_delegacion ?? '';
-            $Delegado = $item->delegado ?? '';
-            $Ciudadano = $item->ciudadano ?? '';
+            $Delegado   = $item->delegado          ?? '';
+            $Ciudadano  = $item->ciudadano         ?? '';
+
+            // Corrección: verificar null ANTES de parsear fecha_ultimo_estatus
+            $fueMes      = $item->fecha_ultimo_estatus ? Carbon::parse($item->fecha_ultimo_estatus)->format('m')     : '';
+            $fueAno      = $item->fecha_ultimo_estatus ? Carbon::parse($item->fecha_ultimo_estatus)->format('Y')     : '';
+            $fueFechaFmt = $item->fecha_ultimo_estatus ? Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y') : '';
+
 
             $dds = Denuncia_Dependencia_Servicio::query()
                 ->where('denuncia_id', $item->id)
@@ -296,31 +309,26 @@ class SabanaDeDatos1Controller extends Controller{
                 ->setCellValue('C' . $C, trim($item->ap_paterno_ciudadano ?? ''))
                 ->setCellValue('D' . $C, trim($item->ap_materno_ciudadano ?? ''))
                 ->setCellValue('E' . $C, trim($item->nombre_ciudadano ?? ''))
-                ->setCellValue('F' . $C, strtoupper(trim($item->search_google)) ?? '')
+                ->setCellValue('F' . $C, strtoupper(trim($item->search_google ?? '')))
                 ->setCellValue('G' . $C, $Colonia ?? '')
                 ->setCellValue('H' . $C, $Delegacion ?? '')
                 ->setCellValue('I' . $C, $Ciudadano == $Delegado ? "Es el delegado" : '')
                 ->setCellValue('J' . $C, $item->telefonoscelularesemails ?? '')
                 ->setCellValue('K' . $C, $fechaIngreso ?? '')
-                ->setCellValue('L' . $C, $item->dependencia_ultimo_estatus ?? '')
-                ->setCellValue('M' . $C, $item->servicio_ultimo_estatus ?? '')
-                ->setCellValue('N' . $C, ($item->denuncia.' '.$item->referencia) ?? '')
-                ->setCellValue('O' . $C, $item->prioridad ?? '')
-                ->setCellValue('P' . $C, $item->origen ?? '')
-                ->setCellValue('Q' . $C, $item->ultimo_estatus ?? '')
-                ->setCellValue('R' . $C, Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y') ?? '')
-                ->setCellValue('S' . $C, $dds->observaciones ?? '');
+                ->setCellValue('L' . $C, $fiMes ?? '')
+                ->setCellValue('M' . $C, $fiAno ?? '')
+                ->setCellValue('N' . $C, $item->dependencia_ultimo_estatus ?? '')
+                ->setCellValue('O' . $C, $item->servicio_ultimo_estatus ?? '')
+                ->setCellValue('P' . $C, in_array($item->sue_id, $ser, true) ? "Monitoreado" : '')
+                ->setCellValue('Q' . $C, trim(($item->denuncia ?? '') . ' ' . ($item->referencia ?? '')))
+                ->setCellValue('R' . $C, $item->prioridad ?? '')
+                ->setCellValue('S' . $C, $item->origen ?? '')
+                ->setCellValue('T' . $C, $item->ultimo_estatus ?? '')
+                ->setCellValue('U' . $C, $fueFechaFmt)
+                ->setCellValue('V' . $C, $fueMes ?? '')
+                ->setCellValue('W' . $C, $fueAno ?? '')
+                ->setCellValue('X' . $C, $dds->observaciones ?? '');
 
-//            if ($item->is_visible_nombre_corto_ss){
-//                $sh
-//                    ->getStyle('A' . $C . ':S' . $C)
-//                    ->getFill()
-//                    ->applyFromArray([
-//                        'fillType' => 'solid',
-//                        'rotation' => 0,
-//                        'color' => ['rgb' => 'yellow'],
-//                    ]);
-//            }
 
             $C++;
 
@@ -422,16 +430,6 @@ class SabanaDeDatos1Controller extends Controller{
 
         switch ($type) {
             case 0:
-//                $this->denuncias_ids = DB::table("_vimov_filter_sm")
-//                    ->whereIn('servicio_id', $this->ServiciosPrincipales)
-//                    ->where('fecha_ingreso', '>=', $this->start_date)
-//                    ->where('fecha_ingreso', '<=', $this->end_date)
-//                    ->orderByDesc('denuncia_id')
-//                    ->pluck('denuncia_id')
-//                    ->toArray();
-
-//                dd($this->start_date);
-
                 $this->denuncias_ids = DB::table("_videnuncias")
                     ->where('ambito_dependencia', 2)
                     ->whereBetween('fecha_ingreso',  [$this->start_date,$this->end_date])
