@@ -212,7 +212,9 @@
 
             const _tipo_reporte = document.querySelector('input[name="tipo_reporte"]:checked');
 
-            var arrReports = ['reporteDiarioExcelNov1','reporteDiarioExcelNov2','sabanaDeDatosExcel1']
+            // var arrReports = ['reporteDiarioExcelNov1','reporteDiarioExcelNov2','sabanaDeDatosExcel1','repDelCiuInt1A']
+
+            var arrReports = ['reporteDiarioExcelNov1','repDelCiuInt1A','sabanaDeDatosExcel1']
 
             var PARAMS = {
                 search : "",

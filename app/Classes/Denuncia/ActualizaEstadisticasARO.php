@@ -35,8 +35,8 @@ class ActualizaEstadisticasARO{
 
             if (count($dens) > 0) {
                 foreach ($dens as $d) {
-                    if ( in_array($d->estatu_id, [17, 20]) ) {
-                        event(new DenunciaAtendidaEvent($d->denuncia_id, 1, 1, $d->estatu_id, false, $d));
+                    if ( in_array($d->estatu_id, [17, 18, 20]) ) {
+                        event(new DenunciaAtendidaEvent($d->denuncia_id, 1, 1, $d->estatu_id, true, $d));
                     }
                 }
             }

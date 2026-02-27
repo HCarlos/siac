@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\ActualizaEstadisticasAROCommand;
 use App\Console\Commands\RefreshStatusDenunciasCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -15,6 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         RefreshStatusDenunciasCommand::class,
+        ActualizaEstadisticasAROCommand::class,
     ];
 
     /**
@@ -31,6 +33,9 @@ class Kernel extends ConsoleKernel
 //        $schedule->command('backup:run')->daily()->at('01:30');
 
         $schedule->command(RefreshStatusDenunciasCommand::class, ['--force'])->daily()->at('02:00');
+
+        // Actualiza estadísticas ARO de Servicios Municipales — diario a las 03:00
+        $schedule->command(ActualizaEstadisticasAROCommand::class)->daily()->at('03:00');
 
     }
 

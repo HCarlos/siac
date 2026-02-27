@@ -2,36 +2,41 @@
 
 namespace App\Providers;
 
+use App\Events\DenunciaAtendidaEvent;
+use App\Listeners\Denuncia\ActualizaEstadisticasDenunciaListener;
 use App\Listeners\User\LogLastLogin;
 use App\Listeners\User\LogLastLogout;
-use App\Models\Catalogos\Domicilios\Colonia;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Logout;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
     /**
-     * The event listener mappings for the application.
+     * Mapa evento → listener(s).
      *
      * @var array
      */
     protected $listen = [
-        'Illuminate\Auth\Events\Login' => [
-            'App\Listeners\User\LogLastLogin',
+
+        Login::class => [
+            LogLastLogin::class,
         ],
 
-        'Illuminate\Auth\Events\Logout' => [
-            'App\Listeners\User\LogLastLogout',
+        Logout::class => [
+            LogLastLogout::class,
+        ],
+
+        // Calcula días ARO, actualiza promedios del servicio e inserta log
+        DenunciaAtendidaEvent::class => [
+            ActualizaEstadisticasDenunciaListener::class,
         ],
 
     ];
 
     /**
-     * Register any events for your application.
-     *
-     * @return void
+     * Registra cualquier otro evento de la aplicación.
      */
     public function boot()
     {
@@ -40,6 +45,5 @@ class EventServiceProvider extends ServiceProvider
         Event::listen('Colonia.updating *', function ($Item) {
             log($Item);
         });
-
     }
 }

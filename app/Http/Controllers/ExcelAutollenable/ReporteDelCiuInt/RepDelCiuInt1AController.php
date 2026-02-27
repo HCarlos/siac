@@ -3,7 +3,7 @@
  * Copyright (c) 2025. Realizado por Carlos Hidalgo
  */
 
-namespace App\Http\Controllers\ExcelAutollenable\ReporteDiario;
+namespace App\Http\Controllers\ExcelAutollenable\ReporteDelCiuInt;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ExcelAutollenable\ReporteDiario;
@@ -11,18 +11,16 @@ use App\Http\Controllers\Funciones\LoadTemplateExcel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class ReporteDiarioNov2Controller_old_1 extends Controller{
+class RepDelCiuInt1AController extends Controller{
 
     public function __construct(){
         $this->middleware('auth');
     }
 
-    public function reporteDiarioExcelNov2(Request $request){
+    public function repDelCiuInt1A(Request $request){
 
         $start_date = $request->get('start_date');
         $end_date = $request->get('end_date');
-
-//        dd($start_date,$end_date);
 
         $file_external = "fmt_graficos_rangos_1.xlsx";
         $archivo = LoadTemplateExcel::getFileTemplate($file_external);
@@ -147,7 +145,7 @@ class ReporteDiarioNov2Controller_old_1 extends Controller{
 
         // Inicia procesamiento de datos
 
-        $DC = new ReporteDiarioNov2Class($start_date, $end_date);
+        $DC = new RepDelCiuInt1AClass($start_date, $end_date);
 
         $Items = $DC->getRecibidas();
         $i = 4;
@@ -177,8 +175,8 @@ class ReporteDiarioNov2Controller_old_1 extends Controller{
 
 
 
-        $PendientesPromCiudadano = $DC->getPendientesPromCiudadano();
-        $AtendidasPromCiudadanos = $DC->getAtendidasPromCiudadano();
+        $PendientesPromCiudadano = $DC->getPendientesCiudadanos();
+        $AtendidasPromCiudadanos = $DC->getAtendidasCiudadanos();
         $i = 25;
         $letrasA = ['B','D','F','H','J','L'];
         $letrasP = ['C','E','G','I','K','M'];
@@ -193,8 +191,8 @@ class ReporteDiarioNov2Controller_old_1 extends Controller{
         }
 
         // Delegados
-        $PendientesPromDelegados = $DC->getPendientesPromDelegados();
-        $AtendidasPromDelegados = $DC->getAtendidasPromDelegados();
+        $PendientesPromDelegados = $DC->getPendientesDelegados();
+        $AtendidasPromDelegados = $DC->getAtendidasDelegados();
         $i = 26;
         foreach ($ii as $key => $value) {
             $Item = $AtendidasPromDelegados[$value];
@@ -204,8 +202,8 @@ class ReporteDiarioNov2Controller_old_1 extends Controller{
         }
 
         // Instituciones
-        $PendientesPromInstitucion = $DC->getPendientesPromInstitucion();
-        $AtendidasPromInstitucion = $DC->getAtendidasPromInstitucion();
+        $PendientesPromInstitucion = $DC->getPendientesInternas();
+        $AtendidasPromInstitucion = $DC->getAtendidasInternas();
         $i = 27;
         foreach ($ii as $key => $value) {
             $Item = $AtendidasPromInstitucion[$value];

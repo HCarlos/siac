@@ -5,6 +5,7 @@
 
 namespace App\Http\Controllers\ExcelAutollenable\DatosAbiertos;
 
+use App\Classes\Denuncia\ActualizaEstadisticasARO;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ExcelAutollenable\ReporteDiario;
 use App\Http\Controllers\ExcelAutollenable\ReporteDiario\ReporteDiarioNov2Class;
@@ -327,7 +328,10 @@ class SabanaDeDatos1Controller extends Controller{
                 ->setCellValue('U' . $C, $fueFechaFmt)
                 ->setCellValue('V' . $C, $fueMes ?? '')
                 ->setCellValue('W' . $C, $fueAno ?? '')
-                ->setCellValue('X' . $C, $dds->observaciones ?? '');
+                ->setCellValue('X' . $C, $item->observaciones ?? '')
+                ->setCellValue('Y' . $C, $item->dias_atendida ?? '')
+                ->setCellValue('Z' . $C, $item->dias_rechazada ?? '')
+                ->setCellValue('AA' . $C, $item->dias_observada ?? '');
 
 
             $C++;
@@ -436,6 +440,11 @@ class SabanaDeDatos1Controller extends Controller{
                     ->orderByDesc('id')
                     ->pluck('id')
                     ->toArray();
+
+//                $a = new ActualizaEstadisticasARO();
+//                foreach ($this->denuncias_ids as $denuncia_id) {
+//                    $a->ActualizaEstadisticasARO($denuncia_id);
+//                }
 
                 return $this->denuncias_ids;
         }
