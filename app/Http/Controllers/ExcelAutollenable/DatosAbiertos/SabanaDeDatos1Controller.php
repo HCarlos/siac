@@ -285,7 +285,7 @@ class SabanaDeDatos1Controller extends Controller{
             $fiMes        = $item->fecha_ingreso ? Carbon::parse($item->fecha_ingreso)->format('m')     : '';
             $fiAno        = $item->fecha_ingreso ? Carbon::parse($item->fecha_ingreso)->format('Y')     : '';
 
-            $dias_transcurridos_desde_inicio = Carbon::parse($item->fecha_ingreso)->diffInDays();
+//            $dias_transcurridos_desde_inicio = Carbon::parse($item->fecha_ingreso)->diffInDays();
 
             $Colonia    = $item->centro_colonia    ?? ''; // $item->centroLocalidad->ItemColonia() ?? '';
             $Delegacion = $item->centro_delegacion ?? '';
@@ -296,19 +296,20 @@ class SabanaDeDatos1Controller extends Controller{
             $fueMes      = $item->fecha_ultimo_estatus ? Carbon::parse($item->fecha_ultimo_estatus)->format('m')     : '';
             $fueAno      = $item->fecha_ultimo_estatus ? Carbon::parse($item->fecha_ultimo_estatus)->format('Y')     : '';
             $fueFechaFmt = $item->fecha_ultimo_estatus ? Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y') : '';
-            $dias_transcurridos_desde_ultimo_estatus = Carbon::parse($item->fecha_ultimo_estatus)->diffInDays();
+//            $dias_transcurridos_desde_ultimo_estatus = Carbon::parse($item->fecha_ultimo_estatus)->diffInDays();
+
+
+            $dias_transcurridos_atencion = Carbon::parse($item->fecha_ultimo_estatus)
+                ->startOfDay()
+                ->diffInDays(Carbon::parse($item->fecha_ingreso)->startOfDay());
 
             $dias_transcurridos_desde_ultimo_estatus = Carbon::parse($item->fecha_ultimo_estatus)
                 ->startOfDay() // Pone la fecha a las 00:00:00
                 ->diffInDays(Carbon::now()->startOfDay()); // Hoy a las 00:00:00
-// Resultado: 42 días
 
-//            $dias_transcurridos_atencion = $item->fecha_ultimo_estatus->diffInDays($item->fecha_ingreso);
-            $fecha_ultimo_estatus = Carbon::parse($item->fecha_ultimo_estatus);
-            $fecha_ingreso = Carbon::parse($item->fecha_ingreso);
-
-            $dias_transcurridos_atencion = $fecha_ultimo_estatus->diffInDays($fecha_ingreso);
-
+            $dias_transcurridos_desde_inicio = Carbon::parse($item->fecha_ingreso)
+                ->startOfDay()
+                ->diffInDays(Carbon::now()->startOfDay());
 
             $dds = Denuncia_Dependencia_Servicio::query()
                 ->where('denuncia_id', $item->id)
@@ -347,7 +348,7 @@ class SabanaDeDatos1Controller extends Controller{
                 ->setCellValue('Z' . $C, $dias_transcurridos_desde_ultimo_estatus ?? '')
                 ->setCellValue('AA' . $C, $dias_transcurridos_desde_inicio ?? '');
 
-//            ->setCellValue('Y' . $C, $item->dias_atendida ?? '')
+            //            ->setCellValue('Y' . $C, $item->dias_atendida ?? '')
 //                ->setCellValue('Z' . $C, $item->dias_rechazada ?? '')
 //                ->setCellValue('AA' . $C, $item->dias_observada ?? '')
 
