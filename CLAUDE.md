@@ -3,6 +3,8 @@
 - TODO en español
 - Todos los archivos bien comentados en español.
 - El repositorio github no lo toques para nada (no push, no PR, no nada).
+- Siempre asegurate de que no se rompa nada.
+- para que tengas acceso a la DB local, consulta el .env y no me preguntes a cada rato cuando tengas que consultar algo.
 
 ## Versiones Actuales
 

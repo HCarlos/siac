@@ -285,6 +285,8 @@ class SabanaDeDatos1Controller extends Controller{
             $fiMes        = $item->fecha_ingreso ? Carbon::parse($item->fecha_ingreso)->format('m')     : '';
             $fiAno        = $item->fecha_ingreso ? Carbon::parse($item->fecha_ingreso)->format('Y')     : '';
 
+            $dias_transcurridos_desde_inicio = Carbon::parse($item->fecha_ingreso)->diffInDays();
+
             $Colonia    = $item->centro_colonia    ?? ''; // $item->centroLocalidad->ItemColonia() ?? '';
             $Delegacion = $item->centro_delegacion ?? '';
             $Delegado   = $item->delegado          ?? '';
@@ -294,7 +296,7 @@ class SabanaDeDatos1Controller extends Controller{
             $fueMes      = $item->fecha_ultimo_estatus ? Carbon::parse($item->fecha_ultimo_estatus)->format('m')     : '';
             $fueAno      = $item->fecha_ultimo_estatus ? Carbon::parse($item->fecha_ultimo_estatus)->format('Y')     : '';
             $fueFechaFmt = $item->fecha_ultimo_estatus ? Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y') : '';
-
+            $dias_transcurridos_desde_ultimo_estatus = Carbon::parse($item->fecha_ultimo_estatus)->diffInDays();
 
             $dds = Denuncia_Dependencia_Servicio::query()
                 ->where('denuncia_id', $item->id)
@@ -331,7 +333,9 @@ class SabanaDeDatos1Controller extends Controller{
                 ->setCellValue('X' . $C, $item->observaciones ?? '')
                 ->setCellValue('Y' . $C, $item->dias_atendida ?? '')
                 ->setCellValue('Z' . $C, $item->dias_rechazada ?? '')
-                ->setCellValue('AA' . $C, $item->dias_observada ?? '');
+                ->setCellValue('AA' . $C, $item->dias_observada ?? '')
+                ->setCellValue('AB' . $C, $dias_transcurridos_desde_inicio ?? '')
+                ->setCellValue('AC' . $C, $dias_transcurridos_desde_ultimo_estatus ?? '');
 
 
             $C++;
