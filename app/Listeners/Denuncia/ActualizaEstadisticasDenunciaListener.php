@@ -44,13 +44,7 @@ class ActualizaEstadisticasDenunciaListener
             return;
         }
 
-        // Calcular semáforo
-        // onFly=true  → llamada en tiempo real desde el request web ($viDen = null)
-        // onFly=false → llamada desde command/batch ($viDen = registro DDSE)
         if ($event->onFly) {
-            // $den->ue_id        → entero (no la relación ultimo_estatus que devuelve el modelo Estatu)
-            // $den->fecha_ultimo_estatus → string en DB, se envuelve en DateTime igual que Denuncia::semaforo_ultimo_estatus()
-            // $den->fecha_ingreso        → Carbon (está en $dates del modelo)
             $semaforo = ActualizaEstadisticasARO::semaforo_ultimo_estatus_off(
                 $den->ue_id,
                 new DateTime($den->fecha_ultimo_estatus),
@@ -64,9 +58,6 @@ class ActualizaEstadisticasDenunciaListener
             );
         }
 
-        // Actualizar campo de días en la denuncia, calcular promedio del servicio
-        // y determinar etiqueta para el mensaje — usando elseif para garantizar
-        // que $lblEstatus siempre quede definida antes del bloque de log.
         if ($event->estatus_id === 17) {          // ATENDIDA
 
             $den->dias_atendida = $semaforo['dias'];

@@ -298,6 +298,18 @@ class SabanaDeDatos1Controller extends Controller{
             $fueFechaFmt = $item->fecha_ultimo_estatus ? Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y') : '';
             $dias_transcurridos_desde_ultimo_estatus = Carbon::parse($item->fecha_ultimo_estatus)->diffInDays();
 
+            $dias_transcurridos_desde_ultimo_estatus = Carbon::parse($item->fecha_ultimo_estatus)
+                ->startOfDay() // Pone la fecha a las 00:00:00
+                ->diffInDays(Carbon::now()->startOfDay()); // Hoy a las 00:00:00
+// Resultado: 42 días
+
+//            $dias_transcurridos_atencion = $item->fecha_ultimo_estatus->diffInDays($item->fecha_ingreso);
+            $fecha_ultimo_estatus = Carbon::parse($item->fecha_ultimo_estatus);
+            $fecha_ingreso = Carbon::parse($item->fecha_ingreso);
+
+            $dias_transcurridos_atencion = $fecha_ultimo_estatus->diffInDays($fecha_ingreso);
+
+
             $dds = Denuncia_Dependencia_Servicio::query()
                 ->where('denuncia_id', $item->id)
             ->where('dependencia_id', $item->due_id)
@@ -331,11 +343,13 @@ class SabanaDeDatos1Controller extends Controller{
                 ->setCellValue('V' . $C, $fueMes ?? '')
                 ->setCellValue('W' . $C, $fueAno ?? '')
                 ->setCellValue('X' . $C, $item->observaciones ?? '')
-                ->setCellValue('Y' . $C, $item->dias_atendida ?? '')
-                ->setCellValue('Z' . $C, $item->dias_rechazada ?? '')
-                ->setCellValue('AA' . $C, $item->dias_observada ?? '')
-                ->setCellValue('AB' . $C, $dias_transcurridos_desde_inicio ?? '')
-                ->setCellValue('AC' . $C, $dias_transcurridos_desde_ultimo_estatus ?? '');
+                ->setCellValue('Y' . $C, $dias_transcurridos_atencion ?? '')
+                ->setCellValue('Z' . $C, $dias_transcurridos_desde_ultimo_estatus ?? '')
+                ->setCellValue('AA' . $C, $dias_transcurridos_desde_inicio ?? '');
+
+//            ->setCellValue('Y' . $C, $item->dias_atendida ?? '')
+//                ->setCellValue('Z' . $C, $item->dias_rechazada ?? '')
+//                ->setCellValue('AA' . $C, $item->dias_observada ?? '')
 
 
             $C++;
