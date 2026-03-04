@@ -36,7 +36,7 @@ class RepDelCiuInt1AController extends Controller{
             abort(500, "No se pudo abrir el archivo Excel como ZIP");
         }
 
-        $xml1 = $zip->getFromName('xl/worksheets/sheet1.xml');
+        $xml1 = $zip->getFromName('xl/worksheets/sheet2.xml');
         $dom1 = new \DOMDocument();
         $dom1->loadXML($xml1);
         $xp1  = new \DOMXPath($dom1);
@@ -147,14 +147,40 @@ class RepDelCiuInt1AController extends Controller{
 
         $DC = new RepDelCiuInt1AClass($start_date, $end_date);
 
-        $Items = $DC->getRecibidas();
+        $Items = $DC->getRecibidasCiudadanos();
         $i = 4;
         foreach ($Items as $Item) {
             $setCell(
                 $xp1,
                 $dom1,
-                'xl/worksheets/sheet1.xml',
+                'xl/worksheets/sheet2.xml',
                 'B' . $i,
+                $Item['TOTAL'] ?? ''
+            );
+            $i++;
+        }
+
+        $Items = $DC->getRecibidasDelegados();
+        $i = 4;
+        foreach ($Items as $Item) {
+            $setCell(
+                $xp1,
+                $dom1,
+                'xl/worksheets/sheet2.xml',
+                'F' . $i,
+                $Item['TOTAL'] ?? ''
+            );
+            $i++;
+        }
+
+        $Items = $DC->getRecibidasInternos();
+        $i = 4;
+        foreach ($Items as $Item) {
+            $setCell(
+                $xp1,
+                $dom1,
+                'xl/worksheets/sheet2.xml',
+                'J' . $i,
                 $Item['TOTAL'] ?? ''
             );
             $i++;
@@ -166,7 +192,7 @@ class RepDelCiuInt1AController extends Controller{
             $setCell(
                 $xp1,
                 $dom1,
-                'xl/worksheets/sheet1.xml',
+                'xl/worksheets/sheet2.xml',
                 'B' . $i,
                 $Item['T'] ?? ''
             );
@@ -185,9 +211,9 @@ class RepDelCiuInt1AController extends Controller{
         // Ciudadanos
         foreach ($ii as $key => $value) {
             $Item = $AtendidasPromCiudadanos[$value];
-            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', $letrasA[$value] . $i, $Item['DIAS_ATE'] ?? '');
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet2.xml', $letrasA[$value] . $i, $Item['DIAS_ATE'] ?? '');
             $Item = $PendientesPromCiudadano[$value];
-            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', $letrasP[$value] . $i, $Item['DIAS_PEN'] ?? '');
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet2.xml', $letrasP[$value] . $i, $Item['DIAS_PEN'] ?? '');
         }
 
         // Delegados
@@ -196,9 +222,9 @@ class RepDelCiuInt1AController extends Controller{
         $i = 26;
         foreach ($ii as $key => $value) {
             $Item = $AtendidasPromDelegados[$value];
-            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', $letrasA[$value] . $i, $Item['DIAS_ATE_DEL'] ?? '');
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet2.xml', $letrasA[$value] . $i, $Item['DIAS_ATE_DEL'] ?? '');
             $Item = $PendientesPromDelegados[$value];
-            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', $letrasP[$value] . $i, $Item['DIAS_PEN_DEL'] ?? '');
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet2.xml', $letrasP[$value] . $i, $Item['DIAS_PEN_DEL'] ?? '');
         }
 
         // Instituciones
@@ -207,9 +233,9 @@ class RepDelCiuInt1AController extends Controller{
         $i = 27;
         foreach ($ii as $key => $value) {
             $Item = $AtendidasPromInstitucion[$value];
-            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', $letrasA[$value] . $i, $Item['DIAS_ATE_INS'] ?? '');
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet2.xml', $letrasA[$value] . $i, $Item['DIAS_ATE_INS'] ?? '');
             $Item = $PendientesPromInstitucion[$value];
-            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', $letrasP[$value] . $i, $Item['DIAS_PEN_INS'] ?? '');
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet2.xml', $letrasP[$value] . $i, $Item['DIAS_PEN_INS'] ?? '');
         }
 
 
@@ -218,44 +244,44 @@ class RepDelCiuInt1AController extends Controller{
         $AtendidasProm = $DC->getAtendidasProm();
 
         $ii = [3, 1, 0, 5, 2, 4];
-        $i = 31;
+        $i = 32;
         foreach ($ii as $key => $value) {
             $Item = $PendientesProm[$value];
-            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B' . $i, $Item['PROM_PEN'] ?? '');
-            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'C' . $i, $Item['DIAS_PEN'] ?? '');
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet2.xml', 'B' . $i, $Item['PROM_PEN'] ?? '');
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet2.xml', 'C' . $i, $Item['DIAS_PEN'] ?? '');
             $i++;
         }
 
-        $i = 41;
+        $i = 42;
         foreach ($ii as $key => $value) {
             $Item = $AtendidasProm[$value];
-            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B' . $i, $Item['PROM_ATE'] ?? '');
-            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'C' . $i, $Item['DIAS_ATE'] ?? '');
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet2.xml', 'B' . $i, $Item['PROM_ATE'] ?? '');
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet2.xml', 'C' . $i, $Item['DIAS_ATE'] ?? '');
             $i++;
         }
 
         $Items = $DC->getLlamadas();
 
-        $i = 50;
+        $i = 52;
         foreach ($Items as $Item) {
-            $setCell($xp1, $dom1, 'xl/worksheets/sheet1.xml', 'B' . $i, $Item['LLAMADAS'] ?? '');
+            $setCell($xp1, $dom1, 'xl/worksheets/sheet2.xml', 'B' . $i, $Item['LLAMADAS'] ?? '');
             $i++;
         }
 
         // Finaliza procesamiento de datos
 
 
-        $nodesF = $xp1->query("//d:c[@r='B10']/d:v | //d:c[@r='B20']/d:v | //d:c[@r='B56']/d:v | //d:c[@r='C4']/d:v | //d:c[@r='C7']/d:v | //d:c[@r='C9']/d:v | //d:c[@r='C56']/d:v");
+        $nodesF = $xp1->query("//d:c[@r='B10']/d:v | //d:c[@r='B20']/d:v | //d:c[@r='C4']/d:v | //d:c[@r='C7']/d:v | //d:c[@r='C9']/d:v | //d:c[@r='C38']/d:v | //d:c[@r='C48']/d:v | //d:c[@r='B58']/d:v | //d:c[@r='F10']/d:v | //d:c[@r='G4']/d:v | //d:c[@r='G7']/d:v | //d:c[@r='G9']/d:v | //d:c[@r='J10']/d:v | //d:c[@r='K4']/d:v | //d:c[@r='K7']/d:v | //d:c[@r='K9']/d:v | //d:c[@r='B28']/d:v | //d:c[@r='C28']/d:v | //d:c[@r='D28']/d:v | //d:c[@r='E28']/d:v | //d:c[@r='F28']/d:v | //d:c[@r='G28']/d:v | //d:c[@r='H28']/d:v | //d:c[@r='I28']/d:v | //d:c[@r='J28']/d:v | //d:c[@r='K28']/d:v | //d:c[@r='L28']/d:v | //d:c[@r='M28']/d:v | //d:c[@r='N25']/d:v | //d:c[@r='N26']/d:v | //d:c[@r='N27']/d:v | //d:c[@r='N28']/d:v");
         foreach ($nodesF as $v) {
             $v->parentNode->removeChild($v);
         }
 
         $zip->addFromString(
-            'xl/worksheets/sheet1.xml',
+            'xl/worksheets/sheet2.xml',
             $dom1->saveXML()
         );
 
-        $xml2 = $zip->getFromName('xl/worksheets/sheet2.xml');
+        $xml2 = $zip->getFromName('xl/worksheets/sheet3.xml');
         $dom2 = new \DOMDocument();
         $dom2->loadXML($xml2);
         $xp2  = new \DOMXPath($dom2);
@@ -264,10 +290,10 @@ class RepDelCiuInt1AController extends Controller{
         $fechaCarbon = Carbon::now(); // Obtiene la fecha y hora actual
         $fechaFormateada = $fechaCarbon->locale('es_MX')->isoFormat('dddd DD [de] MMMM [de] YYYY [corte a las] HH:mm[hrs.]');
 
-        $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'M3', $start_date);
-        $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'S3', $end_date);
-        $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'A39', $end_date);
-//        $setCell($xp2, $dom2, 'xl/worksheets/sheet2.xml', 'C3', ucfirst($fechaFormateada));
+        $setCell($xp2, $dom2, 'xl/worksheets/sheet3.xml', 'M3', $start_date);
+        $setCell($xp2, $dom2, 'xl/worksheets/sheet3.xml', 'S3', $end_date);
+        $setCell($xp2, $dom2, 'xl/worksheets/sheet3.xml', 'A39', $end_date);
+//        $setCell($xp2, $dom2, 'xl/worksheets/sheet3.xml', 'C3', ucfirst($fechaFormateada));
 
         $nodesF = $xp2->query("//d:c[@r='L6']/d:v |
                                         //d:c[@r='E7']/d:v |
@@ -311,7 +337,7 @@ class RepDelCiuInt1AController extends Controller{
         }
 
         $zip->addFromString(
-            'xl/worksheets/sheet2.xml',
+            'xl/worksheets/sheet3.xml',
             $dom2->saveXML()
         );
 

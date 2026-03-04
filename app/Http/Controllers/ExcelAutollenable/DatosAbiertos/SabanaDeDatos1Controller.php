@@ -460,11 +460,6 @@ class SabanaDeDatos1Controller extends Controller{
                     ->pluck('id')
                     ->toArray();
 
-//                $a = new ActualizaEstadisticasARO();
-//                foreach ($this->denuncias_ids as $denuncia_id) {
-//                    $a->ActualizaEstadisticasARO($denuncia_id);
-//                }
-
                 return $this->denuncias_ids;
         }
 

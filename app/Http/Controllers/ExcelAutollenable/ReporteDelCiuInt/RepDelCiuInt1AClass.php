@@ -6,7 +6,7 @@
 namespace App\Http\Controllers\ExcelAutollenable\ReporteDelCiuInt;
 
 use App\Classes\Denuncia\ParaReportesClass;
-use App\Models\Denuncias\_viMovSM;
+use App\Models\Denuncias\_viMovSMTodas;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -28,6 +28,8 @@ class RepDelCiuInt1AClass{
     protected $fecha_desde;
 
     protected $denuncias_ids;
+
+    protected $arrInternos;
 
 
     public function __construct($start_date,$end_date){
@@ -59,26 +61,23 @@ class RepDelCiuInt1AClass{
         $this->end_date = $end_date. " 23:59:59";
         $this->fecha_desde = "2025-11-19 00:00:00";
 
-        $this->denuncias_ids = ParaReportesClass::GetFiltroPorFechaYServicios($this->start_date, $this->end_date,$this->ServiciosPrincipales);
+        $this->denuncias_ids = ParaReportesClass::GetFiltroPorFechaYServiciosViDenuncias($this->start_date, $this->end_date,$this->ServiciosPrincipales);
 
-//        dd($this->denuncias_ids);
-
-
-//        dd($start_date.' '.$end_date.' '.$this->fecha_desde);
+        $this->arrInternos = [508833, 519442, 513061, 126641];
 
     }
 
-    public function getRecibidas(){
+    public function getRecibidasCiudadanos(){
 
         $start_date_e = $this->start_date;
         $end_date_e = $this->end_date;
 
         foreach ($this->ServiciosPrincipales as $key => $value) {
-            $arr = _viMovSM::select('servicio_id', 'estatu_id', DB::raw('COUNT(estatu_id) AS suma_ue_id'),)
+            $arr = _viMovSMTodas::select('servicio_id', 'estatu_id', DB::raw('COUNT(estatu_id) AS suma_ue_id'),)
                 ->whereIn('denuncia_id', $this->denuncias_ids)
                 ->where('servicio_id', $value)
-                ->whereNotIn('ciudadano_id', [508833, 519442, 513061])
-                ->whereNotIn('origen_id', [20])
+                ->whereNotIn('ciudadano_id', $this->arrInternos)
+                ->whereRaw(' ciudadano_id <> delegado_id')
                 ->whereIn('estatu_id', [16,17,18,19,20,21,22])
                 ->groupBy('servicio_id','estatu_id')
                 ->get();
@@ -97,13 +96,72 @@ class RepDelCiuInt1AClass{
 
     }
 
+    public function getRecibidasDelegados(){
+
+        $start_date_e = $this->start_date;
+        $end_date_e = $this->end_date;
+
+        foreach ($this->ServiciosPrincipales as $key => $value) {
+            $arr = _viMovSMTodas::select('servicio_id', 'estatu_id', DB::raw('COUNT(estatu_id) AS suma_ue_id'),)
+                ->whereIn('denuncia_id', $this->denuncias_ids)
+                ->where('servicio_id', $value)
+                ->whereNotIn('ciudadano_id', $this->arrInternos)
+                ->whereRaw(' ciudadano_id = delegado_id')
+                ->whereIn('estatu_id', [16,17,18,19,20,21,22])
+                ->groupBy('servicio_id','estatu_id')
+                ->get();
+
+            if (!$arr->isEmpty()) {
+                $servicio = $this->vectorServicios[$key];
+                $servicio['TOTAL'] = $arr->sum('suma_ue_id');
+                $this->vectorServicios[$key] = $servicio;
+            }
+
+        }
+
+
+        return $this->vectorServicios;
+//        $this->getAtendidas($start_date, $end_date);
+
+    }
+
+
+    public function getRecibidasInternos(){
+
+        $start_date_e = $this->start_date;
+        $end_date_e = $this->end_date;
+
+        foreach ($this->ServiciosPrincipales as $key => $value) {
+            $arr = _viMovSMTodas::select('servicio_id', 'estatu_id', DB::raw('COUNT(estatu_id) AS suma_ue_id'),)
+                ->whereIn('denuncia_id', $this->denuncias_ids)
+                ->where('servicio_id', $value)
+                ->whereIn('ciudadano_id', $this->arrInternos)
+                ->whereIn('estatu_id', [16,17,18,19,20,21,22])
+                ->groupBy('servicio_id','estatu_id')
+                ->get();
+
+            if (!$arr->isEmpty()) {
+                $servicio = $this->vectorServicios[$key];
+                $servicio['TOTAL'] = $arr->sum('suma_ue_id');
+                $this->vectorServicios[$key] = $servicio;
+            }
+
+        }
+
+
+        return $this->vectorServicios;
+//        $this->getAtendidas($start_date, $end_date);
+
+    }
+
+
     public function getOrigenes(){
 
         $start_date_e = $this->start_date;
         $end_date_e = $this->end_date;
 
         // 1. Consulta única agrupada por origen_id
-            $resultado = _viMovSM::select('origen_id', DB::raw('COUNT(id) AS suma_id'))
+            $resultado = _viMovSMTodas::select('origen_id', DB::raw('COUNT(id) AS suma_id'))
             ->whereIn('denuncia_id', $this->denuncias_ids)
             ->whereIn('origen_id', array_filter($this->arrayOrigenes)) // quita ceros
             ->groupBy('origen_id')
@@ -140,7 +198,7 @@ class RepDelCiuInt1AClass{
         $end_date_e = $this->end_date;
 
         foreach ($this->ServiciosPrincipales as $key => $value) {
-            $arr = _viMovSM::select(
+            $arr = _viMovSMTodas::select(
                     'id', 'denuncia_id', 'servicio_id', 'estatu_id', 'origen_id', 'ciudadano_id',
                     DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
                 )
@@ -167,7 +225,7 @@ class RepDelCiuInt1AClass{
 
         // promedio
         foreach ($this->ServiciosPrincipales as $key => $value) {
-            $arr = _viMovSM::select(
+            $arr = _viMovSMTodas::select(
                     'id', 'denuncia_id', 'servicio_id', 'estatu_id', 'origen_id', 'ciudadano_id',
                     DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
                 )
@@ -185,7 +243,7 @@ class RepDelCiuInt1AClass{
 
         // dias
         foreach ($this->ServiciosPrincipales as $key => $value) {
-            $arr = _viMovSM::select(
+            $arr = _viMovSMTodas::select(
                     'id', 'denuncia_id', 'servicio_id', 'estatu_id', 'origen_id', 'ciudadano_id',
                     DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
                 )
@@ -215,14 +273,14 @@ class RepDelCiuInt1AClass{
 
         foreach ($this->ServiciosPrincipales as $key => $value) {
 
-            $arr = _viMovSM::select(
+            $arr = _viMovSMTodas::select(
                     'id', 'denuncia_id', 'servicio_id', 'estatu_id', 'origen_id', 'ciudadano_id',
                     DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
                 )
                 ->whereIn('denuncia_id', $this->denuncias_ids)
                 ->where('servicio_id', $value)
-                ->whereNotIn('ciudadano_id', [508833, 519442, 513061])
-                ->whereNotIn('origen_id', [20])
+                ->whereNotIn('ciudadano_id', $this->arrInternos)
+                ->whereRaw('ciudadano_id <> delegado_id')
                 ->whereIn('estatu_id', [16, 18, 19])
                 ->orderByDesc('id')
                 ->get();
@@ -247,14 +305,14 @@ class RepDelCiuInt1AClass{
 
         foreach ($this->ServiciosPrincipales as $key => $value) {
 
-            $arr = _viMovSM::select(
+            $arr = _viMovSMTodas::select(
                     'id', 'denuncia_id', 'servicio_id', 'estatu_id', 'origen_id', 'ciudadano_id',
                     DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
                 )
                 ->whereIn('denuncia_id', $this->denuncias_ids)
                 ->where('servicio_id', $value)
-                ->whereNotIn('ciudadano_id', [508833, 519442, 513061])
-                ->whereNotIn('origen_id', [20])
+                ->whereNotIn('ciudadano_id', $this->arrInternos)
+                ->whereRaw('ciudadano_id <> delegado_id')
                 ->whereIn('estatu_id', [17, 20, 21, 22])
                 ->orderByDesc('id')
                 ->get();
@@ -278,13 +336,14 @@ class RepDelCiuInt1AClass{
 
         foreach ($this->ServiciosPrincipales as $key => $value) {
 
-            $arr = _viMovSM::select(
+            $arr = _viMovSMTodas::select(
                 'id', 'denuncia_id', 'servicio_id', 'estatu_id', 'origen_id', 'ciudadano_id',
                 DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
             )
                 ->whereIn('denuncia_id', $this->denuncias_ids)
                 ->where('servicio_id', $value)
-                ->whereIn('origen_id', [20])
+                ->whereNotIn('ciudadano_id', $this->arrInternos)
+                ->whereRaw('ciudadano_id = delegado_id')
                 ->whereIn('estatu_id', [16, 18, 19])
                 ->orderByDesc('id')
                 ->get();
@@ -309,13 +368,14 @@ class RepDelCiuInt1AClass{
 
         foreach ($this->ServiciosPrincipales as $key => $value) {
 
-            $arr = _viMovSM::select(
+            $arr = _viMovSMTodas::select(
                 'id', 'denuncia_id', 'servicio_id', 'estatu_id', 'origen_id', 'ciudadano_id',
                 DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
             )
                 ->whereIn('denuncia_id', $this->denuncias_ids)
                 ->where('servicio_id', $value)
-                ->whereIn('origen_id', [20])
+                ->whereNotIn('ciudadano_id', $this->arrInternos)
+                ->whereRaw('ciudadano_id = delegado_id')
                 ->whereIn('estatu_id', [17, 20, 21, 22])
                 ->orderByDesc('id')
                 ->get();
@@ -335,21 +395,20 @@ class RepDelCiuInt1AClass{
 
     /**
      * Obtiene conteo y promedio de días para PENDIENTES INTERNAS
-     * (ciudadano_id IN [508833, 519442, 513061])
+     * (ciudadano_id IN $this->arrInternos)
      */
     public function getPendientesInternas(){
         $end_date_e = $this->end_date;
 
         foreach ($this->ServiciosPrincipales as $key => $value) {
 
-            $arr = _viMovSM::select(
+            $arr = _viMovSMTodas::select(
                     'id', 'denuncia_id', 'servicio_id', 'estatu_id', 'origen_id', 'ciudadano_id',
                     DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
                 )
                 ->whereIn('denuncia_id', $this->denuncias_ids)
                 ->where('servicio_id', $value)
-                ->whereIn('ciudadano_id', [508833, 519442, 513061])
-                ->whereNotIn('origen_id', [20])
+                ->whereIn('ciudadano_id', $this->arrInternos)
                 ->whereIn('estatu_id', [16, 18, 19])
                 ->orderByDesc('id')
                 ->get();
@@ -367,7 +426,7 @@ class RepDelCiuInt1AClass{
 
     /**
      * Obtiene conteo para ATENDIDAS CIUDADANOS
-     * (ciudadano_id IN [508833, 519442, 513061])
+     * (ciudadano_id IN $this->arrInternos)
      */
     public function getAtendidasInternas(){
 
@@ -375,14 +434,13 @@ class RepDelCiuInt1AClass{
 
         foreach ($this->ServiciosPrincipales as $key => $value) {
 
-            $arr = _viMovSM::select(
+            $arr = _viMovSMTodas::select(
                 'id', 'denuncia_id', 'servicio_id', 'estatu_id', 'origen_id', 'ciudadano_id',
                 DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
             )
                 ->whereIn('denuncia_id', $this->denuncias_ids)
                 ->where('servicio_id', $value)
-                ->whereIn('ciudadano_id', [508833, 519442, 513061])
-                ->whereNotIn('origen_id', [20])
+                ->whereIn('ciudadano_id', $this->arrInternos)
                 ->whereIn('estatu_id', [17, 20, 21, 22])
                 ->orderByDesc('id')
                 ->get();
@@ -396,30 +454,6 @@ class RepDelCiuInt1AClass{
         return $this->vectorServicios;
     }
 
-//->where('delegado_id','<', 2)
-
-
-//    public function getLlamadas(){
-//        $start_date_e = $this->start_date;
-//        $end_date_e = $this->end_date;
-//        foreach ($this->ServiciosPrincipales as $key => $value) {
-//            $arr = _viMovSM::select(
-//                    'id', 'denuncia_id', 'servicio_id', 'estatu_id', 'origen_id', 'ciudadano_id',
-//                    DB::raw("DATE_PART('day', '$end_date_e' - fecha_movimiento) AS dias")
-//                )
-//                ->whereIn('denuncia_id', $this->denuncias_ids)
-//                ->where('servicio_id', $value)
-//                ->whereIn('estatu_id', [18,21,22])
-//                ->get();
-//            if (!$arr->isEmpty()) {
-//                $servicio = $this->vectorServicios[$key];
-//                $servicio['LLAMADAS'] = $arr->count('denuncia_id');
-//                $this->vectorServicios[$key] = $servicio;
-//            }
-//
-//        }
-//        return $this->vectorServicios;
-//    }
 
 
     public function getLlamadas(){
