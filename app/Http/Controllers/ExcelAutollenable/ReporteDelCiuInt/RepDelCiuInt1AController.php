@@ -8,6 +8,8 @@ namespace App\Http\Controllers\ExcelAutollenable\ReporteDelCiuInt;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ExcelAutollenable\ReporteDiario;
 use App\Http\Controllers\Funciones\LoadTemplateExcel;
+use App\Models\Catalogos\Servicio;
+use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -18,6 +20,7 @@ class RepDelCiuInt1AController extends Controller{
     }
 
     public function repDelCiuInt1A(Request $request){
+        ini_set('max_execution_time', 90000);
 
         $start_date = $request->get('start_date');
         $end_date = $request->get('end_date');
@@ -71,37 +74,60 @@ class RepDelCiuInt1AController extends Controller{
                 $rowNum = preg_replace('/\D/', '', $cellRef);
                 $rowNodes = $xp->query("//d:row[@r='$rowNum']");
                 if (! $rowNodes->length) {
-                    return;
+                    // La fila no existe en el template (ej. sheet1 vacío): crearla en sheetData
+                    $sheetDataNodes = $xp->query("//d:sheetData");
+                    if (! $sheetDataNodes->length) {
+                        return; // No hay sheetData en absoluto → no se puede escribir
+                    }
+                    $sheetData = $sheetDataNodes->item(0);
+                    $row = $dom->createElementNS('http://schemas.openxmlformats.org/spreadsheetml/2006/main', 'row');
+                    $row->setAttribute('r', $rowNum);
+                    $sheetData->appendChild($row);
+                } else {
+                    $row = $rowNodes->item(0);
                 }
-                $row = $rowNodes->item(0);
-                $c   = $dom->createElementNS('http://schemas.openxmlformats.org/spreadsheetml/2006/main','c');
+                $c = $dom->createElementNS('http://schemas.openxmlformats.org/spreadsheetml/2006/main','c');
                 $c->setAttribute('r',$cellRef);
-                $row->appendChild($c);
+
+                // Insertar la celda en posición ordenada (Excel requiere celdas en orden por columna)
+                $colLetra = preg_replace('/\d/', '', $cellRef);
+                $nuevoColNum = 0;
+                foreach (str_split($colLetra) as $char) {
+                    $nuevoColNum = $nuevoColNum * 26 + (ord($char) - 64);
+                }
+                $insertarAntes = null;
+                foreach ($row->childNodes as $hijo) {
+                    if ($hijo->nodeType === XML_ELEMENT_NODE) {
+                        $refExistente = $hijo->getAttribute('r');
+                        $colExistente = preg_replace('/\d/', '', $refExistente);
+                        $colExistenteNum = 0;
+                        foreach (str_split($colExistente) as $char) {
+                            $colExistenteNum = $colExistenteNum * 26 + (ord($char) - 64);
+                        }
+                        if ($colExistenteNum > $nuevoColNum) {
+                            $insertarAntes = $hijo;
+                            break;
+                        }
+                    }
+                }
+                if ($insertarAntes) {
+                    $row->insertBefore($c, $insertarAntes);
+                } else {
+                    $row->appendChild($c);
+                }
             }
 
             $isDate = false;
             $excelValue = $value;
 
-            // --- DETECCIÓN MEJORADA DE FECHAS ---
-            // Intenta convertir a Carbon para un parseo más robusto, luego a Excel serial.
-            // Si $value es un string, intenta parsearlo como fecha.
-            try {
-                if (is_string($value) && !empty($value)) {
-                    // Intenta parsear con Carbon (más robusto para varios formatos)
-                    $carbonDate = \Carbon\Carbon::parse($value);
-                    $excelValue = $convertPhpDateToExcelSerial($carbonDate);
-                    if ($excelValue !== null) {
-                        $isDate = true;
-                    }
-                } elseif ($value instanceof \Carbon\Carbon || $value instanceof \DateTime) {
-                    $excelValue = $convertPhpDateToExcelSerial($value);
-                    if ($excelValue !== null) {
-                        $isDate = true;
-                    }
+            // Detección de fechas: SOLO si el valor ya es Carbon/DateTime (nunca strings).
+            // Los strings formateados como "05-03-2025" o "2025" no se auto-detectan
+            // porque Carbon los parsea erróneamente como fechas y producen números seriales.
+            if ($value instanceof \Carbon\Carbon || $value instanceof \DateTime) {
+                $excelValue = $convertPhpDateToExcelSerial($value);
+                if ($excelValue !== null) {
+                    $isDate = true;
                 }
-            } catch (\Exception $e) {
-                // Si Carbon no puede parsear, no es una fecha válida para nosotros.
-                $isDate = false;
             }
 
 
@@ -130,22 +156,135 @@ class RepDelCiuInt1AController extends Controller{
                 $c->appendChild($is);
             }
 
-            // Guardar el XML de la hoja en el archivo ZIP
-            $newXml = $dom->saveXML();
-
-            // Actualizar el archivo en el ZIP (borrar y agregar de nuevo)
-            $zip->deleteName($sheetXmlPath);
-            $zip->addFromString($sheetXmlPath, $newXml);
-
-
-            // Debug: Guarda el XML a un archivo para inspeccionar
-            file_put_contents('/tmp/sheet2_modificado.xml', $newXml);
+            // El ZIP se actualiza UNA VEZ al final de cada hoja (no aquí),
+            // para evitar 110,000 escrituras al ZIP con ~4,000 filas × 26 columnas.
         };
 
 
-        // Inicia procesamiento de datos
-
         $DC = new RepDelCiuInt1AClass($start_date, $end_date);
+
+        // ─── HOJA 1: construcción directa de XML (sin DOM, mucho más rápido) ──────────
+        $xmlSheet1Raw = $zip->getFromName('xl/worksheets/sheet1.xml');
+
+        // Función auxiliar para escapar texto en XML
+        $esc = fn($v) => htmlspecialchars((string)$v, ENT_XML1 | ENT_QUOTES, 'UTF-8');
+
+        // Extraer estilos de columna de la fila 6 del template (una sola vez)
+        $estilosCol = [];
+        preg_match_all('/<c r="([A-Z]+)6"[^>]*?s="(\d+)"/', $xmlSheet1Raw, $mEst);
+        if (!empty($mEst[1])) {
+            $estilosCol = array_combine($mEst[1], $mEst[2]);
+        }
+
+        // Extraer atributos de la fila de datos del template (fila 6) para reutilizarlos
+        preg_match('/<row ([^>]*)r="6"/', $xmlSheet1Raw, $mRow);
+        $rowAttrsBase = isset($mRow[1]) ? rtrim($mRow[1]) . ' ' : '';
+
+        // Función para construir el XML de una celda directamente como string
+        $buildCelda = function(string $col, int $rowNum, $value) use (&$estilosCol, $convertPhpDateToExcelSerial, $esc): string {
+            $ref = $col . $rowNum;
+            $s   = $estilosCol[$col] ?? '0';
+            $sAttr = ($s !== '' && $s !== '0') ? ' s="' . $s . '"' : '';
+            if ($value === '' || $value === null) {
+                return '<c r="' . $ref . '"' . $sAttr . '/>';
+            }
+            if ($value instanceof \Carbon\Carbon || $value instanceof \DateTime) {
+                $ev = $convertPhpDateToExcelSerial($value);
+                return '<c r="' . $ref . '"' . $sAttr . ' t="n"><v>' . $ev . '</v></c>';
+            }
+            if (is_numeric($value)) {
+                return '<c r="' . $ref . '"' . $sAttr . ' t="n"><v>' . $value . '</v></c>';
+            }
+            return '<c r="' . $ref . '"' . $sAttr . ' t="inlineStr"><is><t>' . $esc($value) . '</t></is></c>';
+        };
+
+        $Items = $DC->getSabanaDeDatos();
+
+        $ser = Servicio::where('is_visible_mobile', true)
+            ->where('is_visible_nombre_corto_ss', true)
+            ->pluck('id')
+            ->toArray();
+
+        // Generar XML de las filas de datos directamente como string
+        $newRowsXml = '';
+        $i = 7;
+        foreach ($Items as $item) {
+            // Calcular campos derivados de fechas
+            $fechaIngreso = $item->fecha_ingreso ? Carbon::parse($item->fecha_ingreso)->format('d-m-Y') : '';
+            $fiMes        = $item->fecha_ingreso ? Carbon::parse($item->fecha_ingreso)->format('m')     : '';
+            $fiAno        = $item->fecha_ingreso ? Carbon::parse($item->fecha_ingreso)->format('Y')     : '';
+
+            $Delegacion = $item->centro_delegacion ?? '';
+            $Delegado   = $item->delegado          ?? '';
+            $Ciudadano  = $item->ciudadano         ?? '';
+
+            $fueMes      = $item->fecha_ultimo_estatus ? Carbon::parse($item->fecha_ultimo_estatus)->format('m')     : '';
+            $fueAno      = $item->fecha_ultimo_estatus ? Carbon::parse($item->fecha_ultimo_estatus)->format('Y')     : '';
+            $fueFechaFmt = $item->fecha_ultimo_estatus ? Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y') : '';
+
+            $dias_transcurridos_atencion = Carbon::parse($item->fecha_ultimo_estatus)
+                ->startOfDay()->diffInDays(Carbon::parse($item->fecha_ingreso)->startOfDay());
+
+            $dias_transcurridos_desde_ultimo_estatus = Carbon::parse($item->fecha_ultimo_estatus)
+                ->startOfDay()->diffInDays(Carbon::now()->startOfDay());
+
+            $dias_transcurridos_desde_inicio = Carbon::parse($item->fecha_ingreso)
+                ->startOfDay()->diffInDays(Carbon::now()->startOfDay());
+
+            // Construir la fila como XML string (en orden de columna)
+            $newRowsXml .= '<row ' . $rowAttrsBase . 'r="' . $i . '">';
+            $newRowsXml .= $buildCelda('A', $i, $item->denuncia_id ?? 0);
+            $newRowsXml .= $buildCelda('B', $i, trim($item->username_ciudadano ?? ''));
+            $newRowsXml .= $buildCelda('C', $i, trim($item->ap_paterno_ciudadano ?? ''));
+            $newRowsXml .= $buildCelda('D', $i, trim($item->ap_materno_ciudadano ?? ''));
+            $newRowsXml .= $buildCelda('E', $i, trim($item->nombre_ciudadano ?? ''));
+            $newRowsXml .= $buildCelda('G', $i, strtoupper(trim($item->search_google ?? '')));
+            $newRowsXml .= $buildCelda('H', $i, $Delegacion);
+            $newRowsXml .= $buildCelda('I', $i, $Ciudadano === $Delegado ? 'Es el delegado' : '');
+            $newRowsXml .= $buildCelda('J', $i, trim(($item->telefonos_ciudadano ?? '') . ' ' . ($item->email_ciudadano ?? '')));
+            $newRowsXml .= $buildCelda('K', $i, $fechaIngreso);
+            $newRowsXml .= $buildCelda('L', $i, $fiMes);
+            $newRowsXml .= $buildCelda('M', $i, $fiAno);
+            $newRowsXml .= $buildCelda('N', $i, $item->dependencia ?? '');
+            $newRowsXml .= $buildCelda('O', $i, $item->servicio ?? '');
+            $newRowsXml .= $buildCelda('P', $i, in_array($item->sue_id, $ser, true) ? 'Monitoreado' : '');
+            $newRowsXml .= $buildCelda('Q', $i, trim(($item->descripcion ?? '') . ' ' . ($item->referencia ?? '')));
+            $newRowsXml .= $buildCelda('R', $i, $item->prioridad ?? '');
+            $newRowsXml .= $buildCelda('S', $i, $item->origen ?? '');
+            $newRowsXml .= $buildCelda('T', $i, $item->estatus ?? '');
+            $newRowsXml .= $buildCelda('U', $i, $fueFechaFmt);
+            $newRowsXml .= $buildCelda('V', $i, $fueMes);
+            $newRowsXml .= $buildCelda('W', $i, $fueAno);
+            $newRowsXml .= $buildCelda('X', $i, $item->observaciones ?? '');
+            $newRowsXml .= $buildCelda('Y', $i, $dias_transcurridos_atencion);
+            $newRowsXml .= $buildCelda('Z', $i, $dias_transcurridos_desde_ultimo_estatus);
+            $newRowsXml .= $buildCelda('AA', $i, $dias_transcurridos_desde_inicio);
+            $newRowsXml .= '</row>';
+            $i++;
+        }
+
+        // Extraer filas de cabecera (1-5) del template para preservar encabezados
+        preg_match_all('/<row [^>]+r="[1-5]"[^>]*>.*?<\/row>/s', $xmlSheet1Raw, $mCabeceras);
+        $xmlCabeceras = implode('', $mCabeceras[0]);
+
+        // Reemplazar el sheetData completo en el XML del template con string manipulation
+        $posIni = strpos($xmlSheet1Raw, '<sheetData');
+        $posFin = strpos($xmlSheet1Raw, '</sheetData>') + strlen('</sheetData>');
+        $xmlSheet1Final = substr($xmlSheet1Raw, 0, $posIni)
+            . '<sheetData>' . $xmlCabeceras . $newRowsXml . '</sheetData>'
+            . substr($xmlSheet1Raw, $posFin);
+
+        // Guardar sheet1 al ZIP (una sola operación, sin DOM)
+        $zip->deleteName('xl/worksheets/sheet1.xml');
+        $zip->addFromString('xl/worksheets/sheet1.xml', $xmlSheet1Final);
+
+        $xml1 = $zip->getFromName('xl/worksheets/sheet2.xml');
+        $dom1 = new \DOMDocument();
+        $dom1->loadXML($xml1);
+        $xp1  = new \DOMXPath($dom1);
+        $xp1->registerNamespace('d','http://schemas.openxmlformats.org/spreadsheetml/2006/main');
+
+        // Inicia procesamiento de datos
 
         $Items = $DC->getRecibidasCiudadanos();
         $i = 4;
@@ -276,10 +415,9 @@ class RepDelCiuInt1AController extends Controller{
             $v->parentNode->removeChild($v);
         }
 
-        $zip->addFromString(
-            'xl/worksheets/sheet2.xml',
-            $dom1->saveXML()
-        );
+        // Guardar sheet2 al ZIP una sola vez
+        $zip->deleteName('xl/worksheets/sheet2.xml');
+        $zip->addFromString('xl/worksheets/sheet2.xml', $dom1->saveXML());
 
         $xml2 = $zip->getFromName('xl/worksheets/sheet3.xml');
         $dom2 = new \DOMDocument();
@@ -292,8 +430,7 @@ class RepDelCiuInt1AController extends Controller{
 
         $setCell($xp2, $dom2, 'xl/worksheets/sheet3.xml', 'M3', $start_date);
         $setCell($xp2, $dom2, 'xl/worksheets/sheet3.xml', 'S3', $end_date);
-        $setCell($xp2, $dom2, 'xl/worksheets/sheet3.xml', 'A39', $end_date);
-//        $setCell($xp2, $dom2, 'xl/worksheets/sheet3.xml', 'C3', ucfirst($fechaFormateada));
+//        $setCell($xp2, $dom2, 'xl/worksheets/sheet3.xml', 'A39', $end_date);
 
         $nodesF = $xp2->query("//d:c[@r='L6']/d:v |
                                         //d:c[@r='E7']/d:v |
@@ -336,11 +473,9 @@ class RepDelCiuInt1AController extends Controller{
             $v->parentNode->removeChild($v);
         }
 
-        $zip->addFromString(
-            'xl/worksheets/sheet3.xml',
-            $dom2->saveXML()
-        );
-
+        // Guardar sheet3 al ZIP una sola vez
+        $zip->deleteName('xl/worksheets/sheet3.xml');
+        $zip->addFromString('xl/worksheets/sheet3.xml', $dom2->saveXML());
 
         $zip->close();
 

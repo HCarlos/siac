@@ -48,7 +48,7 @@ class UserRequest extends FormRequest
     public function rules(){
         $arr =  [
             'ubicacion_nueva_id' => ['required','numeric','not_in:0'],
-            'curp'               => ['unique:users,curp,'.$this->id, new IsCURPRule() ],
+//            'curp'               => ['unique:users,curp,'.$this->id, new IsCURPRule() ],
             'ap_paterno'         => ['required', 'string'],
             'nombre'             => ['required', 'string'],
         ];
@@ -85,7 +85,6 @@ class UserRequest extends FormRequest
             'nombre'             => 'Nombre',
             'curp'               => 'CURP',
             'email'              => 'Email',
-            'nombre'             => 'Nombre',
             'ap_paterno'         => 'Apellido Paterno',
         ];
     }
@@ -104,11 +103,7 @@ class UserRequest extends FormRequest
             throw new HttpResponseException(response()->json( 'Falta la Ubicación', 422));
         }
         $Ubi = Ubicacion::findOrFail($ubicacion_actual_id);
-
-        if (!$Ubi){
-            $ubicacion_actual_id = 1;
-            $Ubi = Ubicacion::findOrFail($ubicacion_actual_id);
-        }
+        // findOrFail ya lanza ModelNotFoundException si no existe; el if(!$Ubi) era dead code
 
         //dd($Ubi->id);
 
@@ -137,14 +132,18 @@ class UserRequest extends FormRequest
             ];
 
         }else{
-            $UserN = [ 'email' => strtolower(trim($this->email)), ];
+            // Solo actualizar email si viene con valor; si está vacío no tocar
+            // (la constraint unique lo rechazaría con '')
+            $UserN = [];
+            if (trim($this->email) !== '') {
+                $UserN['email'] = strtolower(trim($this->email));
+            }
             $CURP  = $this->curp;
         }
         $User = [
             'ap_paterno'       => strtoupper(trim($this->ap_paterno)),
             'ap_materno'       => strtoupper(trim($this->ap_materno)),
             'nombre'           => strtoupper(trim($this->nombre)),
-            'curp'             => $CURP,
             'emails'           => $this->emails,
             'celulares'        => strtoupper(trim($this->celulares)),
             'telefonos'        => strtoupper(trim($this->telefonos)),
@@ -153,6 +152,10 @@ class UserRequest extends FormRequest
             'ubicacion_id'     => $Ubi->id,
             'imagen_id'        => 0,
         ];
+        // Solo actualizar CURP si tiene valor (en edición puede llegar vacío)
+        if ($CURP !== '') {
+            $User['curp'] = $CURP;
+        }
         //dd($Ubi);
 
         $User_Adress = [
@@ -193,7 +196,7 @@ class UserRequest extends FormRequest
                 $user->user_adress()->update($User_Adress);
                 $user->user_data_extend()->update($User_Data_Extend);
             } else {
-                $user = User::find($this->id);
+                $user = User::findOrFail($this->id);
                 $user->update($User);
                 $user->update($UserN);
                 //dd($user);
@@ -207,7 +210,8 @@ class UserRequest extends FormRequest
             }
         }catch (QueryException $e){
             $Msg = new MessageAlertClass();
-            throw new HttpResponseException(response()->json( $Msg->Message($e), 422));
+//            throw new HttpResponseException(response()->json( $Msg->Message($e), 422));
+            throw new HttpResponseException(response()->json( $e->getMessage(), 422));
         }
         return $user;
     }

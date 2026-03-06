@@ -17,7 +17,14 @@
       "Bash(PGPASSWORD=123 psql -h 127.0.0.1 -U postgres -d dbatemun -c \"\\\\d _videnuncias\" 2>/dev/null)",
       "Bash(PGPASSWORD=123 psql -h 127.0.0.1 -U postgres -d dbatemun -c \"\\\\d _viMovSM\" 2>/dev/null | grep -E \"fecha_dias|fecha_ultimo|ue_id|semaforo\")",
       "Bash(PGPASSWORD=123 psql -h 127.0.0.1 -U postgres -d dbatemun -c \"\\\\d _viMovSM\" 2>/dev/null | head -50)",
-      "Bash(PGPASSWORD=123 psql -h 127.0.0.1 -U postgres -d dbatemun -c \"SELECT table_name FROM information_schema.views WHERE table_schema='public' ORDER BY table_name;\" 2>/dev/null)"
+      "Bash(PGPASSWORD=123 psql -h 127.0.0.1 -U postgres -d dbatemun -c \"SELECT table_name FROM information_schema.views WHERE table_schema='public' ORDER BY table_name;\" 2>/dev/null)",
+      "Bash(find /var/www/servimun/storage -name \"*.xlsx\" 2>/dev/null | head -20)",
+      "Bash(find /var/www/servimun/app -name \"UserRequest*\" -o -name \"*UserRequest*\" 2>/dev/null | grep -v \".php~\")",
+      "Bash(PGPASSWORD=123 psql -U postgres -d dbatemun -c \"\\\\d _vimov_filter_sm_todas\" 2>/dev/null | head -60)",
+      "Bash(PGPASSWORD=123 psql -U postgres -d dbatemun -c \"SELECT column_name FROM information_schema.columns WHERE table_name='_vimov_filter_sm_todas' ORDER BY ordinal_position;\" 2>/dev/null)",
+      "Bash(php artisan tinker --no-interaction <<'EOF'\n$file_external = \"fmt_graficos_rangos_1.xlsx\";\n$path = \\\\App\\\\Http\\\\Controllers\\\\Funciones\\\\LoadTemplateExcel::getFileTemplate\\($file_external\\);\necho \"Template path: $path\\\\n\";\nEOF)",
+      "Bash(cd /tmp && unzip -p /var/www/servimun/public/storage/externo/fmt_graficos_rangos_1.xlsx xl/worksheets/sheet1.xml | wc -c && echo \"---\" && unzip -p /var/www/servimun/public/storage/externo/fmt_graficos_rangos_1.xlsx xl/worksheets/sheet1.xml | python3 -c \"import sys; x=sys.stdin.read\\(\\); print\\('rows:', x.count\\('<row '\\)\\); print\\('sheetData:', '<sheetData/>' in x or '<sheetData>' in x\\)\")",
+      "Bash(php -l /var/www/servimun/app/Http/Controllers/ExcelAutollenable/ReporteDelCiuInt/RepDelCiuInt1AController.php)"
     ]
   }
 }

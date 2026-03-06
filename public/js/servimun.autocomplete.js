@@ -114,7 +114,10 @@ jQuery(function($) {
                     $("#ubicacion_id").val(0);
                     $("#ubicacion_id_span").val("");
                     $("#ubicacion").val("");
-                    $("#ubicacion_nueva_id").val(0);
+                    // Si hay ubicacion_actual_id (modo edición), mantener ese valor como respaldo
+                    // para evitar error de validación cuando el usuario escribe sin seleccionar
+                    var valActual = $("#ubicacion_actual_id").val();
+                    $("#ubicacion_nueva_id").val(valActual || 0);
                     break;
                 case 1:
                     $("#usuario").val("");

@@ -481,5 +481,21 @@ class RepDelCiuInt1AClass{
     }
 
 
+    public function getSabanaDeDatos(){
+
+        $items = _viMovSMTodas::query()
+            ->whereIn('denuncia_id', $this->denuncias_ids)
+            ->get();
+
+//        dd($items);
+
+        return $items;
+
+
+
+    }
+
+
+
 
 }
