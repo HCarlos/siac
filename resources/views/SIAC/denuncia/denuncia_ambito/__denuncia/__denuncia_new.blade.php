@@ -147,29 +147,45 @@
             </div>
 
             <div class="form-group row mb-1">
-                <label for = "servicio_id" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Servicio: </label>
-                <div class="col-lg-10">
-                    <select id="servicio_id" name="servicio_id" class="form-control" size="1" value="{{ old('servicio_') }}">
-                        <option value="0" >Seleccione un servicio</option>
+                <label for="servicio_id" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Servicio:</label>
+                <div class="col-lg-5">
+                    <select id="servicio_id" name="servicio_id" class="form-control" size="1">
+                        <option value="0">Seleccione un servicio</option>
                         @foreach($servicios as $t)
-                            <option value="{{$t->id}}" >{{ $t->servicio.' ('.$t->abreviatura_dependencia.')'  }} </option>
+                            <option value="{{ $t->id }}">{{ $t->servicio.' ('.$t->abreviatura_dependencia.')' }}</option>
                         @endforeach
                     </select>
+                </div>
+                <label for="cantidad" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Cantidad:</label>
+                <div class="col-lg-3">
+                    <input class="form-control" type="text" name="cantidad" id="cantidad"
+                           pattern="\d+(\.\d{1,4})?"
+                           title="Ingrese un número entero o con hasta 4 decimales"
+                           inputmode="decimal"
+                           oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1').replace(/(\d+\.\d{4})\d*/g,'$1')">
                 </div>
             </div>
 
             <div class="form-group row mb-1">
                 <label for = "descripcion" class="col-lg-2 col-form-label has-descripcion labelDenuncia text-right m-0 p-0">Descripción y/o referencia:</label>
                 <div class="input-group col-lg-10">
-                    <small data-toggle="tooltip" class="text-rojo-morena"
-                          title="Agregar dirección completa (calle, avenida, carretera con número). Y agregar datos que ayuden a nuestras cuadrillas a localizar el problema reportado, como referencias, tipo de vialidad, si hay una tiendita, color de casa, entre qué calles, si hay un árbol, etc…"
-                    >
-                        <i class="fa fa-question-circle pl-1 pr-1 pt-1"></i>
-                    </small>
+{{--                    <small data-toggle="tooltip" class="text-rojo-morena"--}}
+{{--                          title="Agregar dirección completa (calle, avenida, carretera con número). Y agregar datos que ayuden a nuestras cuadrillas a localizar el problema reportado, como referencias, tipo de vialidad, si hay una tiendita, color de casa, entre qué calles, si hay un árbol, etc…"--}}
+{{--                    >--}}
+{{--                        <i class="fa fa-question-circle pl-1 pr-1 pt-1"></i>--}}
+{{--                    </small>--}}
                     <textarea name="descripcion" id="descripcion" class="form-control" rows="6"  spellcheck="true" lang="es">{{ old('descripcion') }}</textarea>
                     <span class="has-descripcion">
                         <strong class="text-danger"></strong>
                     </span>
+                </div>
+            </div>
+            <div class="form-group row mb-1">
+                <label for="fecha_ingreso" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Fecha de ingreso:</label>
+                <div class="col-lg-4">
+                    <input type="date" class="form-control" name="fecha_ingreso" id="fecha_ingreso"
+                           value="{{ old('fecha_ingreso', now()->format('Y-m-d')) }}"
+                           max="{{ now()->format('Y-m-d') }}">
                 </div>
             </div>
             <div class="form-group row mb-3 mt-3">

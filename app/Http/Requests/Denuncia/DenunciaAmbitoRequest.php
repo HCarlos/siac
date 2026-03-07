@@ -81,11 +81,18 @@ class DenunciaAmbitoRequest extends FormRequest
             $Ubicacion = Ubicacion::findOrFail($this->ubicacion_id);
             $Servicio  = _viServicios::findOrFail($this->servicio_id);
 
-            $fecha = Carbon::now();
-            $fecha_i = $fecha->format('Y-m-d');
-            $fecha_f = $fecha->format('H:i:s');
+            $fch = Carbon::now();
+            if ($this->fecha_ingreso) {
+                $fecha_i = date('Y-m-d', strtotime($this->fecha_ingreso));
+                $fecha_f = $fch->format('H:i:s');
+                $fi = $fecha_i.' '.$fecha_f;
+            } else {
+                $fecha_i = $fch->format('Y-m-d');
+                $fecha_f = $fch->format('H:i:s');
+                $fi = $fecha_i . ' ' . $fecha_f;
+            }
 
-            $fi = $fecha_i.' '.$fecha_f;
+            $fecha = Carbon::parse($fi); // Carbon para operar con días
 
             $IsObs = isset($this->observaciones) ? strtoupper(trim($this->observaciones)) : "SE RECIBE LA SOLICITUD";
             $this->observaciones = $IsObs;
@@ -95,12 +102,12 @@ class DenunciaAmbitoRequest extends FormRequest
             $this->clave_identificadora = $isHashTag;
 
             $Item = [
-                'fecha_ingreso'                => $this->fecha_ingreso ?? $fi,
+                'fecha_ingreso'                => $fi,
                 'oficio_envio'                 => is_null($this->oficio_envio) ? "" : strtoupper(trim($this->oficio_envio)),
                 'folio_sas'                    => is_null($this->folio_sas) ? "" : strtoupper(trim($this->folio_sas)),
-                'fecha_oficio_dependencia'     => $this->fecha_oficio_dependencia ?? $fecha_i,
-                'fecha_ejecucion'              => $this->fecha_ejecucion ?? $fecha->addDay(3)->format('Y-m-d'),
-                'fecha_limite'                 => $this->fecha_limite ?? $fecha->addDay(3)->format('Y-m-d'),
+                'fecha_oficio_dependencia'     => $fecha_i,
+                'fecha_ejecucion'              => $fecha->addDays(3)->format('Y-m-d'),
+                'fecha_limite'                 => $fecha->addDays(3)->format('Y-m-d'),
                 'descripcion'                  => isset($this->descripcion) ? strtoupper(trim($this->descripcion)) : '',
                 'referencia'                   => isset($this->referencia) ? strtoupper(trim($this->referencia)) : '',
                 'clave_identificadora'         => $this->clave_identificadora,
@@ -135,6 +142,7 @@ class DenunciaAmbitoRequest extends FormRequest
                 'host'                         => config('atemun.public_url'),
                 'ambito'                       => $this->ambito ?? 0,
                 'centro_localidad_id'          => $this->centro_localidad_id ?? null,
+                'cantidad'                     => $this->cantidad ?? 1,
             ];
 
             if (Auth::user()->isRole('Administrator|SysOp')){

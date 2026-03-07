@@ -207,7 +207,7 @@ class RepDelCiuInt1AController extends Controller{
 
         // Generar XML de las filas de datos directamente como string
         $newRowsXml = '';
-        $i = 7;
+        $i = 6;
         foreach ($Items as $item) {
             // Calcular campos derivados de fechas
             $fechaIngreso = $item->fecha_ingreso ? Carbon::parse($item->fecha_ingreso)->format('d-m-Y') : '';
@@ -263,8 +263,8 @@ class RepDelCiuInt1AController extends Controller{
             $i++;
         }
 
-        // Extraer filas de cabecera (1-5) del template para preservar encabezados
-        preg_match_all('/<row [^>]+r="[1-5]"[^>]*>.*?<\/row>/s', $xmlSheet1Raw, $mCabeceras);
+        // Extraer filas de cabecera (1-6) del template para preservar encabezados
+        preg_match_all('/<row [^>]*r="[1-5]"[^>]*>.*?<\/row>/s', $xmlSheet1Raw, $mCabeceras);
         $xmlCabeceras = implode('', $mCabeceras[0]);
 
         // Reemplazar el sheetData completo en el XML del template con string manipulation

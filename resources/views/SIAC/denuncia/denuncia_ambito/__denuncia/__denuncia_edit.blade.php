@@ -147,14 +147,23 @@
             </div>
 
             <div class="form-group row mb-1">
-                <label for = "servicio_id" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Servicio:</label>
-                <div class="col-lg-10">
+                <label for="servicio_id" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Servicio:</label>
+                <div class="col-lg-5">
                     <select id="servicio_id" name="servicio_id" class="form-control" size="1">
-                        <option value="0" >Seleccione un Servicio</option>
+                        <option value="0">Seleccione un Servicio</option>
                         @foreach($servicios as $t)
-                            <option value="{{$t->id}}" {{ $t->id === $items->servicio_id ? 'selected': '' }} >{{ $t->servicio.' ('.$t->abreviatura_dependencia.')' }}</option>
+                            <option value="{{ $t->id }}" {{ $t->id === $items->servicio_id ? 'selected': '' }}>{{ $t->servicio.' ('.$t->abreviatura_dependencia.')' }}</option>
                         @endforeach
                     </select>
+                </div>
+                <label for="cantidad" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Cantidad:</label>
+                <div class="col-lg-3">
+                    <input class="form-control" type="text" name="cantidad" id="cantidad"
+                           pattern="\d+(\.\d{1,4})?"
+                           title="Ingrese un número entero o con hasta 4 decimales"
+                           inputmode="decimal"
+                           value="{{ old('cantidad', $items->cantidad ?? '') }}"
+                           oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1').replace(/(\d+\.\d{4})\d*/g,'$1')">
                 </div>
             </div>
 
@@ -174,14 +183,19 @@
             </div>
 
             <div class="form-group row mb-1">
-                <label for = "ambito" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Categoría:</label>
-                <div class="col-lg-10">
+                <label for="ambito" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Categoría:</label>
+                <div class="col-lg-4">
                     <select id="ambito" name="ambito" class="form-control" size="1">
-                        <option value="0" {{ $items->ambito === 0 ? 'selected': '' }} >No Aplica</option>
+                        <option value="0" {{ $items->ambito === 0 ? 'selected': '' }}>No Aplica</option>
                         @foreach($ambito as $id => $valor)
-                            <option value="{{$id}}" {{ $id === $items->ambito ? 'selected': '' }} >{{ $valor }} </option>
+                            <option value="{{ $id }}" {{ $id === $items->ambito ? 'selected': '' }}>{{ $valor }}</option>
                         @endforeach
                     </select>
+                </div>
+                <label for="fecha_ingreso" class="col-lg-2 col-form-label labelDenuncia text-right m-0 p-0">Fecha de ingreso:</label>
+                <div class="col-lg-4">
+                    <input type="date" class="form-control" name="fecha_ingreso" id="fecha_ingreso"
+                           value="{{ $items->fecha_ingreso->format('Y-m-d') }}">
                 </div>
             </div>
 
@@ -300,7 +314,6 @@
 
 <input type="hidden" name="oficio_envio" id="oficio_envio" value="{{$items->oficio_envio}}" >
 
-<input type="hidden" name="fecha_ingreso" id="fecha_ingreso" value="{{$items->fecha_ingreso}}" >
 <input type="hidden" name="fecha_oficio_dependencia" id="fecha_oficio_dependencia" value="{{$items->fecha_oficio_dependencia}}" >
 <input type="hidden" name="fecha_limite" id="fecha_limite" value="{{$items->fecha_limite}}" >
 <input type="hidden" name="fecha_ejecucion" id="fecha_ejecucion" value="{{$items->fecha_ejecucion}}" >
