@@ -170,11 +170,11 @@
             <div class="form-group row mb-1">
                 <label for = "descripcion" class="col-lg-2 col-form-label has-descripcion labelDenuncia text-right m-0 p-0">Descripción y/o referencia:</label>
                 <div class="input-group col-lg-10">
-                    <small data-toggle="tooltip" class="text-rojo-morena"
-                          title="Agregar dirección completa (calle, avenida, carretera con número). Y agregar datos que ayuden a nuestras cuadrillas a localizar el problema reportado, como referencias, tipo de vialidad, si hay una tiendita, color de casa, entre qué calles, si hay un árbol, etc…"
-                    >
-                        <i class="fa fa-question-circle pl-1 pr-1 pt-1"></i>
-                    </small>
+{{--                    <small data-toggle="tooltip" class="text-rojo-morena"--}}
+{{--                          title="Agregar dirección completa (calle, avenida, carretera con número). Y agregar datos que ayuden a nuestras cuadrillas a localizar el problema reportado, como referencias, tipo de vialidad, si hay una tiendita, color de casa, entre qué calles, si hay un árbol, etc…"--}}
+{{--                    >--}}
+{{--                        <i class="fa fa-question-circle pl-1 pr-1 pt-1"></i>--}}
+{{--                    </small>--}}
                     <textarea name="descripcion" id="descripcion" class="form-control" rows="6" required spellcheck="true" lang="es" >{{ old('descripcion',$items->descripcion) }}</textarea>
                     <span class="has-descripcion">
                         <strong class="text-danger"></strong>

@@ -215,6 +215,7 @@ class RepDelCiuInt1AController extends Controller{
             $fiAno        = $item->fecha_ingreso ? Carbon::parse($item->fecha_ingreso)->format('Y')     : '';
 
             $Delegacion = $item->centro_delegacion ?? '';
+            $Colonia    = $item->centro_colonia ?? '';
             $Delegado   = $item->delegado          ?? '';
             $Ciudadano  = $item->ciudadano         ?? '';
 
@@ -238,7 +239,8 @@ class RepDelCiuInt1AController extends Controller{
             $newRowsXml .= $buildCelda('C', $i, trim($item->ap_paterno_ciudadano ?? ''));
             $newRowsXml .= $buildCelda('D', $i, trim($item->ap_materno_ciudadano ?? ''));
             $newRowsXml .= $buildCelda('E', $i, trim($item->nombre_ciudadano ?? ''));
-            $newRowsXml .= $buildCelda('G', $i, strtoupper(trim($item->search_google ?? '')));
+            $newRowsXml .= $buildCelda('F', $i, strtoupper(trim($item->search_google ?? '')));
+            $newRowsXml .= $buildCelda('G', $i, $Colonia);
             $newRowsXml .= $buildCelda('H', $i, $Delegacion);
             $newRowsXml .= $buildCelda('I', $i, $Ciudadano === $Delegado ? 'Es el delegado' : '');
             $newRowsXml .= $buildCelda('J', $i, trim(($item->telefonos_ciudadano ?? '') . ' ' . ($item->email_ciudadano ?? '')));
