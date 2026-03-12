@@ -11,14 +11,26 @@
                             <a href="{{route("newUser")}}" target="_blank" class="btn btn-icon btn-info"> <i class="mdi mdi-plus"></i></a>
                         </span>
                     </div>
-                    <div class="input-group btn-group-xs">
-                        <input type="text" name="usuario" id="usuario" class="form-control" value="" readonly>
-                        <span class="input-group-append">
-                            <a  target="_blank" class="btn btn-xs btn-icon btn-primary editUser" id="editUser" name="editUser"> <i class="mdi mdi-account-edit  text-white"></i></a>
-                        </span>
+{{--                    <div class="input-group btn-group-xs">--}}
+{{--                        <input type="text" name="usuario" id="usuario" class="form-control" value="" readonly>--}}
+{{--                        <span class="input-group-append">--}}
+{{--                            <a  target="_blank" class="btn btn-xs btn-icon btn-primary editUser" id="editUser" name="editUser"> <i class="mdi mdi-account-edit  text-white"></i></a>--}}
+{{--                        </span>--}}
+{{--                    </div>--}}
+{{--                    <input type="text" name="usuario_telefonos" id="usuario_telefonos" class="form-control" value="" readonly>--}}
+
+                    <div class="input-group btn-group-sm mb-1 mt-1 w-100">
+                        <div class="input-group btn-group-sm mb-1 mt-1 ">
+                            <span class="input-group-append float-left flex-fill">
+                                <i class="mdi mdi-cellphone-iphone font-18 pl-1 pr-1"></i> <span class="pt-1" id="lblCelulares"></span>
+                                <i class="mdi mdi-phone font-18 pl-1 pr-1"></i> <span class="pt-1" id="lblTelefonos"></span>
+                                <i class="mdi mdi-email font-18 pl-1 pr-1"></i> <span class="pt-1" id="lblEMails"></span>
+                            </span>
+                            <button type="button" class="btn btn-sm btn-orange float-right text-white  denunciaUserModalChange"  data-toggle="modal" data-placement="top" data-target="#denunciaUserModalChange" data-original-title="Actualizar datos del usuario"><i class="mdi mdi-refresh"></i></button>
+                        </div>
                     </div>
 
-                    <input type="text" name="usuario_telefonos" id="usuario_telefonos" class="form-control" value="" readonly>
+
                 </div>
             </div>
 
@@ -277,3 +289,5 @@
 
 <input type="hidden" name="ambito_dependencia" id="ambito_dependencia" value="{{ old('ambito_dependencia',$ambito_dependencia ?? 99) }}" >
 <input type="hidden" name="ambito_estatus" id="ambito_estatus" value="{{ old('ambito_estatus',$ambito_estatus ?? 0) }}" >
+
+@include('shared/code/__modal_denuncia_user_data')

@@ -254,4 +254,5 @@
 <input type="hidden" name="ambito_dependencia" id="ambito_dependencia" value="{{ old('ambito_dependencia',$ambito_dependencia) }}" >
 <input type="hidden" name="ambito_estatus" id="ambito_estatus" value="{{ old('ambito_estatus',$ambito_estatus) }}" >
 <input type="hidden" name="centro_localidad" id="centro_localidad" value="" >
+
 @include('shared/code/__modal_denuncia_user_data')

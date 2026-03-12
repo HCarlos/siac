@@ -6,18 +6,34 @@
                 <label for = "search_autocomplete_user" class="col-lg-12 col-form-label labelDenuncia">Busca el usuario que solicita el servicio</label>
                 <div class="col-lg-12">
                     <div class="input-group">
+                        <small data-toggle="tooltip" class="text-rojo-morena"
+                               title="Escribe el nombre completo del ciudadano. Asegúrate que aparezca en el menú desplegable con su CURP, en caso de no estar en el menú, puedes agregarlo en el icono de (+) revisa que cuente con número de teléfono, si no cuenta con teléfono de contacto, lo puedes agregar en el icono color naranja."
+                        >
+                            <i class="fa fa-question-circle pl-1 pr-1 pt-2"></i>
+                        </small>
                         <input type="text" name="search_autocomplete_user" id="search_autocomplete_user" value="{{ $items->Ciudadano->FullName }}" placeholder="Buscar usuario..." class="form-control">
                         <span class="input-group-append">
                             <a href="{{route("newUser")}}" target="_blank" class="btn btn-icon btn-info"> <i class="mdi mdi-plus"></i></a>
                         </span>
                     </div>
-                    <div class="input-group btn-group-xs">
-                        <input type="text" name="usuario" id="usuario" value="{{ $items->Ciudadano->FullName }}" class="form-control" readonly>
-                        <span class="input-group-append">
-                            <a  href="{{route("editUser",['Id'=>$items->Ciudadano->id])}}" target="_blank" class="btn btn-xs btn-icon btn-primary editUser" id="editUser" name="editUser"> <i class="mdi mdi-account-edit text-white "></i></a>
+{{--                    <div class="input-group btn-group-xs">--}}
+{{--                        <input type="text" name="usuario" id="usuario" value="{{ $items->Ciudadano->FullName }}" class="form-control" readonly>--}}
+{{--                        <span class="input-group-append">--}}
+{{--                            <a  href="{{route("editUser",['Id'=>$items->Ciudadano->id])}}" target="_blank" class="btn btn-xs btn-icon btn-primary editUser" id="editUser" name="editUser"> <i class="mdi mdi-account-edit text-white "></i></a>--}}
+{{--                        </span>--}}
+{{--                    </div>--}}
+{{--                    <input type="text" name="usuario_telefonos" id="usuario_telefonos" value="{{ $items->Ciudadano->TelefonosCelularesEmails }}" class="form-control" readonly>--}}
+                    <div class="input-group btn-group-sm mb-1 mt-1 w-100">
+                        <div class="input-group btn-group-sm ">
+                        <span class="input-group-append float-left flex-fill mt-1">
+                            <i class="mdi mdi-cellphone-iphone font-18 pl-1 pr-1"></i> <span class="pt-1" id="lblCelulares">{{ $items->ciudadano->celulares }}</span>
+                            <i class="mdi mdi-phone font-18 pl-1 pr-1"></i> <span class="pt-1" id="lblTelefonos">{{ $items->ciudadano->telefonos }}</span>
+                            <i class="mdi mdi-email font-18 pl-1 pr-1"></i> <span class="pt-1" id="lblEMails">{{ $items->ciudadano->emails }}</span>
                         </span>
+                        <button type="button" class="btn btn-sm btn-orange float-right text-white mr-0 ml-0 denunciaUserModalChange"  data-toggle="modal" data-placement="top" data-target="#denunciaUserModalChange" data-original-title="Actualizar datos del usuario"><i class="mdi mdi-refresh"></i></button>
+                        </div>
                     </div>
-                    <input type="text" name="usuario_telefonos" id="usuario_telefonos" value="{{ $items->Ciudadano->TelefonosCelularesEmails }}" class="form-control" readonly>
+
                 </div>
         </div>
 
@@ -349,3 +365,4 @@
 <input type="hidden" name="ambito_estatus" id="ambito_estatus" value="{{ old('ambito_estatus',$ambito_estatus ?? 0) }}" >
 
 
+@include('shared/code/__modal_denuncia_user_data')
