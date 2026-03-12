@@ -153,6 +153,8 @@ return [
             'servicio_user'                         => 'servicio_user',
             'denuncia_operador'                     => 'denuncia_operador',
             'centro_localidades'                    => 'centro_localidades',
+            'operador_supervisor'                   => 'operador_supervisor',
+            'directorobra_supervisor'               => 'directorobra_supervisor',
         ],
         'domicilios' => [
             'users'             => 'users',
