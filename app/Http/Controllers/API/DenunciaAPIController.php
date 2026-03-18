@@ -152,8 +152,10 @@ class DenunciaAPIController extends Controller{
             $path = "/storage/denuncia/";
             $imgs[] = [
                 "fecha"          => $fecha,
-                "url_imagen"      => config("atemun.public_url").$path.$imagen->image,
+                "url_imagen"     => config("atemun.public_url").$path.$imagen->image,
                 "url_thumb"      => config("atemun.public_url").$path.$imagen->image_thumb,
+                "observaciones"  => $imagen->descripcion ?? '',
+                "tipo_foto"      => $imagen->momento === 'ANTES' ? "antes" : "despues",
             ];
         }
         return $imgs;

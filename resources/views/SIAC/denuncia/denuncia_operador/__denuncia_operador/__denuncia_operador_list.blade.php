@@ -110,9 +110,9 @@
             <td>{{$item->operador->full_name}}</td>
             <td>{{$item->denuncia->ciudadano->full_name}}</td>
             <td>{{$item->denuncia->servicio->servicio}}<br><br>{{$item->denuncia->descripcion}}</td>
-            <td>{{$item->denuncia->ultimo_estatus }}</td>
+            <td>{{$item->denuncia->ultimo_estatus->estatus }}</td>
             <td>{{\Carbon\Carbon::parse($item->denuncia->fecha_ingreso)->format('d-m-Y H:i')}}</td>
-            <td>{{ $item->comentario}}</td>
+            <td>{{ $item->denuncia->ultimo_estatu_denuncia_dependencia_servicio->last()->observaciones}}</td>
             <td>
 {{--                    @if(Gate::check('all') || Gate::check('editar_respuesta'))--}}
 {{--                        @include('shared.ui_kit.__edit_item')--}}

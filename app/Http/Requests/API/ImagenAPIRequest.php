@@ -53,8 +53,7 @@ class ImagenAPIRequest extends FormRequest
             }
 
         }catch (QueryException $e){
-            $Msg = new MessageAlertClass();
-            return $Msg->Message($e);
+            return (new MessageAlertClass())->Message($e);
         }
         return $result;
 
@@ -145,11 +144,12 @@ class ImagenAPIRequest extends FormRequest
             }
             $path = "/storage/denuncia/";
             return [
-                "status" => 1,
-                  "msg" => "Imagen guardada correctamente",
-                  "url_imagen" => config("atemun.public_url").$path.$img->image,
-                  "url_thumb" => config("atemun.public_url").$path.$img->image_thumb,
-
+                "status"         => 1,
+                "msg"            => "Imagen guardada correctamente",
+                "url_imagen"     => config("atemun.public_url").$path.$img->image,
+                "url_thumb"      => config("atemun.public_url").$path.$img->image_thumb,
+                "observaciones"  => $img->descripcion ?? '',
+                "tipo_foto"      => $img->momento === 'ANTES' ? "antes" : "despues",
             ];
 
         }catch (Exception $e){
