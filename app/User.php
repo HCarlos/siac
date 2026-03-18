@@ -228,6 +228,25 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->notify(new SendEmailAPIVerificationNotification());
     }
 
+    public function operadores()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'operador_supervisor',
+            'supervisor_id',
+            'operador_id'
+        )->wherePivotNull('deleted_at');
+    }
+
+    public function supervisores()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'operador_supervisor',
+            'operador_id',
+            'supervisor_id'
+        )->wherePivotNull('deleted_at');
+    }
 
 
 }

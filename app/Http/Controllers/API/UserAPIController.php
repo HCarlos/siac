@@ -28,6 +28,8 @@ class UserAPIController extends Controller{
     'LOMA930930MTCPYN04',
     ];
 
+    protected $operadores = ["AECC690916HTCLRR07","BACA660226HTCTRL09","BOPO830106HTCCLS01","CECJ730421HTCRRS02","GUJR651124HTCZMF02","HEHT650611HTCRRR06","HEZD690202HTCRPN03","JITS570314HTCMRN08","MADA640815HTCRZN06","MAGA680910HTCRZB06","MOHJ740828HTCNRS00","MUUJ600911HVZXTC02","PEJR650105HTCRMY04","PEJJ660412HTCRMN06","PEJS720528HTCRMM02","PILM690324HTCRPG00","SOCD970222HTCSBV06","TOPA670613HTCRRN02","VACR680901HTCZRB03","VIER710629HDFCSC07"];
+
     public function users():JsonResponse {
         $Users = User::query()->take(10)->get();
         return response()->json($Users);
@@ -51,7 +53,9 @@ class UserAPIController extends Controller{
             $data->username = strtoupper(trim($data->username));
         }
 
-        if ( !in_array($data->username, $this->usuarios_permitidos, true)) {
+        $todos_los_usuarios = array_merge($this->usuarios_permitidos, $this->operadores);
+
+        if ( !in_array($data->username, $todos_los_usuarios, true)) {
             $response["msg"] = "Acceso denegado!";
             return response()->json($response);
         }

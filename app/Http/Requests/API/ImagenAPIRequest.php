@@ -44,27 +44,31 @@ class ImagenAPIRequest extends FormRequest
 
         try {
 
-            $img = $this->manageImage();
-            $this->attaches($img);
-            event(new APIDenunciaEvent($this->denuncia_id, $this->user_id));
+            // manageImage() ahora retorna un array con status/msg/urls
+            $result = $this->manageImage();
+
+            // Solo disparar el evento si la imagen se guardó correctamente
+            if (isset($result['status']) && $result['status'] === 1) {
+                event(new APIDenunciaEvent($this->denuncia_id, $this->user_id));
+            }
 
         }catch (QueryException $e){
             $Msg = new MessageAlertClass();
             return $Msg->Message($e);
         }
-        return $img;
+        return $result;
 
     }
 
 
-    public function attaches($img){
-
-        $img->users()->attach($this->user_id);
-        $den = Denuncia::find($this->denuncia_id);
-        $den->imagenes()->attach($img->id);
-        return $img;
-
-    }
+//    public function attaches($img){
+//
+//        $img->users()->attach($this->user_id);
+//        $den = Denuncia::find($this->denuncia_id);
+//        $den->imagenes()->attach($img->id);
+//        return $img;
+//
+//    }
 
 
     public function manageImage(){
@@ -74,16 +78,6 @@ class ImagenAPIRequest extends FormRequest
         try {
 
             // datos que trae el request
-
-//            print('📦 PAYLOAD:');
-//            print('  user_id: $userId');
-//            print('  denuncia_id: ${request.solicitudId}');
-//            print('  dependencia_id: ${request.dependenciaId}');
-//            print('  estatus_id: ${request.estatusId}');
-//            print('  servicio_id: ${request.servicioId}');
-//            print('  latitud: ${request.latitud ?? "vacío"}');
-//            print('  longitud: ${request.longitud ?? "vacío"}');
-//            print('  solo_imagen: ${request.soloImagen ? 1 : 0}');
 
             $image = $this->imagen;
             $imageContent = $this->imageBase64Content($image);
@@ -103,9 +97,9 @@ class ImagenAPIRequest extends FormRequest
                 'root'           => config('atemun.public_url'),
                 'image'          => $fileName,
                 'image_thumb'    => $thumbnail,
-                'titulo'         => 'desde la App del Operador',
-                'descripcion'    => 'enviado por '.$user->full_name,
-                'momento'        => 'DESPUÉS',
+                'titulo'         => 'Desde la App del Operador',
+                'descripcion'    => trim($this->observaciones) === "" ? 'enviado por '.$user->full_name : trim($this->observaciones),
+                'momento'        => trim($this->tipo_foto) === "antes" ? "ANTES" : "DESPUÉS",
                 'user__id'       => $this->user_id,
                 'denuncia__id'   => $this->denuncia_id,
                 'latitud'        => $this->latitud ?? 0,
@@ -113,6 +107,11 @@ class ImagenAPIRequest extends FormRequest
             ];
 
             $img = Imagene::create($Item);
+
+            // Adjuntar relaciones de imagen al usuario y a la denuncia
+            $img->users()->attach($this->user_id);
+            $denObj = Denuncia::find($this->denuncia_id);
+            $denObj->imagenes()->attach($img->id);
 
             $Item = Denuncia::find($this->denuncia_id);
 
@@ -134,23 +133,29 @@ class ImagenAPIRequest extends FormRequest
                             'favorable' => false,
                             'fecha_movimiento' => now(),
                             'creadopor_id' => $this->user_id,
-                            'observaciones' => 'Desde la App del Operador. fue atendido por '.$user->full_name." se adjunta imagen como evidencia.",
+                            'observaciones' => 'Desde la App del Operador. Fue atendida por '.$user->full_name." se adjunta imagen como evidencia.",
                         ]
                     );
+                    $user->solicitudes()->detach($this->denuncia_id);
                     $vid = new VistaDenunciaClass();
                     $vid->vistaDenuncia($this->denuncia_id);
                     event(new DenunciaUpdateStatusGeneralEvent($this->denuncia_id,$this->user_id,$trigger_type));
                 }
 
             }
+            $path = "/storage/denuncia/";
+            return [
+                "status" => 1,
+                  "msg" => "Imagen guardada correctamente",
+                  "url_imagen" => config("atemun.public_url").$path.$img->image,
+                  "url_thumb" => config("atemun.public_url").$path.$img->image_thumb,
 
-            return $img;
+            ];
 
         }catch (Exception $e){
             return ["status"=>0, "msg"=>$e->getMessage()];
         }
-        return $user;
-
+        return ["status" => 0, "msg" => "Ocurrió un error al subir la imagen."];
 
     }
 

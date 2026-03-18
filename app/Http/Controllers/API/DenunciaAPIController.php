@@ -23,6 +23,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DenunciaAPIController extends Controller{
 
@@ -159,6 +160,7 @@ class DenunciaAPIController extends Controller{
     }
 
 
+
     // Obtenemos sus respuestas
     protected function getRespuestas(int $denunciamobile_id) {
         $respuestas = Respuestamobile::select(['id','fecha','respuesta','observaciones', 'user_id'])
@@ -212,12 +214,47 @@ class DenunciaAPIController extends Controller{
         $user = User::find($user_id);
         $deps = $user->dependencia_id_array;
 
+
+
+//        $dens = _viMovSM::query()
+//            ->where("fecha_ingreso",'>','2025-11-18')
+//            ->whereIn("dependencia_id",$deps)
+//            ->where("estatu_id",19)
+//            ->OrderByDesc("denuncia_id")
+//            ->get();
+
+        $dens = DB::table('denuncia_operador as do2')
+            ->selectRaw('DISTINCT do2.denuncia_id, do2.operador_id, do2.fecha_asignacion, do2.observaciones')
+            ->join('dependencia_user as du', function ($join) {
+                $join->on('du.user_id', '=', 'do2.operador_id')
+                    ->whereNull('du.deleted_at');
+            })
+            ->joinSub(
+                DB::table('denuncia_dependencia_servicio_estatus')
+                    ->selectRaw('DISTINCT ON (denuncia_id, dependencia_id) denuncia_id, dependencia_id, estatu_id')
+                    ->whereNull('deleted_at')
+                    ->orderByRaw('denuncia_id, dependencia_id, id DESC'),
+                'ultimo_ddse',
+                function ($join) {
+                    $join->on('ultimo_ddse.denuncia_id',    '=', 'do2.denuncia_id')
+                        ->on('ultimo_ddse.dependencia_id', '=', 'du.dependencia_id');
+                }
+            )
+            ->where('do2.operador_id', $user_id)
+            ->whereNull('do2.deleted_at')
+            ->whereIn('ultimo_ddse.estatu_id', [16,19])
+            ->get();
+
+        $denuncias_ids_encontradas = $dens->pluck('denuncia_id')->toArray();
+
         $dens = _viMovSM::query()
             ->where("fecha_ingreso",'>','2025-11-18')
-            ->whereIn("dependencia_id",$deps)
-            ->where("estatu_id",19)
+            ->whereIn("denuncia_id",$denuncias_ids_encontradas)
             ->OrderByDesc("denuncia_id")
             ->get();
+
+//        dd($dens);
+
         if ($dens){
             $response["status"] = 1;
             $response["msg"] = "OK";
@@ -312,10 +349,12 @@ class DenunciaAPIController extends Controller{
 
     public function agregarImageDenuncia(ImagenAPIRequest $request):JsonResponse {
         $response = ["status"=>0, "msg"=>"Ha ocurrido un error al subir la imagen"];
-        $den = (object)  $request->manage();
+        $den = $request->manage();
+//        $den = (object)  $request->manage();
         if ($den){
-            $response["status"] = 1;
-            $response["msg"] = "Su imagen fue agregada correctamente!";
+//            $response["status"] = 1;
+//            $response["msg"] = "Su imagen fue agregada correctamente!";
+            $response = $den;
         }
         return response()->json($response);
     }

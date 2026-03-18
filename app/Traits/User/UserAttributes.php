@@ -249,5 +249,11 @@ trait UserAttributes
         return $this->servicioscategorias->contains('id',$categoria_servicios);
     }
 
+    public function hasOperadores($user_id): bool{
+        return $this->operadores->contains('id',$user_id);
+    }
+
+
+
 
 }

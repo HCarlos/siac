@@ -477,6 +477,12 @@
                                     <span>Servicios</span>
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{route('asignaSupervisoresList',['Id'=>0])}}">
+                                    <i class="fas fa-user-cog"></i>
+                                    <span>Supervisores</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 @endif

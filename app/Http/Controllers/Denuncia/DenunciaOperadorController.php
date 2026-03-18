@@ -128,18 +128,24 @@ class DenunciaOperadorController extends Controller{
 
 
     public function getDenunciaAmbitoAjaxFromId(Request $request){
-        $id = $request->denuncia_id;
-        $denuncia = _viDDSs::find($id);
+//        $id = $request->denuncia_id;
+//        $denuncia = _viDDSs::find($id);
 
-        if ($denuncia === null) {
-            return response()->json(['mensaje' => 'Error', 'data' => 'No se encuentra la denuncia', 'status' => '422'], 200);
+        $user = User::findOrFail($request->operador_id);
+        $id  = $request->denuncia_id;
+        $den = _viDDSs::where('id', $id)
+            ->whereIn('due_id', $user->DependenciaIdArray)
+            ->first();
+
+        if ($den === null) {
+            return response()->json(['mensaje' => 'Error', 'data' => 'No se encuentra la solicitud', 'status' => '422'], 200);
         }
 
-        if ($denuncia->ambito_dependencia != 2) {
+        if ($den->ambito_dependencia != 2) {
             return response()->json(['mensaje' => 'Error', 'data' => 'No es de Servicios Municipales', 'status' => '422'], 200);
         }
 
-        return response()->json(['mensaje' => 'OK', 'data' => $denuncia, 'status' => '200'], 200);
+        return response()->json(['mensaje' => 'OK', 'data' => $den, 'status' => '200'], 200);
 
     }
 

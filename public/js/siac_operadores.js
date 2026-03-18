@@ -17,42 +17,6 @@ jQuery(function($) {
                 $("#btnSaveSolicitud").attr("disabled", true);
 
                 var denuncia_id = parseInt( $("#denuncia_id").val() );
-                if ( denuncia_id <= 0 || isNaN(denuncia_id) ) {
-                    alert("Proporcione el ID de la solicitud");
-                    isValidSave();
-                    return false;
-                }
-
-                $(function () {
-                    $.ajax({
-                        method: "PUT",
-                        url: "/getDenunciaAmbitoAjaxFromId",
-                        data: "denuncia_id="+denuncia_id
-
-                    })
-                    .done(function (response) {
-                        var OK = response.mensaje === "OK";
-                        var data = response.data;
-                        if (OK) {
-                            $("#lblSolicitudId").html(data.id);
-                            $("#solicitud").html(data.denuncia);
-                            $("#sue").html(data.servicio_ultimo_estatus);
-                            $("#ciudadano").html(data.ap_paterno_ciudadano+" "+data.ap_materno_ciudadano+" "+data.nombre_ciudadano);
-                            $("#ubicacion").html(data.gd_ubicacion+" " + getGeoRefHtml(data));
-                        }else{
-                            alert(data);
-                        }
-
-                        isValidSave();
-
-                    });
-                });
-            });
-        }
-        if ( $("#btnSaveSolicitud").length > 0  ){
-            $("#btnSaveSolicitud").on("click", function (event) {
-
-                var denucnia_id = parseInt( $("#denuncia_id").val() );
                 var operador_id = parseInt( $("#operador_id").val() );
 
                 if ( operador_id <= 0 || isNaN(operador_id) ) {
@@ -61,29 +25,65 @@ jQuery(function($) {
                     return false;
                 }
 
-                if ( denucnia_id <= 0 || isNaN(denucnia_id) ) {
+                if ( denuncia_id <= 0 || isNaN(denuncia_id) ) {
+                    alert("Proporcione el ID de la solicitud");
+                    isValidSave();
+                    return false;
+                }
+
+                var _data = { denuncia_id: denuncia_id, operador_id: operador_id };
+
+                $.ajax({
+                    method: "POST",
+                    url: "/getDenunciaAmbitoAjaxFromId",
+                    data: _data
+                })
+                .done(function (response) {
+                    var OK = response.mensaje === "OK";
+                    var data = response.data;
+                    if (OK) {
+                        $("#lblSolicitudId").html(data.id);
+                        $("#solicitud").html(data.denuncia);
+                        $("#sue").html(data.servicio_ultimo_estatus);
+                        $("#ciudadano").html(data.ap_paterno_ciudadano+" "+data.ap_materno_ciudadano+" "+data.nombre_ciudadano);
+                        $("#ubicacion").html(data.gd_ubicacion+" " + getGeoRefHtml(data));
+                    } else {
+                        alert(data);
+                    }
+                    isValidSave();
+                });
+            });
+        }
+        if ( $("#btnSaveSolicitud").length > 0  ){
+            $("#btnSaveSolicitud").on("click", function (event) {
+
+                var denuncia_id = parseInt( $("#denuncia_id").val() );
+                var operador_id = parseInt( $("#operador_id").val() );
+
+                if ( operador_id <= 0 || isNaN(operador_id) ) {
+                    $("#btnSaveSolicitud").attr("disabled", true);
+                    alert("Seleccione un Operador");
+                    return false;
+                }
+
+                if ( denuncia_id <= 0 || isNaN(denuncia_id) ) {
                     $("#btnSaveSolicitud").attr("disabled", true);
                     alert("Proporcione el ID de la solicitud");
                     return false;
                 }
 
-                $(function () {
-                    $.ajax({
-                        method: "POST",
-                        url: "/getSolicitudesAmbitoAjaxFromOperator",
-                        data: "denuncia_id="+denucnia_id+"&operador_id="+operador_id
-
-                    })
-                        .done(function (response) {
-                            var OK = response.mensaje === "OK";
-                            var data = response.data;
-                            if (!OK) {
-                                alert(data);
-                            }
-
-                            window.location.href = "/denuncia_operador_list/"+operador_id;
-                            // alert(data.denuncia);
-                        });
+                $.ajax({
+                    method: "POST",
+                    url: "/getSolicitudesAmbitoAjaxFromOperator",
+                    data: "denuncia_id="+denuncia_id+"&operador_id="+operador_id
+                })
+                .done(function (response) {
+                    var OK = response.mensaje === "OK";
+                    var data = response.data;
+                    if (!OK) {
+                        alert(data);
+                    }
+                    window.location.href = "/denuncia_operador_list/"+operador_id;
                 });
             });
         }
