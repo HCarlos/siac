@@ -138,7 +138,7 @@ class DenunciaAPIController extends Controller{
         foreach ($imagenes as $imagen){
             $fecha               = (new Carbon($imagen->fecha))->format('d-m-Y H:i:s');
             $path = "/storage/mobile/denuncia/";
-            $imagen["id"]        = $imagen->id;
+            $imagen["imagen_id"] = $imagen->id;
             $imagen['fecha']     = $fecha;
             $imagen["url"]       = config("atemun.public_url").$path.$imagen->filename;
             $imagen["url_png"]   = config("atemun.public_url").$path.$imagen->filename_png;
@@ -158,7 +158,7 @@ class DenunciaAPIController extends Controller{
             $fecha               = (new Carbon($imagen->fecha))->format('d-m-Y H:i:s');
             $path = "/storage/denuncia/";
             $imgs[] = [
-                "id"             => $imagen->id,
+                "imagen_id"      => $imagen->id,
                 "fecha"          => $fecha,
                 "url_imagen"     => config("atemun.public_url").$path.$imagen->image,
                 "url_thumb"      => config("atemun.public_url").$path.$imagen->image_thumb,
