@@ -24,9 +24,6 @@ use Illuminate\Support\Str;
 class ImagenAPIRequest extends FormRequest
 {
 
-
-
-
     protected $disk = 'denuncia';
     protected $F;
 
@@ -40,11 +37,9 @@ class ImagenAPIRequest extends FormRequest
     }
 
     public function manage(){
-        $this->F = new FuncionesController();
-
         try {
 
-            // manageImage() ahora retorna un array con status/msg/urls
+            // manageImage() retorna un array con status/msg/urls
             $result = $this->manageImage();
 
             // Solo disparar el evento si la imagen se guardó correctamente
@@ -77,21 +72,18 @@ class ImagenAPIRequest extends FormRequest
         try {
 
             // datos que trae el request
+            $imageContent = $this->imageBase64Content($this->imagen);
 
-            $image = $this->imagen;
-            $imageContent = $this->imageBase64Content($image);
-
-            $file = $imageContent;
             $randomImageNameSingular = $this->randomImageNameSingular();
-            $fileName = $randomImageNameSingular.'_'.$this->denuncia_id.'.png';
+            $fileName  = $randomImageNameSingular.'_'.$this->denuncia_id.'.png';
             $thumbnail = '_thumb_'.$randomImageNameSingular.'_'.$this->denuncia_id.'.png';
-            Storage::disk($this->disk)->put($fileName, $file );
-            $this->F->fitImage( $file, $thumbnail, 128, 128, true, $this->disk,"DENUNCIA_ROOT", "png" );
+            Storage::disk($this->disk)->put($fileName, $imageContent);
+            $this->F->fitImage($imageContent, $thumbnail, 128, 128, true, $this->disk, "DENUNCIA_ROOT", "png");
 
-            $fechaActual = Carbon::now()->format('Y-m-d h:m:s');
+            $fechaActual = Carbon::now()->format('Y-m-d H:i:s');
             $user = User::find($this->user_id);
 
-            $Item = [
+            $img = Imagene::create([
                 'fecha'          => $fechaActual,
                 'root'           => config('atemun.public_url'),
                 'image'          => $fileName,
@@ -103,21 +95,16 @@ class ImagenAPIRequest extends FormRequest
                 'denuncia__id'   => $this->denuncia_id,
                 'latitud'        => $this->latitud ?? 0,
                 'longitud'       => $this->longitud ?? 0,
-            ];
-
-            $img = Imagene::create($Item);
+            ]);
 
             // Adjuntar relaciones de imagen al usuario y a la denuncia
             $img->users()->attach($this->user_id);
             $denObj = Denuncia::find($this->denuncia_id);
             $denObj->imagenes()->attach($img->id);
 
-            $Item = Denuncia::find($this->denuncia_id);
-
             if ((int)$this->solo_imagen === 0){
 
                 $trigger_type = 0;
-                $user = User::find($this->user_id);
                 $Obj = DB::table('denuncia_dependencia_servicio_estatus')
                     ->where('denuncia_id','=',$this->denuncia_id)
                     ->where('dependencia_id','=',$this->dependencia_id)
@@ -125,14 +112,14 @@ class ImagenAPIRequest extends FormRequest
                     ->where('estatu_id','=',$this->estatus_id)
                     ->get();
                 if ($Obj->count() <= 0 ) {
-                    $Objx = $Item->dependencias()->attach($this->dependencia_id,
+                    $denObj->dependencias()->attach($this->dependencia_id,
                         [
-                            'servicio_id' => $this->servicio_id,
-                            'estatu_id' => $this->estatus_id,
-                            'favorable' => false,
+                            'servicio_id'      => $this->servicio_id,
+                            'estatu_id'        => $this->estatus_id,
+                            'favorable'        => false,
                             'fecha_movimiento' => now(),
-                            'creadopor_id' => $this->user_id,
-                            'observaciones' => 'Desde la App del Operador. Fue atendida por '.$user->full_name." se adjunta imagen como evidencia.",
+                            'creadopor_id'     => $this->user_id,
+                            'observaciones'    => trim($this->observaciones)."\n\nDesde la App del Operador. Fue atendida por ".$user->full_name." se adjunta imagen como evidencia.",
                         ]
                     );
                     $user->solicitudes()->detach($this->denuncia_id);
@@ -142,18 +129,18 @@ class ImagenAPIRequest extends FormRequest
                 }
 
             }
-            $fecha               = (new Carbon($img->fecha))->format('d-m-Y H:i:s');
-            $path = "/storage/denuncia/";
+            $fecha = (new Carbon($img->fecha))->format('d-m-Y H:i:s');
+            $path  = "/storage/denuncia/";
             return [
-                "status"         => 1,
-                "msg"            => "Imagen guardada correctamente",
-                "imagen_id"      => $img->id,
-                "fecha"          => $fecha,
-                "url_imagen"     => config("atemun.public_url").$path.$img->image,
-                "url_thumb"      => config("atemun.public_url").$path.$img->image_thumb,
-                "observaciones"  => $img->descripcion ?? '',
-                "tipo_foto"      => $img->momento === 'ANTES' ? "antes" : "despues",
-                "es_eliminable"  => $img->user__id === $user->id
+                "status"        => 1,
+                "msg"           => "Imagen guardada correctamente",
+                "imagen_id"     => $img->id,
+                "fecha"         => $fecha,
+                "url_imagen"    => config("atemun.public_url").$path.$img->image,
+                "url_thumb"     => config("atemun.public_url").$path.$img->image_thumb,
+                "observaciones" => $img->descripcion ?? '',
+                "tipo_foto"     => $img->momento === 'ANTES' ? "antes" : "despues",
+                "es_eliminable" => $img->user__id === $user->id,
             ];
 
         }catch (Exception $e){
@@ -162,20 +149,39 @@ class ImagenAPIRequest extends FormRequest
 
     }
 
+//    private function imageBase64Content($image) {
+//        $image = str_replace('data:image/png;base64,', '', $image);
+//        $image = str_replace(' ', '+', $image);
+//        return base64_decode($image);
+//    }
 
-    private function imageBase64Content($image) {
-        $image = str_replace('data:image/png;base64,', '', $image);
-        $image = str_replace(' ', '+', $image);
-        return base64_decode($image);
 
-    }
+    private function imageBase64Content(string $image): string {
+        // Elimina cualquier prefijo data URI (png, jpeg, webp, svg+xml, etc.)
+        $image   = preg_replace('/^data:[^;]+;base64,/', '', $image) ?? $image;
+        $decoded = base64_decode(str_replace(' ', '+', $image), true);
+        if ($decoded === false) {
+            throw new \InvalidArgumentException('La imagen no tiene un formato base64 válido.');
+        }
 
-    private function randomImageName() {
-        return Str::random(10) . '.' . 'png';
+        // Convertir a PNG garantiza que siempre se guarde como PNG real,
+        // independientemente del formato original (jpeg, webp, gif, etc.)
+        if (($gdImage = imagecreatefromstring($decoded)) === false) {
+            throw new \InvalidArgumentException('No se pudo procesar la imagen.');
+        }
+        ob_start();
+        imagepng($gdImage);
+        $png = ob_get_clean();
+        imagedestroy($gdImage);
+
+        if ($png === false) {
+            throw new \RuntimeException('Error al generar la imagen PNG.');
+        }
+        return $png;
     }
 
     private function randomImageNameSingular() {
-        return Str::random(25) ;
+        return Str::random(25);
     }
 
 
