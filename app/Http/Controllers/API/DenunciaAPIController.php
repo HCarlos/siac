@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Events\APIDenunciaEvent;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Funciones\FuncionesController;
 use App\Http\Requests\API\DenunciaAddImageAPIRequest;
 use App\Http\Requests\API\DenunciaAddRespuestaAPIRequest;
 use App\Http\Requests\API\DenunciaAPIRequest;
@@ -11,6 +12,7 @@ use App\Http\Requests\API\ImagenAPIRequest;
 use App\Models\Catalogos\Estatu;
 use App\Models\Catalogos\Servicio;
 use App\Models\Denuncias\_viMovSM;
+use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use App\Models\Denuncias\Imagene;
 use App\Models\Denuncias\Respuesta;
@@ -24,8 +26,12 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 
 class DenunciaAPIController extends Controller{
+
+    protected $disk = 'denuncia';
+    protected $F;
 
     public function insertDenunciaMobile(DenunciaAPIRequest $request):JsonResponse {
         $response = ["status"=>0, "msg"=>""];
@@ -132,6 +138,7 @@ class DenunciaAPIController extends Controller{
         foreach ($imagenes as $imagen){
             $fecha               = (new Carbon($imagen->fecha))->format('d-m-Y H:i:s');
             $path = "/storage/mobile/denuncia/";
+            $imagen["id"]        = $imagen->id;
             $imagen['fecha']     = $fecha;
             $imagen["url"]       = config("atemun.public_url").$path.$imagen->filename;
             $imagen["url_png"]   = config("atemun.public_url").$path.$imagen->filename_png;
@@ -151,6 +158,7 @@ class DenunciaAPIController extends Controller{
             $fecha               = (new Carbon($imagen->fecha))->format('d-m-Y H:i:s');
             $path = "/storage/denuncia/";
             $imgs[] = [
+                "id"             => $imagen->id,
                 "fecha"          => $fecha,
                 "url_imagen"     => config("atemun.public_url").$path.$imagen->image,
                 "url_thumb"      => config("atemun.public_url").$path.$imagen->image_thumb,
@@ -215,15 +223,6 @@ class DenunciaAPIController extends Controller{
 
         $user = User::find($user_id);
         $deps = $user->dependencia_id_array;
-
-
-
-//        $dens = _viMovSM::query()
-//            ->where("fecha_ingreso",'>','2025-11-18')
-//            ->whereIn("dependencia_id",$deps)
-//            ->where("estatu_id",19)
-//            ->OrderByDesc("denuncia_id")
-//            ->get();
 
         $dens = DB::table('denuncia_operador as do2')
             ->selectRaw('DISTINCT do2.denuncia_id, do2.operador_id, do2.fecha_asignacion, do2.observaciones')
@@ -358,6 +357,35 @@ class DenunciaAPIController extends Controller{
 //            $response["msg"] = "Su imagen fue agregada correctamente!";
             $response = $den;
         }
+        return response()->json($response);
+    }
+
+
+    public function removeImageDenuncia(Request $request):JsonResponse {
+        $response = ["status"=>0, "msg"=>"Ha ocurrido un error al quitar la imagen"];
+
+        $data = (object) $request->all();
+
+        $imagen_id   = $data->imagen_id;
+        $denuncia_id = $data->denuncia_id;
+
+        // findOrFail lanza ModelNotFoundException si no existe (no requiere isset)
+        $item = Imagene::withTrashed()->findOrFail($imagen_id);
+        $den  = Denuncia::findOrFail($denuncia_id);
+
+        // Primero desvinculamos del pivot (denuncia_imagene) para evitar violación de FK en PostgreSQL
+        $den->imagenes()->detach($item->id);
+
+        // Eliminamos los archivos físicos del disco
+        $this->F = new FuncionesController();
+        $this->F->deleteImageDropZone($item->image, $this->disk);
+        $this->F->deleteImageDropZone($item->image_thumb, $this->disk);
+
+        // forceDelete elimina definitivamente el registro (esté o no en soft-delete)
+        $item->forceDelete();
+
+        $response = ["status"=>1, "msg"=>"Imagen eliminada correctamente"];
+
         return response()->json($response);
     }
 

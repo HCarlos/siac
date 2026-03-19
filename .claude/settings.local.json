@@ -31,7 +31,11 @@
       "Bash(php artisan route:list --path=api 2>&1 | head -20 && echo \"---\" && php -l app/Http/Requests/API/ImagenAPIRequest.php && php -l app/Http/Controllers/API/DenunciaAPIController.php)",
       "Bash(psql -U postgres -d dbatemun -c \"\\\\d denuncia_operador\" 2>/dev/null)",
       "Bash(PGPASSWORD=123 psql -h 127.0.0.1 -U postgres -d dbatemun -c \"\\\\d denuncia_operador\" | grep deleted_at)",
-      "Bash(PGPASSWORD=123 psql -h 127.0.0.1 -U postgres -d dbatemun -c \"\\\\d _viddss\" | grep -i \"depend\\\\|id\")"
+      "Bash(PGPASSWORD=123 psql -h 127.0.0.1 -U postgres -d dbatemun -c \"\\\\d _viddss\" | grep -i \"depend\\\\|id\")",
+      "Bash(cat /var/www/servimun/phpunit.xml 2>/dev/null && echo \"===\" && wc -l /var/www/servimun/app/Http/Requests/**/*.php 2>/dev/null | tail -1 && echo \"===\" && ls /var/www/servimun/app/Http/Requests/ && echo \"===\" && ls /var/www/servimun/app/Http/Requests/API/)",
+      "Bash(find /var/www/servimun/app -name \"*.php\" | wc -l && echo \"===\" && find /var/www/servimun/app/Http/Controllers -name \"*.php\" | wc -l && echo \"===\" && find /var/www/servimun/app/Http/Requests -name \"*.php\" | wc -l && echo \"===\" && find /var/www/servimun/app/Models -name \"*.php\" | wc -l 2>/dev/null; find /var/www/servimun/app -name \"*Model*\" -o -name \"Denuncia.php\" | head -5)",
+      "Bash(cat /var/www/servimun/composer.json | grep -A3 \"phpunit\" && echo \"===\" && vendor/bin/phpunit --version 2>/dev/null || php /var/www/servimun/vendor/bin/phpunit --version)",
+      "Bash(PGPASSWORD=123 psql -U postgres -d dbatemun -c \"SELECT id, estatus, abreviatura, resuelto FROM estatus ORDER BY id;\" 2>/dev/null)"
     ]
   }
 }
