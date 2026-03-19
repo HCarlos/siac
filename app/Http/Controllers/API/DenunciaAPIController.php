@@ -390,12 +390,12 @@ class DenunciaAPIController extends Controller{
             // forceDelete elimina definitivamente el registro (esté o no en soft-delete)
             $item->forceDelete();
 
-            $response = ["status"=>1, "msg"=>"Imagen eliminada correctamente"];
+            $response = ["status"=>1, "msg"=>"Imagen eliminada con éxito"];
 
         }else{
             $response = ["status"=>0, "msg"=>"No esta autorizado para eliminar esta imagen"];
         }
-
+é
         return response()->json($response);
 
     }
