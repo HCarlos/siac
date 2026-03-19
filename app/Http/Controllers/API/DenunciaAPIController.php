@@ -395,7 +395,7 @@ class DenunciaAPIController extends Controller{
         }else{
             $response = ["status"=>0, "msg"=>"No esta autorizado para eliminar esta imagen"];
         }
-é
+
         return response()->json($response);
 
     }
