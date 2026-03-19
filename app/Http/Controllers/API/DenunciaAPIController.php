@@ -148,7 +148,7 @@ class DenunciaAPIController extends Controller{
     }
 
 
-    protected function getImagenesFromRoles(int $denuncia_id, int $dependencia_id, int $servicio_id) {
+    protected function getImagenesFromRoles(int $denuncia_id, int $dependencia_id, int $servicio_id, int $user_id) {
         $imagenes = Imagene::select(['id', 'fecha','image','image_thumb','momento','denuncia__id','user__id','parent__id']
         )->where("denuncia__id",$denuncia_id)
             ->OrderByDesc("id")
@@ -164,6 +164,7 @@ class DenunciaAPIController extends Controller{
                 "url_thumb"      => config("atemun.public_url").$path.$imagen->image_thumb,
                 "observaciones"  => $imagen->descripcion ?? '',
                 "tipo_foto"      => $imagen->momento === 'ANTES' ? "antes" : "despues",
+                "es_eliminable"  => $imagen->user__id === $user_id
             ];
         }
         return $imgs;
@@ -190,7 +191,7 @@ class DenunciaAPIController extends Controller{
         return $respuestas;
     }
 
-    protected function getRespuestasFromRoles(int $denuncia_id, int $dependencia_id, int $servicio_id) {
+    protected function getRespuestasFromRoles(int $denuncia_id, int $dependencia_id, int $servicio_id, int $user_id = 0) {
         $respuestas = Denuncia_Dependencia_Servicio::select(['id',
             'denuncia_id','dependencia_id','servicio_id','estatu_id','fecha_movimiento',
             'observaciones','favorable','fue_leida','creadopor_id',])
@@ -284,7 +285,7 @@ class DenunciaAPIController extends Controller{
                     'latitud'                    => $den->latitud,
                     'longitud'                   => $den->longitud,
                     'observaciones'              => $den->observaciones,
-                    'imagenes'                   => $this->getImagenesFromRoles($den->denuncia_id,$den->dependencia_id,$den->servicio_id),
+                    'imagenes'                   => $this->getImagenesFromRoles($den->denuncia_id,$den->dependencia_id,$den->servicio_id,$user_id),
                     'respuestas'                 => $this->getRespuestasFromRoles($den->denuncia_id,$den->dependencia_id,$den->servicio_id),
                 ];
                 $denucias[] = $d;
@@ -302,6 +303,7 @@ class DenunciaAPIController extends Controller{
         $data = (object) $request->all();
 //        dd($data->denuncia_id);
         $denuncia_id = (int) $data->denuncia_id;
+        $user_id = $data->user_id;
 
         $dens = _viMovSM::query()
             ->where("denuncia_id",$denuncia_id)
@@ -335,7 +337,7 @@ class DenunciaAPIController extends Controller{
                     'latitud'                    => $den->latitud,
                     'longitud'                   => $den->longitud,
                     'observaciones'              => $den->observaciones,
-                    'imagenes'                   => $this->getImagenesFromRoles($den->denuncia_id,$den->dependencia_id,$den->servicio_id),
+                    'imagenes'                   => $this->getImagenesFromRoles($den->denuncia_id,$den->dependencia_id,$den->servicio_id,$user_id),
                     'respuestas'                 => $this->getRespuestasFromRoles($den->denuncia_id,$den->dependencia_id,$den->servicio_id),
                 ];
                 $denucias[] = $d;
@@ -368,25 +370,34 @@ class DenunciaAPIController extends Controller{
 
         $imagen_id   = $data->imagen_id;
         $denuncia_id = $data->denuncia_id;
+        $user_id     = $data->user_id;
 
         // findOrFail lanza ModelNotFoundException si no existe (no requiere isset)
         $item = Imagene::withTrashed()->findOrFail($imagen_id);
-        $den  = Denuncia::findOrFail($denuncia_id);
 
-        // Primero desvinculamos del pivot (denuncia_imagene) para evitar violación de FK en PostgreSQL
-        $den->imagenes()->detach($item->id);
+        if ( $item->user__id === $user_id) {
 
-        // Eliminamos los archivos físicos del disco
-        $this->F = new FuncionesController();
-        $this->F->deleteImageDropZone($item->image, $this->disk);
-        $this->F->deleteImageDropZone($item->image_thumb, $this->disk);
+            $den  = Denuncia::findOrFail($denuncia_id);
 
-        // forceDelete elimina definitivamente el registro (esté o no en soft-delete)
-        $item->forceDelete();
+            // Primero desvinculamos del pivot (denuncia_imagene) para evitar violación de FK en PostgreSQL
+            $den->imagenes()->detach($item->id);
 
-        $response = ["status"=>1, "msg"=>"Imagen eliminada correctamente"];
+            // Eliminamos los archivos físicos del disco
+            $this->F = new FuncionesController();
+            $this->F->deleteImageDropZone($item->image, $this->disk);
+            $this->F->deleteImageDropZone($item->image_thumb, $this->disk);
+
+            // forceDelete elimina definitivamente el registro (esté o no en soft-delete)
+            $item->forceDelete();
+
+            $response = ["status"=>1, "msg"=>"Imagen eliminada correctamente"];
+
+        }else{
+            $response = ["status"=>0, "msg"=>"No esta autorizado para eliminar esta imagen"];
+        }
 
         return response()->json($response);
+
     }
 
 
