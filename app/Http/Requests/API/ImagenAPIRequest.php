@@ -14,7 +14,7 @@ use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Imagene;
 use App\User;
 use Carbon\Carbon;
-use http\Exception;
+use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
@@ -142,20 +142,23 @@ class ImagenAPIRequest extends FormRequest
                 }
 
             }
+            $fecha               = (new Carbon($img->fecha))->format('d-m-Y H:i:s');
             $path = "/storage/denuncia/";
             return [
                 "status"         => 1,
                 "msg"            => "Imagen guardada correctamente",
+                "imagen_id"      => $img->id,
+                "fecha"          => $fecha,
                 "url_imagen"     => config("atemun.public_url").$path.$img->image,
                 "url_thumb"      => config("atemun.public_url").$path.$img->image_thumb,
                 "observaciones"  => $img->descripcion ?? '',
                 "tipo_foto"      => $img->momento === 'ANTES' ? "antes" : "despues",
+                "es_eliminable"  => $img->user__id === $user->id
             ];
 
         }catch (Exception $e){
             return ["status"=>0, "msg"=>$e->getMessage()];
         }
-        return ["status" => 0, "msg" => "Ocurrió un error al subir la imagen."];
 
     }
 
