@@ -182,8 +182,8 @@ class RepDelCiuInt1AController extends Controller{
 
         // Función para construir el XML de una celda directamente como string
         $buildCelda = function(string $col, int $rowNum, $value) use (&$estilosCol, $convertPhpDateToExcelSerial, $esc): string {
-            $ref = $col . $rowNum;
-            $s   = $estilosCol[$col] ?? '0';
+            $ref   = $col . $rowNum;
+            $s     = $estilosCol[$col] ?? '0';
             $sAttr = ($s !== '' && $s !== '0') ? ' s="' . $s . '"' : '';
             if ($value === '' || $value === null) {
                 return '<c r="' . $ref . '"' . $sAttr . '/>';
@@ -219,6 +219,40 @@ class RepDelCiuInt1AController extends Controller{
             $Delegado   = $item->delegado          ?? '';
             $Ciudadano  = $item->ciudadano         ?? '';
 
+            $arrInternos = [508833, 519442, 513061, 126641];
+            $ciudadano_id = $item->ciudadano_id      ?? 0;
+            $delegado_id = $item->delegado_id      ?? 0;
+
+            if ($ciudadano_id > 0 &&  $delegado_id > 0) {
+                if ($ciudadano_id === $delegado_id) {
+                    $dic = "Delegado";
+                }elseif (in_array($ciudadano_id, $arrInternos, true)) {
+                    $dic = "Interno";
+                }else{
+                    $dic = "Ciudadano";
+                }
+            }else{
+                $dic = "Ninguno";
+            }
+
+            $eda = "ATENDIDA";
+            switch ($item->estatu_id){
+                case 16:
+                case 18:
+                case 19:
+                case 20:
+                    $eda = "PENDIENTE";
+                    break;
+            }
+
+
+
+//            $isDelegado   = $item->delegado->isRole("DELEGADO")  ?? false;
+//            $isCiudadano  = $item->ciudadano->isRole("DELEGADO") ?? false;
+//            if ($isDelegado === $isCiudadano){
+//                dd($item->delegado->isRole("DELEGADO")." - ".$item->ciudadano->isRole("DELEGADO"));
+//            }
+
             $fueMes      = $item->fecha_ultimo_estatus ? Carbon::parse($item->fecha_ultimo_estatus)->format('m')     : '';
             $fueAno      = $item->fecha_ultimo_estatus ? Carbon::parse($item->fecha_ultimo_estatus)->format('Y')     : '';
             $fueFechaFmt = $item->fecha_ultimo_estatus ? Carbon::parse($item->fecha_ultimo_estatus)->format('d-m-Y') : '';
@@ -242,7 +276,7 @@ class RepDelCiuInt1AController extends Controller{
             $newRowsXml .= $buildCelda('F', $i, strtoupper(trim($item->search_google ?? '')));
             $newRowsXml .= $buildCelda('G', $i, $Colonia);
             $newRowsXml .= $buildCelda('H', $i, $Delegacion);
-            $newRowsXml .= $buildCelda('I', $i, $Ciudadano === $Delegado ? 'Es el delegado' : '');
+            $newRowsXml .= $buildCelda('I', $i, $dic);
             $newRowsXml .= $buildCelda('J', $i, trim(($item->telefonos_ciudadano ?? '') . ' ' . ($item->email_ciudadano ?? '')));
             $newRowsXml .= $buildCelda('K', $i, $fechaIngreso);
             $newRowsXml .= $buildCelda('L', $i, $fiMes);
@@ -261,6 +295,7 @@ class RepDelCiuInt1AController extends Controller{
             $newRowsXml .= $buildCelda('Y', $i, $dias_transcurridos_atencion);
             $newRowsXml .= $buildCelda('Z', $i, $dias_transcurridos_desde_ultimo_estatus);
             $newRowsXml .= $buildCelda('AA', $i, $dias_transcurridos_desde_inicio);
+            $newRowsXml .= $buildCelda('AB', $i, $eda);
             $newRowsXml .= '</row>';
             $i++;
         }

@@ -119,7 +119,7 @@ class ImagenAPIRequest extends FormRequest
                             'favorable'        => false,
                             'fecha_movimiento' => now(),
                             'creadopor_id'     => $this->user_id,
-                            'observaciones'    => trim($this->observaciones)."\n\nDesde la App del Operador. Fue atendida por ".$user->full_name." se adjunta imagen como evidencia.",
+                            'observaciones'    => trim($this->observaciones).'. '."\n\nDesde la App del Operador. Fue atendida por ".$user->full_name." se adjunta imagen como evidencia.",
                         ]
                     );
                     $user->solicitudes()->detach($this->denuncia_id);

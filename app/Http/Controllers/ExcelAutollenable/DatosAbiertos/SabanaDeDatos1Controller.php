@@ -292,6 +292,34 @@ class SabanaDeDatos1Controller extends Controller{
             $Delegado   = $item->delegado          ?? '';
             $Ciudadano  = $item->ciudadano         ?? '';
 
+            $arrInternos = [508833, 519442, 513061, 126641];
+            $ciudadano_id = $item->ciudadano_id      ?? 0;
+            $delegado_id = $item->delegado_id      ?? 0;
+
+            if ($ciudadano_id > 0 &&  $delegado_id > 0) {
+                if ($ciudadano_id === $delegado_id) {
+                    $dic = "Delegado";
+                }elseif (in_array($ciudadano_id, $arrInternos, true)) {
+                    $dic = "Interno";
+                }else{
+                    $dic = "Ciudadano";
+                }
+            }else{
+                $dic = "Ninguno";
+            }
+
+            $eda = "ATENDIDA";
+            switch ($item->ue_id){
+                case 16:
+                case 18:
+                case 19:
+                case 20:
+                    $eda = "PENDIENTE";
+                    break;
+            }
+
+
+
             // Corrección: verificar null ANTES de parsear fecha_ultimo_estatus
             $fueMes      = $item->fecha_ultimo_estatus ? Carbon::parse($item->fecha_ultimo_estatus)->format('m')     : '';
             $fueAno      = $item->fecha_ultimo_estatus ? Carbon::parse($item->fecha_ultimo_estatus)->format('Y')     : '';
@@ -328,7 +356,7 @@ class SabanaDeDatos1Controller extends Controller{
                 ->setCellValue('F' . $C, strtoupper(trim($item->search_google ?? '')))
                 ->setCellValue('G' . $C, $Colonia ?? '')
                 ->setCellValue('H' . $C, $Delegacion ?? '')
-                ->setCellValue('I' . $C, $Ciudadano == $Delegado ? "Es el delegado" : '')
+                ->setCellValue('I' . $C, $dic)
                 ->setCellValue('J' . $C, $item->telefonoscelularesemails ?? '')
                 ->setCellValue('K' . $C, $fechaIngreso ?? '')
                 ->setCellValue('L' . $C, $fiMes ?? '')
@@ -346,7 +374,8 @@ class SabanaDeDatos1Controller extends Controller{
                 ->setCellValue('X' . $C, $item->observaciones ?? '')
                 ->setCellValue('Y' . $C, $dias_transcurridos_atencion ?? '')
                 ->setCellValue('Z' . $C, $dias_transcurridos_desde_ultimo_estatus ?? '')
-                ->setCellValue('AA' . $C, $dias_transcurridos_desde_inicio ?? '');
+                ->setCellValue('AA' . $C, $dias_transcurridos_desde_inicio ?? '')
+                ->setCellValue('AB' . $C, $eda ?? '');
 
             //            ->setCellValue('Y' . $C, $item->dias_atendida ?? '')
 //                ->setCellValue('Z' . $C, $item->dias_rechazada ?? '')
