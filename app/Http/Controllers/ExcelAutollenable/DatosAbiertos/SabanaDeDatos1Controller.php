@@ -53,13 +53,13 @@ class SabanaDeDatos1Controller extends Controller{
         $this->vectorServicios = collect([
             ['sue_id' => 476, 'Servicio' => 'FUGA DE AGUA', 'R' => 0, 'A' => 0, "PROM_PEN" => 0, "DIAS_PEN" => 0, "PROM_ATE" => 0, "DIAS_ATE" => 0, "LLAMADAS" => 0, "TOTAL" => 0, "DIAS_PEN_DEL" => 0, "DIAS_ATE_DEL" => 0, "DIAS_PEN_INS" => 0, "DIAS_ATE_INS" => 0],
             ['sue_id' => 508, 'Servicio' => 'DESAZOLVE DE DRENAJE', 'R' => 0, 'A' => 0, "PROM_PEN" => 0, "DIAS_PEN" => 0, "PROM_ATE" => 0, "DIAS_ATE" => 0, "LLAMADAS" => 0, "TOTAL" => 0, "DIAS_PEN_DEL" => 0, "DIAS_ATE_DEL" => 0, "DIAS_PEN_INS" => 0, "DIAS_ATE_INS" => 0],
-            ['sue_id' => 479, 'Servicio' => 'ALCANTARILLA', 'R' => 0, 'A' => 0, "PROM_PEN" => 0, "DIAS_PEN" => 0, "PROM_ATE" => 0, "DIAS_ATE" => 0, "LLAMADAS" => 0, "TOTAL" => 0, "DIAS_PEN_DEL" => 0, "DIAS_ATE_DEL" => 0, "DIAS_PEN_INS" => 0, "DIAS_ATE_INS" => 0],
+            ['sue_id' => 480, 'Servicio' => 'REJILLA', 'R' => 0, 'A' => 0, "PROM_PEN" => 0, "DIAS_PEN" => 0, "PROM_ATE" => 0, "DIAS_ATE" => 0, "LLAMADAS" => 0, "TOTAL" => 0, "DIAS_PEN_DEL" => 0, "DIAS_ATE_DEL" => 0, "DIAS_PEN_INS" => 0, "DIAS_ATE_INS" => 0],
             ['sue_id' => 483, 'Servicio' => 'BACHEO', 'R' => 0, 'A' => 0, "PROM_PEN" => 0, "DIAS_PEN" => 0, "PROM_ATE" => 0, "DIAS_ATE" => 0, "LLAMADAS" => 0, "TOTAL" => 0, "DIAS_PEN_DEL" => 0, "DIAS_ATE_DEL" => 0, "DIAS_PEN_INS" => 0, "DIAS_ATE_INS" => 0],
             ['sue_id' => 466, 'Servicio' => 'LUMINARIAS', 'R' => 0, 'A' => 0, "PROM_PEN" => 0, "DIAS_PEN" => 0, "PROM_ATE" => 0, "DIAS_ATE" => 0, "LLAMADAS" => 0, "TOTAL" => 0, "DIAS_PEN_DEL" => 0, "DIAS_ATE_DEL" => 0, "DIAS_PEN_INS" => 0, "DIAS_ATE_INS" => 0],
             ['sue_id' => 503, 'Servicio' => 'RECOLECCIÓN DE RESIDUOS SÓLIDOS', 'R' => 0, 'A' => 0, "PROM_PEN" => 0, "DIAS_PEN" => 0, "PROM_ATE" => 0, "DIAS_ATE" => 0, "LLAMADAS" => 0, "TOTAL" => 0, "DIAS_PEN_DEL" => 0, "DIAS_ATE_DEL" => 0, "DIAS_PEN_INS" => 0, "DIAS_ATE_INS" => 0],
         ]);
 
-        $this->ServiciosPrincipales = [476, 508, 479, 483, 466, 503];
+        $this->ServiciosPrincipales = [476, 508, 480, 483, 466, 503];
 
         $this->unidades = [47,48,50,46,49];
 
@@ -289,6 +289,7 @@ class SabanaDeDatos1Controller extends Controller{
 
             $Colonia    = $item->centro_colonia    ?? ''; // $item->centroLocalidad->ItemColonia() ?? '';
             $Delegacion = $item->centro_delegacion ?? '';
+            $Zona       = $item->zona ?? '';
             $Delegado   = $item->delegado          ?? '';
             $Ciudadano  = $item->ciudadano         ?? '';
 
@@ -375,7 +376,8 @@ class SabanaDeDatos1Controller extends Controller{
                 ->setCellValue('Y' . $C, $dias_transcurridos_atencion ?? '')
                 ->setCellValue('Z' . $C, $dias_transcurridos_desde_ultimo_estatus ?? '')
                 ->setCellValue('AA' . $C, $dias_transcurridos_desde_inicio ?? '')
-                ->setCellValue('AB' . $C, $eda ?? '');
+                ->setCellValue('AB' . $C, $eda ?? '')
+                ->setCellValue('AC' . $C, $Zona ?? '');
 
             //            ->setCellValue('Y' . $C, $item->dias_atendida ?? '')
 //                ->setCellValue('Z' . $C, $item->dias_rechazada ?? '')

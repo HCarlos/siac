@@ -216,6 +216,8 @@ class RepDelCiuInt1AController extends Controller{
 
             $Delegacion = $item->centro_delegacion ?? '';
             $Colonia    = $item->centro_colonia ?? '';
+            $Zona       = $item->zona ?? '';
+
             $Delegado   = $item->delegado          ?? '';
             $Ciudadano  = $item->ciudadano         ?? '';
 
@@ -296,6 +298,7 @@ class RepDelCiuInt1AController extends Controller{
             $newRowsXml .= $buildCelda('Z', $i, $dias_transcurridos_desde_ultimo_estatus);
             $newRowsXml .= $buildCelda('AA', $i, $dias_transcurridos_desde_inicio);
             $newRowsXml .= $buildCelda('AB', $i, $eda);
+            $newRowsXml .= $buildCelda('AC', $i, $Zona);
             $newRowsXml .= '</row>';
             $i++;
         }
