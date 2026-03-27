@@ -15,8 +15,6 @@ class Rural_y_Urbano_SAS_Seeder extends Seeder{
         $json_data = file_get_contents($file);
         $json_data = preg_split( "/\n/", $json_data );
 
-//        dd(count($json_data));
-
         for ($x = 1, $xMax = count($json_data); $x < $xMax; $x++){
             try{
 
