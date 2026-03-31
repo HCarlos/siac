@@ -53,6 +53,9 @@ class SabanaDeDatosUnityController extends Controller{
     protected $delegacion_id;
     protected $colonia_id;
 
+    protected $registros;
+    protected $registros_ddse;
+
     public function __construct(){
         $this->middleware('auth');
         $this->output = "nada_";
@@ -96,6 +99,8 @@ class SabanaDeDatosUnityController extends Controller{
         $this->start_date = $start_date. " 00:00:00";
         $this->end_date = $end_date. " 23:59:59";
         $this->fecha_desde = "2025-11-19 00:00:00";
+        $this->registros = $request->get('items');
+        $this->registros_ddse = $request->get('items_ddse');
         $this->arrItems = []; // $request->get('items');
 
         $this->unidades[] = (int)$this->unity_id;
@@ -517,6 +522,27 @@ class SabanaDeDatosUnityController extends Controller{
 
     }
 
+    private function normalizarIds($valor)
+    {
+        if (is_null($valor) || $valor === '') {
+            return [];
+        }
+
+        if (is_array($valor)) {
+            return array_values(array_unique(array_filter(array_map('trim', $valor), function ($item) {
+                return $item !== '';
+            })));
+        }
+
+        if (is_string($valor)) {
+            return array_values(array_unique(array_filter(array_map('trim', explode(',', $valor)), function ($item) {
+                return $item !== '';
+            })));
+        }
+
+        return [];
+    }
+
 
     function obtenerSabanaDeDatosSoloIDs(){
 
@@ -539,7 +565,7 @@ class SabanaDeDatosUnityController extends Controller{
 
 
 
-        return $this->denuncias_ids = DB::table('_videnuncias')
+        $this->denuncias_ids = DB::table('_videnuncias')
             ->where('ambito_dependencia', 2)
             ->where('dependencia_id', $this->unity_id)
             ->whereBetween('fecha_ingreso', [$this->start_date, $this->end_date])
@@ -559,6 +585,21 @@ class SabanaDeDatosUnityController extends Controller{
             ->orderByDesc('id')
             ->pluck('id')
             ->toArray();
+
+        $registros = $this->normalizarIds($this->registros);
+        $ddse = $this->normalizarIds($this->registros_ddse);
+
+        $resultado = [
+            'solo_en_denuncias' => array_values(array_diff($this->denuncias_ids, $registros, $ddse)),
+            'solo_en_registros' => array_values(array_diff($registros, $this->denuncias_ids, $ddse)),
+            'solo_en_ddse' => array_values(array_diff($ddse, $this->denuncias_ids, $registros)),
+            'en_los_tres' => array_values(array_intersect($this->denuncias_ids, $registros, $ddse)),
+        ];
+
+//        dd($resultado);
+
+
+        return $this->denuncias_ids;
 
 
     }
