@@ -133,13 +133,13 @@
                         <form class="form-modern">
                             <div class="form-group">
                                 <label for="servicios">Servicios:</label>
-                                <select class="form-select" name="servicios" id="servicios">
+                                <select class="form-select select2" name="servicios" id="servicios" data-toggle="select2" >
                                     <option value="0">Todos</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="delegaciones">Delegaciones:</label>
-                                <select class="form-select delegaciones select2" name="delegaciones" id="delegaciones" data-toggle="select2" size="1" >
+                                <select class="form-select delegaciones select2" name="delegaciones" id="delegaciones" data-toggle="select2"  size="1" >
                                     <option value="0">Todas</option>
                                 </select>
                             </div>
@@ -158,15 +158,15 @@
                                 <i class="fas fa-file-excel text-white"></i> Monitoreados
                             </button>
                             @if( (int)$unity_id === 47 )
-                            <button type="button" id="frmResumenBasicoExport" class="btn btn-primary btn-resume-basico ms-auto">
-                                <i class="fas fa-file-excel text-white"></i> Resumen Monitoreados
-                            </button>
-                            <button type="button" id="frmFilterDataExportSAS" class="btn btn-primary btn-listado-general ms-auto">
-                                <i class="fas fa-file-excel text-white"></i> Listado General de SM
-                            </button>
+                                <button type="button" id="frmResumenBasicoExport" class="btn btn-primary btn-resume-basico ms-auto">
+                                    <i class="fas fa-file-excel text-white"></i> Resumen de Monitoreados
+                                </button>
+                                <button type="button" id="frmFilterDataExportSAS" class="btn btn-primary btn-listado-general ms-auto">
+                                    <i class="fas fa-file-excel text-white"></i> Listado de solicitudes
+                                </button>
                             @else
                                 <button type="button" id="frmFilterDataExportSAS" class="btn btn-primary btn-listado-general ms-auto">
-                                    <i class="fas fa-file-excel text-white"></i> Listado General de SM
+                                    <i class="fas fa-file-excel text-white"></i> Listado de solicitudes
                                 </button>
                             @endif
                         </form>
@@ -441,6 +441,10 @@
 
             if (btnFilterDataExportSAS) {
                 btnFilterDataExportSAS.addEventListener('click', function () {
+                    const selectServicio = document.getElementById('servicios');
+                    const selectColonia = document.getElementById('colonias');
+                    const selectDelegacion = document.getElementById('delegaciones');
+
                     btnFilterDataExportSAS.disabled = true;
                     var PARAMS = {
                         search : "",
@@ -449,6 +453,9 @@
                         start_date : "{{ $start_date }}",
                         end_date : "{{ $end_date }}",
                         unity_id: {{ $unity_id }},
+                        servicio_id: selectServicio.value,
+                        colonia_id: selectColonia.value,
+                        delegacion_id: selectDelegacion.value,
                         fileoutput : "fmt_lista_denuncias_sas_sm.xlsx",
                         indice : 4,
                         _token : document.querySelector('meta[name="csrf-token"]').getAttribute('content')

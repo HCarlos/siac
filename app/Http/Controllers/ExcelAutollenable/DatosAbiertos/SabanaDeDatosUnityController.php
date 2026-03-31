@@ -49,6 +49,10 @@ class SabanaDeDatosUnityController extends Controller{
 
     protected $unity_id;
 
+    protected $servicio_id;
+    protected $delegacion_id;
+    protected $colonia_id;
+
     public function __construct(){
         $this->middleware('auth');
         $this->output = "nada_";
@@ -85,7 +89,10 @@ class SabanaDeDatosUnityController extends Controller{
 
         $start_date = $request->get('start_date');
         $end_date = $request->get('end_date');
-        $this->unity_id = $request->get('unity_id');
+        $this->unity_id = (int) $request->get('unity_id');
+        $this->servicio_id = (int) $request->get('servicio_id');
+        $this->delegacion_id = (int) $request->get('delegacion_id');
+        $this->colonia_id = (int) $request->get('colonia_id');
         $this->start_date = $start_date. " 00:00:00";
         $this->end_date = $end_date. " 23:59:59";
         $this->fecha_desde = "2025-11-19 00:00:00";
@@ -100,7 +107,7 @@ class SabanaDeDatosUnityController extends Controller{
 
         try {
 
-            $this->obtenerSabanaDeDatosSoloIDs(0, $this->unity_id);
+            $this->obtenerSabanaDeDatosSoloIDs(0);
 
             $Items = _viDDSs::whereIn('id', $this->denuncias_ids)
                 ->orderByDesc('id')
@@ -511,20 +518,48 @@ class SabanaDeDatosUnityController extends Controller{
     }
 
 
-    function obtenerSabanaDeDatosSoloIDs($type, $unity_id){
+    function obtenerSabanaDeDatosSoloIDs(){
 
-        switch ($type) {
-            case 0:
-                $this->denuncias_ids = DB::table("_videnuncias")
-                    ->where('ambito_dependencia', 2)
-                    ->where('dependencia_id', $unity_id)
-                    ->whereBetween('fecha_ingreso',  [$this->start_date,$this->end_date])
-                    ->orderByDesc('id')
-                    ->pluck('id')
-                    ->toArray();
 
-                return $this->denuncias_ids;
-        }
+
+//        switch ($type) {
+//            case 0:
+//                $this->denuncias_ids = DB::table("_videnuncias")
+//                    ->where('ambito_dependencia', 2)
+//                    ->where('dependencia_id', $this->unity_id)
+//                    ->whereBetween('fecha_ingreso',  [$this->start_date,$this->end_date])
+//                    ->orderByDesc('id')
+//                    ->pluck('id')
+//                    ->toArray();
+//
+//                return $this->denuncias_ids;
+//        }
+
+//        dd($this->delegacion_id);
+
+
+
+        return $this->denuncias_ids = DB::table('_videnuncias')
+            ->where('ambito_dependencia', 2)
+            ->where('dependencia_id', $this->unity_id)
+            ->whereBetween('fecha_ingreso', [$this->start_date, $this->end_date])
+
+            ->when((int) $this->servicio_id > 0, function ($query) {
+                $query->where('servicio_id', $this->servicio_id);
+            })
+
+            ->when((int) $this->delegacion_id > 0, function ($query) {
+                $query->where('delegacion_id', $this->delegacion_id);
+            })
+
+            ->when((int) $this->colonia_id > 0, function ($query) {
+                $query->where('colonia_id', $this->colonia_id);
+            })
+
+            ->orderByDesc('id')
+            ->pluck('id')
+            ->toArray();
+
 
     }
 
