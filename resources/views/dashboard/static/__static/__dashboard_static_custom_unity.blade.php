@@ -164,6 +164,10 @@
                             <button type="button" id="frmFilterDataExportSAS" class="btn btn-primary btn-listado-general ms-auto">
                                 <i class="fas fa-file-excel text-white"></i> Listado General de SM
                             </button>
+                            @else
+                                <button type="button" id="frmFilterDataExportSAS" class="btn btn-primary btn-listado-general ms-auto">
+                                    <i class="fas fa-file-excel text-white"></i> Listado General de SM
+                                </button>
                             @endif
                         </form>
                     </div>
@@ -225,12 +229,12 @@
             let dataatiempo = [];
             let datarezago = [];
 
-            let frmFilterDataExport = document.getElementById("frmFilterDataExport");
-            frmFilterDataExport.disabled = true;
+            // let frmFilterDataExport = document.getElementById("frmFilterDataExport");
+            // frmFilterDataExport.disabled = true;
 
-            let frmFilterDataExportSAS = document.getElementById("frmFilterDataExportSAS");
-            if (frmFilterDataExportSAS)
-                frmFilterDataExportSAS.disabled = true;
+            // let frmFilterDataExportSAS = document.getElementById("frmFilterDataExportSAS");
+            // if (frmFilterDataExportSAS)
+            //     frmFilterDataExportSAS.disabled = true;
 
 
 
@@ -284,8 +288,10 @@
             inputDenuncias.value = denuncias_id.join(',');
             inputDDSE.value = ddse_id.join(',');
             frmFilterDataExport.disabled = false;
-            if (frmFilterDataExportSAS)
-                frmFilterDataExportSAS.disabled = false;
+
+            // if (frmFilterDataExportSAS)
+            //     frmFilterDataExportSAS.disabled = false;
+
             frmResumenBasicoExport ? frmResumenBasicoExport.disabled = false : console.warn("");
 
             const selectZona = document.getElementById('zona');
@@ -399,22 +405,57 @@
 
 
             const btnFilterDataExportSAS = document.getElementById('frmFilterDataExportSAS');
+
+            {{--if (btnFilterDataExportSAS) {--}}
+            {{--    btnFilterDataExportSAS.addEventListener('click', function () {--}}
+            {{--        btnFilterDataExportSAS.disabled = true;--}}
+            {{--        var PARAMS = {--}}
+            {{--            search : "",--}}
+            {{--            start_date : "{{ $start_date }}",--}}
+            {{--            end_date : "{{ $end_date }}",--}}
+            {{--            items : null,--}}
+            {{--            items_ddse : null,--}}
+            {{--            fileoutput : "fmt_lista_denuncias_sas_sm.xlsx",--}}
+            {{--            indice : 4,--}}
+            {{--            _token : document.querySelector('meta[name="csrf-token"]').getAttribute('content')--}}
+            {{--        };--}}
+
+            {{--        var temp=document.createElement("form");--}}
+            {{--        temp.action='/exportDenunciaSASGeneral02';--}}
+            {{--        temp.method="POST";--}}
+            {{--        temp.target="_blank";--}}
+            {{--        temp.style.display="none";--}}
+            {{--        for(var x in PARAMS) {--}}
+            {{--            var opt=document.createElement("textarea");--}}
+            {{--            opt.name=x;--}}
+            {{--            opt.value=PARAMS[x];--}}
+            {{--            temp.appendChild(opt);--}}
+            {{--        }--}}
+            {{--        document.body.appendChild(temp);--}}
+            {{--        temp.submit();--}}
+            {{--        return temp;--}}
+
+            {{--    });--}}
+
+            {{--}--}}
+
             if (btnFilterDataExportSAS) {
                 btnFilterDataExportSAS.addEventListener('click', function () {
                     btnFilterDataExportSAS.disabled = true;
                     var PARAMS = {
                         search : "",
+                        items : inputDenuncias.value,
+                        items_ddse : inputDDSE.value,
                         start_date : "{{ $start_date }}",
                         end_date : "{{ $end_date }}",
-                        items : null,
-                        items_ddse : null,
+                        unity_id: {{ $unity_id }},
                         fileoutput : "fmt_lista_denuncias_sas_sm.xlsx",
                         indice : 4,
                         _token : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     };
 
                     var temp=document.createElement("form");
-                    temp.action='/exportDenunciaSASGeneral02';
+                    temp.action='/sabanaDeDatosExcelUnity2';
                     temp.method="POST";
                     temp.target="_blank";
                     temp.style.display="none";
@@ -426,12 +467,12 @@
                     }
                     document.body.appendChild(temp);
                     temp.submit();
+                    btnFilterDataExportSAS.disabled = false;
                     return temp;
 
                 });
 
             }
-
 
 
 

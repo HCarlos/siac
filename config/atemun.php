@@ -41,6 +41,7 @@ return [
         'fmt_graficos_diarios_19nov25_1' => 'fmt_graficos_diarios_19nov25_1.xlsx',
         'fmt_graficos_rangos_1'          => 'fmt_graficos_rangos_1.xlsx',
         'fmt_datos_abiertos_sm_01'       => 'fmt_datos_abiertos_sm_01.xlsx',
+        'sabana_de_datos_unidad'         => 'sabana_de_datos_unidad.xlsx',
     ],
 
     'menu_archivos'=>[

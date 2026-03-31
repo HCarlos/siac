@@ -31,7 +31,7 @@ class Alumbrado_Solicitudes_Import_Seeder extends Seeder
                     $servicio_id = (float)$arr[8];
                     $cantidad = (float)$arr[9];
 
-                    dd( $ciudadano_id.', '.$calle_y_num.', '.$centro_localidad_id.', '.$codigo_postal.', '.$latitud.', '.$longitud.', '.$servicio_id.', '.$cantidad );
+//                    dd( $ciudadano_id.', '.$calle_y_num.', '.$centro_localidad_id.', '.$codigo_postal.', '.$latitud.', '.$longitud.', '.$servicio_id.', '.$cantidad );
 
 
                 }

@@ -528,6 +528,8 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|test_admin|USER_OPE
 
     Route::post('sabanaDeDatosExcel1', 'ExcelAutollenable\DatosAbiertos\SabanaDeDatos1Controller@SabanaDeDatos')->name('sabanaDeDatosExcel1');
 
+    Route::post('sabanaDeDatosExcelUnity2', 'ExcelAutollenable\DatosAbiertos\SabanaDeDatosUnityController@SabanaDeDatosUnity')->name('sabanaDeDatosExcelUnity2');
+
     Route::get('cerrarDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@closeItem')->name('cerrarDenunciaAmbito');
     Route::get('firmarDenunciaAmbito/{id}', 'Denuncia\DenunciaAmbitoController@signItem')->name('firmarDenunciaAmbito');
 
