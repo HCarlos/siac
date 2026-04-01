@@ -69,9 +69,29 @@ class Denuncia extends Model
             return $query
                 ->where('status_denuncia', 1)
                 ->whereRaw("searchtextdenuncia @@ to_tsquery('spanish', ?)", [$tsString])
-                ->orderByRaw("calle, num_ext, num_int, colonia, descripcion, referencia ASC");
+                ->orderByRaw("calle ASC, num_ext ASC, num_int ASC, colonia ASC, descripcion ASC, referencia ASC");
     }
-//->orderByRaw("ts_rank(searchtextdenuncia, to_tsquery('spanish', ?)) DESC", [$search]);
+
+
+//->whereRaw("searchtextdenuncia @@ to_tsquery('spanish', ?)", [$tsString])
+
+
+//    public function scopeSearch($query, $search){
+//        if (empty($search)) return $query;
+//
+//        $F = new FuncionesController();
+//        $filters = mb_strtolower(trim($search), 'UTF-8');
+//        $filters = $F->str_sanitizer($filters);
+//
+//        if ($filters === '') return $query;
+//
+//        return $query
+//            ->where('status_denuncia', 1)
+//            ->whereRaw("searchtextdenuncia @@ plainto_tsquery('spanish', ?)", [$filters])
+//            ->orderByRaw('calle ASC, num_ext ASC, num_int ASC, colonia ASC, , descripcion ASC , referencia ASC');
+//    }
+
+
 
     public function scopeFilterBy($query, $filters){
 //        dd($filters);

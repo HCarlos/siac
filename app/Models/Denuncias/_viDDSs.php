@@ -10,6 +10,7 @@ use App\Filters\Denuncia\DenunciaAmbitoFilter;
 use App\Filters\Denuncia\DenunciaFilter;
 use App\Filters\Denuncia\GetDenunciasAmbitoItemCustomFilter;
 use App\Filters\Denuncia\GetDenunciasItemCustomFilter;
+use App\Http\Controllers\Funciones\FuncionesController;
 use App\Models\Catalogos\Dependencia;
 use App\Models\Catalogos\Domicilios\Ubicacion;
 use App\Models\Catalogos\Estatu;
@@ -37,6 +38,42 @@ class _viDDSs extends Model{
         'cerrado','origen_id','ciudadano_id','ultimo_estatus','firmado','latitud','longitud','search_google',
         'clave_identificadora','estatus_general','ambito','ambito_sas','ue_id','centro_localidad_id','calle_y_numero_searchtext',
     ];
+
+//    public function scopeSearch($query, $search){
+//        if (!$search || $search == "" || $search == null) return $query;
+//
+//        $search = strtolower($search);
+//        $filters  = $search;
+//        $F        = new FuncionesController();
+//        $tsString = $F->string_to_tsQuery( strtolower($filters),' & ');
+//
+////        ->whereRaw("searchtextdenuncia @@ to_tsquery('spanish', ?)", [$tsString])
+////        ->orderByRaw("calle, num_ext, num_int, colonia ASC");
+//
+//        return $query
+//            ->where('status_denuncia', 1)
+//            ->whereRaw("searchtextdenuncia @@ plainto_tsquery('spanish', ?)", [$filters])
+//            ->orderByRaw('calle, num_ext, num_int, colonia ASC, id DESC');
+//
+//
+//    }
+
+    public function scopeSearch($query, $search){
+        if (empty($search)) return $query;
+
+        $F = new FuncionesController();
+        $filters = mb_strtolower(trim($search), 'UTF-8');
+        $filters = $F->str_sanitizer($filters);
+
+        if ($filters === '') return $query;
+
+        return $query
+            ->where('status_denuncia', 1)
+            ->whereRaw("searchtextdenuncia @@ to_tsquery('spanish', ?)", [$filters])
+            ->orderByRaw('calle ASC, num_ext ASC, num_int ASC, colonia ASC, id DESC');
+
+    }
+
 
     public function scopeFilterBy($query, $filters){
         return (new DenunciaFilter())->applyTo($query, $filters);

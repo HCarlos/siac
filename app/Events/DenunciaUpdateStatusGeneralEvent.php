@@ -64,14 +64,14 @@ class DenunciaUpdateStatusGeneralEvent  implements ShouldBroadcast{
 
         $triger_status = "CREAR";
         if ($this->trigger_type===0){
-            $this->msg    =  strtoupper(Auth::user()->FullName)." ha CREADO una nueva denuncia: ".$this->denuncia_id."  ".$fecha." con Estatus General Nuevo";
+            $this->msg    =  strtoupper(Auth::user()->FullName ?? 'Admin')." ha CREADO una nueva denuncia: ".$this->denuncia_id."  ".$fecha." con Estatus General Nuevo";
             $this->icon   = "success";
         }else if ($this->trigger_type===1){
-            $this->msg    = strtoupper(Auth::user()->FullName)." ha MODIFICADO la denuncia: ".$this->denuncia_id."  ".$fecha." con Estatus General Modificado";
+            $this->msg    = strtoupper(Auth::user()->FullName ?? 'Admin')." ha MODIFICADO la denuncia: ".$this->denuncia_id."  ".$fecha." con Estatus General Modificado";
             $this->icon   = "info";
             $triger_status = "MODIFICAR";
         }else if ($this->trigger_type===2){
-            $this->msg    = strtoupper(Auth::user()->FullName)." ha ELIMINADO la denuncia: ".$this->denuncia_id."  ".$fecha;
+            $this->msg    = strtoupper(Auth::user()->FullName ?? 'Admin')." ha ELIMINADO la denuncia: ".$this->denuncia_id."  ".$fecha;
             $this->icon   = "warning";
             $triger_status = "ELIMINAR";
         }else{
@@ -85,7 +85,7 @@ class DenunciaUpdateStatusGeneralEvent  implements ShouldBroadcast{
         } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
         } else {
-            $ip = $_SERVER['REMOTE_ADDR'];
+            $ip = $_SERVER['REMOTE_ADDR'] ?? config('atemun.url');
         }
 
         Log::alert("Evento: ".$this->msg);
@@ -99,7 +99,7 @@ class DenunciaUpdateStatusGeneralEvent  implements ShouldBroadcast{
             'icon'           => $this->icon,
             'status'         => $this->status,
             'ip'             => FuncionesController::getIp(),
-            'host'           => $ip,
+            'host'           => $ip ?? 'migrations',
             'fecha'          => now(),
             'user_id'        => $this->user_id,
         ]);

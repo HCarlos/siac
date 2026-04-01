@@ -82,7 +82,7 @@ class VistaDenunciaClass{
                     $den->due_id = $due_id;
                     $den->sue_id = $sue_id;
                     $den->fecha_ultimo_estatus = $fecha_ultimo_estatus;
-                    $den->modificadopor_id = Auth::user()->id;
+                    $den->modificadopor_id = Auth::user()->id ?? 1;
                     $den->save();
                 }
 

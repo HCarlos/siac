@@ -51,39 +51,90 @@ class FuncionesController extends Controller
         abort(404);
     }
 
-    public function str_sanitizer($filters){
-//        $arr = array(' la ',' las ',' lo ',' los ',' de ',' del ',' fracc ',' col ',' col. ',' r/a ',' ria ',' ria. ',' conj ',' conj. ',' priv ',' priv. ',' av ',' av. ',' ave ',' ave. ',' carr ',' carr. ',' colonia ',' pob ',' pob. ',' cda ',' cda. ', 'méxico', 'tab.', 'tab,', 'villa ');
-        $arr = array('c ',' la ',' lo ',' fracc ',' col ',' col. ',' r/a ',' ria ',' ria. ',' conj ',' conj. ',' priv ',' priv. ',' av ',' av. ',' ave ',' ave. ',' carr ',' carr. ',' colonia ',' pob ',' pob. ',' cda ',' cda. ', 'méxico', 'tab.', 'tab,', 'villa ');
-        foreach($arr as $fil){
+//    public function str_sanitizer($filters){
+//        $arr = array('c ',' la ',' lo ',' fracc ',' col ',' col. ',' r/a ',' ria ',' ria. ',' conj ',' conj. ',' priv ',' priv. ',' av ',' av. ',' ave ',' ave. ',' carr ',' carr. ',' colonia ',' pob ',' pob. ',' cda ',' cda. ', 'méxico', 'tab.', 'tab,', 'villa ');
+//        foreach($arr as $fil){
+//            $filters = str_replace($fil, ' ', $filters);
+//        }
+//        return $filters;
+//    }
+
+
+    public function str_sanitizer($filters)
+    {
+        $filters = mb_strtolower($filters, 'UTF-8');
+
+        $arr = [
+            'c ', ' la ', ' lo ', ' fracc ', ' col ', ' col. ', ' r/a ', ' ria ', ' ria. ',
+            ' conj ', ' conj. ', ' priv ', ' priv. ', ' av ', ' av. ', ' ave ', ' ave. ',
+            ' carr ', ' carr. ', ' colonia ', ' pob ', ' pob. ', ' cda ', ' cda. ',
+            'méxico', 'tab.', 'tab,', 'villa '
+        ];
+
+        foreach ($arr as $fil) {
             $filters = str_replace($fil, ' ', $filters);
         }
-        return $filters;
+
+        // Elimina caracteres reservados / problemáticos para tsquery
+        $filters = preg_replace('/[&|!:()<>\'"]+/u', ' ', $filters);
+
+        // Deja solo letras, números y espacios
+        $filters = preg_replace('/[^\pL\pN\s]+/u', ' ', $filters);
+
+        // Compacta espacios múltiples
+        $filters = preg_replace('/\s+/u', ' ', $filters);
+
+        return trim($filters);
     }
 
-    public function string_to_tsQuery(String $string, String $type){
+//    public function string_to_tsQuery(String $string, String $type){
+//
+//        $string = str_replace(', ',' ', $string);
+//        $string = str_replace(',',' ', $string);
+//
+//        $str = explode(' ',$string);
+//        //dd($str);
+//        $string = '';
+//        $i = 1;
+//        foreach ($str as $value){
+//            if ( strlen($value) >= 4 ){
+//                $vector = '';
+//                if ($string!=''){
+//                    $vector = $type;
+//                }
+//                if ( ! str_contains($string,$vector.$value) ){
+////                if ( strpos($string, $vector.$value) == false)  {
+//                    $string = $string.$vector.$value;
+//                }
+//            }
+//            ++$i;
+//        }
+//        return $string;
+//    }
 
-        $string = str_replace(', ',' ', $string);
-        $string = str_replace(',',' ', $string);
 
-        $str = explode(' ',$string);
-        //dd($str);
-        $string = '';
-        $i = 1;
-        foreach ($str as $value){
-            if ( strlen($value) >= 4 ){
-                $vector = '';
-                if ($string!=''){
-                    $vector = $type;
-                }
-                if ( ! str_contains($string,$vector.$value) ){
-//                if ( strpos($string, $vector.$value) == false)  {
-                    $string = $string.$vector.$value;
-                }
-            }
-            ++$i;
+    public function string_to_tsQuery(string $string, string $type = ' & ')
+    {
+        $string = trim($string);
+
+        if ($string === '') {
+            return '';
         }
-        return $string;
+
+        $string = str_replace([', ', ','], ' ', $string);
+        $string = preg_replace('/\s+/u', ' ', $string);
+
+        $terms = preg_split('/\s+/u', $string, -1, PREG_SPLIT_NO_EMPTY);
+
+        $terms = array_filter($terms, function ($value) {
+            return mb_strlen($value, 'UTF-8') >= 3;
+        });
+
+        $terms = array_unique($terms);
+
+        return implode($type, $terms);
     }
+
 
     // get IP, Host or IdEmp
     public function getIHE($type=0){
