@@ -90,6 +90,8 @@ class SabanaDeDatosUnityController extends Controller{
     public function SabanaDeDatosUnity(Request $request){
         ini_set('max_execution_time', 180000);
 
+//        dd( $request->all() );
+
         $start_date = $request->get('start_date');
         $end_date = $request->get('end_date');
         $this->unity_id = (int) $request->get('unity_id');
@@ -129,6 +131,8 @@ class SabanaDeDatosUnityController extends Controller{
             }else{
                 return false;
             }
+
+//            dd($Items);
 
             $this->unidad = $Items[0]->dependencia ?? 'No se encontro';
             $abreviatura = strtolower($Items[0]->abreviatura) ?? 'ninguno';
@@ -528,66 +532,69 @@ class SabanaDeDatosUnityController extends Controller{
             return [];
         }
 
-        if (is_array($valor)) {
-            return array_values(array_unique(array_filter(array_map('trim', $valor), function ($item) {
-                return $item !== '';
-            })));
-        }
+        $items = is_array($valor) ? $valor : explode(',', (string) $valor);
 
-        if (is_string($valor)) {
-            return array_values(array_unique(array_filter(array_map('trim', explode(',', $valor)), function ($item) {
-                return $item !== '';
-            })));
-        }
+        $items = array_map(function ($item) {
+            $item = trim((string) $item);
+            return is_numeric($item) ? (int) $item : null;
+        }, $items);
 
-        return [];
+        $items = array_filter($items, function ($item) {
+            return !is_null($item) && $item > 0;
+        });
+
+        return array_values(array_unique($items));
     }
-
 
     function obtenerSabanaDeDatosSoloIDs(){
 
+        if ($this->servicio_id === 0 && $this->delegacion_id === 0 && $this->colonia_id === 0){
+            $this->denuncias_ids = DB::table('_videnuncias')
+                ->where('ambito_dependencia', 2)
+                ->where('dependencia_id', $this->unity_id)
+                ->where('fecha_ingreso', '>=', $this->start_date)
+                ->where('fecha_ingreso', '<=', $this->end_date)
+
+                ->when((int) $this->servicio_id > 0, function ($query) {
+                    $query->where('servicio_id', $this->servicio_id);
+                })
+
+                ->when((int) $this->delegacion_id > 0, function ($query) {
+                    $query->where('delegacion_id', $this->delegacion_id);
+                })
+
+                ->when((int) $this->colonia_id > 0, function ($query) {
+                    $query->where('colonia_id', $this->colonia_id);
+                })
+
+                ->orderByDesc('id')
+                ->pluck('id')
+                ->toArray();
+
+        }else{
+
+            $registros = $this->normalizarIds($this->registros);
+            $ddse = $this->normalizarIds($this->registros_ddse);
+
+            $this->denuncias_ids = _viDepDenServEstatus::query()
+                ->whereIn('ddse_id', $ddse)
+                ->pluck('id')
+                ->unique()
+                ->values()
+                ->toArray();
+
+            $reg = array_values(array_diff($registros, $this->denuncias_ids, $ddse));
+
+            $this->denuncias_ids = array_merge($reg, $this->denuncias_ids);
 
 
-//        switch ($type) {
-//            case 0:
-//                $this->denuncias_ids = DB::table("_videnuncias")
-//                    ->where('ambito_dependencia', 2)
-//                    ->where('dependencia_id', $this->unity_id)
-//                    ->whereBetween('fecha_ingreso',  [$this->start_date,$this->end_date])
-//                    ->orderByDesc('id')
-//                    ->pluck('id')
-//                    ->toArray();
-//
-//                return $this->denuncias_ids;
-//        }
+//            dd($this->denuncias_ids);
+        }
 
-//        dd($this->delegacion_id);
-
-
-
-        $this->denuncias_ids = DB::table('_videnuncias')
-            ->where('ambito_dependencia', 2)
-            ->where('dependencia_id', $this->unity_id)
-            ->whereBetween('fecha_ingreso', [$this->start_date, $this->end_date])
-
-            ->when((int) $this->servicio_id > 0, function ($query) {
-                $query->where('servicio_id', $this->servicio_id);
-            })
-
-            ->when((int) $this->delegacion_id > 0, function ($query) {
-                $query->where('delegacion_id', $this->delegacion_id);
-            })
-
-            ->when((int) $this->colonia_id > 0, function ($query) {
-                $query->where('colonia_id', $this->colonia_id);
-            })
-
-            ->orderByDesc('id')
-            ->pluck('id')
-            ->toArray();
 
         $registros = $this->normalizarIds($this->registros);
         $ddse = $this->normalizarIds($this->registros_ddse);
+
 
         $resultado = [
             'solo_en_denuncias' => array_values(array_diff($this->denuncias_ids, $registros, $ddse)),
@@ -596,8 +603,15 @@ class SabanaDeDatosUnityController extends Controller{
             'en_los_tres' => array_values(array_intersect($this->denuncias_ids, $registros, $ddse)),
         ];
 
+
 //        dd($resultado);
 
+
+//        dd($registros);
+
+//        $this->denuncias_ids = $registros;
+
+//      dd($this->denuncias_ids);
 
         return $this->denuncias_ids;
 
