@@ -10,7 +10,7 @@ use App\Models\Denuncias\Denuncia;
 use App\Models\Denuncias\Denuncia_Dependencia_Servicio;
 use Carbon\Carbon;
 
-define('NOMBRE_EMPRESA',config('atemun.nombre_empresa',''));
+defined('NOMBRE_EMPRESA') || define('NOMBRE_EMPRESA',config('atemun.nombre_empresa',''));
 
 class HojaDenunciaController extends Controller
 {

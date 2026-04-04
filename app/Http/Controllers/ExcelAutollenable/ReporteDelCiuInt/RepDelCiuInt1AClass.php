@@ -67,7 +67,8 @@ class RepDelCiuInt1AClass{
 
     }
 
-    public function getRecibidasCiudadanos(){
+    public function getRecibidasCiudadanos(): Collection
+    {
 
         $start_date_e = $this->start_date;
         $end_date_e = $this->end_date;

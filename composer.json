@@ -51,6 +51,7 @@
         "ext-zip": "*"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.8",
         "nunomaduro/collision": "^4.3.0",
         "phpunit/phpunit": "^9.6.21"
     },

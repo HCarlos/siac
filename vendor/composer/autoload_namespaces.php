@@ -9,4 +9,5 @@ return array(
     'RapidApi\\' => array($vendorDir . '/rapidapi/rapidapi-connect/src'),
     'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
     'Evenement' => array($vendorDir . '/evenement/evenement/src'),
+    'Barryvdh' => array($vendorDir . '/barryvdh/reflection-docblock/src'),
 );

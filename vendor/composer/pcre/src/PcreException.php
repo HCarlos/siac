@@ -35,12 +35,17 @@ class PcreException extends \RuntimeException
      */
     private static function pcreLastErrorMessage($code)
     {
-        if (function_exists('preg_last_error_msg')) {
+        if (PHP_VERSION_ID >= 80000) {
             return preg_last_error_msg();
         }
 
+        // older php versions did not set the code properly in all cases
+        if (PHP_VERSION_ID < 70201 && $code === 0) {
+            return 'UNDEFINED_ERROR';
+        }
+
         $constants = get_defined_constants(true);
-        if (!isset($constants['pcre']) || !is_array($constants['pcre'])) {
+        if (!isset($constants['pcre'])) {
             return 'UNDEFINED_ERROR';
         }
 
