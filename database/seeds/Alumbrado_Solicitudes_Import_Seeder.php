@@ -11,8 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class Alumbrado_Solicitudes_Import_Seeder extends Seeder
-{
+class Alumbrado_Solicitudes_Import_Seeder extends Seeder{
     /**
      * Ejecuta la importación de solicitudes de alumbrado desde un CSV.
      *
