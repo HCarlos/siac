@@ -95,8 +95,8 @@ class Alumbrado_Cerrar_Solicitudes_Import_Seeder extends Seeder{
                     $vid = new VistaDenunciaClass();
                     $vid->vistaDenuncia($item->id);
                     event(new DenunciaUpdateStatusGeneralEvent($item->id, 1, 0));
-
                 }
+
             } catch (\Throwable $e) {
                 if ($this->command) {
                     $this->command->error('Error en la línea ' . $x . ': ' . $e->getMessage());
