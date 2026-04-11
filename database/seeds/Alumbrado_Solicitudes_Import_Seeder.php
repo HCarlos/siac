@@ -80,15 +80,24 @@ class Alumbrado_Solicitudes_Import_Seeder extends Seeder{
                  * ===========================
                  * Se toma la fecha del archivo y se le agrega la hora actual.
                  */
+                // Base de tiempo — cada fecha suma segundos para diferenciar timestamps
                 $now = Carbon::now();
 
-                $fecha_movimiento = !empty($arr[11])
-                    ? Carbon::parse($arr[11])->setTime($now->hour, $now->minute, $now->second)
+                // arr[12] = FECHA DE INGRESO → d-m-Y (+0s)
+                $fecha_ingreso = !empty($arr[12])
+                    ? Carbon::createFromFormat('d-m-Y', trim($arr[12]))->setTime($now->hour, $now->minute, $now->second)
                     : null;
 
-                $fecha_ingreso = !empty($arr[12])
-                    ? Carbon::parse($arr[12])->setTime($now->hour, $now->minute, $now->second)
+                // arr[11] = FECHA DE ATENCION → d-m-Y (+3s)
+                $fecha_movimiento = !empty($arr[11])
+                    ? Carbon::createFromFormat('d-m-Y', trim($arr[11]))->setTime($now->hour, $now->minute, $now->second)->addSeconds(3)
                     : null;
+
+                // arr[13] = FECHA DE CIERRE → d/m/Y (+6s)
+                $fecha_cierre = !empty($arr[13])
+                    ? Carbon::createFromFormat('d/m/Y', trim($arr[13]))->setTime($now->hour, $now->minute, $now->second)->addSeconds(6)
+                    : null;
+
 
                 $fechaEjecucion = $fecha_ingreso
                     ? (clone $fecha_ingreso)->addDays(3)->format('Y-m-d H:i:s')
@@ -254,6 +263,22 @@ class Alumbrado_Solicitudes_Import_Seeder extends Seeder{
                     event(new DenunciaUpdateStatusGeneralEvent($item->id, 1, 0));
 
                 }
+
+                if ($item) {
+                    $item->dependencias()->attach($item->dependencia_id, [
+                        'servicio_id'      => $servicio_id,
+                        'estatu_id'        => 21,
+                        'favorable'        => true,
+                        'fecha_movimiento' => $fecha_cierre,
+                        'creadopor_id'     => 1,
+                        'observaciones'    => 'Fue Cerrada con éxito, en esta fecha (carga masiva).',
+                    ]);
+                    $vid = new VistaDenunciaClass();
+                    $vid->vistaDenuncia($item->id);
+                    event(new DenunciaUpdateStatusGeneralEvent($item->id, 1, 0));
+                }
+
+
             } catch (\Throwable $e) {
                 if ($this->command) {
                     $this->command->error('Error en la línea ' . $x . ': ' . $e->getMessage());

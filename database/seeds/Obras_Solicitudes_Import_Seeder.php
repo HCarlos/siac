@@ -152,8 +152,8 @@ class Obras_Solicitudes_Import_Seeder extends Seeder{
                     ->first();
 
                 if ($latlng) {
-                    $latitud = (float) $latlng->latitud;
-                    $longitud = (float) $latlng->longitud;
+//                    $latitud = (float) $latlng->latitud;
+//                    $longitud = (float) $latlng->longitud;
                 }
 
                 /**
@@ -239,9 +239,9 @@ class Obras_Solicitudes_Import_Seeder extends Seeder{
                  * ===========================
                  */
                 if ($item) {
-                    $now = Carbon::now();
+                    // +3 segundos respecto a fecha_ingreso para diferenciar timestamps
                     $fecha_movimiento = !empty($arr[11])
-                        ? Carbon::createFromFormat('d/m/Y', trim($arr[11]))->setTime($now->hour, $now->minute, $now->second)
+                        ? Carbon::createFromFormat('d/m/Y', trim($arr[11]))->setTime($now->hour, $now->minute, $now->second)->addSeconds(3)
                         : null;
 
                     $item->dependencias()->attach($item->dependencia_id, [
@@ -257,9 +257,9 @@ class Obras_Solicitudes_Import_Seeder extends Seeder{
                     event(new DenunciaUpdateStatusGeneralEvent($item->id, 1, 0));
                 }
                 if ($item) {
-                    $now = Carbon::now();
+                    // +6 segundos respecto a fecha_ingreso para diferenciar timestamps
                     $fecha_movimiento = !empty($arr[11])
-                        ? Carbon::createFromFormat('d/m/Y', trim($arr[11]))->setTime($now->hour, $now->minute, $now->second)
+                        ? Carbon::createFromFormat('d/m/Y', trim($arr[11]))->setTime($now->hour, $now->minute, $now->second)->addSeconds(6)
                         : null;
 
                     $item->dependencias()->attach($item->dependencia_id, [
