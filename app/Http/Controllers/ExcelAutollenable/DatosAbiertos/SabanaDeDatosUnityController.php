@@ -182,7 +182,9 @@ class SabanaDeDatosUnityController extends Controller{
                         ->setCellValue('F' . $C, $item["ultimo_estatus"][4]['Total'] ?? 0)
                         ->setCellValue('G' . $C, $item["ultimo_estatus"][5]['Total'] ?? 0)
                         ->setCellValue('H' . $C, $item["ultimo_estatus"][6]['Total'] ?? 0)
-                        ->setCellValue('I' . $C, $item["ultimo_estatus"][7]['Total'] ?? 0);
+                        ->setCellValue('I' . $C, $item["ultimo_estatus"][7]['Total'] ?? 0)
+                        ->setCellValue('J' . $C, $item["ultimo_estatus"][1]['TotalCantidad'] ?? '')
+                        ->setCellValue('K' . $C, $item["ultimo_estatus"][1]['Medida'] ?? '');
 
                     if ($item["is_visible_nombre_corto_ss"]){
                         $sh
@@ -227,7 +229,9 @@ class SabanaDeDatosUnityController extends Controller{
                         ->setCellValue('C' . $C, $item["ultimo_estatus_compacto"][1]['Total'] ?? 0)
                         ->setCellValue('D' . $C, $item["ultimo_estatus_compacto"][2]['Total'] ?? 0)
                         ->setCellValue('E' . $C, $item["ultimo_estatus_compacto"][3]['Total'] ?? 0)
-                        ->setCellValue('F' . $C, $item["ultimo_estatus_compacto"][4]['Total'] ?? 0);
+                        ->setCellValue('F' . $C, $item["ultimo_estatus_compacto"][4]['Total'] ?? 0)
+                        ->setCellValue('G' . $C, $item["ultimo_estatus_compacto"][0]['TotalCantidad'] ?? 0)
+                        ->setCellValue('H' . $C, $item["ultimo_estatus_compacto"][0]['Medida'] ?? 0);
 
                     if ($item["is_visible_nombre_corto_ss"]){
                         $sh
@@ -286,22 +290,22 @@ class SabanaDeDatosUnityController extends Controller{
 
         $arrItemsBySue = [];
         $estatusTemplate = [
-            16 => ["ue_id" => 16, "Estatus"=> "RECIBIDA",            "Total"=> 0],
-            17 => ["ue_id" => 17, "Estatus"=> "ATENDIDA",            "Total"=> 0],
-            18 => ["ue_id" => 18, "Estatus"=> "OBSERVADA",           "Total"=> 0],
-            19 => ["ue_id" => 19, "Estatus"=> "EN PROCESO",          "Total"=> 0],
-            20 => ["ue_id" => 20, "Estatus"=> "RECHAZADA",           "Total"=> 0],
-            21 => ["ue_id" => 21, "Estatus"=> "CERRADA",             "Total"=> 0],
-            22 => ["ue_id" => 22, "Estatus"=> "CERRADO POR RECHAZO", "Total"=> 0],
-            99 => ["ue_id" => 99, "Estatus"=> "TOTAL",               "Total"=> 0],
+            16 => ["ue_id" => 16, "Estatus"=> "RECIBIDA",            "Total"=> 0, "TotalCantidad"=> 0, "Medida"=> ''],
+            17 => ["ue_id" => 17, "Estatus"=> "ATENDIDA",            "Total"=> 0, "TotalCantidad"=> 0, "Medida"=> ''],
+            18 => ["ue_id" => 18, "Estatus"=> "OBSERVADA",           "Total"=> 0, "TotalCantidad"=> 0, "Medida"=> ''],
+            19 => ["ue_id" => 19, "Estatus"=> "EN PROCESO",          "Total"=> 0, "TotalCantidad"=> 0, "Medida"=> ''],
+            20 => ["ue_id" => 20, "Estatus"=> "RECHAZADA",           "Total"=> 0, "TotalCantidad"=> 0, "Medida"=> ''],
+            21 => ["ue_id" => 21, "Estatus"=> "CERRADA",             "Total"=> 0, "TotalCantidad"=> 0, "Medida"=> ''],
+            22 => ["ue_id" => 22, "Estatus"=> "CERRADO POR RECHAZO", "Total"=> 0, "TotalCantidad"=> 0, "Medida"=> ''],
+            99 => ["ue_id" => 99, "Estatus"=> "TOTAL",               "Total"=> 0, "TotalCantidad"=> 0, "Medida"=> ''],
         ];
 
         $estatusCompactTemplate = [
-            0  => ["Estatus"=> "ATENDIDA",   "Total"=> 0],
-            1  => ["Estatus"=> "OBSERVADA",  "Total"=> 0],
-            2  => ["Estatus"=> "PENDIENTES", "Total"=> 0],
-            3  => ["Estatus"=> "RECHAZADO",  "Total"=> 0],
-            99 => ["Estatus"=> "TOTAL",      "Total"=> 0],
+            0  => ["Estatus"=> "ATENDIDA",   "Total"=> 0, "TotalCantidad"=> 0, "Medida"=> ''],
+            1  => ["Estatus"=> "OBSERVADA",  "Total"=> 0, "TotalCantidad"=> 0, "Medida"=> ''],
+            2  => ["Estatus"=> "PENDIENTES", "Total"=> 0, "TotalCantidad"=> 0, "Medida"=> ''],
+            3  => ["Estatus"=> "RECHAZADO",  "Total"=> 0, "TotalCantidad"=> 0, "Medida"=> ''],
+            99 => ["Estatus"=> "TOTAL",      "Total"=> 0, "TotalCantidad"=> 0, "Medida"=> ''],
         ];
 
 // Resumen compacto GLOBAL
@@ -362,28 +366,27 @@ class SabanaDeDatosUnityController extends Controller{
 //            $dias_transcurridos_desde_ultimo_estatus = Carbon::parse($item->fecha_ultimo_estatus)->diffInDays();
 
 
-            $dias_transcurridos_atencion = Carbon::parse($item->fecha_ultimo_estatus)
-                ->startOfDay()
-                ->diffInDays(Carbon::parse($item->fecha_ingreso)->startOfDay());
+//            $dias_transcurridos_atencion = Carbon::parse($item->fecha_ultimo_estatus)
+//                ->startOfDay()
+//                ->diffInDays(Carbon::parse($item->fecha_ingreso)->startOfDay());
+//
+//            $dias_transcurridos_desde_ultimo_estatus = Carbon::parse($item->fecha_ultimo_estatus)
+//                ->startOfDay() // Pone la fecha a las 00:00:00
+//                ->diffInDays(Carbon::now()->startOfDay()); // Hoy a las 00:00:00
+//
+//            $dias_transcurridos_desde_inicio = Carbon::parse($item->fecha_ingreso)
+//                ->startOfDay()
+//                ->diffInDays(Carbon::now()->startOfDay());
 
-            $dias_transcurridos_desde_ultimo_estatus = Carbon::parse($item->fecha_ultimo_estatus)
-                ->startOfDay() // Pone la fecha a las 00:00:00
-                ->diffInDays(Carbon::now()->startOfDay()); // Hoy a las 00:00:00
-
-            $dias_transcurridos_desde_inicio = Carbon::parse($item->fecha_ingreso)
-                ->startOfDay()
-                ->diffInDays(Carbon::now()->startOfDay());
-
-            $dds = Denuncia_Dependencia_Servicio::query()
-                ->where('denuncia_id', $item->id)
-            ->where('dependencia_id', $item->due_id)
-            ->where('servicio_id', $item->sue_id)
-            ->where('estatu_id', $item->ue_id)
-                ->orderByDesc('id')
-            ->first();
+//            $dds = Denuncia_Dependencia_Servicio::query()
+//                ->where('denuncia_id', $item->id)
+//            ->where('dependencia_id', $item->due_id)
+//            ->where('servicio_id', $item->sue_id)
+//            ->where('estatu_id', $item->ue_id)
+//                ->orderByDesc('id')
+//            ->first();
 
             $sh
-
                 ->setCellValue('A' . $C, $item->id ?? 0)
                 ->setCellValue('B' . $C, trim($item->servicio ?? ''))
                 ->setCellValue('C' . $C, $fechaIngreso ?? '')
@@ -447,6 +450,8 @@ class SabanaDeDatosUnityController extends Controller{
                     "ultimo_estatus" => $estatusTemplate, // OJO: queda indexado por ue_id
                     "ultimo_estatus_compacto" => $estatusCompactTemplate,
                     "is_visible_nombre_corto_ss" => $item->is_visible_nombre_corto_ss ?? false,
+                    "cantidad" => (int) ($item->cantidad ?? 0),
+                    "medida" => (string) ($item->medida ?? ''),
                 ];
             }
 
@@ -454,6 +459,8 @@ class SabanaDeDatosUnityController extends Controller{
             // 1) Incremento normal (por ue_id)
             if (isset($arrItemsBySue[$sueId]["ultimo_estatus"][$ueId])) {
                 $arrItemsBySue[$sueId]["ultimo_estatus"][$ueId]["Total"] += 1;
+                $arrItemsBySue[$sueId]["ultimo_estatus"][$ueId]["TotalCantidad"] += $item->cantidad;
+                $arrItemsBySue[$sueId]["ultimo_estatus"][$ueId]["Medida"] = $item->medida;
             } else {
                 $arrItemsBySue[$sueId]["ultimo_estatus"][$ueId] = [
                     "ue_id" => $ueId,
@@ -476,6 +483,8 @@ class SabanaDeDatosUnityController extends Controller{
                 // Por servicio (sue_id)
                 $arrItemsBySue[$sueId]["ultimo_estatus_compacto"][$compactKey]["Total"] += 1;
                 $arrItemsBySue[$sueId]["ultimo_estatus_compacto"][99]["Total"] += 1;
+                $arrItemsBySue[$sueId]["ultimo_estatus_compacto"][$compactKey]["TotalCantidad"] += $item->cantidad;
+                $arrItemsBySue[$sueId]["ultimo_estatus_compacto"][$compactKey]["Medida"] = $item->medida;
 
                 // Global
                 $arrCompactGlobal[$compactKey]["Total"] += 1;

@@ -32,29 +32,60 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
         return true;
     }
 
-    public function rules()
+
+    public function rules(){
+        return [
+            'id'              => ['nullable', 'integer'],
+            'denuncia_id'     => ['required', 'integer'],
+            'dependencia_id'  => ['required', 'integer'],
+            'servicio_id'     => ['required', 'integer'],
+            'estatus_id'      => ['required'],
+            'observaciones'   => ['required', 'min:10'],
+            'fecha_movimiento' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) {
+                    $validacion = Denuncia_Dependencia_Servicio::validarOrdenCronologicoFechaMovimiento(
+                        $this->input('id'),
+                        $value,
+                        $this->input('denuncia_id'),
+                        $this->input('dependencia_id'),
+                        $this->input('servicio_id'),
+                        true
+                    );
+
+                    if (!$validacion['ok']) {
+                        $fail($validacion['message']);
+                    }
+                },
+            ],
+        ];
+    }
+
+    public function messages()
     {
         return [
-            'dependencia_id' => ['required'],
-            'servicio_id'    => ['required'],
-            'estatus_id'     => ['required'],
-            'observaciones'  => ['required','min:10'],
+            'dependencia_id.required'   => 'La :attribute es obligatoria.',
+            'servicio_id.required'      => 'El :attribute es obligatorio.',
+            'estatus_id.required'       => 'El :attribute es obligatorio.',
+            'observaciones.required'    => 'Las :attribute son obligatorias.',
+            'observaciones.min'         => 'Las :attribute requieren por lo menos 10 caracteres.',
+            'fecha_movimiento.required' => 'La :attribute es obligatoria.',
+            'fecha_movimiento.date'     => 'La :attribute no tiene un formato válido.',
         ];
     }
 
-    public function messages(){
+    public function attributes()
+    {
         return [
-
-            'observaciones.required'      => 'Se requieren los :attribute',
-            'observaciones.min'           => 'Los :attribute requieren por lo menos 10 caracteres',
+            'dependencia_id'   => 'dependencia',
+            'servicio_id'      => 'servicio',
+            'estatus_id'       => 'estatus',
+            'observaciones'    => 'observaciones',
+            'fecha_movimiento' => 'fecha del movimiento',
         ];
     }
 
-    public function attributes(){
-        return [
-            'observaciones' => 'Argumentos',
-        ];
-    }
 
     public function manage(){
         try {
@@ -75,7 +106,8 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
             }else{
                 $item = Denuncia_Dependencia_Servicio::findOrFail($this->id);
                 $user = User::find(Auth::user()->id);
-                $fm = $user->checkPermissionTo('test_admin') ? $item->fecha_movimiento : now();
+                //$fm = $user->checkPermissionTo('test_admin') ? $item->fecha_movimiento : now();
+                $fm = $this->fecha_movimiento ?? $item->fecha_movimiento;
 
 //                dd($fm);
 
@@ -113,7 +145,7 @@ class DenunciaDependenciaServicioAmbitoRequest extends FormRequest{
             [
                 'servicio_id'      => $this->servicio_id,
                 'estatu_id'        => $this->estatus_id,
-                'fecha_movimiento' => now(),
+                'fecha_movimiento' => $this->fecha_movimiento ?? now(),
                 'observaciones'    => $this->observaciones,
                 'favorable'        => !( (int)$this->favorable == 0 ),
                 'fue_leida'        => false,

@@ -47,6 +47,19 @@
 
                 </div>
             </div>
+            <div class="form-group row mb-1">
+                <label for = "fecha_movimiento" class="col-md-3 col-form-label">Fecha del Movimiento </label>
+                <div class="col-md-5">
+                    <input
+                        type="datetime-local"
+                        id="fecha_movimiento"
+                        name="fecha_movimiento"
+                        value="{{ now()->format('Y-m-d\TH:i:s') }}"
+                        class="form-control w-100-percent"
+                    >
+                </div>
+            </div>
+
 
             <div class="form-group row mb-1 hide requiereImagen" id="requiereImagen">
             </div>
