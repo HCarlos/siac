@@ -4,6 +4,6 @@
     @slot('start_date',$start_date ?? '')
     @slot('end_date',$end_date ?? '')
     @slot('rango_de_consulta',$rango_de_consulta ?? '')
-    @include('dashboard.static.__static.__dashboard_static_general')
+    @include('dashboard.static.__static.__dashboard_sm_general')
 @endsection
 

@@ -26,11 +26,11 @@ class ReporteDiarioClass{
             ['sue_id' => 508, 'Servicio' => 'DESAZOLVE DE DRENAJE', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => []],
             ['sue_id' => 476, 'Servicio' => 'FUGA DE AGUA', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => []],
             ['sue_id' => 503, 'Servicio' => 'RECOLECCIÓN DE RESIDUOS SÓLIDOS', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => []],
-            ['sue_id' => 479, 'Servicio' => 'ALCANTARILLA', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => []],
+            ['sue_id' => 480, 'Servicio' => 'REJILLAS', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => []],
             ['sue_id' => 466, 'Servicio' => 'LUMINARIAS', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => []],
         ]);
 
-        $this->ServiciosPrincipales = [483, 508, 476, 503, 479, 466];
+        $this->ServiciosPrincipales = [483, 508, 476, 503, 480, 466];
 
         // Asegurar que estas propiedades sean colecciones
         $this->ArrSolicitudesIRValue = collect([508833, 519442]); // Inicializar con tus valores reales

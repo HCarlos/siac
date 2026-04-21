@@ -58,10 +58,10 @@ Route::group(['middleware' => 'auth'], static function () {
     Route::match(['get','put','post'],'dashboard-statistics-two', 'Dashboard\DashboardStaticTwoController@index')->name('dashboard-statistics-two');
 
     // Dashboard General
-    Route::match(['get','put','post'],'dashboard-statistics-general', 'Dashboard\DashboardStaticGeneralController@index')->name('dashboard-statistics-general');
+    Route::match(['get','put','post'],'dashboard-statistics-general', 'Dashboard\DashboardSMGeneralController@index')->name('dashboard-statistics-general');
 
     // Dashboard Servicios Principales
-    Route::match(['get','put','post'],'dashboard-statistics-servicios-principales', 'Dashboard\ServiciosMonitoreadosController@index')->name('dashboard-statistics-servicios-principales');
+    Route::match(['get','put','post'],'dashboard-statistics-servicios-principales', 'Dashboard\SMInicioController@index')->name('dashboard-statistics-servicios-principales');
     Route::match(['get','put','post'],'dssp-reportes', 'Dashboard\SMReportesController@index')->name('dssp-reportes');
 
     // Dashboard Servicios por Unidad

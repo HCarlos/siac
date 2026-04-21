@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class ServiciosMonitoreadosController extends Controller{
+class SMInicioController extends Controller{
 
     public function __construct(){
         ini_set('max_execution_time', 300);
@@ -86,7 +86,7 @@ class ServiciosMonitoreadosController extends Controller{
                 (object)["ue_id" => 22, "Estatus"=> "CERRADO POR RECHAZO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
             ];
 
-            $ServiciosPrincipales = [483,508,476,503,479,466,567,568];
+            $ServiciosPrincipales = [483,508,476,503,480,466,567,568,570];
 
             $srv2 = static::getUltimoEstatus($start_date,$end_date,$ServiciosPrincipales);
 
@@ -207,10 +207,11 @@ class ServiciosMonitoreadosController extends Controller{
                 (object)["sue_id" => 508, "Servicio"=> "DESAZOLVE DE DRENAJE", "Total"=> 0,"Porcentaje" => 0],
                 (object)["sue_id" => 476, "Servicio"=> "FUGA DE AGUA POTABLE", "Total"=> 0,"Porcentaje" => 0],
                 (object)["sue_id" => 503, "Servicio"=> "RECOLECCIÓN DE RESIDUOS SÓLIDOS", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 479, "Servicio"=> "REPARACIÓN DE ALCANTARILLA", "Total"=> 0,"Porcentaje" => 0],
+                (object)["sue_id" => 480, "Servicio"=> "REPARACIÓN DE REJILLAS", "Total"=> 0,"Porcentaje" => 0],
                 (object)["sue_id" => 466, "Servicio"=> "REPARACIÓN DE LUMINARIAS", "Total"=> 0,"Porcentaje" => 0],
                 (object)["sue_id" => 567, "Servicio"=> "RESANE CON ASFALTO", "Total"=> 0,"Porcentaje" => 0],
                 (object)["sue_id" => 568, "Servicio"=> "RESANE CON CONCRETO HIDRÁULICO", "Total"=> 0,"Porcentaje" => 0],
+                (object)["sue_id" => 570, "Servicio"=> "RESANE POR CONTRATO", "Total"=> 0,"Porcentaje" => 0],
             ];
 
             $totalServ = 0;
@@ -487,7 +488,7 @@ class ServiciosMonitoreadosController extends Controller{
 
         $menu = $f->menuDashBoard(0);
 
-        return view('dashboard.static.dashboard_static_servicios_principales',
+        return view('dashboard.static.dashboard_sm_inicio',
             [
                 'filter' => $filter,
                 'start_date' => $start_date,
@@ -506,7 +507,7 @@ class ServiciosMonitoreadosController extends Controller{
 //        return DB::table("_viddss")
 //            ->select(["ultimo_estatus as name", "ue_id", DB::raw("count(ue_id) as data")])
 //            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-//            ->whereIn('sue_id', [483,508,476,503,479,466,567,568])
+//            ->whereIn('sue_id', [483,508,476,503,480,466,567,568])
 //            ->groupBy(["ultimo_estatus","ue_id"])
 //            ->get();
 
@@ -515,7 +516,7 @@ class ServiciosMonitoreadosController extends Controller{
             ->select(["estatus as name", "estatu_id as ue_id", DB::raw("count(estatu_id) as data")])
             ->where('fecha_ingreso', '>=', $start_date." 00:00:00")
             ->where('fecha_ingreso', '<=', $end_date." 23:59:59")
-            ->whereIn('servicio_id', [483,508,476,503,479,466,567,568])
+            ->whereIn('servicio_id', [483,508,476,503,480,466,567,568,570])
             ->groupBy(["estatus","estatu_id"])
             ->get();
 

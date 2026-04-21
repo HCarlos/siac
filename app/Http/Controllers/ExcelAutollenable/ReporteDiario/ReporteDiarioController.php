@@ -23,6 +23,7 @@ class ReporteDiarioController extends Controller{
         $end_date = $request->get('end_date');
 
         $file_external = "fmt_graficos_diarios.xlsx";
+
         $archivo = LoadTemplateExcel::getFileTemplate($file_external);
         $newFileName = storage_path('app/public/externo/grafico_diario_' . Carbon::parse($end_date)->format('dmY') . '.xlsx');
 

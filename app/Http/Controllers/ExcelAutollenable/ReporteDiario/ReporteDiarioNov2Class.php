@@ -35,13 +35,13 @@ class ReporteDiarioNov2Class{
         $this->vectorServicios = collect([
             ['sue_id' => 476, 'Servicio' => 'FUGA DE AGUA', 'R' => 0, 'A' => 0, "PROM_PEN" => 0, "DIAS_PEN" => 0, "PROM_ATE" => 0, "DIAS_ATE" => 0, "LLAMADAS" => 0, "TOTAL" => 0, "DIAS_PEN_DEL" => 0, "DIAS_ATE_DEL" => 0, "DIAS_PEN_INS" => 0, "DIAS_ATE_INS" => 0],
             ['sue_id' => 508, 'Servicio' => 'DESAZOLVE DE DRENAJE', 'R' => 0, 'A' => 0, "PROM_PEN" => 0, "DIAS_PEN" => 0, "PROM_ATE" => 0, "DIAS_ATE" => 0, "LLAMADAS" => 0, "TOTAL" => 0, "DIAS_PEN_DEL" => 0, "DIAS_ATE_DEL" => 0, "DIAS_PEN_INS" => 0, "DIAS_ATE_INS" => 0],
-            ['sue_id' => 479, 'Servicio' => 'ALCANTARILLA', 'R' => 0, 'A' => 0, "PROM_PEN" => 0, "DIAS_PEN" => 0, "PROM_ATE" => 0, "DIAS_ATE" => 0, "LLAMADAS" => 0, "TOTAL" => 0, "DIAS_PEN_DEL" => 0, "DIAS_ATE_DEL" => 0, "DIAS_PEN_INS" => 0, "DIAS_ATE_INS" => 0],
+            ['sue_id' => 480, 'Servicio' => 'REJILLAS', 'R' => 0, 'A' => 0, "PROM_PEN" => 0, "DIAS_PEN" => 0, "PROM_ATE" => 0, "DIAS_ATE" => 0, "LLAMADAS" => 0, "TOTAL" => 0, "DIAS_PEN_DEL" => 0, "DIAS_ATE_DEL" => 0, "DIAS_PEN_INS" => 0, "DIAS_ATE_INS" => 0],
             ['sue_id' => 483, 'Servicio' => 'BACHEO', 'R' => 0, 'A' => 0, "PROM_PEN" => 0, "DIAS_PEN" => 0, "PROM_ATE" => 0, "DIAS_ATE" => 0, "LLAMADAS" => 0, "TOTAL" => 0, "DIAS_PEN_DEL" => 0, "DIAS_ATE_DEL" => 0, "DIAS_PEN_INS" => 0, "DIAS_ATE_INS" => 0],
             ['sue_id' => 466, 'Servicio' => 'LUMINARIAS', 'R' => 0, 'A' => 0, "PROM_PEN" => 0, "DIAS_PEN" => 0, "PROM_ATE" => 0, "DIAS_ATE" => 0, "LLAMADAS" => 0, "TOTAL" => 0, "DIAS_PEN_DEL" => 0, "DIAS_ATE_DEL" => 0, "DIAS_PEN_INS" => 0, "DIAS_ATE_INS" => 0],
             ['sue_id' => 503, 'Servicio' => 'RECOLECCIÓN DE RESIDUOS SÓLIDOS', 'R' => 0, 'A' => 0, "PROM_PEN" => 0, "DIAS_PEN" => 0, "PROM_ATE" => 0, "DIAS_ATE" => 0, "LLAMADAS" => 0, "TOTAL" => 0, "DIAS_PEN_DEL" => 0, "DIAS_ATE_DEL" => 0, "DIAS_PEN_INS" => 0, "DIAS_ATE_INS" => 0],
         ]);
 
-        $this->ServiciosPrincipales = [476, 508, 479, 483, 466, 503];
+        $this->ServiciosPrincipales = [476, 508, 480, 483, 466, 503];
 
         $this->vectorOrigenes = collect([
             ['origen_id' => 29, 'Origen' => 'ATENCION DIRECTA SAS', 'T' => 0],
