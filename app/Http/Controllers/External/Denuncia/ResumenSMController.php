@@ -88,8 +88,9 @@ class ResumenSMController extends Controller{
         $arrColl = [
             ["sue_id" => 476, "servicio" => "FUGA DE AGUA POTABLE", "atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
             ["sue_id" => 508, "servicio" => "DESAZOLVE DE DRENAJE","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
-            ["sue_id" => 479, "servicio" => "REPARACION DE ALCANTARILLA","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
+            ["sue_id" => 480, "servicio" => "REPARACION DE REJILLAS","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
             ["sue_id" => 568, "servicio" => "RESANE HIDRÁHULICO","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>'Informativo'],
+            ["sue_id" => 570, "servicio" => "RESANE POR CONTRATO","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>'Informativo'],
         ];
 
         $data = $request->validate([
@@ -106,7 +107,7 @@ class ResumenSMController extends Controller{
                 'id','denuncia_id', 'servicio_id', 'estatu_id'
             )
             ->whereIn('denuncia_id', $ids)
-            ->whereIn('servicio_id', [476,508,479,568])
+            ->whereIn('servicio_id', [476,508,480,568,570])
             ->orderByDesc('id')
             ->get();
 
@@ -130,11 +131,14 @@ class ResumenSMController extends Controller{
                 case 508:
                     $indice = 1;
                     break;
-                case 479:
+                case 480:
                     $indice = 2;
                     break;
                 case 568:
                     $indice = 3;
+                    break;
+                case 570:
+                    $indice = 4;
                     break;
             }
 
@@ -170,12 +174,13 @@ class ResumenSMController extends Controller{
         $arrColl = [
             ["sue_id" => 476, "servicio" => "FUGA DE AGUA POTABLE", "atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
             ["sue_id" => 508, "servicio" => "DESAZOLVE DE DRENAJE","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
-            ["sue_id" => 479, "servicio" => "REPARACION DE ALCANTARILLA","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
+            ["sue_id" => 480, "servicio" => "REPARACION DE REJILLAS","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
             ["sue_id" => 483, "servicio" => "BACHEO", "atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
             ["sue_id" => 503, "servicio" => "RECOLECCIÓN DE RESIDUOS SÓLIDOS","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
             ["sue_id" => 466, "servicio" => "REPARACIÓN DE LUMINARIAS","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>''],
             ["sue_id" => 567, "servicio" => "RESANE ASFÁLTICO","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>'Informativo'],
             ["sue_id" => 568, "servicio" => "RESANE HIDRÁHULICO","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>'Informativo'],
+            ["sue_id" => 570, "servicio" => "RESANE POR CONTRATO","atendidas" => 0,"rechazadas" => 0,"pendientes" => 0,"observadas"=>0, "total"=>0, "obs"=>'Informativo'],
         ];
 
         $data = $request->validate([
@@ -192,7 +197,7 @@ class ResumenSMController extends Controller{
                 'id','denuncia_id', 'servicio_id', 'estatu_id'
             )
             ->whereIn('denuncia_id', $ids)
-            ->whereIn('servicio_id', [483,508,476,503,479,466,567,568])
+            ->whereIn('servicio_id', [483,508,476,503,480,466,567,568,570])
             ->orderByDesc('id')
             ->get();
 
@@ -216,7 +221,7 @@ class ResumenSMController extends Controller{
                 case 508:
                     $indice = 1;
                     break;
-                case 479:
+                case 480:
                     $indice = 2;
                     break;
                 case 483:

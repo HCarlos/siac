@@ -37,10 +37,10 @@ class ReporteSemanalClass{
             ['sue_id' => 483, 'Servicio' => 'BACHEO', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0 ,'PA' => []],
             ['sue_id' => 466, 'Servicio' => 'REPARACIÓN DE LUMINARIAS', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0 ,'PA' => []],
             ['sue_id' => 503, 'Servicio' => 'RECOLECCIÓN DE RESIDUOS SÓLIDOS','CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0 ,'PA' => []],
-            ['sue_id' => 479, 'Servicio' => 'REPARACIÓN DE ALCANTARILLAS', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0 ,'PA' => []],
+            ['sue_id' => 480, 'Servicio' => 'REPARACIÓN DE REJILLAS', 'CR' => 0, 'DR' => 0, 'IR' => 0, 'TR' => 0, 'CA' => 0, 'DA' => 0, 'IA' => 0, 'TA' => 0 ,'DIAS_ATRAS' => [], 'Total' => 0 ,'PA' => []],
         ]);
 
-        $this->ServiciosPrincipales = [476, 508, 483, 466, 503, 479];
+        $this->ServiciosPrincipales = [476, 508, 483, 466, 503, 480];
 
         // Asegurar que estas propiedades sean colecciones
         $this->ArrSolicitudesIRValue = collect([508833, 519442]);
