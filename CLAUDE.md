@@ -1,5 +1,5 @@
 # Reglas del Proyecto
-
+- Antes de implementar, asegúrate de planificar en modo plan y luego escribe.
 - Ve aprendiendo constantemente como esta constituido este proyecto, su reglas de negocio, su logica, su metodologia, sus modelos, su controllers, sus request, sus vistas UI, etc.
 - TODO en español
 - Todos los archivos bien comentados en español.
@@ -7,7 +7,7 @@
 - Siempre asegurate de que no se rompa nada.
 - Para que tengas acceso a la DB local, consulta el .env y no me preguntes a cada rato cuando tengas que consultar algo.
 - No borrar nada sin preguntar
-- Para tareas especificas utilizas subagentes
+- Siempre usa Agentes.
 - Si tienes dudas, pregunta antes de proceder
 - Si tienes que crear un nuevo archivo, asegurate de que este bien comentado y estructurado
 - Asegurate de seguir al pie de la letra las reglas de este .md

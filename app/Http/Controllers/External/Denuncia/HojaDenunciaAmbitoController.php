@@ -104,7 +104,6 @@ class HojaDenunciaAmbitoController extends Controller
 
         $Sector = new sector();
 
-
         $pdf = new DenunciaArchivoTCPDF('','mm',array(215.9, 280.0), true, 'UTF-8', false);
         $pdf->FOLIO = $den->folio_dac;
         $pdf->folio = $den->id;

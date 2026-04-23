@@ -86,7 +86,7 @@ class SMInicioController extends Controller{
                 (object)["ue_id" => 22, "Estatus"=> "CERRADO POR RECHAZO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
             ];
 
-            $ServiciosPrincipales = config('atemun.arr_monitoreados_general_uno');
+            $ServiciosPrincipales = config('arrays.arr_monitoreados_general_uno');
 
             $srv2 = static::getUltimoEstatus($start_date,$end_date,$ServiciosPrincipales);
 
@@ -98,7 +98,7 @@ class SMInicioController extends Controller{
                         $ta = 0;
                         $tr = 0;
 
-                        $vectorUnidades = config('atemun.arr_vector_unidades_administrativas_uno');
+                        $vectorUnidades = config('arrays.arr_vector_unidades_administrativas_uno');
 
                         $totalServ = 0;
                         foreach ($vectorUnidades as $key => $value) {
@@ -179,7 +179,7 @@ class SMInicioController extends Controller{
 //                (object)["Unidad" => "SAS", "Unidad_Id" => 47,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
 //            ];
 
-            $vectorUnidades = config('atemun.arr_vector_unidades_administrativas_uno');
+            $vectorUnidades = config('arrays.arr_vector_unidades_administrativas_uno');
 
             $totalServ = 0;
             foreach ($vectorUnidades as $key => $value) {
@@ -198,7 +198,7 @@ class SMInicioController extends Controller{
             }
 
             // INICIA EL MODULO DE SERVICIOS
-            $vectorServicios = config('atemun.arr_vector_monitoreados_general_uno');
+            $vectorServicios = config('arrays.arr_vector_monitoreados_general_uno');
 
             $totalServ = 0;
             foreach ($vectorServicios as $key => $value) {
@@ -221,7 +221,7 @@ class SMInicioController extends Controller{
             $arrDep = [];
             $arrDepServ = [];
 
-            $arrUnidades = config('atemun.arr_unidades_administrativas');
+            $arrUnidades = config('arrays.arr_unidades_administrativas');
             $arrG = static::getGeoDenuncias($start_date,$end_date,$ServiciosPrincipales);
             $initArr = true;
 
@@ -438,7 +438,7 @@ class SMInicioController extends Controller{
     // INICIA EL MODULO DE FUNCIONES AUXILIARES
 
     static function getUltimoEstatus($start_date,$end_date,$ServiciosPrincipales){
-        $arr_minitoreados_general = config('atemun.arr_monitoreados_general_uno');
+        $arr_minitoreados_general = config('arrays.arr_monitoreados_general_uno');
         return DB::table("_vimov_filter_sm")
             ->select(["estatus as name", "estatu_id as ue_id", DB::raw("count(estatu_id) as data")])
             ->where('fecha_ingreso', '>=', $start_date." 00:00:00")
