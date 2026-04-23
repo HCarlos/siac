@@ -21,7 +21,6 @@
         <th class="sorting  w-20-percent">SERVICIO</th>
         <th class="sorting  w-30-percent">RESPUESTA</th>
         <th class="sorting  w-15-percent">ESTATUS</th>
-{{--        <th class="sorting">FAVORABLE</th>--}}
         <th class="sorting  w-10-percent">FECHA</th>
         <th></th>
     </tr>
@@ -33,9 +32,10 @@
             <td>{{$item->id}}</td>
             <td>{{$item->dependencia->dependencia}}</td>
             <td>{{$item->servicio->servicio}}</td>
-            <td>{{$item->observaciones === "" ? "SE RECIBE LA SOLICITUD" : $item->observaciones }}</td>
-            <td>{{$item->estatu->estatus}}</td>
-    {{--                    <td class="text-center">@if($item->favorable==true)<i class="fas fa-check seagreen"></i> @else <i class="mdi mdi-close-box red mdi-18px"></i> @endif </td>--}}
+            <td>{{$item->observaciones === "" ? "SE RECIBE LA SOLICITUD" : $item->observaciones }} <br>
+                <small class="chikirimbita blue"> Por: </small><small class="chikirimbita orange">{{ $item->creadopor->nombre.' '.$item->creadopor->ap_paterno }}</small></td>
+            <td>{{$item->estatu->estatus}}
+            </td>
             <td>{{\Carbon\Carbon::parse($item->fecha_movimiento)->format('d-m-Y H:i:s') ?? $item->fecha_movimiento}}</td>
             <td>
                     @if(Gate::check('all') || Gate::check('editar_respuesta'))

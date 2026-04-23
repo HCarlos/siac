@@ -86,11 +86,9 @@ class SMInicioController extends Controller{
                 (object)["ue_id" => 22, "Estatus"=> "CERRADO POR RECHAZO", "Total"=> 0, "Unidades" => [],"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
             ];
 
-            $ServiciosPrincipales = [483,508,476,503,480,466,567,568,570];
+            $ServiciosPrincipales = config('atemun.arr_monitoreados_general_uno');
 
             $srv2 = static::getUltimoEstatus($start_date,$end_date,$ServiciosPrincipales);
-
-//            dd($srv2);
 
             foreach ($arrEstatus as $a) {
                 foreach ($srv2 as $d){
@@ -100,13 +98,8 @@ class SMInicioController extends Controller{
                         $ta = 0;
                         $tr = 0;
 
-                        $vectorUnidades = [
-                            (object)["Unidad" => "ALUMBRADO", "Unidad_Id" => 46,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
-                            (object)["Unidad" => "ESPACIOS PÚBLICOS", "Unidad_Id" => 49,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
-                            (object)["Unidad" => "LIMPIA", "Unidad_Id" => 50,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
-                            (object)["Unidad" => "OBRAS PÚBLICAS", "Unidad_Id" => 48,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
-                            (object)["Unidad" => "SAS", "Unidad_Id" => 47,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0, 'Total1'=>0,'a_tiempo_t1'=>0, 'con_rezago_t1'=>0],
-                        ];
+                        $vectorUnidades = config('atemun.arr_vector_unidades_administrativas_uno');
+
                         $totalServ = 0;
                         foreach ($vectorUnidades as $key => $value) {
                             $f = static::getEstatusUE($start_date,$end_date,$value->Unidad_Id,$a->ue_id,$ServiciosPrincipales);
@@ -178,13 +171,16 @@ class SMInicioController extends Controller{
 //            dd($arrEstatus);
 
             // INICIA EL MODULO DE UNIDADES
-            $vectorUnidades = [
-                (object)["Unidad" => "ALUMBRADO", "Unidad_Id" => 46,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["Unidad" => "ESPACIOS PÚBLICOS", "Unidad_Id" => 49,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["Unidad" => "LIMPIA", "Unidad_Id" => 50,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["Unidad" => "OBRAS PÚBLICAS", "Unidad_Id" => 48,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-                (object)["Unidad" => "SAS", "Unidad_Id" => 47,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
-            ];
+//            $vectorUnidades = [
+//                (object)["Unidad" => "ALUMBRADO", "Unidad_Id" => 46,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+//                (object)["Unidad" => "ESPACIOS PÚBLICOS", "Unidad_Id" => 49,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+//                (object)["Unidad" => "LIMPIA", "Unidad_Id" => 50,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+//                (object)["Unidad" => "OBRAS PÚBLICAS", "Unidad_Id" => 48,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+//                (object)["Unidad" => "SAS", "Unidad_Id" => 47,"Total" => 0,"Porcentaje" => 0,'a_tiempo'=>0, 'con_rezago'=>0],
+//            ];
+
+            $vectorUnidades = config('atemun.arr_vector_unidades_administrativas_uno');
+
             $totalServ = 0;
             foreach ($vectorUnidades as $key => $value) {
                 $f = static::getEstatus($start_date,$end_date,$value->Unidad_Id,$ServiciosPrincipales);
@@ -202,17 +198,7 @@ class SMInicioController extends Controller{
             }
 
             // INICIA EL MODULO DE SERVICIOS
-            $vectorServicios = [
-                (object)["sue_id" => 483, "Servicio"=> "BACHEO DE VIALIDADES", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 508, "Servicio"=> "DESAZOLVE DE DRENAJE", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 476, "Servicio"=> "FUGA DE AGUA POTABLE", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 503, "Servicio"=> "RECOLECCIÓN DE RESIDUOS SÓLIDOS", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 480, "Servicio"=> "REPARACIÓN DE REJILLAS", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 466, "Servicio"=> "REPARACIÓN DE LUMINARIAS", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 567, "Servicio"=> "RESANE CON ASFALTO", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 568, "Servicio"=> "RESANE CON CONCRETO HIDRÁULICO", "Total"=> 0,"Porcentaje" => 0],
-                (object)["sue_id" => 570, "Servicio"=> "RESANE POR CONTRATO", "Total"=> 0,"Porcentaje" => 0],
-            ];
+            $vectorServicios = config('atemun.arr_vector_monitoreados_general_uno');
 
             $totalServ = 0;
             foreach ($vectorServicios as $key => $value) {
@@ -235,68 +221,17 @@ class SMInicioController extends Controller{
             $arrDep = [];
             $arrDepServ = [];
 
-            $arrUnidades = [46,47,48,49,50];
+            $arrUnidades = config('atemun.arr_unidades_administrativas');
             $arrG = static::getGeoDenuncias($start_date,$end_date,$ServiciosPrincipales);
-//            $arrG = static::getGeoDenuncias($start_date,$end_date,$arrUnidades);
             $initArr = true;
 
-            $ArrSolicitudesInternasLabel = ["SAS", "LIMPIA"];
-            $ArrSolicitudesInternasValue = [508833, 519442];
-
-            $arrCoorDelegados = User::whereHas('roles', function ($query) {
-                $query->whereIn('name', ['DELEGADOS', 'COORDINACION_DE_DELEGADOS']);
-            })
-                ->pluck('id')
-                ->toArray();
-
-
-            //DELEGADOS
-//COORDINACION_DE_DELEGADOS
-
-
-//            dd( $arrG[0] );
-
             foreach ($arrG as $g) {
-                $paso = false;
-//                if ( ! in_array($g->sue_id,$ServiciosPrincipales) ) {
+//                $paso = false;
 //
-//                    $arg = Denuncia_Dependencia_Servicio::
-//                    where('denuncia_id',$g->id)
-//                    ->where('dependencia_id',$g->dependencia_id)
-//                    ->whereIn('servicio_id',$ServiciosPrincipales)
-//                        ->orderByDesc('id')
-//                        ->first();
-//                    if ( $arg ) {
-//                        $gg = DB::table("_vimovimientos")
-//                            ->select(
-//                                'id as ddse_id','denuncia_id as id','latitud','longitud','dependencia','abreviatura','servicio as servicio_ultimo_estatus',
-//                                'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
-//                                'fecha_movimiento as fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','estatus as ultimo_estatus',
-//                                'servicio_id as sue_id','servicio as servicio_ultimo_estatus','ue_id','dependencia_id','uuid',
-//                                'descripcion as denuncia','centro_localidad_id'
-//                            )
-//                            ->where('id', $arg->id)
-//                            ->first();
-//
-////                        if ($g->id == 124541){
-////                            dd($gg);
-////                        }
-//
-//
-//                            $paso = true;
-//
-//                    }
-//
-//                }else{
-//                    $paso = true;
-//                }
-//
-//                if ($paso) {
-
-                    $fme1 = Carbon::parse($g->fecha_dias_ejecucion);
-                    $fme2 = Carbon::parse($g->fecha_dias_maximos_ejecucion);
-                    $fi = Carbon::parse($g->fecha_ingreso);
-                    $fue = Carbon::parse($g->fecha_ultimo_estatus);
+//                    $fme1 = Carbon::parse($g->fecha_dias_ejecucion);
+//                    $fme2 = Carbon::parse($g->fecha_dias_maximos_ejecucion);
+//                    $fi = Carbon::parse($g->fecha_ingreso);
+//                    $fue = Carbon::parse($g->fecha_ultimo_estatus);
 
                     $icon = "";
                     foreach ($vectorUnidades as $u) {
@@ -321,9 +256,9 @@ class SMInicioController extends Controller{
                         }
                     }
 
-                    $status = "white";
-                    $dias_vencidos = 0;
-
+//                    $status = "white";
+//                    $dias_vencidos = 0;
+//
                     $semaforo = ActualizaEstadisticasARO::semaforo_ultimo_estatus_off($g->ue_id, new DateTime($g->fecha_dias_maximos_ejecucion), new DateTime($g->fecha_ultimo_estatus));
                     $status = $semaforo['status'];
                     $dias_vencidos = $semaforo['dias_vencidos'];
@@ -503,37 +438,26 @@ class SMInicioController extends Controller{
     // INICIA EL MODULO DE FUNCIONES AUXILIARES
 
     static function getUltimoEstatus($start_date,$end_date,$ServiciosPrincipales){
-//        ->where("ambito_dependencia",2)
-//        return DB::table("_viddss")
-//            ->select(["ultimo_estatus as name", "ue_id", DB::raw("count(ue_id) as data")])
-//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-//            ->whereIn('sue_id', [483,508,476,503,480,466,567,568])
-//            ->groupBy(["ultimo_estatus","ue_id"])
-//            ->get();
-
-
+        $arr_minitoreados_general = config('atemun.arr_monitoreados_general_uno');
         return DB::table("_vimov_filter_sm")
             ->select(["estatus as name", "estatu_id as ue_id", DB::raw("count(estatu_id) as data")])
             ->where('fecha_ingreso', '>=', $start_date." 00:00:00")
             ->where('fecha_ingreso', '<=', $end_date." 23:59:59")
-            ->whereIn('servicio_id', [483,508,476,503,480,466,567,568,570])
+            ->whereIn('servicio_id', $ServiciosPrincipales)
             ->groupBy(["estatus","estatu_id"])
             ->get();
 
+//        return DB::table("_vimov_filter_sm")
+//            ->select(["estatus as name", "estatu_id as ue_id", DB::raw("count(estatu_id) as data")])
+//            ->where('fecha_ingreso', '>=', $start_date." 00:00:00")
+//            ->where('fecha_ingreso', '<=', $end_date." 23:59:59")
+//            ->whereIn('sue_id', [483,508,476,503,480,466,567,568,570])
+//            ->groupBy(["estatus","estatu_id"])
+//            ->get();
 
     }
 
     static function getEstatusDependencia($start_date,$end_date,$dependencia_id,$ue_id,$ServiciosPrincipales){
-
-//        return DB::table("_viddss")
-//            ->select('abreviatura as label', DB::raw('count(dependencia_id) as data'))
-//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-//            ->where('ambito_dependencia',2)
-//            ->where('dependencia_id',$dependencia_id)
-//            ->whereIn('sue_id', $ServiciosPrincipales)
-//            ->where('ue_id',$ue_id)
-//            ->groupBy('abreviatura')
-//            ->first();
 
         return DB::table("_vimov_filter_sm")
             ->select('abreviatura as label', DB::raw('count(dependencia_id) as data'))
@@ -547,15 +471,6 @@ class SMInicioController extends Controller{
     }
     static function getEstatus($start_date,$end_date,$dependencia_id,$ServiciosPrincipales){
 
-//        return DB::table("_viddss")
-//            ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
-//            ->where('ambito_dependencia',2)
-//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-//            ->where('dependencia_id',$dependencia_id)
-//            ->whereIn('sue_id', $ServiciosPrincipales)
-//            ->groupBy('dependencia_id')
-//            ->first();
-
         return DB::table("_vimov_filter_sm")
             ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
             ->where('fecha_ingreso', '>=', $start_date." 00:00:00")
@@ -567,16 +482,6 @@ class SMInicioController extends Controller{
 
     }
     static function getEstatusUE($start_date,$end_date,$dependencia_id,$ue_id,$ServiciosPrincipales){
-
-//        return DB::table("_viddss")
-//            ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
-//            ->where('ambito_dependencia',2)
-//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-//            ->where('dependencia_id',$dependencia_id)
-//            ->whereIn('sue_id', $ServiciosPrincipales)
-//            ->where('ue_id',$ue_id)
-//            ->groupBy('dependencia_id')
-//            ->first();
 
         return DB::table("_vimov_filter_sm")
             ->select('dependencia_id as label', DB::raw('count(dependencia_id) as total'))
@@ -592,14 +497,6 @@ class SMInicioController extends Controller{
 
     static function getServiciosDependencia($start_date,$end_date,$sue_id){
 
-//        return DB::table("_viddss")
-//            ->select('abreviatura as label', DB::raw('count(sue_id) as total'))
-//            ->where('ambito_dependencia',2)
-//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-//            ->where('sue_id',$sue_id)
-//            ->groupBy('abreviatura')
-//            ->first();
-
         return DB::table("_vimov_filter_sm")
             ->select('abreviatura as label', DB::raw('count(servicio_id) as total'))
             ->where('fecha_ingreso', '>=', $start_date." 00:00:00")
@@ -612,19 +509,6 @@ class SMInicioController extends Controller{
     }
 
     static function getAtiempoVsDestiempo($start_date,$end_date,$unidad_id,$ue_id,$ServiciosPrincipales){
-
-//        return DB::table("_viddss")
-//            ->select(
-//                DB::raw("SUM(CASE WHEN fecha_dias_ejecucion >= CURRENT_DATE THEN 1 ELSE 0 END) AS atiempo"),
-//                DB::raw("SUM(CASE WHEN CURRENT_DATE > fecha_dias_ejecucion THEN 1 ELSE 0 END) AS conrezago")
-//            )
-//            ->where('ambito_dependencia', 2)
-//            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-//            ->where('dependencia_id', $unidad_id)
-//            ->whereIn('sue_id', $ServiciosPrincipales)
-//            ->where('ue_id', $ue_id)
-//            ->groupBy('ue_id')
-//            ->first();
 
         return DB::table("_vimov_filter_sm")
             ->select(
@@ -644,34 +528,6 @@ class SMInicioController extends Controller{
 
     static function getGeoDenuncias($start_date,$end_date,$ServiciosPrincipales){
 
-//        $cacheKey = '_viddss_' . md5($ServiciosPrincipales[0] . $start_date . $end_date);
-//        $data = Cache::remember($cacheKey, 60, function () use ($ServiciosPrincipales, $start_date, $end_date) {
-//            return DB::table("_viddss")
-//                ->select(
-//                    'id','latitud','longitud','dependencia','abreviatura',
-//                    'nombre_corto_ss','ciudadano','fecha_ingreso','fecha_dias_ejecucion',
-//                    'fecha_ultimo_estatus', 'fecha_dias_maximos_ejecucion','ultimo_estatus',
-//                    'sue_id','servicio_ultimo_estatus','ue_id','dependencia_id','uuid',
-//                    'denuncia','centro_localidad_id','ciudadano_id'
-//                )
-//                ->whereIn('sue_id', $ServiciosPrincipales)
-//                ->where('ambito_dependencia', 2)
-//                ->where('fecha_ingreso', '>=', $start_date." 00:00:00")
-//                ->where('fecha_ingreso', '<=', $end_date." 23:59:59")
-//                ->get();
-//        });
-        //            ->whereBetween('fecha_ingreso',[$start_date." 00:00:00",$end_date." 23:59:59"])
-
-//        $cacheKey = 'videpdenservestatus_' . md5($ServiciosPrincipales[0] . $start_date . $end_date); // Genera una clave de caché única
-//        $data = Cache::remember($cacheKey, 60, function () use ($ServiciosPrincipales, $start_date, $end_date) {
-//            return DB::table("_videpdenservestatus")
-//                ->where('ambito_dependencia', 2)
-//                ->whereIn('servicio_id', $ServiciosPrincipales)
-//                ->where('fecha_ingreso', '>=', $start_date." 00:00:00")
-//                ->where('fecha_ingreso', '<=', $end_date." 23:59:59")
-//                ->get();
-//        });
-
         $cacheKey = '_vimov_filter_sm' . md5($ServiciosPrincipales[0] . $start_date . $end_date); // Genera una clave de caché única
         $data = Cache::remember($cacheKey, 60, function () use ($ServiciosPrincipales, $start_date, $end_date) {
             return DB::table("_vimov_filter_sm")
@@ -687,8 +543,6 @@ class SMInicioController extends Controller{
                 ->where('fecha_ingreso', '<=', $end_date." 23:59:59")
                 ->get();
         });
-
-
 
         return $data;
     }
