@@ -500,6 +500,62 @@ app/         → User.php, Role.php, Permission.php, helpers.php
 
 ## Avances y Decisiones Técnicas
 
+### [2026-04-28] CentroBot — Seguridad, paleta visual, campo momento, lat/lng y documentación
+**Archivos modificados:**
+- `routes/centrobot.php`
+- `app/Http/Controllers/CentroBot/CentroBotController.php`
+- `app/Http/Controllers/CentroBot/SubidaFotosController.php`
+- `app/Http/Middleware/VerifyCsrfToken.php`
+- `resources/views/subida_fotos.blade.php`
+- `public/centrobot/index.html` *(nuevo — documentación pública)*
+
+**Ruta generar-url-fotos: POST → GET**
+- Cambiada a GET (es una consulta de lectura, no modifica estado).
+- Eliminada la excepción en `VerifyCsrfToken::$except` (GET no requiere CSRF).
+- `solicitud_id` ahora validado con `['required','integer','min:1']` via `$request->validate()`.
+
+**SubidaFotosController — 4 capas de seguridad en store():**
+1. Laravel `image + mimes:jpg,jpeg,png,gif,webp + max:10240` — SVG excluido (XSS).
+2. `finfo(FILEINFO_MIME_TYPE)` — verifica firma binaria real (detecta extensiones cambiadas).
+3. Doble extensión — analiza cada segmento del nombre original (bloquea `shell.php.jpg`).
+4. Escaneo de cabecera 2 KB — detecta `<?php`, `eval(`, `<script`, etc. en metadatos EXIF.
+- Propiedades `$mimesPermitidos`, `$extensionesPeligrosas`, `$patronesMaliciosos` definidas a nivel de clase.
+
+**Campo momento (ANTES / DESPUÉS):**
+- Nuevo radio button en la vista (ANTES predeterminado, DESPUÉS opcional).
+- Validado en store() con `in:ANTES,DESPUÉS`; fallback a `'ANTES'` si valor inválido.
+- Guardado en `Imagene::momento` al crear el registro.
+- Devuelto en la respuesta JSON para actualizar el badge en la galería en tiempo real.
+- Badge visual en la galería: dorado=ANTES, carmesí=DESPUÉS.
+
+**Latitud / Longitud desde la solicitud:**
+- Ya no se hardcodea `0`; se usa `$denuncia->latitud` y `$denuncia->longitud`.
+- Cast a float con `(float)` y null-coalescing `?? 0` como fallback.
+
+**Paleta de colores oficial SIAC aplicada a subida_fotos.blade.php:**
+- `#96262C` (carmesí) — primario: header, folio badge, botón subir, bordes de error.
+- `#987323` (dorado) — secundario: drop-zone, card-detalle, barra de progreso OK.
+- `#57595A` (carbón) — neutro: footer, texto secundario.
+- CSS completamente reescrito con variables CSS `--carmesi`, `--dorado`, `--carbon` y derivados.
+
+**Drag & Drop corregido:**
+- Causa: funciones `ondragover/ondragleave/ondrop` globales colisionaban con `window.on*` del DOM.
+- Solución: eliminados handlers inline del div; registrados con `addEventListener` dentro de un IIFE.
+- Agregado check `e.relatedTarget` en `dragleave` para evitar parpadeo al pasar sobre hijos.
+
+**Documentación `public/centrobot/index.html`:**
+- Diseño visual con paleta SIAC (carmesí, dorado, carbón).
+- URL base: `http://localhost:8000` (desarrollo).
+- Documenta los 3 endpoints con tablas, ejemplos JSON y cURL.
+- Tabla de campos incluye `momento` (ANTES/DESPUÉS, predeterminado ANTES).
+- Respuestas JSON incluyen campo `momento`.
+- Sección "Otras protecciones": latitud/longitud vienen de la solicitud, no del cliente.
+- 3 diagramas ASCII de flujo (generar URL, subida de fotos, flujo completo).
+- Tabla de errores HTTP (404, 422, 500) con causas detalladas.
+- Scroll activo en sidebar via JS sin dependencias.
+
+
+
 ### [2026-03-18] API de imágenes desde App Operador
 **Archivos:** `app/Http/Requests/API/ImagenAPIRequest.php`, `app/Http/Controllers/API/DenunciaAPIController.php`
 
@@ -525,3 +581,56 @@ app/         → User.php, Role.php, Permission.php, helpers.php
 
 **Solución:** Cambiar GROUP BY a `(denuncia_id, dependencia_id)`. SQL corregido en `otros/_viMovFilterTodas.sql`.
 **Estado:** Pendiente aplicar en producción (usuario lo hace manualmente).
+
+---
+
+## [2026-04-27] — Módulo CentroBot: URL Pública de Subida de Fotos
+
+### Objetivo
+Permitir que el ciudadano suba fotos de su solicitud mediante una URL pública única
+generada a partir del UUID de la denuncia. Pensado para integraciones con bots (WhatsApp, etc.).
+
+### Estructura final creada
+
+```
+app/Http/Controllers/CentroBot/
+├── CentroBotController.php      ← generarUrlSubidaFotos()
+└── SubidaFotosController.php    ← show(), store(), attaches(), detaches(), saveFileAmbito()
+
+routes/
+└── centrobot.php                ← incluido desde web.php con require
+
+resources/views/
+└── subida_fotos.blade.php       ← Vista Bootstrap 5 standalone, múltiples fotos
+```
+
+### Rutas registradas (centrobot.php → incluido en web.php)
+
+| Método | URI | Controlador | Descripción |
+|--------|-----|-------------|-------------|
+| GET  | `/centrobot/generar-url-fotos` | `CentroBot\CentroBotController@generarUrlSubidaFotos` | Genera la URL única para el ciudadano |
+| GET  | `/{uuid}` | `CentroBot\SubidaFotosController@show` | Página pública de subida |
+| POST | `/fotos/subir/{uuid}` | `CentroBot\SubidaFotosController@store` | Recibe y guarda una foto |
+
+### Lógica de guardado de imágenes
+Replica exactamente `StorageDenunciaAmbitoController`:
+- Nombre: `sha1(date('YmdHis') . time()) . '-' . user_id . '-' . denuncia_id`
+- Guarda original con `Storage::disk('denuncia')->put($fileName, File::get($file))`
+- Genera thumbnail 128×128 y versión media 300×300 con `fitImage(..., IsRounded=true)`
+- Crea `Imagene` con datos mínimos → `attaches()` (pivots imagene_user + denuncia_imagene) → `saveFileAmbito()` → `update()` con nombres de archivo
+- `user__id` = `$denuncia->ciudadano_id` (propietario de la solicitud)
+
+### Archivos modificados
+- `routes/web.php` → `require __DIR__ . '/centrobot.php'` al final
+- `routes/api.php` → Eliminada ruta `generar-url-fotos` (no era API)
+- `app/Http/Controllers/API/DenunciaAPIController.php` → Eliminado `generarUrlSubidaFotos()`
+- `app/Http/Middleware/VerifyCsrfToken.php` → Excepción para `centrobot/generar-url-fotos`
+
+### Notas técnicas
+- La ruta GET del bot (`generar-url-fotos`) no necesita CSRF (método GET, solo lectura)
+- La ruta de subida de fotos SÍ tiene CSRF (se envía desde el navegador via AJAX con `_token`)
+- La excepción `centrobot/generar-url-fotos` fue eliminada de `VerifyCsrfToken::$except`
+- `fitImage()` recibe el UploadedFile directamente (no la ruta física)
+- Los tres archivos generados: original (`.ext`), thumbnail (`_thumb_...png`), media (`_...png`)
+- Pivots verificados en BD: `imagene_user` y `denuncia_imagene` se crean correctamente
+- Vista soporta selección múltiple y drag & drop; sube las fotos secuencialmente con progreso individual

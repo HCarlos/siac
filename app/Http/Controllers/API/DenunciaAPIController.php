@@ -400,7 +400,4 @@ class DenunciaAPIController extends Controller{
 
     }
 
-
-
-
 }

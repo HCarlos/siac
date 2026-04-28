@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CentroBot — Documentación de API | SIAC</title>
+  <style>
+    /* ═══════════════════════════════════════════════════════════════
+       PALETA OFICIAL SIAC
+       --carmesi : #96262C  → primario  (encabezados, énfasis)
+       --dorado  : #987323  → secundario (badges, detalles)
+       --carbon  : #57595A  → neutro    (texto secundario, bordes)
+    ═══════════════════════════════════════════════════════════════ */
+    :root {
+      --carmesi      : #96262C;
+      --carmesi-osc  : #7a1e22;
+      --carmesi-bg   : #fdf0f0;
+      --carmesi-tint : #f5d0d2;
+
+      --dorado       : #987323;
+      --dorado-osc   : #7a5c1c;
+      --dorado-bg    : #fdf8ec;
+      --dorado-tint  : #f0e3b8;
+
+      --carbon       : #57595A;
+      --carbon-claro : #8c8e8f;
+      --carbon-bg    : #f4f4f4;
+
+      --blanco       : #ffffff;
+      --texto        : #2c2c2c;
+      --fondo        : #f6f4f1;   /* cálido, en armonía con los tres colores */
+      --borde        : #e0dbd3;
+      --code-bg      : #1d1a16;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--fondo);
+      color: var(--texto);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    /* ── Barra de color en el extremo superior ───────────────── */
+    .top-stripe {
+      height: 5px;
+      background: linear-gradient(90deg, var(--carmesi) 0%, var(--dorado) 60%, var(--carbon) 100%);
+    }
+
+    /* ── Header ──────────────────────────────────────────────── */
+    header {
+      background: var(--carmesi);
+      color: var(--blanco);
+      padding: 1.6rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      right: -40px; top: -40px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(152,115,35,.18);   /* dorado translúcido */
+      pointer-events: none;
+    }
+    .header-inner { display: flex; align-items: center; gap: 1.5rem; position: relative; z-index: 1; }
+    .header-escudo {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: rgba(255,255,255,.15);
+      border: 2px solid rgba(255,255,255,.35);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .header-escudo svg { width: 32px; height: 32px; fill: var(--blanco); }
+    .header-titulo    { font-size: 1.55rem; font-weight: 700; letter-spacing: .02em; }
+    .header-subtitulo { font-size: .82rem; opacity: .82; margin-top: .2rem; }
+    .header-version {
+      margin-top: .55rem;
+      display: inline-block;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.3);
+      color: var(--dorado-tint);
+      font-size: .73rem; font-weight: 600;
+      padding: .18em .7em; border-radius: 2rem;
+      letter-spacing: .04em;
+    }
+
+    /* ── Layout ──────────────────────────────────────────────── */
+    .wrapper { display: flex; min-height: calc(100vh - 95px); }
+
+    /* ── Navegación ──────────────────────────────────────────── */
+    nav {
+      width: 240px; flex-shrink: 0;
+      background: var(--blanco);
+      border-right: 1px solid var(--borde);
+      padding: 1.5rem 0;
+      position: sticky; top: 0;
+      height: 100vh; overflow-y: auto;
+    }
+    .nav-logo {
+      padding: 0 1.5rem 1.2rem;
+      border-bottom: 1px solid var(--borde);
+      margin-bottom: .8rem;
+    }
+    .nav-logo-text {
+      font-weight: 800; font-size: .95rem;
+      color: var(--carmesi); letter-spacing: .06em;
+    }
+    .nav-logo-sub { font-size: .7rem; color: var(--carbon-claro); margin-top: .1rem; }
+
+    .nav-section {
+      font-size: .68rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .1em;
+      color: var(--carbon-claro);
+      padding: 1rem 1.5rem .35rem;
+    }
+    nav a {
+      display: block; padding: .42rem 1.5rem;
+      color: var(--carbon); text-decoration: none;
+      font-size: .87rem;
+      border-left: 3px solid transparent;
+      transition: all .15s;
+    }
+    nav a:hover { color: var(--carmesi); border-left-color: var(--dorado); background: var(--carmesi-bg); }
+    nav a.active { color: var(--carmesi); border-left-color: var(--carmesi); background: var(--carmesi-bg); font-weight: 600; }
+
+    /* ── Contenido ───────────────────────────────────────────── */
+    main { flex: 1; padding: 2.2rem 2.8rem; max-width: 920px; }
+
+    section { margin-bottom: 3.2rem; }
+
+    h2 {
+      font-size: 1.3rem; font-weight: 700;
+      color: var(--carmesi);
+      padding-bottom: .5rem; margin-bottom: 1.2rem;
+      border-bottom: 2px solid var(--dorado);
+      display: flex; align-items: center; gap: .6rem;
+    }
+    h2 .h2-icon {
+      width: 28px; height: 28px; border-radius: 6px;
+      background: var(--carmesi);
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    h2 .h2-icon svg { width: 16px; height: 16px; fill: var(--blanco); }
+
+    h3 { font-size: 1rem; font-weight: 600; color: var(--carmesi-osc); margin: 1.5rem 0 .6rem; }
+    h4 { font-size: .88rem; font-weight: 600; color: var(--carbon); margin: 1.1rem 0 .45rem; text-transform: uppercase; letter-spacing: .04em; }
+    p, li { margin-bottom: .5rem; color: #3a3a3a; }
+    ul, ol { padding-left: 1.6rem; }
+
+    /* ── Badges método HTTP ──────────────────────────────────── */
+    .badge {
+      display: inline-block; padding: .22em .75em;
+      border-radius: .3rem; font-size: .74rem;
+      font-weight: 700; letter-spacing: .06em;
+      vertical-align: middle;
+    }
+    .get  { background: var(--dorado-bg); color: var(--dorado-osc); border: 1px solid var(--dorado); }
+    .post { background: var(--carmesi-bg); color: var(--carmesi);   border: 1px solid var(--carmesi); }
+    .badge-ok  { background: var(--dorado-bg);  color: var(--dorado-osc); border: 1px solid var(--dorado); }
+    .badge-err { background: var(--carmesi-bg); color: var(--carmesi);    border: 1px solid var(--carmesi); }
+
+    /* ── Tarjeta de endpoint ─────────────────────────────────── */
+    .endpoint {
+      background: var(--blanco);
+      border: 1px solid var(--borde);
+      border-radius: .6rem;
+      margin-bottom: 1.8rem;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(150,38,44,.07);
+    }
+    .endpoint-header {
+      background: linear-gradient(135deg, var(--carmesi-bg) 0%, var(--dorado-bg) 100%);
+      padding: .85rem 1.2rem;
+      display: flex; align-items: center; gap: .8rem;
+      border-bottom: 1px solid var(--borde);
+    }
+    .endpoint-url {
+      font-family: 'Courier New', monospace;
+      font-size: .95rem; font-weight: 700;
+      color: var(--carmesi-osc);
+    }
+    .endpoint-desc { font-size: .8rem; color: var(--carbon-claro); margin-left: auto; }
+    .endpoint-body { padding: 1.2rem 1.4rem; }
+
+    /* ── Código ──────────────────────────────────────────────── */
+    pre {
+      background: var(--code-bg);
+      color: #e8e4dc;
+      border-radius: .5rem;
+      padding: 1.1rem 1.3rem;
+      overflow-x: auto;
+      font-size: .83rem;
+      margin: .6rem 0 1.2rem;
+      line-height: 1.55;
+      border-left: 3px solid var(--dorado);
+    }
+    code { font-family: 'Courier New', monospace; }
+    .ic {
+      background: #ede9e1;
+      color: var(--carmesi-osc);
+      padding: .12em .45em; border-radius: .25rem;
+      font-family: 'Courier New', monospace; font-size: .86em;
+      border: 1px solid var(--dorado-tint);
+    }
+
+    /* ── Tablas ──────────────────────────────────────────────── */
+    table { width: 100%; border-collapse: collapse; margin: .6rem 0 1.2rem; font-size: .87rem; }
+    th {
+      background: var(--carmesi);
+      color: var(--blanco);
+      font-weight: 600; text-align: left;
+      padding: .55rem .85rem;
+      border: 1px solid var(--carmesi-osc);
+    }
+    td { padding: .5rem .85rem; border: 1px solid var(--borde); vertical-align: top; color: #3a3a3a; }
+    tr:nth-child(even) td { background: var(--fondo); }
+    tr:hover td { background: var(--carmesi-bg); }
+    .req { color: var(--carmesi); font-weight: 700; }
+    .opt { color: var(--carbon-claro); }
+
+    /* ── Info boxes ──────────────────────────────────────────── */
+    .box {
+      padding: .85rem 1.1rem; border-radius: 0 .45rem .45rem 0;
+      margin: .9rem 0; font-size: .87rem;
+    }
+    .box-info { background: var(--dorado-bg); border-left: 4px solid var(--dorado);  color: var(--dorado-osc); }
+    .box-warn { background: var(--carmesi-bg); border-left: 4px solid var(--carmesi); color: var(--carmesi-osc); }
+    .box-ok   { background: #eef6ee;           border-left: 4px solid #3a8a3a;        color: #2a6a2a; }
+    .box strong { font-weight: 700; }
+
+    /* ── Diagrama de flujo ───────────────────────────────────── */
+    .diagram {
+      background: var(--blanco);
+      border: 1px solid var(--borde);
+      border-radius: .6rem;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 4px rgba(150,38,44,.06);
+    }
+    .diagram-header {
+      background: var(--carbon);
+      color: var(--blanco);
+      font-size: .78rem; font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase;
+      padding: .55rem 1.1rem;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .diagram-header::before {
+      content: '';
+      display: inline-block;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--dorado);
+    }
+    .diagram pre {
+      background: #faf8f4; color: #333;
+      border-left: none; border-radius: 0;
+      font-size: .8rem; margin: 0;
+      border-top: 1px solid var(--borde);
+      padding: 1.2rem 1.4rem;
+    }
+
+    /* ── Capas de seguridad ──────────────────────────────────── */
+    .capa {
+      display: flex; gap: 1.1rem; align-items: flex-start;
+      background: var(--blanco);
+      border: 1px solid var(--borde);
+      border-radius: .55rem;
+      padding: .95rem 1.1rem;
+      margin-bottom: .85rem;
+      box-shadow: 0 1px 3px rgba(150,38,44,.05);
+      transition: box-shadow .2s;
+    }
+    .capa:hover { box-shadow: 0 3px 10px rgba(150,38,44,.12); }
+    .capa-num {
+      width: 2.1rem; height: 2.1rem; border-radius: 50%;
+      background: var(--carmesi);
+      color: var(--blanco);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: .9rem; flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(150,38,44,.35);
+    }
+    .capa-titulo { font-weight: 700; color: var(--carmesi); margin-bottom: .25rem; font-size: .95rem; }
+    .capa-sub    { font-size: .83rem; color: var(--carbon); }
+    .capa-tag {
+      display: inline-block; margin-top: .4rem;
+      background: var(--dorado-bg); color: var(--dorado-osc);
+      border: 1px solid var(--dorado-tint);
+      font-size: .72rem; font-weight: 700;
+      padding: .15em .6em; border-radius: 2rem;
+    }
+
+    /* ── Tabla de resumen de rutas ───────────────────────────── */
+    .route-pill {
+      font-family: 'Courier New', monospace;
+      font-size: .85rem; font-weight: 600;
+      color: var(--carmesi-osc);
+    }
+
+    /* ── Footer ──────────────────────────────────────────────── */
+    footer {
+      background: var(--carbon);
+      color: rgba(255,255,255,.65);
+      text-align: center; font-size: .79rem;
+      padding: 1rem 2rem;
+      border-top: 3px solid var(--dorado);
+    }
+    footer strong { color: rgba(255,255,255,.9); }
+  </style>
+</head>
+<body>
+
+<!-- Franja superior de color -->
+<div class="top-stripe"></div>
+
+<!-- ═══════════════════════════ HEADER ══════════════════════════════ -->
+<header>
+  <div class="header-inner">
+    <div class="header-escudo">
+      <!-- Ícono de construcción/servicio -->
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L20 8.5v7.18L12 19.5l-8-3.82V8.5L12 4.18zM12 7a5 5 0 100 10A5 5 0 0012 7zm0 2a3 3 0 110 6 3 3 0 010-6z"/>
+      </svg>
+    </div>
+    <div>
+      <div class="header-titulo">CentroBot · Documentación de API</div>
+      <div class="header-subtitulo">
+        SIAC — Sistema Integral de Atención Ciudadana &amp; Servicios Municipales<br>
+        H. Ayuntamiento de Villahermosa
+      </div>
+      <span class="header-version">Laravel 7 · PHP 7.4 · PostgreSQL</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrapper">
+
+  <!-- ═══════════════════════ NAVEGACIÓN ══════════════════════════ -->
+  <nav>
+    <div class="nav-logo">
+      <div class="nav-logo-text">SIAC</div>
+      <div class="nav-logo-sub">CentroBot API · v1.0</div>
+    </div>
+
+    <div class="nav-section">Introducción</div>
+    <a href="#resumen" class="active">Resumen</a>
+    <a href="#base-url">URL Base</a>
+    <a href="#tabla-rutas">Tabla de Rutas</a>
+
+    <div class="nav-section">Endpoints</div>
+    <a href="#ep1">GET generar-url-fotos</a>
+    <a href="#ep2">GET /{uuid}</a>
+    <a href="#ep3">POST subir foto</a>
+
+    <div class="nav-section">Seguridad</div>
+    <a href="#seguridad">4 Capas de validación</a>
+    <a href="#tipos">Tipos de imagen</a>
+
+    <div class="nav-section">Diagramas</div>
+    <a href="#flujo-url">Flujo: Generar URL</a>
+    <a href="#flujo-subida">Flujo: Subir fotos</a>
+    <a href="#flujo-completo">Flujo completo</a>
+
+    <div class="nav-section">Referencia</div>
+    <a href="#errores">Códigos de error</a>
+    <a href="#ejemplos">Ejemplos cURL</a>
+  </nav>
+
+  <!-- ═══════════════════════ CONTENIDO ═══════════════════════════ -->
+  <main>
+
+    <!-- ─────────────── RESUMEN ─────────────── -->
+    <section id="resumen">
+      <h2>
+        <span class="h2-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm1 14H11v-6h2v6zm0-8H11V6h2v2z"/></svg>
+        </span>
+        Resumen del módulo
+      </h2>
+
+      <p>
+        El módulo <strong>CentroBot</strong> permite a sistemas externos (bots de WhatsApp, SMS u otros canales)
+        generar un enlace único para que el ciudadano suba fotos de su solicitud de servicio municipal,
+        <strong>sin necesidad de crear una cuenta ni iniciar sesión</strong>.
+      </p>
+
+      <div class="box box-ok">
+        <strong>Flujo de 3 pasos:</strong><br>
+        <strong>1.</strong> El bot llama a <span class="ic">GET /centrobot/generar-url-fotos?solicitud_id=123</span> y obtiene una URL única.<br>
+        <strong>2.</strong> El bot envía esa URL al ciudadano (WhatsApp, SMS, etc.).<br>
+        <strong>3.</strong> El ciudadano abre la URL en su navegador y sube sus fotos desde la página web.
+      </div>
+
+      <div class="box box-info">
+        <strong>Público objetivo de esta documentación:</strong>
+        desarrolladores que integren bots externos con SIAC, técnicos del municipio
+        y operadores que quieran entender cómo funciona la subida pública de imágenes.
+      </div>
+    </section>
+
+    <!-- ─────────────── URL BASE ─────────────── -->
+    <section id="base-url">
+      <h2>
+        <span class="h2-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
+        </span>
+        URL Base
+      </h2>
+
+      <table>
+        <tr><th>Entorno</th><th>URL</th><th>Servidor</th></tr>
+        <tr>
+          <td>Desarrollo</td>
+          <td><span class="ic">http://localhost:8000</span></td>
+          <td>Vagrant / Ubuntu</td>
+        </tr>
+        <tr>
+          <td>Producción</td>
+          <td><span class="ic">https://siac.villahermosa.gob.mx</span></td>
+          <td>AlmaLinux / Apache</td>
+        </tr>
+      </table>
+
+      <div class="box box-info">
+        Las rutas CentroBot están en <span class="ic">routes/centrobot.php</span>,
+        incluido desde <span class="ic">routes/web.php</span>.
+        Todas heredan el middleware <span class="ic">web</span> (sesión, cookies, CSRF).
+      </div>
+    </section>
+
+    <!-- ─────────────── TABLA DE RUTAS ─────────────── -->
+    <section id="tabla-rutas">
+      <h2>
+        <span class="h2-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+        </span>
+        Tabla de Rutas
+      </h2>
+
+      <table>
+        <tr><th>Método</th><th>Ruta</th><th>Controlador</th><th>Uso</th></tr>
+        <tr>
+          <td><span class="badge get">GET</span></td>
+          <td><span class="route-pill">/centrobot/generar-url-fotos</span></td>
+          <td><span class="ic">CentroBotController@generarUrlSubidaFotos</span></td>
+          <td>Genera URL pública para subida. Consumida por el bot.</td>
+        </tr>
+        <tr>
+          <td><span class="badge get">GET</span></td>
+          <td><span class="route-pill">/{uuid}</span></td>
+          <td><span class="ic">SubidaFotosController@show</span></td>
+          <td>Página web de subida para el ciudadano.</td>
+        </tr>
+        <tr>
+          <td><span class="badge post">POST</span></td>
+          <td><span class="route-pill">/fotos/subir/{uuid}</span></td>
+          <td><span class="ic">SubidaFotosController@store</span></td>
+          <td>Recibe y guarda una imagen (llamada una vez por foto).</td>
+        </tr>
+      </table>
+    </section>
+
+    <!-- ─────────────── ENDPOINT 1 ─────────────── -->
+    <section id="ep1">
+      <h2>
+        <span class="h2-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 16.2l-4.2-4.2-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+        </span>
+        Endpoint 1 — Generar URL
+      </h2>
+
+      <div class="endpoint">
+        <div class="endpoint-header">
+          <span class="badge get">GET</span>
+          <span class="endpoint-url">/centrobot/generar-url-fotos</span>
+          <span class="endpoint-desc">Consumida por el bot externo</span>
+        </div>
+        <div class="endpoint-body">
+
+          <p>Genera una URL pública única (basada en el UUID de la solicitud) para que el ciudadano suba fotos. No requiere autenticación.</p>
+
+          <h4>Parámetros de consulta (query string)</h4>
+          <table>
+            <tr><th>Parámetro</th><th>Tipo</th><th>Req.</th><th>Descripción</th></tr>
+            <tr>
+              <td><span class="ic">solicitud_id</span></td>
+              <td>integer</td>
+              <td><span class="req">Sí</span></td>
+              <td>ID (folio) de la solicitud. Debe ser entero mayor a 0.</td>
+            </tr>
+          </table>
+
+          <h4>Ejemplo de petición</h4>
+          <pre><code>GET /centrobot/generar-url-fotos?solicitud_id=4521 HTTP/1.1
+Host: siac.villahermosa.gob.mx</code></pre>
+
+          <h4>Respuesta exitosa &nbsp;<span class="badge badge-ok">200 OK</span></h4>
+          <pre><code>{
+  "status":  true,
+  "mensaje": "URL generada correctamente.",
+  "url":     "https://siac.villahermosa.gob.mx/a3f7c2d1-84b0-4e5a-9f12-0123456789ab"
+}</code></pre>
+
+          <h4>Respuestas de error</h4>
+          <table>
+            <tr><th>HTTP</th><th>Condición</th><th>Respuesta</th></tr>
+            <tr>
+              <td>422</td>
+              <td>solicitud_id faltante, no entero o ≤ 0</td>
+              <td>Respuesta estándar de validación Laravel</td>
+            </tr>
+            <tr>
+              <td>200</td>
+              <td>Folio no existe en la base de datos</td>
+              <td><span class="ic">{ "status": false, "mensaje": "No existe ese folio..." }</span></td>
+            </tr>
+          </table>
+
+          <div class="box box-info">
+            <strong>Protección SQL:</strong> <span class="ic">solicitud_id</span> se valida como
+            <span class="ic">integer|min:1</span> antes de llegar a la base de datos.
+            Eloquent usa PDO con <em>prepared statements</em> — inyección SQL imposible.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────── ENDPOINT 2 ─────────────── -->
+    <section id="ep2">
+      <h2>
+        <span class="h2-icon">
+          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14l4-4h12c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+        </span>
+        Endpoint 2 — Página de Subida
+      </h2>
+
+      <div class="endpoint">
+        <div class="endpoint-header">
+          <span class="badge get">GET</span>
+          <span class="endpoint-url">/{uuid}</span>
+          <span class="endpoint-desc">Página web para el ciudadano</span>
+        </div>
+        <div class="endpoint-body">
+
+          <p>Muestra la página pública donde el ciudadano puede ver los detalles de su solicitud y subir fotos. No requiere autenticación.</p>
+
+          <h4>Parámetro de ruta</h4>
+          <table>
+            <tr><th>Parámetro</th><th>Tipo</th><th>Descripción</th></tr>
+            <tr>
+              <td><span class="ic">uuid</span></td>
+              <td>string — UUID v4</td>
+              <td>Identificador único de la solicitud. Formato: <span class="ic">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</span></td>
+            </tr>
+          </table>
+
+          <h4>Ejemplo de petición</h4>
+          <pre><code>GET /a3f7c2d1-84b0-4e5a-9f12-0123456789ab HTTP/1.1
+Host: siac.villahermosa.gob.mx</code></pre>
+
+          <h4>Respuesta</h4>
+          <p>Página HTML completa (Bootstrap 5) con:</p>
+          <ul>
+            <li>Detalles de la solicitud (folio, servicio, dirección, fecha, descripción)</li>
+            <li>Zona de carga con soporte para <em>drag &amp; drop</em> y selección múltiple</li>
+            <li>Galería de fotos ya subidas con vista previa</li>
+          </ul>
+
+          <div class="box box-info">
+            <strong>Validación de UUID en ruta:</strong> la expresión regular
+            <span class="ic">[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}</span>
+            garantiza que solo se acepten UUIDs v4 válidos. Cualquier otra cadena devuelve <strong>404</strong>.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────── ENDPOINT 3 ─────────────── -->
+    <section id="ep3">
+      <h2>
+        <span class="h2-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5z"/></svg>
+        </span>
+        Endpoint 3 — Subir Foto
+      </h2>
+
+      <div class="endpoint">
+        <div class="endpoint-header">
+          <span class="badge post">POST</span>
+          <span class="endpoint-url">/fotos/subir/{uuid}</span>
+          <span class="endpoint-desc">Una llamada por imagen</span>
+        </div>
+        <div class="endpoint-body">
+
+          <p>Recibe y guarda una imagen enviada por el ciudadano. El frontend llama a este endpoint <strong>una vez por cada imagen</strong> seleccionada.</p>
+          <p><strong>Content-Type:</strong> <span class="ic">multipart/form-data</span></p>
+
+          <h4>Parámetro de ruta</h4>
+          <table>
+            <tr><th>Parámetro</th><th>Tipo</th><th>Descripción</th></tr>
+            <tr>
+              <td><span class="ic">uuid</span></td>
+              <td>string — UUID v4</td>
+              <td>UUID de la solicitud (mismo que en la URL pública)</td>
+            </tr>
+          </table>
+
+          <h4>Campos del formulario (form-data)</h4>
+          <table>
+            <tr><th>Campo</th><th>Tipo</th><th>Req.</th><th>Restricciones</th></tr>
+            <tr>
+              <td><span class="ic">foto</span></td>
+              <td>file</td>
+              <td><span class="req">Sí</span></td>
+              <td>
+                JPG, JPEG, PNG, GIF o WEBP únicamente.<br>
+                Máximo <strong>10 MB</strong> por imagen.<br>
+                Sin extensiones peligrosas en el nombre.<br>
+                Sin código PHP / script embebido.
+              </td>
+            </tr>
+            <tr>
+              <td><span class="ic">observaciones</span></td>
+              <td>string</td>
+              <td><span class="opt">No</span></td>
+              <td>Texto descriptivo. Máximo 500 caracteres.</td>
+            </tr>
+            <tr>
+              <td><span class="ic">momento</span></td>
+              <td>string</td>
+              <td><span class="opt">No</span></td>
+              <td>
+                Momento de la fotografía. Valores permitidos: <span class="ic">ANTES</span> o <span class="ic">DESPUÉS</span>.<br>
+                Si se omite, el valor predeterminado es <strong>ANTES</strong>.
+              </td>
+            </tr>
+            <tr>
+              <td><span class="ic">_token</span></td>
+              <td>string</td>
+              <td><span class="req">Sí</span></td>
+              <td>Token CSRF de Laravel (el frontend lo lee del meta tag de la página).</td>
+            </tr>
+          </table>
+
+          <h4>Ejemplo de petición (cURL)</h4>
+          <pre><code>curl -X POST \
+  "https://siac.villahermosa.gob.mx/fotos/subir/a3f7c2d1-84b0-4e5a-9f12-0123456789ab" \
+  -F "foto=@/ruta/a/mi_foto.jpg" \
+  -F "observaciones=Bache en la esquina norte" \
+  -F "momento=ANTES" \
+  -F "_token=TOKEN_CSRF_AQUI"</code></pre>
+
+          <h4>Respuesta exitosa &nbsp;<span class="badge badge-ok">200 OK</span></h4>
+          <pre><code>{
+  "status":        true,
+  "mensaje":       "¡Foto subida correctamente!",
+  "imagen_id":     1042,
+  "url_imagen":    "https://siac.villahermosa.gob.mx/storage/denuncia/abc123...jpg",
+  "url_thumb":     "https://siac.villahermosa.gob.mx/storage/denuncia/_thumb_abc123...png",
+  "observaciones": "Bache en la esquina norte",
+  "momento":       "ANTES"
+}</code></pre>
+
+          <h4>Respuestas de error</h4>
+          <table>
+            <tr><th>HTTP</th><th>Causa</th><th>Respuesta</th></tr>
+            <tr><td>404</td><td>UUID no existe en la BD</td><td><span class="ic">{ "status": false, "mensaje": "No se encontró..." }</span></td></tr>
+            <tr><td>422</td><td>Validación fallida (tipo, tamaño, etc.)</td><td>Respuesta de validación Laravel</td></tr>
+            <tr><td>422</td><td>Valor de <span class="ic">momento</span> distinto de ANTES o DESPUÉS</td><td>Respuesta de validación Laravel</td></tr>
+            <tr><td>422</td><td>Magic bytes incorrectos</td><td><span class="ic">{ "status": false, "mensaje": "firma binaria fallida" }</span></td></tr>
+            <tr><td>422</td><td>Doble extensión peligrosa</td><td><span class="ic">{ "status": false, "mensaje": "extensión no permitida" }</span></td></tr>
+            <tr><td>422</td><td>Código PHP/script en el archivo</td><td><span class="ic">{ "status": false, "mensaje": "contenido no permitido" }</span></td></tr>
+            <tr><td>500</td><td>Error interno (disco, permisos)</td><td><span class="ic">{ "status": false, "mensaje": "Error al guardar..." }</span></td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────── SEGURIDAD ─────────────── -->
+    <section id="seguridad">
+      <h2>
+        <span class="h2-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4l6 2.67V11c0 3.83-2.53 7.42-6 8.58C8.53 18.42 6 14.83 6 11V7.67L12 5z"/></svg>
+        </span>
+        Seguridad — 4 Capas de Validación
+      </h2>
+
+      <p>
+        El endpoint <span class="ic">POST /fotos/subir/{uuid}</span> aplica
+        <strong>4 capas de validación independientes</strong> en cascada.
+        Si cualquiera falla, el archivo es rechazado y no se escribe nada en disco.
+      </p>
+
+      <div style="margin-top:1.2rem;">
+
+        <div class="capa">
+          <div class="capa-num">1</div>
+          <div>
+            <div class="capa-titulo">Validación Laravel — MIME + getimagesize() + tamaño</div>
+            <div class="capa-sub">
+              Reglas <span class="ic">image</span> + <span class="ic">mimes:jpg,jpeg,png,gif,webp</span> + <span class="ic">max:10240</span>.
+              La regla <span class="ic">image</span> usa <code>getimagesize()</code> sobre el contenido real del archivo —
+              no solo la extensión. SVG está explícitamente excluido porque puede contener JavaScript embebido (XSS).
+            </div>
+            <span class="capa-tag">Laravel Validator</span>
+            <span class="capa-tag">getimagesize()</span>
+            <span class="capa-tag">Sin SVG</span>
+          </div>
+        </div>
+
+        <div class="capa">
+          <div class="capa-num">2</div>
+          <div>
+            <div class="capa-titulo">Magic Bytes — Firma binaria con PHP finfo</div>
+            <div class="capa-sub">
+              Se lee la firma binaria real con <span class="ic">finfo_file(FILEINFO_MIME_TYPE)</span>
+              y se compara contra los MIME permitidos
+              (<span class="ic">image/jpeg</span>, <span class="ic">image/png</span>,
+              <span class="ic">image/gif</span>, <span class="ic">image/webp</span>).
+              Detecta archivos cuya extensión fue cambiada manualmente
+              (p.ej. un ejecutable renombrado a <em>.jpg</em>).
+            </div>
+            <span class="capa-tag">PHP finfo</span>
+            <span class="capa-tag">FILEINFO_MIME_TYPE</span>
+          </div>
+        </div>
+
+        <div class="capa">
+          <div class="capa-num">3</div>
+          <div>
+            <div class="capa-titulo">Doble Extensión — Nombre original del archivo</div>
+            <div class="capa-sub">
+              Se analiza <em>cada segmento</em> del nombre original separado por puntos.
+              Si alguno coincide con una extensión peligrosa, el archivo es rechazado.
+              Protege contra ataques tipo <span class="ic">malware.php.jpg</span> o <span class="ic">script.js.png</span>.
+              Extensiones bloqueadas: <span class="ic">php, phar, exe, sh, asp, js, html, svg, xml…</span>
+            </div>
+            <span class="capa-tag">Doble extensión</span>
+            <span class="capa-tag">Nombre original</span>
+          </div>
+        </div>
+
+        <div class="capa">
+          <div class="capa-num">4</div>
+          <div>
+            <div class="capa-titulo">Escaneo de Cabecera — Código malicioso embebido</div>
+            <div class="capa-sub">
+              Se leen los primeros <strong>2 KB</strong> del archivo y se buscan patrones de código:
+              <span class="ic">&lt;?php</span>, <span class="ic">eval(</span>,
+              <span class="ic">exec(</span>, <span class="ic">system(</span>,
+              <span class="ic">&lt;script</span>, <span class="ic">base64_decode(</span>, etc.
+              Previene imágenes JPEG/PNG con PHP insertado en los metadatos EXIF.
+            </div>
+            <span class="capa-tag">EXIF injection</span>
+            <span class="capa-tag">2 KB scan</span>
+          </div>
+        </div>
+
+      </div>
+
+      <h3>Otras protecciones activas</h3>
+      <table>
+        <tr><th>Protección</th><th>Detalle</th></tr>
+        <tr>
+          <td>Nombre en disco</td>
+          <td>Generado con <span class="ic">sha1(timestamp + time())</span> — el nombre original nunca se usa para almacenamiento.</td>
+        </tr>
+        <tr>
+          <td>CSRF</td>
+          <td>El POST requiere token CSRF de Laravel. El GET no lo necesita (solo lectura).</td>
+        </tr>
+        <tr>
+          <td>UUID en ruta</td>
+          <td>Regex estricta en el router — solo acepta UUIDs v4 válidos, rechaza cualquier otra cadena.</td>
+        </tr>
+        <tr>
+          <td>solicitud_id</td>
+          <td>Validado como <span class="ic">integer|min:1</span>; Eloquent usa PDO prepared statements (no hay inyección SQL).</td>
+        </tr>
+        <tr>
+          <td>latitud / longitud</td>
+          <td>Se toman de <span class="ic">$denuncia->latitud</span> y <span class="ic">$denuncia->longitud</span> — no se aceptan coordenadas del cliente.</td>
+        </tr>
+        <tr>
+          <td>momento</td>
+          <td>Validado con <span class="ic">in:ANTES,DESPUÉS</span>; cualquier otro valor es reemplazado por <span class="ic">ANTES</span> como fallback.</td>
+        </tr>
+        <tr>
+          <td>Thumbnails regenerados</td>
+          <td>Las miniaturas se generan con Intervention Image, destruyendo cualquier payload en metadatos del original.</td>
+        </tr>
+      </table>
+    </section>
+
+    <!-- ─────────────── TIPOS PERMITIDOS ─────────────── -->
+    <section id="tipos">
+      <h2>
+        <span class="h2-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+        </span>
+        Tipos de Imagen Permitidos
+      </h2>
+
+      <table>
+        <tr><th>Extensión(es)</th><th>MIME Type</th><th>Notas</th></tr>
+        <tr><td>.jpg &nbsp; .jpeg</td><td>image/jpeg</td><td>Formato más común para fotografías</td></tr>
+        <tr><td>.png</td><td>image/png</td><td>Soporta transparencia</td></tr>
+        <tr><td>.gif</td><td>image/gif</td><td>Imágenes animadas simples</td></tr>
+        <tr><td>.webp</td><td>image/webp</td><td>Formato moderno de alta compresión</td></tr>
+      </table>
+
+      <div class="box box-warn">
+        <strong>SVG no está permitido</strong> — puede contener código JavaScript embebido que se ejecutaría
+        en el navegador del usuario al visualizar la imagen (ataque XSS almacenado).
+      </div>
+    </section>
+
+    <!-- ─────────────── FLUJO 1: GENERAR URL ─────────────── -->
+    <section id="flujo-url">
+      <h2>
+        <span class="h2-icon">
+          <svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+        </span>
+        Flujo: Generar URL de Subida
+      </h2>
+
+      <div class="diagram">
+        <div class="diagram-header">Diagrama de secuencia — GET /centrobot/generar-url-fotos</div>
+        <pre>
+  BOT / SISTEMA EXTERNO                            SERVIDOR SIAC
+  ─────────────────────────────                    ────────────────────────────────────────
+         │
+         │  GET /centrobot/generar-url-fotos?solicitud_id=4521
+         │ ──────────────────────────────────────────────────────────────────────────────▶│
+         │                                                                                 │
+         │                                                    Valida: integer | min:1
+         │                                                                                 │
+         │                                                    ┌─────────────────────────┐
+         │                                                    │  ¿Existe en la BD?      │
+         │                                                    │  Eloquent::find(4521)   │
+         │                                                    └──────────┬──────────────┘
+         │                                                      SÍ │     │ NO
+         │                                                          │     │
+         │                                                          │  { status: false,
+         │                                                          │    mensaje: "No existe..." }
+         │                                                          │
+         │                                             Construye URL con denuncia.uuid
+         │                                                          │
+         │  { status: true, url: "https://.../{uuid}" }            │
+         │ ◀──────────────────────────────────────────────────────  │
+         │
+         │  Envía URL al ciudadano (WhatsApp / SMS / Correo)
+         │ ──────────────────────────────────────────────────▶  CIUDADANO
+        </pre>
+      </div>
+    </section>
+
+    <!-- ─────────────── FLUJO 2: SUBIDA DE FOTOS ─────────────── -->
+    <section id="flujo-subida">
+      <h2>
+        <span class="h2-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5z"/></svg>
+        </span>
+        Flujo: Subida de Fotos
+      </h2>
+
+      <div class="diagram">
+        <div class="diagram-header">Diagrama de secuencia — POST /fotos/subir/{uuid}</div>
+        <pre>
+  CIUDADANO (Navegador)                            SERVIDOR SIAC
+  ──────────────────────────────                   ──────────────────────────────────────────────────
+        │
+        │  GET /{uuid}
+        │ ────────────────────────────────────────────────────────────────────────────────────────▶ │
+        │  ◀─────────────── Página HTML (detalles solicitud + zona drag&drop + galería) ─────────── │
+        │
+        │  [Usuario selecciona fotos y hace clic en "Subir"]
+        │
+        │  POST /fotos/subir/{uuid}  (una llamada por imagen)
+        │  Content-Type: multipart/form-data
+        │  { foto: archivo, observaciones: "...", momento: "ANTES|DESPUÉS", _token: "..." }
+        │ ────────────────────────────────────────────────────────────────────────────────────────▶ │
+        │                                                                                            │
+        │                                                          ┌──────────────────────────────┐
+        │                                                          │    VALIDACIÓN — 4 CAPAS       │
+        │                                                          │                               │
+        │                                                          │  1. Laravel: image+mimes+max  │
+        │                                                          │  2. finfo: magic bytes        │
+        │                                                          │  3. Doble extensión           │
+        │                                                          │  4. Escaneo cabecera 2 KB     │
+        │                                                          └──────────────┬───────────────┘
+        │                                                             FALLA │     │ OK
+        │                                                                   │     │
+        │  ◀──── { status: false, mensaje: "..." }  422 ─────────────────── │     │
+        │                                                                         │
+        │                                                 Crea registro en BD (Imagene)
+        │                                                   ├─ momento    = ANTES | DESPUÉS
+        │                                                   ├─ latitud    = denuncia.latitud
+        │                                                   └─ longitud   = denuncia.longitud
+        │                                                 Asocia a usuario y denuncia (pivots)
+        │                                                 Guarda en disco (nombre sha1)
+        │                                                 Genera thumbnail  128 × 128 px
+        │                                                 Genera versión media 300 × 300 px
+        │                                                                         │
+        │  ◀──── { status: true, url_imagen, url_thumb, momento, ... }  200 ───────│
+        │
+        │  [Imagen aparece en la galería en tiempo real]
+        </pre>
+      </div>
+    </section>
+
+    <!-- ─────────────── FLUJO COMPLETO ─────────────── -->
+    <section id="flujo-completo">
+      <h2>
+        <span class="h2-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 9V7h-2V5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2zm-4 10H4V5h14v14z"/></svg>
+        </span>
+        Flujo Completo del Sistema
+      </h2>
+
+      <div class="diagram">
+        <div class="diagram-header">Diagrama general — CentroBot + Subida Fotos</div>
+        <pre>
+  ╔══════════════════════════════════════════════════════════════════════════════════════════╗
+  ║               FLUJO COMPLETO  —  CentroBot + Subida de Fotos por Ciudadano              ║
+  ╚══════════════════════════════════════════════════════════════════════════════════════════╝
+
+   OPERADOR / BOT                 SIAC (API)             CIUDADANO              SIAC (Web)
+   ───────────────────            ──────────             ──────────             ──────────────
+         │                            │                      │                       │
+   ── PASO 1 ──────────────────────────────────────────────────────────────────────────────
+   │
+   │  Solicitud de servicio creada en SIAC (folio #4521)
+   │
+   ── PASO 2 ──────────────────────────────────────────────────────────────────────────────
+   │
+   │  Bot llama a la API para obtener la URL pública
+   │ ─── GET /centrobot/generar-url-fotos?solicitud_id=4521 ──────────────────────────────▶│
+   │ ◀── { status: true, url: "https://.../{uuid}" } ────────────────────────────────────── │
+   │
+   ── PASO 3 ──────────────────────────────────────────────────────────────────────────────
+   │
+   │  Bot envía URL al ciudadano (WhatsApp / SMS / correo)
+   │ ────────────────────────────────────────────────────────────────────▶│
+   │
+   ── PASO 4 ──────────────────────────────────────────────────────────────────────────────
+   │
+   │  Ciudadano abre la URL en su navegador
+   │                                                        │ ─── GET /{uuid} ────────────▶│
+   │                                                        │ ◀── Página de subida ──────── │
+   │
+   ── PASO 5 ──────────────────────────────────────────────────────────────────────────────
+   │
+   │  Ciudadano selecciona y sube sus fotos
+   │                                                        │ ─── POST /fotos/subir/{uuid}▶│
+   │                                                        │      [4 capas de validación]
+   │                                                        │ ◀── { status: true, url } ─── │
+   │                                                        │  Galería actualizada ✓
+   │
+   ── PASO 6 ──────────────────────────────────────────────────────────────────────────────
+   │
+   │  Operador / técnico visualiza las fotos en el SIAC (panel interno)
+   │
+   ─────────────────────────────────────────────────────────────────────────────────────────
+        </pre>
+      </div>
+    </section>
+
+    <!-- ─────────────── CÓDIGOS DE ERROR ─────────────── -->
+    <section id="errores">
+      <h2>
+        <span class="h2-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+        </span>
+        Tabla de Códigos de Error
+      </h2>
+
+      <table>
+        <tr><th>HTTP</th><th>Endpoint</th><th>Causa</th><th>Respuesta</th></tr>
+        <tr>
+          <td>422</td>
+          <td><span class="ic">GET /centrobot/…</span></td>
+          <td>solicitud_id faltante, no entero o ≤ 0</td>
+          <td>Validación Laravel (JSON con campo <span class="ic">errors</span>)</td>
+        </tr>
+        <tr>
+          <td>200</td>
+          <td><span class="ic">GET /centrobot/…</span></td>
+          <td>Folio no existe en BD</td>
+          <td><span class="ic">{ "status": false, "mensaje": "No existe ese folio..." }</span></td>
+        </tr>
+        <tr>
+          <td>404</td>
+          <td><span class="ic">GET /{uuid}</span></td>
+          <td>UUID no corresponde a ninguna solicitud</td>
+          <td>Página de error 404 de Laravel</td>
+        </tr>
+        <tr>
+          <td>404</td>
+          <td><span class="ic">POST /fotos/subir/{uuid}</span></td>
+          <td>UUID no encontrado en BD</td>
+          <td><span class="ic">{ "status": false, "mensaje": "No se encontró la solicitud..." }</span></td>
+        </tr>
+        <tr>
+          <td>422</td>
+          <td><span class="ic">POST /fotos/subir/{uuid}</span></td>
+          <td>No es imagen / es SVG / supera 10 MB (capa 1)</td>
+          <td>Respuesta estándar de validación Laravel</td>
+        </tr>
+        <tr>
+          <td>422</td>
+          <td><span class="ic">POST /fotos/subir/{uuid}</span></td>
+          <td>Firma binaria no coincide con imagen (capa 2)</td>
+          <td><span class="ic">{ "status": false, "mensaje": "verificación de firma binaria fallida" }</span></td>
+        </tr>
+        <tr>
+          <td>422</td>
+          <td><span class="ic">POST /fotos/subir/{uuid}</span></td>
+          <td>Nombre con extensión peligrosa — doble extensión (capa 3)</td>
+          <td><span class="ic">{ "status": false, "mensaje": "extensión no permitida" }</span></td>
+        </tr>
+        <tr>
+          <td>422</td>
+          <td><span class="ic">POST /fotos/subir/{uuid}</span></td>
+          <td>Código PHP / script en cabecera del archivo (capa 4)</td>
+          <td><span class="ic">{ "status": false, "mensaje": "contenido no permitido" }</span></td>
+        </tr>
+        <tr>
+          <td>422</td>
+          <td><span class="ic">POST /fotos/subir/{uuid}</span></td>
+          <td>Valor de <span class="ic">momento</span> distinto de ANTES o DESPUÉS</td>
+          <td>Respuesta de validación Laravel</td>
+        </tr>
+        <tr>
+          <td>500</td>
+          <td><span class="ic">POST /fotos/subir/{uuid}</span></td>
+          <td>Error interno (disco, permisos, etc.)</td>
+          <td><span class="ic">{ "status": false, "mensaje": "Error al guardar la imagen: ..." }</span></td>
+        </tr>
+      </table>
+    </section>
+
+    <!-- ─────────────── EJEMPLOS CURL ─────────────── -->
+    <section id="ejemplos">
+      <h2>
+        <span class="h2-icon">
+          <svg viewBox="0 0 24 24"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+        </span>
+        Ejemplos cURL
+      </h2>
+
+      <h3>1 · Generar URL para la solicitud #4521</h3>
+      <pre><code>curl "https://siac.villahermosa.gob.mx/centrobot/generar-url-fotos?solicitud_id=4521"</code></pre>
+
+      <h3>2 · Abrir la página de subida (en el navegador)</h3>
+      <pre><code># Simplemente pegar esta URL en cualquier navegador:
+https://siac.villahermosa.gob.mx/a3f7c2d1-84b0-4e5a-9f12-0123456789ab</code></pre>
+
+      <h3>3 · Subir una foto con cURL</h3>
+      <pre><code># El token CSRF se obtiene desde la página web cargada en el navegador.
+# En el flujo normal el navegador lo envía automáticamente.
+
+curl -X POST \
+  "https://siac.villahermosa.gob.mx/fotos/subir/a3f7c2d1-84b0-4e5a-9f12-0123456789ab" \
+  -H "X-CSRF-TOKEN: TU_TOKEN_CSRF_AQUI" \
+  -F "foto=@/home/usuario/foto_bache.jpg" \
+  -F "observaciones=Bache profundo en Av. Méndez esquina con Calle 5" \
+  -F "momento=ANTES"</code></pre>
+
+      <h3>4 · Respuesta exitosa al subir una foto</h3>
+      <pre><code>{
+  "status":        true,
+  "mensaje":       "¡Foto subida correctamente!",
+  "imagen_id":     1042,
+  "url_imagen":    "https://siac.villahermosa.gob.mx/storage/denuncia/3a9f1b...jpg",
+  "url_thumb":     "https://siac.villahermosa.gob.mx/storage/denuncia/_thumb_3a9f1b...png",
+  "observaciones": "Bache profundo en Av. Méndez esquina con Calle 5",
+  "momento":       "ANTES"
+}</code></pre>
+
+      <h3>5 · Error por archivo no permitido</h3>
+      <pre><code>{
+  "status":  false,
+  "mensaje": "El archivo no es una imagen válida (verificación de firma binaria fallida)."
+}</code></pre>
+    </section>
+
+  </main>
+</div>
+
+<!-- ═════════════════════════════ FOOTER ═══════════════════════════════ -->
+<footer>
+  <strong>SIAC</strong> — Sistema Integral de Atención Ciudadana &amp; Servicios Municipales ·
+  H. Ayuntamiento de Villahermosa ·
+  <strong>CentroBot API Docs</strong>
+</footer>
+
+<!-- Navegación activa al hacer scroll -->
+<script>
+  const secciones = document.querySelectorAll('section[id]');
+  const links     = document.querySelectorAll('nav a[href^="#"]');
+
+  function marcarActivo() {
+    let actual = '';
+    secciones.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 80) actual = s.id;
+    });
+    links.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + actual);
+    });
+  }
+
+  window.addEventListener('scroll', marcarActivo, { passive: true });
+  marcarActivo();
+
+  links.forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+
+</body>
+</html>

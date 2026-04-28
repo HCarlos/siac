@@ -740,3 +740,5 @@ Route::post('usuariopost', 'Auth\UsuarioCURPController@buscarPorCurp')->name('us
 Route::get('/get-csrf-token', 'Catalogos\Otros\ShisheroAnonimoController@get_csrf_token')->name('get-csrf-token');
 Route::get('/tokenizer', 'Catalogos\Otros\ShisheroAnonimoController@tokenizer')->name('tokenizer');
 
+// ── CentroBot: rutas del bot y subida pública de fotos ───────────────────────
+require __DIR__ . '/centrobot.php';
