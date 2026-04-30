@@ -542,6 +542,7 @@ Route::group(['middleware' => 'role:auth|Administrator|SysOp|test_admin|USER_OPE
     Route::post('getSolicitudesAmbitoAjaxFromOperator', 'Denuncia\DenunciaOperadorController@getSolicitudesAmbitoAjaxFromOperator')->name('getSolicitudesAmbitoAjaxFromOperator');
     Route::get('denuncia_solicitud_id_list/{denuncia_id}', 'Denuncia\DenunciaOperadorController@solicitud_id_list')->name('denuncia_solicitud_id_list');
     Route::get('removeSolicitudOperador/{id}', 'Denuncia\DenunciaOperadorController@removeItem')->name('removeSolicitudOperador');
+    Route::post('getSolicitudesDeUsuarioAjax', 'Denuncia\DenunciaOperadorController@getSolicitudesDeUsuarioAjax')->name('getSolicitudesDeUsuarioAjax');
 
     // USUARIOS SUPERVISORES
     Route::get('asignaSupervisoresList/{Id}','Catalogos\User\OperadoresSupervisorController@index')->name('asignaSupervisoresList');

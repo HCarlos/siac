@@ -22,11 +22,8 @@ class DenunciaOperadorController extends Controller{
     protected $msg = "";
 
 // ***************** MUESTRA EL LISTADO DE USUARIOS ++++++++++++++++++++ //
-    protected function index($operador_id, Request $request)
-    {
+    protected function index($operador_id, Request $request){
         ini_set('max_execution_time', 300);
-
-//        dd($operador_id);
 
         if ( (int) $operador_id > 0) {
             $items = Denuncia_Operador::where('operador_id', (int) $operador_id )
@@ -128,13 +125,13 @@ class DenunciaOperadorController extends Controller{
 
 
     public function getDenunciaAmbitoAjaxFromId(Request $request){
-//        $id = $request->denuncia_id;
-//        $denuncia = _viDDSs::find($id);
-
         $user = User::findOrFail($request->operador_id);
         $id  = $request->denuncia_id;
+//        $den = _viDDSs::where('id', $id)
+//            ->whereIn('due_id', $user->DependenciaIdArray)
+//            ->first();
+
         $den = _viDDSs::where('id', $id)
-            ->whereIn('due_id', $user->DependenciaIdArray)
             ->first();
 
         if ($den === null) {
@@ -145,6 +142,10 @@ class DenunciaOperadorController extends Controller{
             return response()->json(['mensaje' => 'Error', 'data' => 'No es de Servicios Municipales', 'status' => '422'], 200);
         }
 
+        if ( !in_array($den->due_id, $user->DependenciaIdArray) ) {
+            return response()->json(['mensaje' => 'Error', 'data' => 'No es de esta Unidad Administrativa', 'status' => '422'], 200);
+        }
+
         return response()->json(['mensaje' => 'OK', 'data' => $den, 'status' => '200'], 200);
 
     }
@@ -152,7 +153,6 @@ class DenunciaOperadorController extends Controller{
     public function getSolicitudesAmbitoAjaxFromOperator(Request $request){
         $denuncia_id = $request->denuncia_id;
         $user_id = $request->operador_id;
-        $denuncia = Denuncia::find($denuncia_id);
         $operador = User::find($user_id);
 
         try{
@@ -190,6 +190,29 @@ class DenunciaOperadorController extends Controller{
 
     }
 
+    protected function getSolicitudesDeUsuarioAjax(Request $request){
+        ini_set('max_execution_time', 300);
+        $operador_id = $request->operador_id;
+
+        if ((int)$operador_id > 0) {
+            $items = Denuncia_Operador::where('operador_id', (int)$operador_id)
+                ->with([
+                    'operador',                                            // item.operador.full_name
+                    'denuncia.ciudadano',                                  // item.denuncia.ciudadano.full_name
+                    'denuncia.servicio',                                   // item.denuncia.servicio.servicio
+                    'denuncia.ultimo_estatus',                             // item.denuncia.ultimo_estatus.estatus
+                    'denuncia.ultimo_estatu_denuncia_dependencia_servicio' // item.denuncia...slice(-1).observaciones
+                ])
+                ->orderBy('id')
+                ->get();
+        } else {
+            $items = [];
+        }
+
+        $data = ['data' => $items];
+
+        return response()->json(['mensaje' => 'OK', 'data' => $data, 'status' => '200'], 200);
+    }
 
 
 }

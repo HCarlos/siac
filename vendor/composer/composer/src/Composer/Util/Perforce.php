@@ -321,9 +321,9 @@ class Perforce
         }
         $this->p4User = $this->io->ask('Enter P4 User:');
         if ($this->windowsFlag) {
-            $command = 'p4 set P4USER=' . $this->p4User;
+            $command = 'p4 set P4USER=' . ProcessExecutor::escape($this->p4User);
         } else {
-            $command = 'export P4USER=' . $this->p4User;
+            $command = 'export P4USER=' . ProcessExecutor::escape($this->p4User);
         }
         $this->executeCommand($command);
     }
@@ -390,11 +390,11 @@ class Perforce
     public function generateP4Command($command, $useClient = true)
     {
         $p4Command = 'p4 ';
-        $p4Command .= '-u ' . $this->getUser() . ' ';
+        $p4Command .= '-u ' . ProcessExecutor::escape($this->getUser()) . ' ';
         if ($useClient) {
-            $p4Command .= '-c ' . $this->getClient() . ' ';
+            $p4Command .= '-c ' . ProcessExecutor::escape($this->getClient()) . ' ';
         }
-        $p4Command .= '-p ' . $this->getPort() . ' ' . $command;
+        $p4Command .= '-p ' . ProcessExecutor::escape($this->getPort()) . ' ' . $command;
 
         return $p4Command;
     }
@@ -444,7 +444,7 @@ class Perforce
         chdir($this->path);
         $p4SyncCommand = $this->generateP4Command('sync -f ');
         if (null !== $sourceReference) {
-            $p4SyncCommand .= '@' . $sourceReference;
+            $p4SyncCommand .= ProcessExecutor::escape('@' . $sourceReference);
         }
         $this->executeCommand($p4SyncCommand);
         chdir($prevDir);

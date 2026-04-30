@@ -634,3 +634,84 @@ Replica exactamente `StorageDenunciaAmbitoController`:
 - Los tres archivos generados: original (`.ext`), thumbnail (`_thumb_...png`), media (`_...png`)
 - Pivots verificados en BD: `imagene_user` y `denuncia_imagene` se crean correctamente
 - Vista soporta selección múltiple y drag & drop; sube las fotos secuencialmente con progreso individual
+
+---
+
+### [2026-04-30] — Módulo DenunciaOperador: showTableData y eliminación dinámica
+
+**Archivos modificados:**
+- `public/js/siac_operadores.js`
+- `app/Http/Controllers/Denuncia/DenunciaOperadorController.php`
+- `resources/views/SIAC/denuncia/denuncia_operador/__denuncia_operador/__denuncia_operador_list.blade.php`
+
+---
+
+#### Función `showTableData()` — correcciones y optimizaciones
+
+1. **Sintaxis JS corregida:** `function(response.data)` → `function(response)` (parámetro con punto es inválido)
+2. **Parámetro `data` sin usar** eliminado de la firma de la función
+3. **Validación fail-fast:** `if (!isValidSave()) return false;` movida al inicio
+4. **FormData:** `data: {'operador_id': operador_id}` convertido a `new FormData()` con `.append()` + `processData: false` + `contentType: false`
+5. **Token CSRF:** agregado `_token` al FormData
+6. **Template literal:** celdas `<td>` construidas con template literals JS en lugar de concatenación
+7. **Fecha:** `\Carbon\Carbon::parse(...)->format('d-m-Y H:i')` → formateador JS manual con `padStart`
+8. **Último comentario:** `->last()->observaciones` → `.slice(-1)[0]?.observaciones ?? ''`
+
+#### Bug crítico: DataTables tomaba control del `<tbody>`
+
+**Causa raíz:** `dataTables.responsive.min.js` (cargado globalmente en `script_footer.blade.php`) **auto-inicializa cualquier tabla** con la clase `dt-responsive`. La tabla `#tblSolicitudesOperador` tenía esa clase, por eso el `.append()` de jQuery era silenciosamente ignorado.
+
+**Solución:** Se eliminaron las clases `dt-responsive dataTable` y los atributos `role="grid"`, `aria-describedby` de la tabla, dejándola como HTML plana (`table table-bordered table-striped table-hover`). Los atributos DataTables de los `<th>` (`sorting_asc`, `aria-sort`, etc.) también fueron eliminados.
+
+**Regla aprendida:** Si una tabla se llena 100% por AJAX manual, NO debe tener clases DataTables (`dt-responsive`, `dataTable`) ni atributos (`role="grid"`, `aria-describedby`).
+
+#### `getSolicitudesDeUsuarioAjax` — eager loading
+
+Se agregó `->with([...])` para cargar todas las relaciones que necesita el JS:
+```php
+->with([
+    'operador',                                            // item.operador.full_name
+    'denuncia.ciudadano',                                  // item.denuncia.ciudadano.full_name
+    'denuncia.servicio',                                   // item.denuncia.servicio.servicio
+    'denuncia.ultimo_estatus',                             // item.denuncia.ultimo_estatus.estatus
+    'denuncia.ultimo_estatu_denuncia_dependencia_servicio' // observaciones del último movimiento
+])
+```
+Se eliminó `$user` del payload (no se usaba en el frontend).
+
+**Estructura de respuesta JSON:**
+```json
+{ "mensaje": "OK", "data": { "data": [...] }, "status": "200" }
+```
+El JS accede como `response.data.data.forEach(item => ...)`.
+
+#### Botón eliminar — delegación de eventos
+
+Como las filas son dinámicas (creadas por AJAX), el `.on('click')` estático de `atemun.js` no las captura. Se agregó delegación en `siac_operadores.js`:
+
+- El `<a>` usa `id="removeSolicitudOperador-${item.id}"` (patrón `rutaNombre-id` del proyecto) y `class="removeOperadorSolicitud"`
+- Handler: `$(document).on('click', '.removeOperadorSolicitud', ...)` con `confirm()` + AJAX GET + `.closest('tr').remove()`
+- Ruta usada: `GET /removeSolicitudOperador/{id}` → `DenunciaOperadorController@removeItem`
+
+**Regla aprendida:** Para elementos dinámicos siempre usar `$(document).on('click', '.clase', handler)` en lugar de `.on('click')` directo.
+
+
+### [2026-04-30] — DenunciaOperadorController: corrección validación `due_id`
+
+**Archivo:** `app/Http/Controllers/Denuncia/DenunciaOperadorController.php`
+**Función:** `getDenunciaAmbitoAjaxFromId()`
+
+**Bug corregido:** La validación de pertenencia a la Unidad Administrativa usaba incorrectamente:
+```php
+// ❌ Abría query nueva desde cero ignorando el $den actual
+$den->whereIn('due_id', $user->DependenciaIdArray)->first() === null
+```
+Dado que `$den` ya es una instancia del modelo (resultado de `->first()`), llamar `->whereIn()` sobre ella lanza una query nueva sobre toda la tabla sin filtrar por `id`, pudiendo retornar un registro distinto.
+
+**Corrección:**
+```php
+// ✅ Compara directamente el atributo del objeto ya cargado
+!in_array($den->due_id, $user->DependenciaIdArray)
+```
+
+**Regla:** Nunca llamar métodos de query builder (`whereIn`, `where`, etc.) sobre una instancia de modelo para validar sus propios atributos. Usar `in_array()`, comparaciones directas o scopes sobre el Query Builder fresco.

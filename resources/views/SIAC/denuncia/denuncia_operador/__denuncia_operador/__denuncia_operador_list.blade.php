@@ -38,8 +38,8 @@
                     </table>
 
                     <div class="w-100-percent mt-2" >
-                        <button type="button"  class="btn btn-info btn-rounded-sm w-40-percent text-white float-left" id="btnGetSolicitudesOperator"><i class="mdi mdi-content-copy"></i> Solicitudes de Este Operador</button>
-                        <button type="button" class="btn btn-primary btn-rounded-sm w-40-percent float-right" id="btnSaveSolicitud"><i class="mdi mdi-content-save"></i> Agregar Operador a Solicitud</button>
+{{--                        <button type="button"  class="btn btn-info btn-rounded-sm w-40-percent text-white float-left" id="btnGetSolicitudesOperator"><i class="mdi mdi-content-copy"></i> Solicitudes de Este Operador</button>--}}
+{{--                        <button type="button" class="btn btn-primary btn-rounded-sm w-40-percent float-right" id="btnSaveSolicitud"><i class="mdi mdi-content-save"></i> Agregar Operador a Solicitud</button>--}}
                     </div>
 
                 </div>
@@ -81,7 +81,8 @@
                         </tbody>
                     </table>
                     <div class="w-100-percent mt-2" >
-                        <button type="button"  class="btn btn-info btn-rounded-sm w-40-percent text-white float-left" id="btnGetSolicitudOperator"><i class="mdi mdi-paper-cut-vertical "></i> Buscar Solicitud</button>
+{{--                        <button type="button"  class="btn btn-info btn-rounded-sm w-40-percent text-white float-left" id="btnGetSolicitudOperator"><i class="mdi mdi-paper-cut-vertical "></i> Buscar Solicitud</button>--}}
+                        <button type="button" class="btn btn-primary btn-rounded-sm w-40-percent float-right" id="btnSaveSolicitud"><i class="mdi mdi-content-save"></i> Agregar Operador a Solicitud</button>
                     </div>
 
                 </div>
@@ -89,40 +90,40 @@
         </div>
 </div>
 
-<table  id="tblCat" class="table table-bordered table-striped dt-responsive dataTable " role="grid" aria-describedby="datatable-buttons_info" >
+<table id="tblSolicitudesOperador" name="tblSolicitudesOperador" class="table table-bordered table-striped table-hover">
     <thead>
-    <tr role="row">
-        <th class="sorting_asc  w-10-percent" aria-sort="ascending" aria-label="Name: activate to sort column descending">FOLIO</th>
-        <th class="sorting  w-20-percent">OPERADOR</th>
-        <th class="sorting  w-20-percent">USUARIO</th>
-        <th class="sorting  w-30-percent">SOLICITUD</th>
-        <th class="sorting  w-15-percent">ULTIMO ESTATUS</th>
-        <th class="sorting  w-10-percent">FECHA</th>
-        <th class="sorting  w-10-percent">COMENTARIO</th>
+    <tr>
+        <th class="w-10-percent">FOLIO</th>
+        <th class="w-20-percent">OPERADOR</th>
+        <th class="w-20-percent">USUARIO</th>
+        <th class="w-30-percent">SOLICITUD</th>
+        <th class="w-15-percent">ULTIMO ESTATUS</th>
+        <th class="w-10-percent">FECHA</th>
+        <th class="w-10-percent">COMENTARIO</th>
         <th></th>
     </tr>
     </thead>
     <tbody>
 
-    @foreach($items as $item)
-        <tr>
-            <td>{{$item->denuncia->id}}</td>
-            <td>{{$item->operador->full_name}}</td>
-            <td>{{$item->denuncia->ciudadano->full_name}}</td>
-            <td>{{$item->denuncia->servicio->servicio}}<br><br>{{$item->denuncia->descripcion}}</td>
-            <td>{{$item->denuncia->ultimo_estatus->estatus }}</td>
-            <td>{{\Carbon\Carbon::parse($item->denuncia->fecha_ingreso)->format('d-m-Y H:i')}}</td>
-            <td>{{ $item->denuncia->ultimo_estatu_denuncia_dependencia_servicio->last()->observaciones}}</td>
-            <td>
+{{--    @foreach($items as $item)--}}
+{{--        <tr>--}}
+{{--            <td>{{$item->denuncia->id}}</td>--}}
+{{--            <td>{{$item->operador->full_name}}</td>--}}
+{{--            <td>{{$item->denuncia->ciudadano->full_name}}</td>--}}
+{{--            <td>{{$item->denuncia->servicio->servicio}}<br><br>{{$item->denuncia->descripcion}}</td>--}}
+{{--            <td>{{$item->denuncia->ultimo_estatus->estatus }}</td>--}}
+{{--            <td>{{\Carbon\Carbon::parse($item->denuncia->fecha_ingreso)->format('d-m-Y H:i')}}</td>--}}
+{{--            <td>{{ $item->denuncia->ultimo_estatu_denuncia_dependencia_servicio->last()->observaciones}}</td>--}}
+{{--            <td>--}}
 {{--                    @if(Gate::check('all') || Gate::check('editar_respuesta'))--}}
 {{--                        @include('shared.ui_kit.__edit_item')--}}
 {{--                    @endif--}}
-                    @if(Gate::check('all') || Gate::check('eliminar_respuesta'))
-                        @include('shared.ui_kit.__remove_item_operador_solicitud')
-                    @endif
-            </td>
-        </tr>
-    @endforeach
+{{--                    @if(Gate::check('all') || Gate::check('eliminar_respuesta'))--}}
+{{--                        @include('shared.ui_kit.__remove_item_operador_solicitud')--}}
+{{--                    @endif--}}
+{{--            </td>--}}
+{{--        </tr>--}}
+{{--    @endforeach--}}
 
     </tbody>
 </table>

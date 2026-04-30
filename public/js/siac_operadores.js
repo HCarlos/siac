@@ -1,4 +1,3 @@
-
 jQuery(function($) {
     $(document).ready(function() {
 
@@ -108,7 +107,11 @@ jQuery(function($) {
                         $("#user_permissions").html(dataUser.permissions);
                         $("#user_unidades").html(dataUser.unidades);
                         $("#user_curp").html(dataUser.curp+" ("+dataUser.id+")" );
-                        isValidSave();
+                        //getSolocitudesDeOperador();
+                        //isValidSave();
+
+                        showTableData();
+
                     },
                 });
 
@@ -121,13 +124,17 @@ jQuery(function($) {
         }
 
         $("#btnGetSolicitudesOperator").on("click", function (event) {
+            getSolocitudesDeOperador();
+        })
+
+        function getSolocitudesDeOperador() {
             var operador_id = parseInt( $("#operador_id").val() );
             if ( operador_id <= 0 || isNaN(operador_id) ) {
                 alert("Seleccione un Operador");
                 return false;
             }
             window.location.href = "/denuncia_operador_list/"+operador_id;
-        })
+        }
 
         $("#btnGetSolicitudOperator").on("click", function (event) {
             var denuncia_id = parseInt( $("#denuncia_id").val() );
@@ -137,6 +144,9 @@ jQuery(function($) {
             }
             window.location.href = "/denuncia_solicitud_id_list/"+denuncia_id;
         })
+
+        // operador_id
+
 
         function isValidSave() {
             var operador_id = parseInt( $("#operador_id").val() );
@@ -168,6 +178,88 @@ jQuery(function($) {
             }
             return html;
         }
+
+        function showTableData(){
+
+            var operador_id = parseInt( $("#operador_id").val() );
+            if ( operador_id <= 0 || isNaN(operador_id) ) {
+                $("#btnSaveSolicitud").attr("disabled", true);
+                return false;
+            }
+
+            var formData = new FormData();
+            formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
+            formData.append('operador_id', operador_id);
+
+            $.ajax({
+                url: "/getSolicitudesDeUsuarioAjax",
+                dataType: "json",
+                method: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    $("#tblSolicitudesOperador > tbody").empty();
+                    response.data.data.forEach(item => {
+                        // Formatear fecha al estilo dd-mm-yyyy HH:mm
+                        var dt = new Date(item.denuncia.fecha_ingreso);
+                        var fechaFormateada = [
+                            String(dt.getDate()).padStart(2,'0'),
+                            String(dt.getMonth()+1).padStart(2,'0'),
+                            dt.getFullYear()
+                        ].join('-') + ' ' + String(dt.getHours()).padStart(2,'0') + ':' + String(dt.getMinutes()).padStart(2,'0');
+
+                        // Último comentario de la cadena de estatus
+                        var ultimaObs = (item.denuncia.ultimo_estatu_denuncia_dependencia_servicio || []).slice(-1)[0];
+                        var observaciones = ultimaObs ? (ultimaObs.observaciones || '') : '';
+
+                        var tr = `<tr>
+                            <td>${item.denuncia.id}</td>
+                            <td>${item.operador.full_name}</td>
+                            <td>${item.denuncia.ciudadano.full_name}</td>
+                            <td>${item.denuncia.servicio.servicio}<br><br>${item.denuncia.descripcion}</td>
+                            <td>${item.denuncia.ultimo_estatus.estatus}</td>
+                            <td>${fechaFormateada}</td>
+                            <td>${observaciones}</td>
+                            <td>
+                                <a href="#"
+                                   id="removeSolicitudOperador-${item.id}"
+                                   class="action-icon text-center text-danger removeOperadorSolicitud"
+                                   data-toggle="tooltip"
+                                   title="Eliminar permanentemente este objeto.">
+                                    <i class="fas fa-trash-alt text-danger"></i>
+                                </a>
+                            </td>
+                        </tr>`;
+                        $("#tblSolicitudesOperador > tbody").append(tr);
+                    });
+                }
+            });
+        }
+
+        // Delegación para el botón eliminar de filas dinámicas en tblSolicitudesOperador
+        $(document).on('click', '.removeOperadorSolicitud', function(event) {
+            event.preventDefault();
+            var aID  = event.currentTarget.id.split('-');
+            var id   = aID[1];
+            var ruta = aID[0];
+
+            var confirmado = confirm("¿Desea eliminar el registro: " + id + "?");
+            if (!confirmado) return false;
+
+            $.ajax({
+                method: "GET",
+                url: '/' + ruta + '/' + id
+            }).done(function(response) {
+                if (response.data === 'OK') {
+                    alert(response.mensaje);
+                    // Eliminar la fila del DOM sin recargar la página
+                    $('#removeSolicitudOperador-' + id).closest('tr').remove();
+                } else {
+                    alert(response.mensaje);
+                }
+            });
+        });
 
     });
 });
